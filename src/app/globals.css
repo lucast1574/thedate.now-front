@@ -47,3 +47,10 @@
 .party-site .party-occasion-grid h3,.party-site .party-steps h3{font-weight:800}
 .party-site .party-copy h1 em,.party-site .party-section-head h2 em,.party-site .party-how h2 em{font-style:normal}
 .office-general .auth-panel h1,.office-general .office-kicker{font-family:var(--font-party),sans-serif}
+
+/* Wedding identity: editorial wordmark instead of a pictogram. */
+.brand-wedding{display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;letter-spacing:normal}
+.brand-wedding-title{font-family:var(--font-wedding-logo),serif;font-size:1em;font-weight:500;line-height:1;letter-spacing:.075em;white-space:nowrap;color:#302720}
+.brand-wedding-subtitle{font-family:var(--font-sans),sans-serif;font-size:8px;font-weight:700;line-height:1.4;letter-spacing:.3em;white-space:nowrap;color:#a07860;margin-left:2px}
+.office-wedding .office-brand .brand-wedding-title{color:#302720}
+.office-wedding .office-brand .brand-wedding-subtitle{color:#a07860}
