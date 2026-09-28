@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import Backoffice from "./backoffice";
+import Brand from "./brand";
 
 type Kind = "wedding" | "general";
 type PublicEvent = { id: string; kind: Kind; slug: string; title: string; description: string; startAt: string; location: string; accentColor: string; photoKeys: string[] };
@@ -18,13 +19,6 @@ async function findEvent(kind: Kind, slug: string): Promise<PublicEvent | null> 
   const api = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "https://api.thedate.now";
   try { const result = await fetch(`${api}/public/events/${kind}/${slug}`, { cache: "no-store" }); return result.ok ? await result.json() as PublicEvent : null; }
   catch { return null; }
-}
-
-function Brand({ wedding = false }: { wedding?: boolean }) {
-  return <span className={`brand ${wedding ? "brand-wedding" : "brand-general"}`}>
-    <svg className="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="4" y="10" width="40" height="29" rx="4" /><path d="m5 14 19 14 19-14M5 36l13-11m25 11L30 25" /><circle cx="24" cy="27" r="5" /><path d="m24 24.5 1 2.5-1 2.5-1-2.5 1-2.5Z" /></svg>
-    <span className="brand-wordmark">{wedding && <small>save</small>}the date<span className="dot">.</span></span>
-  </span>;
 }
 
 function Landing({ wedding }: { wedding: boolean }) {
