@@ -2,9 +2,11 @@ import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import Backoffice from "./backoffice";
 import Brand, { WeddingMark } from "./brand";
+import InvitationSections from "./invitation-sections";
+import type { DesignSection } from "./invitation-designer";
 
 type Kind = "wedding" | "general";
-type PublicEvent = { id: string; kind: Kind; slug: string; title: string; description: string; startAt: string; timeZone: string; organizer: string; location: string; isVirtual: boolean; mapUrl: string; virtualUrl: string; accentColor: string; photoKeys: string[] };
+type PublicEvent = { id: string; kind: Kind; slug: string; title: string; description: string; startAt: string; timeZone: string; organizer: string; location: string; isVirtual: boolean; mapUrl: string; virtualUrl: string; accentColor: string; template: string; sections?: DesignSection[]; photoKeys: string[] };
 
 export function invitationFromHost(raw: string): { kind: Kind; slug: string } | null {
   const host = raw.toLowerCase().replace(/:\d+$/, "").replace(/\.$/, "");
@@ -52,14 +54,16 @@ function Invitation({ event }: { event: PublicEvent }) {
   const virtual = event.kind === "general" && event.isVirtual;
   const placeLink = virtual ? event.virtualUrl : event.mapUrl;
   const safeLink = typeof placeLink === "string" && /^https:\/\/[^\s]+$/i.test(placeLink) ? placeLink : "";
-  return <main className="invitation" style={{ "--accent": accent } as React.CSSProperties}><header className="invite-top"><a href={event.kind === "wedding" ? "https://save.thedate.now" : "https://thedate.now"}><Brand wedding={event.kind === "wedding"} /></a><span>UNA INVITACIÓN ESPECIAL</span></header><section className="invite-content"><div className="ornament">✧</div><p className="eyebrow">{event.kind === "wedding" ? "CELEBREMOS EL AMOR" : "ESTÁS INVITADO"}</p><h1>{event.title}</h1><div className="rule" /><p className="description">{event.description}</p>{event.photoKeys?.length > 0 && <div className="invite-gallery">{event.photoKeys.slice(0, 6).map(key => <img key={key} src={`https://api.thedate.now/public/events/${event.kind}/${event.slug}/photos/${encodeURIComponent(key)}`} alt={`Recuerdo de ${event.title}`} />)}</div>}<div className="details"><div><small>CUÁNDO</small><strong>{dateText}</strong></div><div><small>{virtual ? "MODALIDAD" : "DÓNDE"}</small><strong>{virtual ? "En línea" : event.location}</strong></div><div><small>ORGANIZA</small><strong>{event.organizer || "El anfitrión"}</strong></div></div>{safeLink && <><a className="invite-place-link" href={safeLink} target="_blank" rel="noopener noreferrer">{virtual ? "Unirse al evento virtual" : "Cómo llegar con Google Maps"} ↗</a>{!virtual && <small className="map-credit"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></small>}</>}<p className="closing">Nos encantará compartir este momento contigo.</p></section><footer className="invite-footer">Una invitación creada con <b>the date.</b></footer></main>;
+  return <main className="invitation" style={{ "--accent": accent } as React.CSSProperties}><header className="invite-top"><a href={event.kind === "wedding" ? "https://save.thedate.now" : "https://thedate.now"}><Brand wedding={event.kind === "wedding"} /></a><span>UNA INVITACIÓN ESPECIAL</span></header><section className="invite-content"><div className="ornament">✧</div><p className="eyebrow">{event.kind === "wedding" ? "CELEBREMOS EL AMOR" : "ESTÁS INVITADO"}</p><h1>{event.title}</h1><div className="rule" /><p className="description">{event.description}</p>{event.photoKeys?.length > 0 && <div className="invite-gallery">{event.photoKeys.slice(0, 6).map(key => <img key={key} src={`https://api.thedate.now/public/events/${event.kind}/${event.slug}/photos/${encodeURIComponent(key)}`} alt={`Recuerdo de ${event.title}`} />)}</div>}<InvitationSections sections={event.sections} kind={event.kind} slug={event.slug} /><div className="details"><div><small>CUÁNDO</small><strong>{dateText}</strong></div><div><small>{virtual ? "MODALIDAD" : "DÓNDE"}</small><strong>{virtual ? "En línea" : event.location}</strong></div><div><small>ORGANIZA</small><strong>{event.organizer || "El anfitrión"}</strong></div></div>{safeLink && <><a className="invite-place-link" href={safeLink} target="_blank" rel="noopener noreferrer">{virtual ? "Unirse al evento virtual" : "Cómo llegar con Google Maps"} ↗</a>{!virtual && <small className="map-credit"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></small>}</>}<p className="closing">Nos encantará compartir este momento contigo.</p></section><footer className="invite-footer">Una invitación creada con <b>the date.</b></footer></main>;
 }
 
 export default async function Home() {
   const host = (await headers()).get("host") ?? "";
   if (host.toLowerCase().startsWith("backoffice.thedate.now")) redirect("https://crea.thedate.now");
-  if (host.toLowerCase().startsWith("crea.thedate.now")) return <Backoffice portal="general" />;
-  if (host.toLowerCase().startsWith("studio.save.thedate.now")) return <Backoffice portal="wedding" />;
+  const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_REDIRECT_URI);
+  const paymentsEnabled = process.env.PAYMENTS_ENABLED === "true";
+  if (host.toLowerCase().startsWith("crea.thedate.now")) return <Backoffice portal="general" googleEnabled={googleEnabled} paymentsEnabled={paymentsEnabled} />;
+  if (host.toLowerCase().startsWith("studio.save.thedate.now")) return <Backoffice portal="wedding" googleEnabled={googleEnabled} paymentsEnabled={paymentsEnabled} />;
   const target = invitationFromHost(host);
   if (target) { const event = await findEvent(target.kind, target.slug); if (!event) notFound(); return <Invitation event={event} />; }
   return <Landing wedding={host.toLowerCase().startsWith("save.thedate.now")} />;

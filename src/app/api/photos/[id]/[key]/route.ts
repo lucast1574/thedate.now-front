@@ -4,7 +4,7 @@ const api = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string; key: string }> }) {
   const { id, key } = await params;
-  if (!/^[0-9a-f-]{36}$/.test(id) || !/^[0-9a-f-]{36}\.(?:jpg|png|webp)$/.test(key)) {
+  if (!/^(?:demo-(?:wedding|general)-)?[0-9a-f-]{36}$/.test(id) || !/^[0-9a-f-]{36}\.(?:jpg|png|webp)$/.test(key)) {
     return new Response(null, { status: 404 });
   }
   const token = (await cookies()).get("thedate_session")?.value;
