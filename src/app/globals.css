@@ -48,9 +48,35 @@
 .party-site .party-copy h1 em,.party-site .party-section-head h2 em,.party-site .party-how h2 em{font-style:normal}
 .office-general .auth-panel h1,.office-general .office-kicker{font-family:var(--font-party),sans-serif}
 
-/* Wedding identity: editorial wordmark instead of a pictogram. */
-.brand-wedding{display:inline-flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;letter-spacing:normal}
+/* Wedding identity: a floral seal shared by the wordmark and invitation. */
+.brand-wedding{display:inline-flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;letter-spacing:normal}
+.brand-wedding-type{display:inline-flex;flex-direction:column;align-items:flex-start;gap:3px}
+.wedding-mark{width:39px;height:39px;flex:none;color:#a76f51}
 .brand-wedding-title{font-family:var(--font-wedding-logo),serif;font-size:1em;font-weight:500;line-height:1;letter-spacing:.075em;white-space:nowrap;color:#302720}
 .brand-wedding-subtitle{font-family:var(--font-sans),sans-serif;font-size:8px;font-weight:700;line-height:1.4;letter-spacing:.3em;white-space:nowrap;color:#a07860;margin-left:2px}
 .office-wedding .office-brand .brand-wedding-title{color:#302720}
 .office-wedding .office-brand .brand-wedding-subtitle{color:#a07860}
+.wedding .hero{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);align-items:center;gap:20px;min-height:720px;padding-top:65px;padding-bottom:85px}
+.wedding-hero-copy{position:relative;z-index:1}
+.wedding .hero h1{font-size:clamp(74px,7.2vw,112px);margin:42px 0 36px}
+.wedding .hero-copy{max-width:540px}
+.wedding-hero-art{height:540px;position:relative;isolation:isolate;display:grid;place-items:center}
+.wedding-hero-art:before{content:"";position:absolute;width:94%;aspect-ratio:1;z-index:-2;border-radius:50%;background:radial-gradient(circle,#e9d7c6 0,#eadccf 42%,#eadccf00 71%);opacity:.8}
+.wedding-hero-art:after{content:"✧";position:absolute;top:15px;right:25px;font:50px var(--font-serif),serif;color:#b48666}
+.wedding-paper{position:absolute;width:min(360px,80%);height:480px;box-shadow:0 26px 55px #5d453023}
+.wedding-paper-back{background:#d9bba6;transform:translate(27px,-8px) rotate(9deg);border:1px solid #cfad94}
+.wedding-paper-front{background:#fdfbf6;transform:translate(-12px,0) rotate(-4deg);padding:20px;animation:wedding-reveal .85s both}
+.wedding-paper-border{height:100%;border:1px solid #d8bfa9;display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px 12px 20px;color:#46392f}
+.wedding-paper-kicker,.wedding-paper-overline,.wedding-paper-date,.wedding-paper-foot{font-family:var(--font-sans),sans-serif;font-size:9px;font-weight:700;letter-spacing:.22em}
+.wedding-paper-mark{width:84px;height:84px;color:#aa795d;margin:19px 0 12px}
+.wedding-paper-overline{font-size:8px;color:#9b755d}
+.wedding-paper-border strong{font:500 52px/1.1 var(--font-serif),serif;margin:13px 0 11px;white-space:nowrap}
+.wedding-paper-border strong i{font-weight:400;color:#ae8064}
+.wedding-paper-rule{height:1px;width:52px;background:#ba957b;margin:6px 0 20px}
+.wedding-paper-date{font-size:10px;letter-spacing:.2em}
+.wedding-paper-foot{font-size:7px;margin-top:auto;color:#a98067}
+.wedding-hero-note{position:absolute;right:0;bottom:0;transform:rotate(-6deg);font:italic 19px var(--font-serif),serif;color:#9a8e7c;white-space:nowrap}
+@keyframes wedding-reveal{from{opacity:0;translate:0 22px}to{opacity:1;translate:0 0}}
+@media(max-width:1020px){.wedding .hero{grid-template-columns:1fr;gap:15px;padding-top:86px;padding-bottom:80px}.wedding .hero h1{font-size:clamp(78px,10vw,120px)}.wedding-hero-art{height:550px}.wedding-paper{width:360px}}
+@media(max-width:600px){.wedding{overflow-x:hidden}.wedding .topbar .brand-wedding{font-size:20px}.brand-wedding{gap:5px}.wedding-mark{width:27px;height:27px}.brand-wedding-title{letter-spacing:.025em}.brand-wedding-subtitle{font-size:6px;letter-spacing:.15em}.wedding .topbar nav{gap:0}.wedding .topbar .nav-action{padding:10px 12px;white-space:nowrap}.wedding .hero{padding-top:75px;gap:25px}.wedding .hero h1{font-size:clamp(57px,13.5vw,79px);margin:32px 0}.wedding-hero-art{height:430px}.wedding-paper{width:275px;height:365px}.wedding-paper-front{padding:14px}.wedding-paper-border{padding:17px 8px 14px}.wedding-paper-kicker{font-size:7px}.wedding-paper-mark{width:65px;height:65px;margin:12px 0 10px}.wedding-paper-border strong{font-size:39px;margin:10px 0}.wedding-paper-date{font-size:8px}.wedding-hero-note{font-size:14px;right:8px;bottom:0}}
+@media(prefers-reduced-motion:reduce){.wedding-paper-front{animation:none}}
