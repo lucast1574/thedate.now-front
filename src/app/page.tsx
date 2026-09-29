@@ -4,7 +4,7 @@ import Backoffice from "./backoffice";
 import Brand, { WeddingMark } from "./brand";
 
 type Kind = "wedding" | "general";
-type PublicEvent = { id: string; kind: Kind; slug: string; title: string; description: string; startAt: string; location: string; accentColor: string; photoKeys: string[] };
+type PublicEvent = { id: string; kind: Kind; slug: string; title: string; description: string; startAt: string; timeZone: string; organizer: string; location: string; isVirtual: boolean; mapUrl: string; virtualUrl: string; accentColor: string; photoKeys: string[] };
 
 export function invitationFromHost(raw: string): { kind: Kind; slug: string } | null {
   const host = raw.toLowerCase().replace(/:\d+$/, "").replace(/\.$/, "");
@@ -47,9 +47,12 @@ function GeneralLanding() {
 
 function Invitation({ event }: { event: PublicEvent }) {
   const date = new Date(event.startAt);
-  const dateText = Number.isNaN(date.getTime()) ? "Próximamente" : new Intl.DateTimeFormat("es", { dateStyle: "long", timeZone: "UTC" }).format(date);
+  const dateText = Number.isNaN(date.getTime()) ? "Próximamente" : new Intl.DateTimeFormat("es", { dateStyle: "long", timeStyle: "short", timeZone: event.timeZone || "America/Bogota" }).format(date);
   const accent = /^#[0-9a-fA-F]{6}$/.test(event.accentColor) ? event.accentColor : "#ad7254";
-  return <main className="invitation" style={{ "--accent": accent } as React.CSSProperties}><header className="invite-top"><a href={event.kind === "wedding" ? "https://save.thedate.now" : "https://thedate.now"}><Brand wedding={event.kind === "wedding"} /></a><span>UNA INVITACIÓN ESPECIAL</span></header><section className="invite-content"><div className="ornament">✧</div><p className="eyebrow">{event.kind === "wedding" ? "CELEBREMOS EL AMOR" : "ESTÁS INVITADO"}</p><h1>{event.title}</h1><div className="rule" /><p className="description">{event.description}</p>{event.photoKeys?.length > 0 && <div className="invite-gallery">{event.photoKeys.slice(0, 6).map(key => <img key={key} src={`https://api.thedate.now/public/events/${event.kind}/${event.slug}/photos/${encodeURIComponent(key)}`} alt={`Recuerdo de ${event.title}`} />)}</div>}<div className="details"><div><small>CUÁNDO</small><strong>{dateText}</strong></div><div><small>DÓNDE</small><strong>{event.location}</strong></div></div><p className="closing">Nos encantará compartir este momento contigo.</p></section><footer className="invite-footer">Una invitación creada con <b>the date.</b></footer></main>;
+  const virtual = event.kind === "general" && event.isVirtual;
+  const placeLink = virtual ? event.virtualUrl : event.mapUrl;
+  const safeLink = typeof placeLink === "string" && /^https:\/\/[^\s]+$/i.test(placeLink) ? placeLink : "";
+  return <main className="invitation" style={{ "--accent": accent } as React.CSSProperties}><header className="invite-top"><a href={event.kind === "wedding" ? "https://save.thedate.now" : "https://thedate.now"}><Brand wedding={event.kind === "wedding"} /></a><span>UNA INVITACIÓN ESPECIAL</span></header><section className="invite-content"><div className="ornament">✧</div><p className="eyebrow">{event.kind === "wedding" ? "CELEBREMOS EL AMOR" : "ESTÁS INVITADO"}</p><h1>{event.title}</h1><div className="rule" /><p className="description">{event.description}</p>{event.photoKeys?.length > 0 && <div className="invite-gallery">{event.photoKeys.slice(0, 6).map(key => <img key={key} src={`https://api.thedate.now/public/events/${event.kind}/${event.slug}/photos/${encodeURIComponent(key)}`} alt={`Recuerdo de ${event.title}`} />)}</div>}<div className="details"><div><small>CUÁNDO</small><strong>{dateText}</strong></div><div><small>{virtual ? "MODALIDAD" : "DÓNDE"}</small><strong>{virtual ? "En línea" : event.location}</strong></div><div><small>ORGANIZA</small><strong>{event.organizer || "El anfitrión"}</strong></div></div>{safeLink && <><a className="invite-place-link" href={safeLink} target="_blank" rel="noopener noreferrer">{virtual ? "Unirse al evento virtual" : "Cómo llegar con Google Maps"} ↗</a>{!virtual && <small className="map-credit"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></small>}</>}<p className="closing">Nos encantará compartir este momento contigo.</p></section><footer className="invite-footer">Una invitación creada con <b>the date.</b></footer></main>;
 }
 
 export default async function Home() {

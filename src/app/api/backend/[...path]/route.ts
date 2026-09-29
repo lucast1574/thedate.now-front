@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 
 const api = process.env.API_INTERNAL_URL ?? process.env.NEXT_PUBLIC_API_URL ?? "https://api.thedate.now";
-const safe = /^events(?:\/[0-9a-f-]+(?:\/(?:guests|checkout|publish|send-invitations|couple-invitations))?)?$/;
+const safe = /^(?:events(?:\/[0-9a-f-]+(?:\/(?:guests|checkout|publish|send-invitations|couple-invitations))?)?|maps\/resolve)$/;
 
 async function proxy(request: Request, path: string[], method: "GET" | "POST" | "PATCH") {
   const joined = path.join("/");
