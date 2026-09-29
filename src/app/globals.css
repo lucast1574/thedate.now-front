@@ -46,6 +46,10 @@
 .party-site .party-section-head h2,.party-site .party-how h2{font-weight:800;line-height:1.02}
 .party-site .party-occasion-grid h3,.party-site .party-steps h3{font-weight:800}
 .party-site .party-copy h1 em,.party-site .party-section-head h2 em,.party-site .party-how h2 em{font-style:normal}
+
+/* Keep the celebration ribbon continuous at every viewport width. */
+.party-marquee .party-marquee-track{display:flex;width:max-content}
+.party-marquee-track span{flex:none;padding-right:2em}
 .office-general .auth-panel h1,.office-general .office-kicker{font-family:var(--font-party),sans-serif}
 
 /* Wedding identity: a floral seal shared by the wordmark and invitation. */
