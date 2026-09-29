@@ -60,7 +60,7 @@ function Invitation({ event }: { event: PublicEvent }) {
 export default async function Home() {
   const host = (await headers()).get("host") ?? "";
   if (host.toLowerCase().startsWith("backoffice.thedate.now")) redirect("https://crea.thedate.now");
-  const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET && process.env.GOOGLE_REDIRECT_URI);
+  const googleEnabled = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
   const paymentsEnabled = process.env.PAYMENTS_ENABLED === "true";
   if (host.toLowerCase().startsWith("crea.thedate.now")) return <Backoffice portal="general" googleEnabled={googleEnabled} paymentsEnabled={paymentsEnabled} />;
   if (host.toLowerCase().startsWith("studio.save.thedate.now")) return <Backoffice portal="wedding" googleEnabled={googleEnabled} paymentsEnabled={paymentsEnabled} />;

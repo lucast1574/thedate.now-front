@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 const api = process.env.API_INTERNAL_URL ?? "https://api.thedate.now";
 
 export async function GET(request: Request) {
-  const redirectUri = process.env.GOOGLE_REDIRECT_URI;
+  const host = request.headers.get("host")?.toLowerCase().split(":")[0];
+  const redirectUri = host === "studio.save.thedate.now" || host === "crea.thedate.now" ? `https://${host}/api/auth/google/callback` : process.env.NODE_ENV === "development" ? process.env.GOOGLE_REDIRECT_URI : undefined;
   const clientId = process.env.GOOGLE_CLIENT_ID;
   const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   const home = new URL(redirectUri || request.url).origin;
