@@ -4,6 +4,47 @@ import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadSource } from "./support/load-source.cjs";
 
+test("RSVP API preserves the pinned event boundary even when a slug is reused", async () => {
+  const writes = [];
+  const { validInviteToken, invalidOrigin } = loadSource(
+    "src/lib/api/server.ts",
+  );
+  const routes = loadSource("src/app/api/rsvp/[token]/route.ts", {
+    mocks: {
+      "@/lib/events/invitation-runtime": {
+        invitationTarget: () => ({
+          kind: "wedding",
+          slug: "our-wedding",
+          eventId: "original-event",
+        }),
+      },
+      "@/lib/api/server": {
+        validInviteToken,
+        invalidOrigin,
+        forwardJSON: () => {
+          throw new Error("Unexpected forwarding");
+        },
+        backendFetch: async (path, init) => {
+          if (init?.method === "POST") writes.push(path);
+          return Response.json({
+            kind: "wedding",
+            slug: "our-wedding",
+            event: { id: "different-event" },
+          });
+        },
+      },
+    },
+  });
+  const token = "a".repeat(48);
+  const context = { params: Promise.resolve({ token }) };
+  const request = new Request(
+    "https://our-wedding.save.thedate.now/api/rsvp/" + token,
+  );
+  assert.equal((await routes.GET(request, context)).status, 404);
+  assert.equal((await routes.POST(request, context)).status, 404);
+  assert.deepEqual(writes, []);
+});
+
 test("personal links reject another host, pinned event, and malformed tokens", async () => {
   const { validInviteToken } = loadSource("src/lib/api/server.ts");
   let calls = 0;

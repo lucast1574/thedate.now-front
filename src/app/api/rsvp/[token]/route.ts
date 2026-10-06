@@ -14,7 +14,11 @@ export async function GET(_request: Request, context: Context) {
   const pinned = invitationTarget();
   if (pinned && result?.ok) {
     const details = await result.clone().json();
-    if (details.kind !== pinned.kind || details.slug !== pinned.slug)
+    if (
+      details.kind !== pinned.kind ||
+      details.slug !== pinned.slug ||
+      details.event?.id !== pinned.eventId
+    )
       return Response.json({ error: "Not found" }, { status: 404 });
   }
   return forwardJSON(result);
@@ -31,7 +35,11 @@ export async function POST(request: Request, context: Context) {
     if (!details?.ok)
       return Response.json({ error: "Not found" }, { status: 404 });
     const data = await details.json();
-    if (data.kind !== pinned.kind || data.slug !== pinned.slug)
+    if (
+      data.kind !== pinned.kind ||
+      data.slug !== pinned.slug ||
+      data.event?.id !== pinned.eventId
+    )
       return Response.json({ error: "Not found" }, { status: 404 });
   }
   const body = await request.text();
