@@ -6,6 +6,7 @@ export default function PublicationPanel({
   selected,
   deployment,
   busy,
+  publishing = false,
   paymentsEnabled,
   checkout,
   publish,
@@ -13,10 +14,18 @@ export default function PublicationPanel({
   selected: Event;
   deployment: Deployment | null;
   busy: boolean;
+  publishing?: boolean;
   paymentsEnabled: boolean;
   checkout: () => void;
   publish: () => void;
 }) {
+  const ready =
+    selected.publishedAt &&
+    deployment?.phase === "ready" &&
+    deployment.host === host(selected.kind, selected.slug);
+  const preparing =
+    publishing ||
+    Boolean(deployment && !["error", "ready"].includes(deployment.phase));
   return (
     <>
       <div className="office-divider" />
@@ -28,10 +37,24 @@ export default function PublicationPanel({
             Diseña, guarda y previsualiza gratis. El pago habilita publicación,
             invitados y WhatsApp.
           </p>
-          <p>{host(selected.kind, selected.slug)}</p>
+          {preparing && selected.paymentStatus === "paid" && (
+            <div
+              className="publication-loading"
+              role="status"
+              aria-live="polite"
+            >
+              <span className="publication-spinner" aria-hidden="true" />
+              <p>
+                Estamos preparando tu invitación. El enlace aparecerá aquí
+                cuando esté disponible en internet.
+              </p>
+            </div>
+          )}
+          {ready && <p className="publication-address">{deployment.host}</p>}
           {deployment?.error && (
             <p role="alert">
-              No se pudo desplegar. Vuelve a intentar la publicación.
+              No pudimos publicar tu invitación. Tus cambios están guardados;
+              puedes volver a intentarlo.
             </p>
           )}
         </div>
@@ -45,7 +68,7 @@ export default function PublicationPanel({
               {paymentsEnabled ? "Pagar" : "Pagos en preparación"} ·{" "}
               {selected.kind === "wedding" ? "USD 25" : "USD 5"}
             </ActionButton>
-          ) : selected.publishedAt ? (
+          ) : ready ? (
             <a
               className="office-button"
               href={`https://${host(selected.kind, selected.slug)}`}
@@ -57,17 +80,12 @@ export default function PublicationPanel({
           ) : (
             <ActionButton
               className="office-button"
-              disabled={
-                busy ||
-                Boolean(
-                  deployment && !["error", "ready"].includes(deployment.phase),
-                )
-              }
+              disabled={busy || preparing}
               onClick={publish}
             >
               {deployment?.phase === "error"
                 ? "Reintentar publicación"
-                : deployment && deployment.phase !== "ready"
+                : preparing
                   ? "Preparando invitación…"
                   : "Publicar invitación ↗"}
             </ActionButton>

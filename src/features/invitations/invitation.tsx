@@ -31,6 +31,7 @@ export default function Invitation({
   return (
     <main
       className={`invitation ${event.template === "modern" ? "invitation-modern" : ""}`}
+      data-invitation-event={preview ? undefined : event.id}
       data-template={event.templateId}
       data-product={event.kind}
       style={{ "--accent": accent } as React.CSSProperties}

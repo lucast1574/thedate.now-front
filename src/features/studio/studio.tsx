@@ -144,6 +144,7 @@ export default function Studio({
                 <>
                   <PublicationPanel
                     deployment={actions.deployment}
+                    publishing={actions.publishing}
                     selected={selected}
                     busy={feedback.busy}
                     paymentsEnabled={paymentsEnabled}

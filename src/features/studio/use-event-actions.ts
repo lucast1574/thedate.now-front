@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDeployment, type Deployment } from "./use-deployment";
 import { api } from "@/lib/api/client";
 import type { Event, GuestFields } from "@/lib/events/types";
@@ -11,6 +12,7 @@ export function useEventActions(
   callbacks: Callbacks,
   canManage: boolean,
 ) {
+  const [publishing, setPublishing] = useState(false);
   const { deployment, setDeployment } = useDeployment(
     canManage ? selected?.id : undefined,
     callbacks.reloadSelected,
@@ -30,13 +32,17 @@ export function useEventActions(
   }
   async function publish() {
     if (!selected) return;
-    const result = await api<Deployment>(
-      `/api/backend/events/${selected.id}/publish`,
-      "POST",
-    );
-    setDeployment(result);
-    if (result.phase !== "ready") return;
-    await callbacks.reloadSelected();
+    setPublishing(true);
+    try {
+      const result = await api<Deployment>(
+        `/api/backend/events/${selected.id}/publish`,
+        "POST",
+      );
+      setDeployment(result);
+      if (result.phase === "ready") await callbacks.reloadSelected();
+    } finally {
+      setPublishing(false);
+    }
   }
   async function sendInvitations() {
     if (!selected) return "";
@@ -51,6 +57,7 @@ export function useEventActions(
   }
   return {
     deployment,
+    publishing,
     addGuest,
     checkout,
     publish,

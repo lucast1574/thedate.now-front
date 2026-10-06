@@ -4,7 +4,7 @@ import { api } from "@/lib/api/client";
 export type Deployment = {
   eventId: string;
   phase: string;
-  host: string;
+  host?: string;
   error?: string;
 };
 export function useDeployment(

@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
-import { invitationHost as host } from "@/lib/events/domains";
+import SubdomainField from "./subdomain-field";
 import { browserTimeZone } from "@/lib/events/draft";
 export default function EventBasics({
   draft,
@@ -21,33 +21,16 @@ export default function EventBasics({
           value={draft.title}
           onChange={(e) => setDraft({ ...draft, title: e.target.value })}
           placeholder={
-            kind === "wedding" ? "Álvaro y Laura" : "Cumpleaños de Lucas"
+            kind === "wedding" ? "Sofía y Mateo" : "Cumpleaños de Lucas"
           }
         />
       </label>
-      <label>
-        Dirección de la invitación
-        <input
-          required
-          disabled={!!selected}
-          pattern="[a-z0-9][a-z0-9-]*[a-z0-9]|[a-z0-9]"
-          value={draft.slug}
-          onChange={(e) =>
-            setDraft({
-              ...draft,
-              slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""),
-            })
-          }
-          placeholder={kind === "wedding" ? "alvaroylaura" : "cumpleanoslucas"}
-        />
-        <small>
-          {draft.slug
-            ? host(draft.kind, draft.slug)
-            : kind === "wedding"
-              ? "tunombre.save.thedate.now"
-              : "tunombre.thedate.now"}
-        </small>
-      </label>
+      <SubdomainField
+        kind={kind}
+        value={draft.slug}
+        disabled={selected}
+        onChange={(slug) => setDraft({ ...draft, slug })}
+      />
       <label>
         Fecha y hora
         <input

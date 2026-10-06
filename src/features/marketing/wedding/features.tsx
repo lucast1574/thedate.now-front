@@ -42,7 +42,7 @@ export default function WeddingFeatures() {
             <h3>Un lugar para recordar</h3>
             <p>
               Comparte una dirección tan especial como el evento:
-              su-historia.save.thedate.now.
+              sofiaymateo.save.thedate.now.
             </p>
           </article>
         </div>
