@@ -142,3 +142,39 @@ test("OAuth continuations and referral codes reject untrusted redirects and path
   for (const value of ["a.b", "$where", "../admin", "b".repeat(25)])
     assert.equal(safeReferral(value), "");
 });
+
+test("OAuth callback clears state and continuation at their original cookie path", async () => {
+  const cleared = [];
+  const { GET } = loadSource("src/app/api/auth/google/callback/route.ts", {
+    mocks: {
+      "next/headers": {
+        cookies: async () => ({
+          get: () => undefined,
+          set: (name, value, options) => cleared.push({ name, value, options }),
+        }),
+      },
+    },
+    globals: {
+      process: {
+        env: {
+          GOOGLE_CLIENT_ID: "fixture",
+          GOOGLE_CLIENT_SECRET: "fixture",
+          NODE_ENV: "production",
+        },
+      },
+    },
+  });
+  const response = await GET(
+    new Request(
+      "https://studio.save.thedate.now/api/auth/google/callback?code=fixture",
+      { headers: { host: "studio.save.thedate.now" } },
+    ),
+  );
+  assert.equal(response.status, 302);
+  assert.equal(cleared.length, 2);
+  for (const c of cleared) {
+    assert.equal(c.options.path, "/api/auth/google");
+    assert.equal(c.options.maxAge, 0);
+    assert.equal(c.value, "");
+  }
+});

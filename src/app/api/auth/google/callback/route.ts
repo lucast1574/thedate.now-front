@@ -17,8 +17,14 @@ export async function GET(request: Request) {
   const cookiesStore = await cookies();
   const expected = cookiesStore.get("thedate_google_state")?.value;
   const next = safeContinuation(cookiesStore.get("thedate_google_next")?.value);
-  cookiesStore.delete("thedate_google_state");
-  cookiesStore.delete("thedate_google_next");
+  for (const name of ["thedate_google_state", "thedate_google_next"])
+    cookiesStore.set(name, "", {
+      path: "/api/auth/google",
+      maxAge: 0,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
   if (
     !expected ||
     url.searchParams.get("state") !== expected ||
