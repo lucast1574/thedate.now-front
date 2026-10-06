@@ -1,7 +1,8 @@
 import type { Gender, Person } from "./seating";
-import type { DesignMode, FlyerCanvas } from "./flyer";
+import type { DesignMode, FlyerCanvas, FlyerElement } from "./flyer";
 export type Kind = "wedding" | "general";
 export type DesignSection = {
+  guestText?: FlyerElement;
   canvas?: FlyerCanvas;
   id: string;
   icon: string;
@@ -10,6 +11,7 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  publishedAt?: string | null;
   templateId?: string;
   designMode?: DesignMode;
   id: string;

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
 import { designPayload } from "./design-state";
+import { guestNameElement } from "@/lib/events/guest-name";
 import { blankCanvas } from "./flyer/canvas-model";
 import { api } from "@/lib/api/client";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
@@ -57,6 +58,22 @@ export function useInvitationDesign(
       ],
     }));
   }
+  function addGuestSection() {
+    if (sections.length >= 20) return;
+    setDraft((current) => ({
+      ...current,
+      sections: [
+        ...(current.sections || []),
+        {
+          id: crypto.randomUUID(),
+          icon: "none",
+          heading: "Una invitación para ti",
+          body: "",
+          guestText: guestNameElement(current.accentColor, crypto.randomUUID()),
+        },
+      ],
+    }));
+  }
   async function save() {
     setBusy(true);
     setMessage("");
@@ -67,7 +84,11 @@ export function useInvitationDesign(
         designPayload(draft),
       );
       await onSaved();
-      setMessage("Diseño guardado.");
+      setMessage(
+        draft.publishedAt
+          ? "Cambios publicados. Tus invitados los verán en el mismo enlace; no necesitas reenviar ni pagar de nuevo."
+          : "Diseño guardado.",
+      );
     } catch (error) {
       setMessage((error as Error).message);
     } finally {
@@ -107,6 +128,7 @@ export function useInvitationDesign(
     moveSection,
     removeSection,
     addSection,
+    addGuestSection,
     save,
     upload,
   };

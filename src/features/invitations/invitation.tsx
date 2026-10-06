@@ -8,8 +8,10 @@ export default function Invitation({
   event,
   photoURL,
   preview = false,
+  guestName,
 }: {
   event: PublicEvent;
+  guestName?: string;
   photoURL?: (key: string) => string;
   preview?: boolean;
 }) {
@@ -72,7 +74,18 @@ export default function Invitation({
             )}
           </>
         )}
+        {guestName &&
+          !event.sections?.some(
+            (s) =>
+              s.guestText ||
+              s.canvas?.elements.some((el) => el.binding === "guest_name"),
+          ) && (
+            <p className="personal-guest-name">
+              Una invitación para {guestName}
+            </p>
+          )}
         <InvitationSections
+          guestName={guestName}
           sections={event.sections}
           kind={event.kind}
           slug={event.slug}

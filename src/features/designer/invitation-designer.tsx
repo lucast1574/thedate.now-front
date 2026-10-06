@@ -57,6 +57,12 @@ export default function InvitationDesigner({
         onPreview={() => setPreview(!preview)}
         onTemplates={() => setGallery(true)}
       />
+      {draft.publishedAt && (
+        <p className="editor-feedback">
+          Esta invitación ya está publicada. Puedes editarla: al guardar, se
+          actualiza el mismo enlace que enviaste a tus invitados.
+        </p>
+      )}
       {editor.message && (
         <p role="status" className="editor-feedback">
           {editor.message}

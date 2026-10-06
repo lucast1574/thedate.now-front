@@ -56,6 +56,13 @@ export default function SectionWorkspace({
       </div>
       <button
         type="button"
+        disabled={editor.sections.length >= 20}
+        onClick={editor.addGuestSection}
+      >
+        ＋ Nombre del invitado
+      </button>
+      <button
+        type="button"
         className="new-event"
         disabled={editor.sections.length >= 20}
         onClick={editor.addSection}

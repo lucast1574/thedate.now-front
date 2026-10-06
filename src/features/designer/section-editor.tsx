@@ -1,3 +1,4 @@
+import GuestTextEditor from "./guest-text-editor";
 import type { DesignSection } from "@/lib/events/types";
 import { sectionIcons as icons } from "@/lib/events/section-icons";
 type Props = {
@@ -78,6 +79,15 @@ export default function SectionEditor({
           onChange={(e) => onUpdate({ body: e.target.value })}
         />
       </label>
+      {section.guestText && (
+        <GuestTextEditor
+          item={section.guestText}
+          onChange={(patch) =>
+            onUpdate({ guestText: { ...section.guestText!, ...patch } })
+          }
+          onRemove={() => onUpdate({ guestText: undefined })}
+        />
+      )}
       <label>
         Imagen
         <select

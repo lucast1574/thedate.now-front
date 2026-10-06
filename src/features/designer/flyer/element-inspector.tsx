@@ -11,9 +11,9 @@ export default function ElementInspector({
   item: FlyerElement;
   photos: string[];
   onChange: (patch: Partial<FlyerElement>) => void;
-  onDuplicate: () => void;
+  onDuplicate?: () => void;
   onRemove: () => void;
-  onLayer: (direction: number) => void;
+  onLayer?: (direction: number) => void;
 }) {
   return (
     <section className="element-inspector">
@@ -27,7 +27,9 @@ export default function ElementInspector({
       </h3>
       {item.type === "text" && (
         <label>
-          Contenido
+          {item.binding === "guest_name"
+            ? "Texto con nombre del invitado"
+            : "Contenido"}
           <textarea
             rows={3}
             maxLength={2000}
@@ -156,15 +158,15 @@ export default function ElementInspector({
         ))}
       </div>
       <div className="editor-button-row">
-        <button type="button" onClick={() => onLayer(-1)}>
+        <button type="button" disabled={!onLayer} onClick={() => onLayer?.(-1)}>
           Enviar atrás
         </button>
-        <button type="button" onClick={() => onLayer(1)}>
+        <button type="button" disabled={!onLayer} onClick={() => onLayer?.(1)}>
           Traer delante
         </button>
       </div>
       <div className="editor-button-row">
-        <button type="button" onClick={onDuplicate}>
+        <button type="button" disabled={!onDuplicate} onClick={onDuplicate}>
           Duplicar
         </button>
         <button type="button" onClick={onRemove}>

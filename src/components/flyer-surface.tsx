@@ -6,6 +6,7 @@ import {
   type FlyerElement,
 } from "@/lib/events/flyer";
 import Icon from "./icon";
+import { personalizedText } from "@/lib/events/guest-name";
 export function flyerElementStyle(
   item: FlyerElement,
   canvas: FlyerCanvas,
@@ -26,7 +27,9 @@ export function flyerElementStyle(
 export function FlyerContent({
   item,
   photoURL,
+  guestName,
 }: {
+  guestName?: string;
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
@@ -40,7 +43,11 @@ export function FlyerContent({
     );
   return (
     <span>
-      {item.type === "icon" ? <Icon name={item.icon || "none"} /> : item.text}
+      {item.type === "icon" ? (
+        <Icon name={item.icon || "none"} />
+      ) : (
+        personalizedText(item, guestName)
+      )}
     </span>
   );
 }
@@ -48,9 +55,11 @@ export default function FlyerSurface({
   canvas,
   photoURL,
   children,
+  guestName,
   label = "Sección de la invitación",
 }: {
   canvas: FlyerCanvas;
+  guestName?: string;
   photoURL: (key: string) => string;
   children?: ReactNode;
   label?: string;
@@ -72,7 +81,11 @@ export default function FlyerSurface({
             className="flyer-element"
             style={flyerElementStyle(item, canvas)}
           >
-            <FlyerContent item={item} photoURL={photoURL} />
+            <FlyerContent
+              item={item}
+              photoURL={photoURL}
+              guestName={guestName}
+            />
           </div>
         ))}
     </div>

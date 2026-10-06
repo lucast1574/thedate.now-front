@@ -9,7 +9,9 @@ export default function InvitationSections({
   slug,
   flyer = false,
   photoURL,
+  guestName,
 }: {
+  guestName?: string;
   sections?: DesignSection[];
   kind: "wedding" | "general";
   slug: string;
@@ -27,6 +29,7 @@ export default function InvitationSections({
         flyer && section.canvas ? (
           <FlyerSurface
             key={section.id}
+            guestName={guestName}
             canvas={section.canvas}
             photoURL={photo}
             label={section.heading || "Lienzo"}
@@ -37,6 +40,19 @@ export default function InvitationSections({
               <Icon name={section.icon} />
             </span>
             <h2>{section.heading}</h2>
+            {section.guestText && (
+              <FlyerSurface
+                canvas={{
+                  width: 720,
+                  height: 240,
+                  background: "transparent",
+                  elements: [section.guestText],
+                }}
+                guestName={guestName}
+                photoURL={photo}
+                label="Nombre personalizado del invitado"
+              />
+            )}
             <p>{section.body}</p>
             {section.photoKey && (
               <Photo

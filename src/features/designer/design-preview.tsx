@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import Invitation from "@/features/invitations/invitation";
 import type { Event } from "@/lib/events/types";
 export default function DesignPreview({ draft }: { draft: Event }) {
+  const [guestName, setGuestName] = useState("María Rojas");
   const [body, setBody] = useState<HTMLElement | null>(null);
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   return (
@@ -34,6 +35,14 @@ export default function DesignPreview({ draft }: { draft: Event }) {
         Guardar y previsualizar es gratis. El pago habilita la publicación y las
         herramientas de invitados.
       </p>
+      <label className="preview-name">
+        Nombre de ejemplo
+        <input
+          maxLength={200}
+          value={guestName}
+          onChange={(e) => setGuestName(e.target.value)}
+        />
+      </label>
       <div className="preview-device" data-device={device}>
         <iframe
           title="Vista previa real de tu invitación"
@@ -62,6 +71,7 @@ export default function DesignPreview({ draft }: { draft: Event }) {
               }}
             >
               <Invitation
+                guestName={guestName}
                 event={draft}
                 preview={Boolean(draft.isDemo)}
                 photoURL={(key) =>

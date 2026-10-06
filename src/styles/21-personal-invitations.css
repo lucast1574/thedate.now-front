@@ -1,0 +1,51 @@
+.personal-confirm-link {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 30;
+  background: #29213f;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 28px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px #0002;
+  font:
+    600 14px Arial,
+    sans-serif;
+}
+.guest-text-editor {
+  border-top: 1px solid #d8cce3;
+  padding-top: 12px;
+  margin-block: 12px;
+}
+.guest-text-editor .element-inspector {
+  padding: 0;
+  background: transparent;
+}
+.invite-section .flyer-surface {
+  margin-block: 12px;
+}
+.preview-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  font-size: 13px;
+}
+.preview-name input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid #d8cce3;
+  border-radius: 5px;
+  padding: 9px;
+}
+#confirmacion {
+  scroll-margin-top: 24px;
+}
+
+.personal-guest-name {
+  font-size: clamp(20px, 5vw, 32px);
+  color: var(--accent);
+  font-family: var(--font-serif), Georgia, serif;
+  margin-block: 28px;
+}

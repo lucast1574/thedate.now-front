@@ -56,6 +56,7 @@ export function sectionCanvas(
     }),
     element("text", { text: section.body, y: 250, height: 250, fontSize: 28 }),
   ];
+  if (section.guestText) elements.push({ ...section.guestText, y: 540 });
   if (section.icon && section.icon !== "none")
     elements.push(
       element("icon", {

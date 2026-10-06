@@ -1,3 +1,5 @@
+import CanvasLayers from "./canvas-layers";
+import { guestNameElement } from "@/lib/events/guest-name";
 import { useState } from "react";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
@@ -50,6 +52,17 @@ export default function FlyerWorkspace({
     change({ ...canvas, elements: [...canvas.elements, item] });
     setSelectedId(item.id);
   }
+  function addGuestName() {
+    if (canvas.elements.length >= 60) return;
+    const item = {
+      ...guestNameElement(draft.accentColor, crypto.randomUUID()),
+      width: Math.min(560, canvas.width),
+      height: Math.min(160, canvas.height),
+      y: 0,
+    };
+    change({ ...canvas, elements: [...canvas.elements, item] });
+    setSelectedId(item.id);
+  }
   function duplicate() {
     if (!selected || canvas.elements.length >= 60) return;
     const copy = {
@@ -93,6 +106,17 @@ export default function FlyerWorkspace({
             ＋ Icono
           </button>
         </div>
+        <button
+          type="button"
+          disabled={canvas.elements.length >= 60}
+          onClick={addGuestName}
+        >
+          ＋ Nombre del invitado
+        </button>
+        <p className="editor-hint">
+          El texto {"{{nombre_invitado}}"} se sustituye automáticamente por el
+          nombre del destinatario.
+        </p>
         <label>
           Fondo
           <input
@@ -154,20 +178,11 @@ export default function FlyerWorkspace({
         )}
         <h3>Capas · {canvas.elements.length}/60</h3>
         <div className="editor-layers">
-          {[...canvas.elements].reverse().map((item) => (
-            <button
-              type="button"
-              key={item.id}
-              aria-pressed={item.id === selectedId}
-              onClick={() => setSelectedId(item.id)}
-            >
-              {item.type === "text"
-                ? item.text?.slice(0, 30) || "Texto"
-                : item.type === "image"
-                  ? "Imagen"
-                  : "Icono"}
-            </button>
-          ))}
+          <CanvasLayers
+            elements={canvas.elements}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+          />
         </div>
       </aside>
       <div className="canvas-stage">

@@ -104,3 +104,11 @@ El polling de 15 s actualiza respuestas. Con borrador sucio no reemplaza el plan
 ## Identidad de producto y móvil
 
 `components/product-heading.tsx` y `styles/19-product-workspaces.css` distinguen bodas (tonos cálidos, serif, controles rectos) de eventos (violeta, sans, controles redondeados) en editor, galería y gestor. `components/icon.tsx` contiene SVG reutilizables para las landings, herramientas e invitaciones, sin depender del diseño de emojis del dispositivo. `styles/18-icons.css` regula su tamaño y `20-mobile-landings.css` adapta títulos, navegación, CTA, ilustraciones, tarjetas y pies de página en pantallas estrechas.
+
+## Nombre del destinatario y ediciones publicadas
+
+`lib/events/guest-name.ts` define el binding `guest_name` y el marcador `{{nombre_invitado}}`. El inspector permite editar texto, color, fuente, tamaño, posición y giro en secciones y flyers. El visor modal acepta un nombre de ejemplo sin modificar invitados.
+
+`features/invitations/personal-invitation.tsx` conserva `/rsvp/{token}`: obtiene el nombre completo y el diseño vigente, valida evento/producto/slug contra el contenedor y muestra invitación y confirmación. Tokens inválidos o de otro evento devuelven 404. El proxy aplica `private, no-store`, `no-referrer` y `noindex`. `live-invitation.tsx` actualiza al recuperar el foco y cada 30 segundos cuando la página está visible.
+
+Guardar un diseño publicado conserva URL, token y respuestas; el slug publicado es inmutable. No requiere otro pago ni reenvía WhatsApp. `/api/invitation-health` confirma evento e imagen para evitar marcar una versión antigua como desplegada. El backend renueva los contenedores existentes al detectar una imagen nueva del renderer.
