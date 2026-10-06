@@ -88,3 +88,57 @@ test("malformed session JSON remains a 400 response", async () => {
   );
   assert.equal(result.status, 400);
 });
+
+test("scoped collaborator deletion and administrative proxy paths keep auth and origin checks", async () => {
+  const proxy = proxyFixture("session");
+  assert.equal(
+    (
+      await proxy(
+        request("DELETE"),
+        ["events", "event-id", "collaborators", "member-id"],
+        "DELETE",
+      )
+    ).status,
+    200,
+  );
+  assert.equal(
+    (
+      await proxy(
+        request("DELETE", "https://evil.test"),
+        ["events", "event-id", "collaborators", "member-id"],
+        "DELETE",
+      )
+    ).status,
+    403,
+  );
+  assert.equal(
+    (await proxy(request(), ["admin", "overview"], "GET")).status,
+    200,
+  );
+  assert.equal(
+    (await proxy(request(), ["admin", "users", "..", "role"], "GET")).status,
+    404,
+  );
+});
+
+test("OAuth continuations and referral codes reject untrusted redirects and path injection", () => {
+  const { safeContinuation, safeReferral } = loadSource(
+    "src/lib/auth/continuation.ts",
+  );
+  assert.equal(
+    safeContinuation("/join/" + "a".repeat(48)),
+    "/join/" + "a".repeat(48),
+  );
+  for (const value of [
+    "//evil.test",
+    "https://evil.test",
+    "/admin?next=https://evil.test",
+    "/join/../admin",
+    "/join/%2f%2fevil",
+  ]) {
+    assert.equal(safeContinuation(value), "/");
+  }
+  assert.equal(safeReferral("b".repeat(24)), "b".repeat(24));
+  for (const value of ["a.b", "$where", "../admin", "b".repeat(25)])
+    assert.equal(safeReferral(value), "");
+});

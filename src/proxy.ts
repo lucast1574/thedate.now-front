@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { safeReferral } from "@/lib/auth/continuation";
 import { invitationHost } from "@/lib/events/domains";
 import {
   allowedInvitationPath,
@@ -6,9 +7,20 @@ import {
 } from "@/lib/events/invitation-runtime";
 export function proxy(request: NextRequest) {
   const target = invitationTarget();
-  const personal = /^\/(?:rsvp|api\/rsvp)\//.test(request.nextUrl.pathname);
+  const personal = /^\/(?:rsvp|join|api\/(?:rsvp|join))\//.test(
+    request.nextUrl.pathname,
+  );
   const next = () => {
     const response = NextResponse.next();
+    const ref = safeReferral(request.nextUrl.searchParams.get("ref"));
+    if (!target && ref && !request.cookies.get("thedate_referral"))
+      response.cookies.set("thedate_referral", ref, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 30 * 86400,
+      });
     if (personal) {
       response.headers.set("Cache-Control", "private, no-store");
       response.headers.set("Referrer-Policy", "no-referrer");

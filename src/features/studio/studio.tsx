@@ -106,8 +106,7 @@ export default function Studio({
             </p>
             <Alert variant="success">{feedback.notice}</Alert>
             <Alert>{feedback.error}</Alert>
-            {user.role !== "couple" &&
-              !selected?.isDemo &&
+            {!selected?.isDemo &&
               (!selected ||
                 selected.ownerId === user.id ||
                 user.role === "admin") && (
@@ -133,18 +132,11 @@ export default function Studio({
                 Invitados, mesas y Excel de entrada ↗
               </Link>
             )}
-            {selected?.kind === "wedding" &&
+            {selected &&
+              !selected.isDemo &&
               selected.paymentStatus === "paid" &&
               (selected.ownerId === user.id || user.role === "admin") && (
-                <CoupleAccess
-                  busy={feedback.busy}
-                  onCreate={(fields) =>
-                    feedback.run(
-                      () => actions.createCouple(fields),
-                      "Cuenta creada. Comparte el correo y la contraseña con la pareja por un canal seguro.",
-                    )
-                  }
-                />
+                <CoupleAccess eventId={selected.id} wedding={wedding} />
               )}
             {selected &&
               !selected.isDemo &&

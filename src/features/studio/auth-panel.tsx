@@ -11,7 +11,11 @@ export default function AuthPanel({
   error,
   onSignIn,
   onClearError,
+  initialEmail = "",
+  googleNext = "/",
 }: {
+  initialEmail?: string;
+  googleNext?: string;
   wedding: boolean;
   googleEnabled: boolean;
   busy: boolean;
@@ -25,7 +29,7 @@ export default function AuthPanel({
   const [mode, setMode] = useState<AuthMode>("login");
   const [form, setForm] = useState<AccountFields>({
     name: "",
-    email: "",
+    email: initialEmail,
     password: "",
   });
   async function submit(e: FormEvent) {
@@ -65,6 +69,7 @@ export default function AuthPanel({
           <input
             required
             type="email"
+            readOnly={Boolean(initialEmail)}
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />
@@ -89,7 +94,10 @@ export default function AuthPanel({
         </ActionButton>
       </form>
       {googleEnabled && (
-        <a className="google-button" href="/api/auth/google/start">
+        <a
+          className="google-button"
+          href={`/api/auth/google/start?next=${encodeURIComponent(googleNext)}`}
+        >
           <GoogleIcon />
           <span>Continuar con Google</span>
         </a>

@@ -168,7 +168,10 @@ test("private invitation pages cannot leak bearer tokens through cache or referr
     mocks: { "next/server": { NextResponse: { next: () => new Response() } } },
   });
   const response = proxy({
-    nextUrl: { pathname: "/rsvp/" + "a".repeat(48) },
+    nextUrl: {
+      pathname: "/rsvp/" + "a".repeat(48),
+      searchParams: new URLSearchParams(),
+    },
     headers: new Headers({ host: "party.thedate.now" }),
   });
   assert.equal(response.headers.get("Cache-Control"), "private, no-store");

@@ -1,3 +1,4 @@
+@import "../styles/account.css";
 /* Ordered imports preserve the existing cascade. See docs/frontend-map.md. */
 @import "tailwindcss";
 @import "../styles/01-foundation.css";

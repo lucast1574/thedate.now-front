@@ -1,62 +1,150 @@
 "use client";
-import ActionButton from "@/components/action-button";
 import { useEffect, useState } from "react";
+import { api } from "@/lib/api/client";
 import Brand from "@/components/brand";
-type Invite = { email: string; eventTitle: string };
-export default function Join({ token }: { token: string }) {
-  const [invite, setInvite] = useState<Invite | null>(null);
-  const [message, setMessage] = useState("");
-  const [accepted, setAccepted] = useState(false);
+import Alert from "@/components/alert";
+import AuthPanel from "@/features/studio/auth-panel";
+import type { AccountFields, AuthMode, User } from "@/lib/events/types";
+type Invite = {
+  email: string;
+  eventTitle: string;
+  kind: "wedding" | "general";
+  studioUrl: string;
+};
+export default function Join({
+  token,
+  googleEnabled,
+}: {
+  token: string;
+  googleEnabled: boolean;
+}) {
+  const [invite, setInvite] = useState<Invite | null>(null),
+    [user, setUser] = useState<User | null>(null),
+    [message, setMessage] = useState(""),
+    [accepted, setAccepted] = useState(false),
+    [eventId, setEventId] = useState(""),
+    [busy, setBusy] = useState(false);
   useEffect(() => {
-    fetch(`/api/join/${token}`)
-      .then(async (r) => {
-        if (!r.ok) throw new Error("Esta invitación ya no está disponible.");
-        return r.json();
+    let active = true;
+    api<Invite>(`/api/join/${token}`)
+      .then((i) => {
+        if (active) setInvite(i);
       })
-      .then(setInvite)
-      .catch((e) => setMessage(e.message));
+      .catch(() => {
+        if (active) setMessage("Esta invitación ya no está disponible.");
+      });
+    api<User>("/api/session")
+      .then((u) => {
+        if (active) setUser(u);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, [token]);
-  async function accept() {
-    const result = await fetch(`/api/join/${token}`, { method: "POST" });
-    const data = await result.json();
-    if (!result.ok)
-      setMessage(
-        data.error === "Sign in required"
-          ? "Entra con Google usando el correo invitado, luego vuelve a este enlace."
-          : (data.error ?? "No se pudo aceptar la invitación."),
-      );
-    else {
-      setAccepted(true);
-      setMessage("Ya tienes acceso a la boda en tu panel.");
+  async function signIn(fields: AccountFields, mode: AuthMode) {
+    setBusy(true);
+    setMessage("");
+    try {
+      const result = await api<{ user: User }>("/api/session", "POST", {
+        ...fields,
+        action: mode,
+        role: invite?.kind === "wedding" ? "planner" : "organizer",
+      });
+      setUser(result.user);
+    } catch (e) {
+      setMessage((e as Error).message);
+    } finally {
+      setBusy(false);
     }
   }
+  async function accept() {
+    setBusy(true);
+    setMessage("");
+    try {
+      const result = await api<{ eventId: string }>(
+        `/api/join/${token}`,
+        "POST",
+      );
+      setEventId(result.eventId);
+      setAccepted(true);
+    } catch (e) {
+      setMessage((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  }
+  const wedding = invite?.kind === "wedding";
   return (
-    <main className="rsvp-page">
-      <a className="office-brand" href="https://save.thedate.now">
-        <Brand wedding />
-      </a>
-      <section className="rsvp-card">
-        <p className="eyebrow">ACCESO PARA LA PAREJA</p>
-        <h1>{accepted ? "Ya eres parte." : "Su historia, en sus manos."}</h1>
+    <main className={`office ${wedding ? "office-wedding" : "office-general"}`}>
+      <header className="office-header">
+        <a href={wedding ? "https://save.thedate.now" : "https://thedate.now"}>
+          <Brand wedding={wedding} />
+        </a>
+      </header>
+      <section className="join-intro">
+        <p className="office-kicker">UNA INVITACIÓN PARA CREAR JUNTOS</p>
+        <h1>
+          {accepted
+            ? "Ya eres parte."
+            : wedding
+              ? "Su historia, en sus manos."
+              : "Hagamos que suceda."}
+        </h1>
         {invite && (
           <p>
-            Te invitaron a gestionar <strong>{invite.eventTitle}</strong> desde
-            la cuenta <strong>{invite.email}</strong>.
+            Te invitaron a colaborar en <strong>{invite.eventTitle}</strong> con{" "}
+            <strong>{invite.email}</strong>. Tendrás acceso al diseño, invitados
+            y mesas de este evento. Tu cuenta también te permite crear tus
+            propios eventos.
           </p>
         )}
-        {!accepted && invite && (
-          <ActionButton className="office-button" onClick={accept}>
-            Aceptar invitación ↗
-          </ActionButton>
+        <Alert>{message}</Alert>
+        {accepted && (
+          <a
+            className="office-button"
+            href={`${invite?.studioUrl}/?event=${encodeURIComponent(eventId)}`}
+          >
+            Entrar al evento ↗
+          </a>
         )}
-        {message && (
-          <p className={accepted ? "alert success" : "alert error"}>
-            {message}
-          </p>
-        )}
-        <a className="text-link" href="https://studio.save.thedate.now">
-          Ir al Estudio de bodas →
-        </a>
+        {invite &&
+          !accepted &&
+          (!user ? (
+            <AuthPanel
+              key={invite.email}
+              wedding={wedding}
+              googleEnabled={googleEnabled}
+              busy={busy}
+              error={message}
+              initialEmail={invite.email}
+              googleNext={`/join/${token}`}
+              onClearError={() => setMessage("")}
+              onSignIn={signIn}
+            />
+          ) : (
+            <>
+              <p>Sesión: {user.email}</p>
+              {user.email === invite.email ? (
+                <button
+                  className="office-button"
+                  disabled={busy}
+                  onClick={() => void accept()}
+                >
+                  Aceptar acceso a este evento
+                </button>
+              ) : (
+                <button
+                  className="office-button"
+                  onClick={() =>
+                    void api("/api/session", "DELETE").then(() => setUser(null))
+                  }
+                >
+                  Entrar con el correo invitado
+                </button>
+              )}
+            </>
+          ))}
       </section>
     </main>
   );

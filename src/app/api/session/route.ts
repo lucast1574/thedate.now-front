@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+import { safeReferral } from "@/lib/auth/continuation";
 import { backendFetch, forwardJSON, invalidOrigin } from "@/lib/api/server";
 import { sessionToken, setSession, clearSession } from "@/lib/auth/session";
 
@@ -11,7 +13,13 @@ export async function POST(request: Request) {
   const result = await backendFetch(`auth/${action}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(credentials),
+    body: JSON.stringify({
+      ...credentials,
+      referralCode:
+        action === "register"
+          ? safeReferral((await cookies()).get("thedate_referral")?.value)
+          : "",
+    }),
   });
   if (!result)
     return Response.json({ error: "API unavailable" }, { status: 502 });

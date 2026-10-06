@@ -17,12 +17,11 @@ export default function EventSidebar({
   return (
     <aside className="office-sidebar">
       <p className="office-kicker">TUS EVENTOS</p>
-      {user.role !== "couple" &&
-        (!user.creatorPortals || user.creatorPortals.includes(portal)) && (
-          <button className="new-event" onClick={onCreate}>
-            ＋ Crear evento
-          </button>
-        )}
+      {(!user.creatorPortals || user.creatorPortals.includes(portal)) && (
+        <button className="new-event" onClick={onCreate}>
+          ＋ Crear evento
+        </button>
+      )}
       <div className="event-list">
         {events.map((event) => (
           <button
@@ -32,6 +31,9 @@ export default function EventSidebar({
           >
             <strong>{event.title}</strong>
             <small>
+              {event.ownerId !== user.id && user.role !== "admin"
+                ? "Compartido contigo · "
+                : ""}
               {event.isDemo
                 ? "Demo · marca de agua"
                 : event.kind === "wedding"

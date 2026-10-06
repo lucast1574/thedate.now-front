@@ -1,6 +1,6 @@
 import { useDeployment, type Deployment } from "./use-deployment";
 import { api } from "@/lib/api/client";
-import type { AccountFields, Event, GuestFields } from "@/lib/events/types";
+import type { Event, GuestFields } from "@/lib/events/types";
 
 type Callbacks = {
   refreshGuests: (event: Event) => Promise<void>;
@@ -19,14 +19,6 @@ export function useEventActions(
     if (!selected) return;
     await api(`/api/backend/events/${selected.id}/guests`, "POST", fields);
     await callbacks.refreshGuests(selected);
-  }
-  async function createCouple(fields: AccountFields) {
-    if (!selected) return;
-    await api(
-      `/api/backend/events/${selected.id}/couple-accounts`,
-      "POST",
-      fields,
-    );
   }
   async function checkout() {
     if (!selected) return;
@@ -60,7 +52,6 @@ export function useEventActions(
   return {
     deployment,
     addGuest,
-    createCouple,
     checkout,
     publish,
     sendInvitations,

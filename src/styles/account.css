@@ -1,0 +1,246 @@
+.account-content {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 28px 90px;
+}
+.account-content > h1 {
+  font-size: clamp(2rem, 5vw, 3.7rem);
+  letter-spacing: -0.04em;
+  margin: 8px 0 14px;
+}
+.account-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0;
+}
+.account-stats article,
+.account-card {
+  padding: 28px;
+  border: 1px solid #e0dbd5;
+  border-radius: 20px;
+  background: #fff;
+}
+.account-stats small {
+  display: block;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+.account-stats strong {
+  display: block;
+  font-size: 2.2rem;
+  margin-top: 12px;
+}
+.account-card {
+  margin: 22px 0;
+}
+.account-card h2 {
+  font-size: 1.7rem;
+  margin: 4px 0 14px;
+}
+.account-card p,
+.account-note {
+  line-height: 1.7;
+  color: #665e59;
+}
+.account-card label,
+.copy-link {
+  display: flex;
+  gap: 10px;
+}
+.account-card label {
+  flex-direction: column;
+  margin: 14px 0;
+  font-size: 0.9rem;
+}
+.account-card input,
+.account-card select,
+.account-card textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d8d4cd;
+  border-radius: 9px;
+  background: transparent;
+  color: inherit;
+  min-width: 0;
+}
+.account-card textarea {
+  min-height: 100px;
+}
+.account-note {
+  padding: 18px 22px;
+  border-left: 3px solid #9c7960;
+  background: #f7f1e9;
+  border-radius: 8px;
+}
+.revenue-products {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.revenue-products .account-card {
+  margin: 0;
+}
+.revenue-products dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+.revenue-products dt {
+  color: #746a63;
+  font-size: 0.9rem;
+}
+.revenue-products dd {
+  margin: 0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.account-table-wrap {
+  overflow: auto;
+}
+.account-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.account-table td,
+.account-table th {
+  padding: 14px 10px;
+  border-bottom: 1px solid #eee;
+}
+.account-table th {
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+}
+.account-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.payout-row {
+  padding: 22px 0;
+  border-bottom: 1px solid #e6e0d8;
+}
+.copy-link {
+  flex-direction: row;
+}
+.copy-link button,
+.access-row button,
+.account-actions > button:not(.office-button) {
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  padding: 9px 14px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.copy-link button {
+  white-space: nowrap;
+}
+.access-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e5dfd5;
+  align-items: center;
+}
+.access-row small {
+  display: block;
+  font-size: 0.8rem;
+  color: #766f69;
+  line-height: 1.6;
+}
+.join-intro {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 60px 24px;
+}
+.join-intro > h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  letter-spacing: -0.04em;
+}
+.join-intro > p {
+  line-height: 1.8;
+}
+.join-intro .auth-panel {
+  margin: 30px 0;
+  width: 100%;
+  padding: 0;
+  max-width: none;
+}
+.office-header nav {
+  display: flex;
+  gap: 20px;
+  font-size: 0.85rem;
+}
+.office-header > div {
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.account-loading {
+  padding: 40px;
+  text-align: center;
+}
+@media (max-width: 680px) {
+  .account-content {
+    padding: 32px 18px 60px;
+  }
+  .account-stats,
+  .revenue-products {
+    grid-template-columns: 1fr;
+  }
+  .account-stats article {
+    padding: 20px;
+  }
+  .account-stats strong {
+    font-size: 1.8rem;
+  }
+  .account-card {
+    padding: 20px;
+  }
+  .office-header nav {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .access-row {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .copy-link {
+    flex-direction: column;
+  }
+  .join-intro {
+    padding: 32px 18px;
+  }
+  .account-table td {
+    font-size: 0.82rem;
+  }
+}
+.office .office-header nav a {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+@media (max-width: 680px) {
+  .office .office-header {
+    height: auto;
+    min-height: 82px;
+    flex-wrap: wrap;
+    padding: 18px;
+    gap: 18px;
+  }
+  .office .office-header nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .office .office-header > div {
+    width: 100%;
+    gap: 12px;
+  }
+  .office .office-header .portal-switch {
+    font-size: 0.8rem;
+  }
+}

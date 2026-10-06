@@ -10,7 +10,7 @@ export async function GET(_request: Request, context: Context) {
   const { token } = await context.params;
   if (!validInviteToken(token))
     return Response.json({ error: "Not found" }, { status: 404 });
-  const result = await backendFetch(`couple-invites/${token}`, {});
+  const result = await backendFetch(`access-invites/${token}`, {});
   return forwardJSON(result);
 }
 export async function POST(request: Request, context: Context) {
@@ -22,7 +22,7 @@ export async function POST(request: Request, context: Context) {
   const session = await sessionToken();
   if (!session)
     return Response.json({ error: "Sign in required" }, { status: 401 });
-  const result = await backendFetch(`couple-invites/${token}/accept`, {
+  const result = await backendFetch(`access-invites/${token}/accept`, {
     method: "POST",
     headers: { Authorization: `Bearer ${session}` },
   });

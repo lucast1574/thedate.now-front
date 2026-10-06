@@ -20,6 +20,18 @@ export default function StudioHeader({
       <div>
         {user ? (
           <>
+            <a href="/affiliates">Afiliados</a>
+            {user.role === "admin" && <a href="/admin">Administración</a>}
+            <a
+              className="portal-switch"
+              href={
+                wedding
+                  ? "https://crea.thedate.now"
+                  : "https://studio.save.thedate.now"
+              }
+            >
+              {wedding ? "Otros eventos" : "Bodas"} ↗
+            </a>
             <span>{user.name}</span>
             <button onClick={onSignOut}>Salir</button>
           </>

@@ -14,7 +14,8 @@ src/
     designer/    Editor, secciones, vista previa y guardado del diseño
     invitations/ Invitación pública y carga de datos en el servidor
     rsvp/        Formulario y lógica de confirmación de asistencia
-    couples/     Aceptación del acceso de una pareja
+    couples/     Aceptación de acceso a un evento por correo
+    account/     Administración compartida, cortesías y afiliados
   lib/
     events/      Tipos, fechas, borradores, dominios e iconos compartidos
     api/         Cliente JSON, transporte servidor y proxy del estudio
@@ -37,7 +38,7 @@ tests/           Regresiones de contratos, eventos y widgets
 | Selección, creación y edición de eventos   | `use-studio-events.ts`, `event-form.tsx` en studio                              |
 | Campos básicos o modalidad/mapas           | `event-basics.tsx`, `event-location-fields.tsx`, `use-map-address.ts` en studio |
 | Invitados y publicación                    | `guest-panel.tsx`, `publication-panel.tsx`, `use-event-actions.ts` en studio    |
-| Acceso directo para parejas                | `src/features/studio/couple-access.tsx`                                         |
+| Invitaciones de colaboradores              | `src/features/studio/couple-access.tsx`                                         |
 | Editor de diseño                           | `src/features/designer/invitation-designer.tsx`, `use-invitation-design.ts`     |
 | Una sección editable                       | `src/features/designer/section-editor.tsx`                                      |
 | Vista previa                               | `src/features/designer/design-preview.tsx`                                      |
@@ -112,3 +113,9 @@ El polling de 15 s actualiza respuestas. Con borrador sucio no reemplaza el plan
 `features/invitations/personal-invitation.tsx` conserva `/rsvp/{token}`: obtiene el nombre completo y el diseño vigente, valida evento/producto/slug contra el contenedor y muestra invitación y confirmación. Tokens inválidos o de otro evento devuelven 404. El proxy aplica `private, no-store`, `no-referrer` y `noindex`. `live-invitation.tsx` actualiza al recuperar el foco y cada 30 segundos cuando la página está visible.
 
 Guardar un diseño publicado conserva URL, token y respuestas; el slug publicado es inmutable. No requiere otro pago ni reenvía WhatsApp. `/api/invitation-health` confirma evento e imagen para evitar marcar una versión antigua como desplegada. El backend renueva los contenedores existentes al detectar una imagen nueva del renderer.
+
+## Cuentas independientes y panel compartido
+
+`/admin` en cualquiera de los dos estudios lee el mismo backend y exige rol administrador en cada endpoint. `features/account/` separa ingresos, roles, cortesías y retiros en componentes pequeños. `/affiliates` comparte una atribución para ambas marcas, enlaces de registro, historial y solicitud desde USD50. Pagos de prueba y cortesías aparecen separados de ingresos/saldo real.
+
+`studio/couple-access.tsx` invita por correo a dos colaboradores y permite revocar accesos/pending. `couples/join.tsx` permite registrar una cuenta propia o entrar con Google/contraseña del correo invitado y aceptar el evento. Cada cuenta puede crear eventos/bodas propios. OAuth guarda una continuación local validada (`lib/auth/continuation.ts`), sin redirecciones arbitrarias. El proxy guarda primer código de referido durante 30 días; el servidor lo atribuye únicamente al crear la cuenta. Los enlaces privados `/join` y `/rsvp` llevan no-store/no-referrer/noindex.

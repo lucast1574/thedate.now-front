@@ -29,7 +29,12 @@ export function useStudioEvents(
       .then((all) => {
         if (!active) return;
         const list = all.filter((event) => event.kind === portal);
-        const demo = list.find((event) => event.isDemo);
+        const requested = new URLSearchParams(window.location.search).get(
+          "event",
+        );
+        const demo =
+          list.find((event) => event.id === requested) ??
+          list.find((event) => event.isDemo);
         setEvents(list);
         setSelected(demo ?? null);
         setDraft(

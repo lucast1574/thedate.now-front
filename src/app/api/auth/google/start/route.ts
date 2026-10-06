@@ -1,3 +1,4 @@
+import { safeContinuation } from "@/lib/auth/continuation";
 import { callbackFor } from "@/lib/auth/google";
 import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
@@ -18,6 +19,17 @@ export async function GET(request: Request) {
     path: "/api/auth/google",
     maxAge: 600,
   });
+  (await cookies()).set(
+    "thedate_google_next",
+    safeContinuation(new URL(request.url).searchParams.get("next")),
+    {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/api/auth/google",
+      maxAge: 600,
+    },
+  );
   const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
   url.searchParams.set("client_id", clientId);
   url.searchParams.set("redirect_uri", redirectUri);
