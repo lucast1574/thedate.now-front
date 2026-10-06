@@ -1,0 +1,183 @@
+/* Shared flyer renderer: the public invitation and editor use identical geometry. */
+.flyer-surface {
+  position: relative;
+  width: 100%;
+  container-type: inline-size;
+  overflow: hidden;
+  isolation: isolate;
+}
+.flyer-element {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.2;
+}
+.flyer-element > span {
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+.flyer-element > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.invite-sections > .flyer-surface + .flyer-surface {
+  margin-top: 24px;
+}
+.editor-shell {
+  min-height: 100vh;
+  background: #f4f2ed;
+  color: #28242c;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.editor-shell button,
+.editor-shell input,
+.editor-shell select,
+.editor-shell textarea,
+.template-gallery button,
+.preview-modal button {
+  font: inherit;
+}
+.editor-shell button,
+.editor-upload,
+.preview-modal button,
+.template-gallery header button {
+  border: 1px solid #d7d2cc;
+  border-radius: 8px;
+  background: #fff;
+  color: #463950;
+  padding: 9px 12px;
+  cursor: pointer;
+}
+.editor-shell button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.editor-shell button[aria-pressed="true"],
+.preview-modal button[aria-pressed="true"] {
+  background: #ece5f5;
+  border-color: #7451ac;
+  color: #5b3988;
+}
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #dedad4;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.editor-heading {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.editor-heading a {
+  color: #6b537e;
+  font-size: 13px;
+  text-decoration: none;
+}
+.editor-heading h1 {
+  font:
+    600 19px Arial,
+    sans-serif;
+  margin: 0;
+  max-width: 330px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.editor-heading small {
+  color: #736b78;
+  font-size: 12px;
+}
+.editor-toolbar-actions,
+.editor-button-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.editor-upload {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
+.editor-upload input {
+  display: none;
+}
+.editor-shell .editor-save {
+  background: #7451ac;
+  color: #fff;
+  border-color: #7451ac;
+}
+.editor-feedback {
+  padding: 10px 24px;
+  background: #ece5f5;
+  margin: 0;
+  font-size: 14px;
+}
+.editor-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #dedad4;
+}
+.editor-mode-bar span {
+  margin-left: auto;
+  color: #8a7d91;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.editor-hint {
+  color: #736b78;
+  line-height: 1.5;
+  font-size: 13px;
+}
+.editor-section-tabs {
+  padding: 12px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  background: #faf9f6;
+}
+.editor-section-tabs > div {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+.editor-section-tabs button {
+  white-space: nowrap;
+  font-size: 13px;
+}
+.editor-section-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-bottom: 1px solid #dedad4;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.editor-section-actions label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: auto;
+}
+.editor-section-actions input {
+  padding: 7px;
+  border: 1px solid #d7d2cc;
+  border-radius: 6px;
+}

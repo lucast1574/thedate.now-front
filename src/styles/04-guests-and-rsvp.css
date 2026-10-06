@@ -1,0 +1,225 @@
+.action-row p:not(.office-kicker) {
+  font-size: 13px;
+  color: #786d62;
+}
+.seat-stat {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+.seat-stat strong {
+  font:
+    500 45px var(--font-serif),
+    serif;
+}
+.seat-stat span {
+  font-size: 12px;
+  color: #8d8073;
+}
+.guest-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 85px auto;
+  gap: 10px;
+  margin: 25px 0;
+}
+.guest-list {
+  border-top: 1px solid #d7d0c4;
+}
+.guest-list > p {
+  font-size: 13px;
+  color: #80776e;
+}
+.guest-list > div {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 70px 85px;
+  gap: 10px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e3ddd3;
+  align-items: center;
+  font-size: 12px;
+}
+.guest-list small {
+  color: #a46e55;
+  font-size: 11px;
+}
+@media (max-width: 850px) {
+  .office-body {
+    grid-template-columns: 1fr;
+  }
+  .office-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid #d7d0c4;
+    padding: 20px;
+  }
+  .office-main {
+    padding: 35px 20px;
+  }
+  .event-list {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .event-list button {
+    min-width: 170px;
+  }
+  .guest-form {
+    grid-template-columns: 1fr 1fr;
+  }
+  .guest-list > div {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .auth-panel {
+    padding: 30px;
+    margin: 50px auto;
+  }
+  .form-grid,
+  .guest-form {
+    grid-template-columns: 1fr;
+  }
+  .action-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .office-main h1 {
+    font-size: 48px;
+  }
+  .guest-list > div {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.rsvp-page {
+  min-height: 100vh;
+  background: radial-gradient(circle at 50% 30%, #fffdf9, #eee5d8);
+  padding: 26px;
+}
+.rsvp-card {
+  width: min(560px, 100%);
+  margin: 80px auto;
+  background: #fffdf9;
+  border: 1px solid #d8cbbb;
+  padding: clamp(25px, 6vw, 55px);
+  box-shadow: 0 20px 60px #5a382015;
+}
+.rsvp-card h1 {
+  font:
+    400 clamp(52px, 8vw, 75px)/0.95 var(--font-serif),
+    serif;
+  margin: 22px 0;
+}
+.rsvp-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #63594f;
+}
+.rsvp-card form {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.rsvp-card fieldset {
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.rsvp-card legend {
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+.rsvp-card fieldset label {
+  padding: 13px;
+  border: 1px solid #d8cbbb;
+  cursor: pointer;
+}
+.rsvp-card input {
+  margin-right: 10px;
+  accent-color: #a66c54;
+}
+.rsvp-card form > label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.rsvp-card textarea {
+  min-height: 90px;
+  padding: 12px;
+  border: 1px solid #d8cbbb;
+}
+.rsvp-card .office-button {
+  align-self: flex-start;
+}
+.photo-editor h2 {
+  font:
+    400 35px var(--font-serif),
+    serif;
+  margin: 7px 0;
+}
+.photo-editor > p:not(.office-kicker) {
+  color: #786d62;
+  font-size: 13px;
+}
+.photo-upload {
+  display: inline-block !important;
+  cursor: pointer;
+  background: #fffdf9;
+  border: 1px solid #c5ab99;
+  color: #80583e !important;
+  padding: 12px 16px;
+  margin: 12px 0 !important;
+  border-radius: 4px;
+}
+.photo-upload input {
+  display: none;
+}
+.photo-grid,
+.invite-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+.photo-grid img,
+.invite-gallery img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 3px;
+}
+.invite-gallery {
+  margin: 45px auto;
+}
+.invite-gallery img {
+  height: 220px;
+}
+@media (max-width: 600px) {
+  .photo-grid,
+  .invite-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .photo-grid img,
+  .invite-gallery img {
+    height: 140px;
+  }
+}
+.send-button {
+  display: inline-block;
+  background: #3b6850;
+  color: white;
+  border: 0;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-top: 15px;
+  font:
+    700 12px var(--font-sans),
+    sans-serif;
+  cursor: pointer;
+}
+.send-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

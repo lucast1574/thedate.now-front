@@ -1,0 +1,21 @@
+import type { Person } from "@/lib/events/seating";
+export type RSVPDetails = {
+  guestName: string;
+  seats: number;
+  companions?: Person[];
+  attendingSeats?: number;
+  partyRegistered?: boolean;
+  response: string;
+  maybeReason?: string;
+  maybeExpiresAt?: string;
+  eventTitle: string;
+  kind: string;
+  slug: string;
+  startAt: string;
+  timeZone: string;
+  organizer: string;
+  location: string;
+  isVirtual: boolean;
+  mapUrl: string;
+  virtualUrl: string;
+};

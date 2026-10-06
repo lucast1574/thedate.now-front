@@ -1,0 +1,296 @@
+.manager-page {
+  --manager-accent: #786546;
+  --manager-tint: #f3eee4;
+  min-height: 100vh;
+  padding: 32px clamp(16px, 4vw, 64px) 64px;
+  background: #fbfaf7;
+  color: #292b2d;
+}
+.manager-general {
+  --manager-accent: #7453b8;
+  --manager-tint: #f0eafb;
+}
+.manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  border-bottom: 1px solid #dedbd3;
+  padding-bottom: 24px;
+}
+.manager-header h1 {
+  font:
+    500 clamp(28px, 3vw, 44px)/1.15 Georgia,
+    serif;
+  margin: 8px 0;
+}
+.manager-header p,
+.manager-page .guest-hint {
+  color: #626563;
+}
+.manager-page button,
+.manager-page a {
+  cursor: pointer;
+}
+.manager-page button:not(.seating-table),
+.manager-header a {
+  border: 1px solid #d6d1c7;
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: white;
+  font-size: 14px;
+}
+.manager-page button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.manager-page button.office-button {
+  background: var(--manager-accent);
+  color: white;
+  border-color: var(--manager-accent);
+}
+.manager-page input,
+.manager-page select {
+  padding: 9px 11px;
+  border: 1px solid #d6d1c7;
+  border-radius: 7px;
+  width: 100%;
+  background: white;
+  color: #292b2d;
+}
+.manager-page label {
+  font-size: 13px;
+  display: grid;
+  gap: 6px;
+}
+.manager-page input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--manager-accent);
+}
+.manager-page h2 {
+  font:
+    500 26px/1.3 Georgia,
+    serif;
+  margin: 0 0 12px;
+}
+.manager-page h3 {
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 14px;
+}
+.manager-page p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.guest-metrics {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr 1fr;
+  gap: 14px;
+  margin: 26px 0;
+}
+.guest-metrics > div {
+  background: white;
+  border: 1px solid #e5e1d8;
+  border-radius: 14px;
+  padding: 20px;
+}
+.guest-metrics small {
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #626563;
+}
+.guest-metrics strong {
+  display: block;
+  font:
+    500 32px/1.2 Georgia,
+    serif;
+  margin: 10px 0;
+}
+.guest-metrics strong span {
+  font: 14px sans-serif;
+  color: #777;
+}
+.guest-metrics p {
+  font-size: 12px;
+  margin: 0;
+  color: #73756e;
+}
+.guest-metrics progress {
+  width: 100%;
+  accent-color: var(--manager-accent);
+  height: 6px;
+}
+.manager-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.manager-tabs button[aria-current] {
+  color: var(--manager-accent);
+  background: var(--manager-tint);
+  border-color: var(--manager-accent);
+}
+.manager-additions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.manual-guest,
+.manager-page .guest-import,
+.door-panel {
+  padding: 24px;
+  border: 1px solid #e5e1d8;
+  border-radius: 14px;
+  background: white;
+}
+.manual-guest .office-button {
+  margin-top: 14px;
+}
+.manager-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.companion-fields {
+  margin: 16px 0;
+}
+.companion-fields fieldset {
+  border: 1px solid #dedbd3;
+  padding: 12px;
+  margin: 10px 0;
+  display: grid;
+  gap: 10px;
+}
+.companion-fields legend {
+  font-size: 12px;
+  padding: 0 5px;
+}
+.manager-send {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin: 24px 0;
+}
+.roster {
+  margin-top: 24px;
+}
+.roster-controls {
+  display: flex;
+  gap: 14px;
+  align-items: end;
+}
+.roster-controls label:first-child {
+  flex: 1;
+}
+.roster-table {
+  overflow: auto;
+  border: 1px solid #e5e1d8;
+  border-radius: 12px;
+  background: white;
+}
+.roster-table table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 750px;
+  font-size: 13px;
+}
+.roster-table th {
+  background: #f5f3ee;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+}
+.roster-table td {
+  padding: 16px;
+  border-top: 1px solid #ede9e2;
+  vertical-align: top;
+}
+.roster-table small {
+  display: block;
+  max-width: 220px;
+  color: #73756e;
+  margin-top: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.roster-table a {
+  color: var(--manager-accent);
+}
+.party-names {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+.party-names li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+.person-glyph {
+  width: 16px;
+  height: 23px;
+  flex-shrink: 0;
+}
+.response-pill {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #efefec;
+  font-size: 11px;
+}
+.response-going {
+  color: #246a43;
+  background: #e9f4eb;
+}
+.response-not_going {
+  color: #9b423c;
+  background: #faecea;
+}
+.response-maybe {
+  color: #8c6b25;
+  background: #faf1dd;
+}
+.manager-warning {
+  padding: 12px 16px;
+  border: 1px solid #e4cd98;
+  border-radius: 10px;
+  color: #795c22;
+  background: #fff9eb;
+}
+@media (max-width: 900px) {
+  .guest-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .manager-additions {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .manager-header,
+  .manager-send {
+    align-items: start;
+    flex-direction: column;
+  }
+  .roster-controls {
+    flex-wrap: wrap;
+  }
+  .roster-controls label:first-child {
+    flex-basis: 100%;
+  }
+  .guest-metrics > div {
+    padding: 14px;
+  }
+  .guest-metrics strong {
+    font-size: 26px;
+  }
+  .manual-guest,
+  .manager-page .guest-import {
+    padding: 16px;
+  }
+}

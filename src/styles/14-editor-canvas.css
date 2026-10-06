@@ -1,0 +1,139 @@
+.flyer-workspace {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: 70vh;
+}
+.flyer-tools {
+  padding: 24px;
+  border-right: 1px solid #dedad4;
+  background: #fff;
+}
+.flyer-tools h3 {
+  font:
+    600 15px Arial,
+    sans-serif;
+  margin: 20px 0 12px;
+}
+.flyer-tools > h3:first-child {
+  margin-top: 0;
+}
+.editor-shell .designer-controls label {
+  display: grid;
+  gap: 6px;
+  color: #514b56;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.editor-shell .designer-controls input,
+.editor-shell .designer-controls textarea,
+.editor-shell .designer-controls select {
+  width: 100%;
+  border: 1px solid #d7d2cc;
+  border-radius: 6px;
+  padding: 8px;
+  background: #fff;
+  color: #28242c;
+  box-sizing: border-box;
+}
+.editor-shell .designer-controls input[type="color"] {
+  height: 38px;
+  padding: 4px;
+}
+.editor-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.editor-photo-grid button {
+  padding: 0;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+.editor-photo-grid img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.inspector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.editor-layers {
+  display: grid;
+  gap: 5px;
+}
+.editor-layers button {
+  text-align: left;
+  font-size: 12px;
+}
+.canvas-stage {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 42px;
+  background-color: #e6e3de;
+  background-image: radial-gradient(#c8c4be 0.7px, transparent 0.7px);
+  background-size: 12px 12px;
+  overflow: auto;
+}
+.canvas-editor {
+  width: min(100%, 600px);
+  box-shadow: 0 12px 40px #41364824;
+}
+.canvas-item {
+  cursor: move;
+  touch-action: none;
+  user-select: none;
+  outline: none;
+}
+.canvas-item.is-selected {
+  outline: 2px solid #8c5bd1;
+  z-index: 2;
+}
+.canvas-item:focus-visible {
+  outline: 3px solid #392554;
+}
+.editor-shell .canvas-handle {
+  position: absolute;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  font: 18px Arial;
+  border: 2px solid #7451ac;
+  border-radius: 50%;
+  color: #7451ac;
+  z-index: 3;
+  touch-action: none;
+  background: #fff;
+}
+.canvas-rotate {
+  top: 0;
+  left: calc(50% - 14px);
+  cursor: grab;
+}
+.canvas-resize {
+  right: 0;
+  bottom: 0;
+  cursor: nwse-resize;
+}
+.section-workspace {
+  width: min(760px, 100%);
+  padding: 28px;
+  margin: 0 auto;
+}
+.section-workspace h2 {
+  font:
+    600 24px Georgia,
+    serif;
+}
+.editor-empty,
+.editor-loading {
+  padding: 60px;
+  text-align: center;
+}
+.editor-open {
+  display: inline-flex;
+  margin: 24px 0;
+  text-decoration: none;
+}

@@ -1,0 +1,246 @@
+.product-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+}
+.product-heading-mark {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+}
+.product-heading strong {
+  display: block;
+  font-size: 26px;
+  letter-spacing: -0.03em;
+}
+.product-heading span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+}
+.product-heading > small {
+  margin-left: auto;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+.product-heading-wedding {
+  color: #826148;
+  border-bottom: 1px solid #ddcdb7;
+  background: #faf6ee;
+}
+.product-heading-wedding strong {
+  font:
+    500 29px var(--font-serif),
+    Georgia,
+    serif;
+}
+.product-heading-general {
+  background: #29213f;
+  color: #f6f1ff;
+}
+.product-heading-general strong {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 800;
+}
+.product-heading-general .product-heading-mark {
+  color: #bba0ff;
+  background: #ffffff12;
+  border-radius: 14px;
+}
+.product-heading-general .ui-icon {
+  width: 28px;
+  height: 28px;
+}
+.editor-wedding {
+  background: #f7f3eb;
+}
+.editor-wedding .editor-toolbar {
+  background: #fffdf8;
+  border-color: #dfcfbb;
+}
+.editor-wedding .editor-heading h1 {
+  font:
+    500 23px var(--font-serif),
+    Georgia,
+    serif;
+}
+.editor-wedding button,
+.editor-wedding input,
+.editor-wedding .editor-upload {
+  border-radius: 4px;
+  color: #68523f;
+}
+.editor-wedding .editor-save {
+  background: #896548;
+  border-color: #896548;
+  color: white;
+}
+.editor-wedding button[aria-pressed="true"] {
+  border-color: #a17d57;
+  background: #eee4d3;
+  color: #69513a;
+}
+.editor-wedding .editor-mode-bar {
+  border-color: #dfcfbb;
+  background: #f8f3e9;
+}
+.editor-wedding .editor-feedback {
+  background: #eee4d3;
+  color: #69513a;
+}
+.editor-general {
+  background: #f1eff8;
+}
+.editor-general .editor-heading h1,
+.editor-general .section-workspace h2,
+.editor-general .designer-section h3 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 800;
+}
+.editor-general .editor-mode-bar {
+  background: #ece8f6;
+}
+.editor-general .section-editor,
+.editor-general .flyer-workspace {
+  border-radius: 16px;
+}
+.template-wedding {
+  background: #faf6ee;
+  color: #69513a;
+}
+.template-wedding h2,
+.template-wedding h3 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+.template-general {
+  background: #f4f1fa;
+  color: #392652;
+}
+.template-general h2,
+.template-general h3 {
+  font-family: var(--font-party), sans-serif;
+}
+.manager-header .product-heading {
+  padding: 0 0 18px;
+  background: transparent;
+  border: 0;
+}
+.manager-header .product-heading > small {
+  display: none;
+}
+.manager-general {
+  background: linear-gradient(145deg, #f3effd, #f7f9fd);
+  color: #302440;
+}
+.manager-general .manager-header h1,
+.manager-general h2,
+.manager-general .guest-metrics strong {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}
+.manager-general .manager-header {
+  border-color: #dcd2ed;
+}
+.manager-general .product-heading {
+  color: #50328c;
+}
+.manager-general .product-heading-mark {
+  background: #e7ddfa;
+}
+.manager-general .guest-metrics > div {
+  border: 0;
+  box-shadow: 0 5px 18px #49317309;
+  border-radius: 18px;
+}
+.manager-general .manager-tabs button[aria-current] {
+  background: #50328c;
+  color: white;
+}
+.manager-general .seating-board {
+  background-color: #faf9ff;
+}
+.manager-general .table-shape {
+  background: #eae1fb;
+  border-color: #bba5df;
+  color: #50328c;
+  box-shadow: 0 3px 0 #d7c6ee;
+}
+.manager-wedding {
+  background: #faf6ed;
+}
+.manager-wedding .guest-metrics > div,
+.manager-wedding .manual-guest,
+.manager-wedding .guest-import,
+.manager-wedding .table-inspector {
+  border-radius: 5px;
+  border-color: #dfd0b9;
+}
+.manager-wedding .manager-header h1 {
+  font-weight: 400;
+}
+.manager-wedding .manager-tabs {
+  border-bottom: 1px solid #dfd0b9;
+  padding-bottom: 18px;
+}
+.manager-wedding .manager-tabs button[aria-current] {
+  background: #eee4d3;
+  color: #69513a;
+}
+@media (max-width: 650px) {
+  .product-heading {
+    padding: 16px;
+    gap: 10px;
+  }
+  .product-heading > small {
+    display: none;
+  }
+  .product-heading strong {
+    font-size: 24px;
+  }
+  .manager-header .product-heading {
+    padding-bottom: 12px;
+  }
+  .editor-toolbar {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+  }
+  .editor-heading h1 {
+    max-width: 100%;
+  }
+  .editor-toolbar-actions {
+    gap: 6px;
+  }
+  .editor-toolbar-actions button {
+    min-height: 40px;
+    font-size: 12px;
+  }
+  .editor-mode-bar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+  .editor-mode-bar > span {
+    display: none;
+  }
+}
+.invitation[data-product="general"] h1,
+.invitation[data-product="general"] .invite-section h2 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}
+.invitation[data-template="wedding-sections-romance"] {
+  background: #fff3f6;
+}
+.invitation[data-template="wedding-modern"] {
+  background: #f1f4ec;
+}
+.invitation[data-template="general-sections-bold"] {
+  background: #fff1e8;
+}
+.invitation[data-template="general-modern"] {
+  background: #eff9fa;
+}
