@@ -125,6 +125,7 @@ test("OAuth continuations and referral codes reject untrusted redirects and path
   const { safeContinuation, safeReferral } = loadSource(
     "src/lib/auth/continuation.ts",
   );
+  assert.equal(safeContinuation("/profile"), "/profile");
   assert.equal(
     safeContinuation("/join/" + "a".repeat(48)),
     "/join/" + "a".repeat(48),
