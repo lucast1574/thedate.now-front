@@ -68,9 +68,25 @@ export default function PickerField({
     function dismiss() {
       setPopup(null);
     }
+    const observer = new ResizeObserver(() => {
+      if (!panel.current || !button.current) return;
+      const position = pickerPosition(
+        button.current.getBoundingClientRect(),
+        innerWidth,
+        innerHeight,
+        panel.current.scrollHeight + 2,
+      );
+      setPopup((current) =>
+        current && JSON.stringify(current.position) !== JSON.stringify(position)
+          ? { ...current, position }
+          : current,
+      );
+    });
+    if (panel.current) observer.observe(panel.current);
     document.addEventListener("pointerdown", outside);
     window.addEventListener("resize", dismiss);
     return () => {
+      observer.disconnect();
       document.removeEventListener("pointerdown", outside);
       window.removeEventListener("resize", dismiss);
     };
@@ -122,6 +138,14 @@ export default function PickerField({
             role="dialog"
             aria-label={label}
             style={popup.position}
+            onBlurCapture={(e) => {
+              if (
+                e.relatedTarget &&
+                !e.currentTarget.contains(e.relatedTarget as Node) &&
+                e.relatedTarget !== button.current
+              )
+                setPopup(null);
+            }}
             onKeyDown={(e) => {
               if (e.key === "Escape") {
                 e.preventDefault();

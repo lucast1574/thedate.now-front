@@ -21,7 +21,7 @@
 }
 .calendar-navigation > div > button:first-child {
   font-family: var(--font-serif), Georgia, serif;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 400;
 }
 .calendar-navigation button:hover {
@@ -52,12 +52,12 @@
 }
 .calendar-days button {
   width: 100%;
-  aspect-ratio: 1;
+  height: 36px;
   border: 0;
   border-radius: 50%;
   background: transparent;
   color: #655647;
-  font-size: 12px;
+  font-size: 14px;
   padding: 0;
 }
 .calendar-days button:hover {
@@ -137,4 +137,13 @@
 }
 .picker-general .calendar-navigation button {
   color: #6e508f;
+}
+
+@media (max-width: 600px), (max-height: 600px) {
+  .calendar-days button {
+    height: 42px;
+  }
+  .calendar-weekdays {
+    font-size: 11px;
+  }
 }

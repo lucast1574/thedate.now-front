@@ -55,14 +55,16 @@ button.date-time-trigger {
   bottom: 0;
 }
 .date-time-popover {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   z-index: 1000;
   overflow: auto;
   padding: 18px;
   border: 1px solid #e3d8ca;
-  border-radius: 18px;
+  border-radius: 12px;
   background: #fffcf8;
-  box-shadow: 0 20px 70px #37271826;
+  box-shadow: 0 8px 28px #37271820;
   color: #504538;
   font-family: var(--font-sans), sans-serif;
   --picker-tone: #ad7254;
@@ -73,6 +75,7 @@ button.date-time-trigger {
   font-family: inherit;
 }
 .date-time-popover-heading {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -80,8 +83,8 @@ button.date-time-trigger {
   padding-bottom: 12px;
   border-bottom: 1px solid #e9dfd4;
   margin-bottom: 12px;
-  font-size: 11px;
-  color: #a38b74;
+  font-size: 13px;
+  color: #645548;
 }
 .date-time-popover-heading > button {
   border: 0;
@@ -91,4 +94,20 @@ button.date-time-trigger {
   width: 28px;
   color: var(--picker-tone);
   font-size: 18px;
+}
+
+@media (max-width: 600px), (max-height: 600px) {
+  .date-time-popover {
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 40px #37271833;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  .date-time-popover-heading {
+    font-size: 14px;
+  }
+}
+
+.date-time-popover:has(.time-panel) {
+  overflow: hidden;
 }

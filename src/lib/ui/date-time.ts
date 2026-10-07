@@ -55,17 +55,42 @@ export function timeLabel(value: string) {
   const { hour, minute, period } = timeParts(value);
   return `${hour}:${minute.toString().padStart(2, "0")} ${period === "PM" ? "p. m." : "a. m."}`;
 }
+export function halfHourTimes(period: string) {
+  const start = period === "PM" ? 12 : 0;
+  return Array.from(
+    { length: 24 },
+    (_, i) =>
+      `${String(start + Math.floor(i / 2)).padStart(2, "0")}:${i % 2 ? "30" : "00"}`,
+  );
+}
 export function pickerPosition(
-  rect: { left: number; bottom: number },
+  rect: { left: number; top: number; bottom: number },
   width: number,
   height: number,
+  contentHeight = 400,
 ) {
-  const panelWidth = Math.min(320, width - 24);
-  const top = Math.max(12, Math.min(rect.bottom + 8, height - 440));
+  const compact = width <= 600 || height <= 600;
+  const panelWidth = Math.min(compact ? 390 : 320, width - 24);
+  const left = Math.max(12, Math.min(rect.left, width - panelWidth - 12));
+  if (compact)
+    return {
+      left: (width - panelWidth) / 2,
+      bottom: 12,
+      width: panelWidth,
+      maxHeight: Math.max(100, height - 24),
+    };
+  const below = Math.max(0, height - rect.bottom - 20);
+  const above = Math.max(0, rect.top - 20);
+  const useBelow =
+    below >= contentHeight ||
+    (above < contentHeight && (below >= 280 || below >= above));
+  const maxHeight = Math.max(0, useBelow ? below : above);
   return {
-    left: Math.max(12, Math.min(rect.left, width - panelWidth - 12)),
-    top,
+    left,
+    top: useBelow
+      ? rect.bottom + 8
+      : Math.max(12, rect.top - Math.min(contentHeight, maxHeight) - 8),
     width: panelWidth,
-    maxHeight: Math.max(100, height - top - 12),
+    maxHeight,
   };
 }

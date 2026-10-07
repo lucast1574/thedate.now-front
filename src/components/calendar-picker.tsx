@@ -106,7 +106,7 @@ export default function CalendarPicker({
       {view === "days" ? (
         <>
           <div className="calendar-weekdays" aria-hidden="true">
-            {["L", "M", "X", "J", "V", "S", "D"].map((day, i) => (
+            {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((day, i) => (
               <span key={i}>{day}</span>
             ))}
           </div>
