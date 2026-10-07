@@ -69,6 +69,8 @@
   min-width: 0;
 }
 .invitation-card-preview {
+  width: 100%;
+  aspect-ratio: 4/3;
   display: block;
   position: relative;
   overflow: hidden;
@@ -86,8 +88,9 @@
 }
 .invitation-thumbnail {
   width: 100%;
-  aspect-ratio: 4/3;
-  position: relative;
+  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   background: #f0e9df;
   pointer-events: none;
@@ -165,7 +168,10 @@
   height: 14px;
 }
 .invitation-new-card {
-  min-height: 270px;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 20px;
   align-self: start;
   aspect-ratio: 4/3;
   display: flex;
@@ -261,14 +267,8 @@
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .invitation-thumbnail {
-    aspect-ratio: 4/3;
-  }
   .card-edit {
     opacity: 1;
-  }
-  .invitation-new-card {
-    min-height: 220px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

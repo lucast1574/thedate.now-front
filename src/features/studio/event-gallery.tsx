@@ -49,7 +49,7 @@ export default function EventGallery({
           </p>
         </div>
         <button className="gallery-create" onClick={onCreate}>
-          <Icon name="sparkle" />
+          <Icon name="plus" />
           {wedding ? "Crear una boda" : "Crear un evento"}
         </button>
       </div>
@@ -117,11 +117,9 @@ export default function EventGallery({
             </article>
           ))}
           <button className="invitation-new-card" onClick={onCreate}>
-            <Icon name={wedding ? "flower" : "sparkle"} />
-            <strong>
-              {wedding ? "Una nueva historia" : "Tu próximo gran plan"}
-            </strong>
-            <span>Crear una invitación</span>
+            <Icon name="plus" />
+            <strong>{wedding ? "Crear otra boda" : "Crear otro evento"}</strong>
+            <span>Nueva invitación</span>
           </button>
         </div>
       )}
