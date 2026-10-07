@@ -1,3 +1,4 @@
+import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { sectionIcons } from "@/lib/events/section-icons";
@@ -72,14 +73,13 @@ export default function ElementInspector({
               </Listbox>
             </label>
           )}
-          <label>
-            Color
-            <input
-              type="color"
+          <div className="color-field">
+            <span>Color</span>
+            <ColorPicker
               value={item.color}
-              onChange={(e) => onChange({ color: e.target.value })}
+              onChange={(color) => onChange({ color })}
             />
-          </label>
+          </div>
           <label>
             Tipografía
             <Listbox

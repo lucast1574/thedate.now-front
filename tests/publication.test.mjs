@@ -72,10 +72,13 @@ test("subdomain choice shows the product suffix and usable help for touch and ke
         onChange() {},
       }),
     );
-    assert.match(html, /Elige tu subdominio/);
+    assert.match(html, /Personalizar enlace/);
     assert.match(html, /aria-describedby="subdomain-hint subdomain-address"/);
     assert.match(html, /<details/);
-    assert.match(html, /sin espacios/);
+    assert.match(html, /required=""/);
+    assert.match(html, /Podrás compartirlo cuando publiques/);
+    assert.doesNotMatch(html, /href=/);
+    assert.match(html, /sin espacios/i);
     assert.match(
       html,
       kind === "wedding"
@@ -83,4 +86,18 @@ test("subdomain choice shows the product suffix and usable help for touch and ke
         : /cumplelucas.thedate.now/,
     );
   }
+});
+
+test("reserved event addresses remain visible and cannot be edited", () => {
+  const html = renderToStaticMarkup(
+    createElement(Subdomain, {
+      kind: "wedding",
+      value: "ana-luis",
+      disabled: true,
+      onChange() {},
+    }),
+  );
+  assert.match(html, /ana-luis.save.thedate.now/);
+  assert.match(html, /Tu enlace reservado/);
+  assert.doesNotMatch(html, /<input|Personalizar enlace/);
 });

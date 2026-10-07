@@ -1,5 +1,6 @@
 import type { Kind } from "@/lib/events/types";
 import { invitationHost } from "@/lib/events/domains";
+import Icon from "@/components/icon";
 export default function SubdomainField({
   kind,
   value,
@@ -14,48 +15,53 @@ export default function SubdomainField({
   const wedding = kind === "wedding",
     example = wedding ? "sofiaymateo" : "cumplelucas";
   return (
-    <div className="subdomain-field">
-      <label htmlFor="invitation-subdomain">Elige tu subdominio</label>
-      <div className="subdomain-input">
-        <input
-          id="invitation-subdomain"
-          required
-          disabled={disabled}
-          autoCapitalize="none"
-          autoCorrect="off"
-          spellCheck={false}
-          maxLength={63}
-          pattern="[a-z0-9][a-z0-9-]*[a-z0-9]|[a-z0-9]"
-          aria-describedby="subdomain-hint subdomain-address"
-          value={value}
-          onChange={(e) =>
-            onChange(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""))
-          }
-          placeholder={example}
-        />
-        <span>{wedding ? ".save.thedate.now" : ".thedate.now"}</span>
+    <div className="invitation-address-card">
+      <Icon name="external" />
+      <div>
+        <small>
+          {disabled ? "Tu enlace reservado" : "Así se verá tu enlace"}
+        </small>
+        <strong id="subdomain-address">
+          {invitationHost(kind, value || example)}
+        </strong>
+        <span>Podrás compartirlo cuando publiques tu invitación.</span>
       </div>
-      <small id="subdomain-hint">
-        {wedding
-          ? "Queda bonito con sus nombres juntos, por ejemplo: sofiaymateo."
-          : "Elige tu nombre o el de tu celebración, por ejemplo: cumplelucas."}
-      </small>
-      <details className="subdomain-help">
-        <summary title="Consejos para elegir una dirección fácil de recordar">
-          Cómo elegir una dirección bonita
-        </summary>
-        <p>
-          {wedding
-            ? "Sofía y Mateo → sofiaymateo. También puedes usar sofiaymateo2027."
-            : "Cumpleaños de Lucas → cumplelucas. También puedes usar fiestaana o encuentro2027."}{" "}
-          Usa letras sin tildes, números o guiones, sin espacios. El subdominio
-          se reserva al crear el evento.
-        </p>
-      </details>
-      <small id="subdomain-address">
-        {disabled ? "Dirección reservada" : "Tu dirección será"}:{" "}
-        <strong>{invitationHost(kind, value || example)}</strong>
-      </small>
+      {!disabled && (
+        <details className="address-edit">
+          <summary>Personalizar enlace</summary>
+          <div className="subdomain-field">
+            <label htmlFor="invitation-subdomain">
+              Elige el nombre de tu enlace
+            </label>
+            <div className="subdomain-input">
+              <input
+                id="invitation-subdomain"
+                required
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                maxLength={63}
+                pattern="[a-z0-9][a-z0-9-]*[a-z0-9]|[a-z0-9]"
+                aria-describedby="subdomain-hint subdomain-address"
+                value={value}
+                onChange={(e) =>
+                  onChange(
+                    e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ""),
+                  )
+                }
+                placeholder={example}
+              />
+              <span>{wedding ? ".save.thedate.now" : ".thedate.now"}</span>
+            </div>
+            <small id="subdomain-hint">
+              {wedding
+                ? "Sus nombres juntos quedan bonitos: sofiaymateo."
+                : "Usa tu nombre o el de tu celebración: cumplelucas."}{" "}
+              Sin espacios ni tildes.
+            </small>
+          </div>
+        </details>
+      )}
     </div>
   );
 }

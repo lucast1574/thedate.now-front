@@ -39,12 +39,14 @@ export default function EventWorkspace({
           ? "Tu invitación de muestra"
           : selected
             ? selected.title
-            : "Un día para recordar."}
+            : wedding
+              ? "Vamos a crear su invitación."
+              : "Prepara tu próxima celebración."}
       </h1>
       <p className="office-lead">
         {selected
           ? "Ajusta los detalles y lleva el control de tus invitados."
-          : "Elige una dirección única para compartir con todos."}
+          : "Solo necesitamos unos detalles para empezar. El diseño viene después."}
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
       <Alert>{feedback.error}</Alert>

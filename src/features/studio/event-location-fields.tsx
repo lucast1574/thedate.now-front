@@ -20,7 +20,7 @@ export default function EventLocationFields({
     <>
       {!wedding && (
         <fieldset className="event-mode">
-          <legend>Modalidad</legend>
+          <legend>¿Cómo se van a reunir?</legend>
           <label>
             <input
               type="radio"
@@ -36,7 +36,7 @@ export default function EventLocationFields({
                 setMapStatus("");
               }}
             />{" "}
-            Presencial
+            En un lugar
           </label>
           <label>
             <input
@@ -53,7 +53,7 @@ export default function EventLocationFields({
                 setMapStatus("");
               }}
             />{" "}
-            Virtual
+            Por internet
           </label>
         </fieldset>
       )}
@@ -78,7 +78,7 @@ export default function EventLocationFields({
               type="url"
               value={draft.mapUrl}
               onChange={(e) => {
-                setDraft({ ...draft, mapUrl: e.target.value, location: "" });
+                setDraft({ ...draft, mapUrl: e.target.value });
                 setMapStatus("");
               }}
               placeholder="https://maps.app.goo.gl/..."
@@ -88,14 +88,14 @@ export default function EventLocationFields({
             </small>
           </label>
           <label>
-            Dirección o nombre del lugar
+            Nombre o dirección del lugar
             <input
               required
               value={draft.location}
               onChange={(e) => setDraft({ ...draft, location: e.target.value })}
-              placeholder="Se completará al pegar el enlace"
+              placeholder="Ej. Hacienda Los Olivos, Lima"
             />
-            <small>Puedes corregirla si hace falta.</small>
+            <small>También podemos completarlo con el enlace de Maps.</small>
           </label>
         </div>
       )}

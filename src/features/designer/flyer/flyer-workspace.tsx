@@ -1,3 +1,4 @@
+import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import CanvasLayers from "./canvas-layers";
 import { guestNameElement } from "@/lib/events/guest-name";
@@ -118,14 +119,14 @@ export default function FlyerWorkspace({
           El texto {"{{nombre_invitado}}"} se sustituye automáticamente por el
           nombre del destinatario.
         </p>
-        <label>
-          Fondo
-          <input
-            type="color"
+        <div className="color-field">
+          <span>Fondo</span>
+          <ColorPicker
+            label="Fondo"
             value={canvas.background}
-            onChange={(e) => change({ ...canvas, background: e.target.value })}
+            onChange={(background) => change({ ...canvas, background })}
           />
-        </label>
+        </div>
         <label>
           Formato
           <Listbox
@@ -140,7 +141,6 @@ export default function FlyerWorkspace({
             <option value="720x1200">Historia · 3:5</option>
           </Listbox>
         </label>
-        <h3>Imágenes</h3>
         <div className="editor-photo-grid">
           {draft.photoKeys.map((key, n) => (
             <button

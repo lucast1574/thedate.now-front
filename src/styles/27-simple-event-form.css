@@ -1,0 +1,144 @@
+.simple-event-form {
+  max-width: 780px;
+  gap: 16px;
+}
+.event-form-card {
+  border: 1px solid #e6ddd1;
+  border-radius: 18px;
+  padding: 26px;
+  background: #fffcf8;
+  display: grid;
+  gap: 20px;
+}
+.event-form-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+.event-form-card-heading > span {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #efe3d7;
+  color: #ad7254;
+  flex-shrink: 0;
+}
+.event-form-card-heading h2 {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.event-form-card-heading p {
+  font-size: 12px;
+  color: #8e8072;
+  margin: 0;
+  line-height: 1.5;
+}
+.simple-event-form input,
+.simple-event-form textarea {
+  border-radius: 10px;
+  min-height: 44px;
+}
+.invitation-address-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px;
+  background: #f6efe7;
+  border-radius: 12px;
+  color: #a46e55;
+}
+.invitation-address-card > svg {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.invitation-address-card > div {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 5px;
+}
+.invitation-address-card small {
+  font-size: 10px;
+  color: #8e8072;
+}
+.invitation-address-card strong {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  color: #615448;
+}
+.invitation-address-card span {
+  font-size: 10px;
+  color: #8e8072;
+}
+.address-edit {
+  flex-basis: 100%;
+  margin-left: 28px;
+}
+.address-edit summary {
+  font-size: 11px;
+  cursor: pointer;
+  color: #a46e55;
+  list-style: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.address-edit .subdomain-field {
+  margin-top: 12px;
+}
+.event-capacity {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.event-capacity legend {
+  font-size: 12px;
+  font-weight: 700;
+  color: #5e574f;
+  margin-bottom: 10px;
+}
+.capacity-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.office .capacity-options label,
+.office .event-mode label {
+  flex-direction: row;
+  align-items: center;
+  font-weight: 500;
+  padding: 10px 12px;
+  border: 1px solid #e2d6c8;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.office .capacity-options input,
+.office .event-mode input {
+  width: 15px;
+  height: 15px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: #ad7254;
+}
+.capacity-options label:has(input:checked),
+.event-mode label:has(input:checked) {
+  background: #f4e9de;
+  border-color: #ad7254;
+}
+.capacity-number {
+  max-width: 230px;
+  margin-bottom: 8px;
+}
+.event-capacity > small {
+  font-size: 10px;
+  color: #8e8072;
+}

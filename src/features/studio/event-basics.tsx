@@ -1,7 +1,8 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import SubdomainField from "./subdomain-field";
 import { browserTimeZone } from "@/lib/events/draft";
+import { suggestedAddress } from "@/lib/events/event-form";
 export default function EventBasics({
   draft,
   setDraft,
@@ -11,55 +12,70 @@ export default function EventBasics({
   setDraft: Dispatch<SetStateAction<Event>>;
   selected: boolean;
 }) {
-  const kind = draft.kind;
+  const [customAddress, setCustomAddress] = useState(selected);
+  const wedding = draft.kind === "wedding";
+  const [date, time] = draft.startAt.split("T");
   return (
-    <div className="form-grid">
+    <>
       <label>
-        Nombre del evento
+        {wedding ? "¿Cómo se llaman los novios?" : "¿Cómo se llama tu evento?"}
         <input
           required
+          maxLength={200}
           value={draft.title}
-          onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-          placeholder={
-            kind === "wedding" ? "Sofía y Mateo" : "Cumpleaños de Lucas"
-          }
-        />
-      </label>
-      <SubdomainField
-        kind={kind}
-        value={draft.slug}
-        disabled={selected}
-        onChange={(slug) => setDraft({ ...draft, slug })}
-      />
-      <label>
-        Fecha y hora
-        <input
-          required
-          type="datetime-local"
-          value={draft.startAt.slice(0, 16)}
           onChange={(e) =>
             setDraft({
               ...draft,
-              startAt: e.target.value,
-              timeZone: browserTimeZone(),
+              title: e.target.value,
+              ...(!customAddress
+                ? { slug: suggestedAddress(e.target.value) }
+                : {}),
             })
           }
-        />
-        <small>Hora local del organizador.</small>
-      </label>
-      <label>
-        Organiza
-        <input
-          required
-          value={draft.organizer}
-          onChange={(e) => setDraft({ ...draft, organizer: e.target.value })}
-          placeholder={
-            kind === "wedding"
-              ? "La pareja o wedding planner"
-              : "Tu nombre u organización"
-          }
+          placeholder={wedding ? "Sofía y Mateo" : "Cumpleaños de Lucas"}
         />
       </label>
-    </div>
+      <div className="form-grid event-date-row">
+        <label>
+          ¿Qué día?
+          <input
+            required
+            type="date"
+            value={date || ""}
+            onChange={(e) =>
+              setDraft({
+                ...draft,
+                startAt: `${e.target.value}T${time?.slice(0, 5) || "18:00"}`,
+                timeZone: browserTimeZone(),
+              })
+            }
+          />
+        </label>
+        <label>
+          ¿A qué hora?
+          <input
+            required
+            type="time"
+            value={time?.slice(0, 5) || "18:00"}
+            onChange={(e) =>
+              setDraft({
+                ...draft,
+                startAt: `${date || ""}T${e.target.value}`,
+                timeZone: browserTimeZone(),
+              })
+            }
+          />
+        </label>
+      </div>
+      <SubdomainField
+        kind={draft.kind}
+        value={draft.slug}
+        disabled={selected}
+        onChange={(slug) => {
+          setCustomAddress(true);
+          setDraft({ ...draft, slug });
+        }}
+      />
+    </>
   );
 }

@@ -1,11 +1,13 @@
 "use client";
+import { ColorMemoryProvider } from "@/components/color-memory";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
-import type { Event } from "@/lib/events/types";
+import type { Event, User } from "@/lib/events/types";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
   const [event, setEvent] = useState<Event | null>(null);
+  const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const reload = useCallback(async () => {
     const list = await api<Event[]>("/api/backend/events");
@@ -15,9 +17,13 @@ export default function EditorPage({ id }: { id: string }) {
   }, [id]);
   useEffect(() => {
     let active = true;
-    api<Event[]>("/api/backend/events")
-      .then((list) => {
+    Promise.all([
+      api<Event[]>("/api/backend/events"),
+      api<User>("/api/session"),
+    ])
+      .then(([list, user]) => {
         if (!active) return;
+        setUserId(user.id);
         const current = list.find((item) => item.id === id);
         if (!current) setError("No tienes acceso a esta invitación.");
         else setEvent(current);
@@ -43,5 +49,9 @@ export default function EditorPage({ id }: { id: string }) {
         Abriendo tu invitación…
       </main>
     );
-  return <InvitationDesigner key={event.id} event={event} onSaved={reload} />;
+  return (
+    <ColorMemoryProvider userId={userId}>
+      <InvitationDesigner key={event.id} event={event} onSaved={reload} />
+    </ColorMemoryProvider>
+  );
 }

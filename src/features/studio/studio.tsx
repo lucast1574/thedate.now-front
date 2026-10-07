@@ -1,4 +1,5 @@
 "use client";
+import { ColorMemoryProvider } from "@/components/color-memory";
 import type { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Kind } from "@/lib/events/types";
@@ -73,34 +74,36 @@ export default function Studio({
       </main>
     );
   return (
-    <main
-      className={`office workspace ${wedding ? "office-wedding" : "office-general"}`}
-    >
-      <WorkspaceSidebar wedding={wedding} user={session.user} />
-      <div className="workspace-content">
-        {events.selected || creating ? (
-          <EventWorkspace
-            user={session.user}
-            events={events}
-            actions={actions}
-            feedback={feedback}
-            paymentsEnabled={paymentsEnabled}
-            save={save}
-          />
-        ) : (
-          <>
-            <Alert>{feedback.error}</Alert>
-            <EventGallery
+    <ColorMemoryProvider userId={session.user.id}>
+      <main
+        className={`office workspace ${wedding ? "office-wedding" : "office-general"}`}
+      >
+        <WorkspaceSidebar wedding={wedding} user={session.user} />
+        <div className="workspace-content">
+          {events.selected || creating ? (
+            <EventWorkspace
               user={session.user}
-              portal={portal}
-              events={events.events}
-              loading={events.loading}
-              onCreate={create}
+              events={events}
+              actions={actions}
+              feedback={feedback}
+              paymentsEnabled={paymentsEnabled}
+              save={save}
             />
-          </>
-        )}
-        <ProductAlternative wedding={wedding} footer />
-      </div>
-    </main>
+          ) : (
+            <>
+              <Alert>{feedback.error}</Alert>
+              <EventGallery
+                user={session.user}
+                portal={portal}
+                events={events.events}
+                loading={events.loading}
+                onCreate={create}
+              />
+            </>
+          )}
+          <ProductAlternative wedding={wedding} footer />
+        </div>
+      </main>
+    </ColorMemoryProvider>
   );
 }

@@ -1,0 +1,79 @@
+.color-hex-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px solid #ece4db;
+}
+.color-hex-row > span {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #0002;
+  flex-shrink: 0;
+}
+.color-hex-row label {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 9px;
+  color: #8c7c6d;
+}
+.color-picker .color-hex-row input {
+  font-size: 12px;
+  padding: 7px 8px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #dfd4c7;
+  border-radius: 7px;
+  background: white;
+  color: #332d26;
+}
+.color-hex-row button {
+  background: var(--picker-accent);
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 11px;
+}
+.color-memory-note {
+  display: block;
+  font-size: 10px;
+  color: #91857a;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+.color-error {
+  color: #ad3333;
+  font-size: 11px;
+}
+.office-general .color-picker,
+.editor-general .color-picker {
+  --picker-accent: #8150c7;
+}
+.office-general .style-option input:checked + .style-option-body,
+.editor-general .style-option input:checked + .style-option-body {
+  border-color: #8150c7;
+  box-shadow: 0 0 0 1px #8150c7;
+}
+.office-general .style-check,
+.editor-general .style-check {
+  background: #8150c7;
+}
+.office-general .color-trigger,
+.editor-general .color-trigger,
+.office-general .color-panel,
+.editor-general .color-panel {
+  background: #fdfbff;
+  border-color: #e3d9ee;
+}
+@media (max-width: 400px) {
+  .color-panel {
+    padding: 12px;
+  }
+  .style-option-body {
+    padding: 10px;
+  }
+}

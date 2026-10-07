@@ -1,0 +1,125 @@
+.event-form-options {
+  border: 1px solid #e6ddd1;
+  border-radius: 14px;
+  background: #fffcf8;
+}
+.event-form-options > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 18px 22px;
+}
+.event-form-options > summary > svg {
+  width: 18px;
+  height: 18px;
+  color: #ad7254;
+  flex-shrink: 0;
+}
+.event-form-options > summary > svg:last-child {
+  margin-left: auto;
+  width: 14px;
+  transition: transform 0.2s;
+}
+.event-form-options[open] > summary > svg:last-child {
+  transform: rotate(180deg);
+}
+.event-form-options summary span {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 650;
+}
+.event-form-options summary small {
+  font-size: 11px;
+  color: #8e8072;
+  font-weight: 400;
+}
+.event-form-options > div {
+  display: grid;
+  gap: 18px;
+  padding: 0 22px 22px;
+}
+.event-form-options summary::-webkit-details-marker,
+.address-edit summary::-webkit-details-marker {
+  display: none;
+}
+.event-form-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 0;
+}
+.event-form-submit p {
+  font-size: 11px;
+  color: #8e8072;
+  max-width: 260px;
+  line-height: 1.6;
+}
+.event-form-submit button {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-radius: 12px;
+}
+.office-general .event-form-card,
+.office-general .event-form-options {
+  background: #fdfbff;
+  border-color: #e6ddef;
+}
+.office-general .event-form-card-heading > span,
+.office-general .invitation-address-card {
+  background: #eee6f9;
+  color: #8150c7;
+}
+.office-general .address-edit summary,
+.office-general .event-form-options > summary > svg {
+  color: #8150c7;
+}
+.office-general .capacity-options label:has(input:checked),
+.office-general .event-mode label:has(input:checked) {
+  background: #eee6f9;
+  border-color: #8150c7;
+}
+.office-general .capacity-options input,
+.office-general .event-mode input {
+  accent-color: #8150c7;
+}
+@media (max-width: 600px) {
+  .event-form-card {
+    padding: 18px;
+  }
+  .event-form-options > summary {
+    padding: 16px;
+  }
+  .event-form-options > div {
+    padding: 0 16px 16px;
+  }
+  .event-form-submit {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+  }
+  .event-form-submit p {
+    max-width: none;
+  }
+  .event-form-submit button {
+    justify-content: center;
+  }
+  .simple-event-form .event-date-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.office-general .workspace-event > h1 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 800;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -1.4px;
+}
+.simple-event-form .event-date-row input {
+  min-width: 0;
+}
