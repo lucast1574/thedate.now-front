@@ -70,19 +70,6 @@ export default function AffiliateDashboard({
           Las cuentas administradoras y las cortesías no participan en
           comisiones. Puedes gestionar los retiros desde Administración.
         </p>
-      ) : data && !data.enabled ? (
-        <button
-          className="office-button"
-          disabled={busy}
-          onClick={() =>
-            void run(
-              () => api("/api/backend/affiliates/join", "POST"),
-              "Ya puedes compartir tus enlaces.",
-            )
-          }
-        >
-          Activar mis enlaces de afiliado
-        </button>
       ) : (
         data && (
           <>
@@ -103,7 +90,8 @@ export default function AffiliateDashboard({
               </article>
             </div>
             <section className="account-card">
-              <h2>Una invitación a descubrir.</h2>
+              <h2>Tu enlace ya está activo.</h2>
+              <p>Compártelo para bodas o eventos. No necesitas activarlo.</p>
               {links.map((link, i) => (
                 <label key={link}>
                   {i === 0 ? "Save the Date · bodas" : "The Date · eventos"}

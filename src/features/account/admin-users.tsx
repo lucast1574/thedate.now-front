@@ -10,7 +10,7 @@ export default function AdminUsers({
   busy,
   run,
 }: {
-  users: (User & { canBeAdmin?: boolean; roleProtected?: boolean })[];
+  users: (User & { roleProtected?: boolean })[];
   current: User;
   busy: boolean;
   run: Run;
@@ -24,8 +24,9 @@ export default function AdminUsers({
       <p className="office-kicker">ROLES Y CUENTAS</p>
       <h2>Un acceso claro para cada persona.</h2>
       <p>
-        El rol administrador requiere Google verificado. Al cambiar un rol se
-        cierran las sesiones anteriores; la cuenta principal está protegida.
+        Puedes asignar roles a cuentas de Google o de correo y contraseña. Al
+        cambiar un rol se cierran las sesiones anteriores; la cuenta principal
+        está protegida.
       </p>
       <label>
         Buscar entre las 100 cuentas más recientes
@@ -70,18 +71,11 @@ export default function AdminUsers({
                     <option value="organizer">Organizador</option>
                     <option value="planner">Wedding planner</option>
                     <option value="couple">Colaborador (legado)</option>
-                    <option value="admin" disabled={u.canBeAdmin === false}>
-                      Administrador
-                    </option>
+                    <option value="admin">Administrador</option>
                   </Listbox>
-                  {u.roleProtected || u.id === current.id ? (
+                  {(u.roleProtected || u.id === current.id) && (
                     <small>Cuenta protegida</small>
-                  ) : u.canBeAdmin === false ? (
-                    <small>
-                      Para ser administrador: iniciar sesión con Google
-                      verificado.
-                    </small>
-                  ) : null}
+                  )}
                 </td>
               </tr>
             ))}
