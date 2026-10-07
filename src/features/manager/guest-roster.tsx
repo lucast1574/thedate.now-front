@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import { useState } from "react";
 import {
   attendees,
@@ -42,13 +43,13 @@ export default function GuestRoster({
         </label>
         <label>
           Respuesta
-          <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <Listbox value={filter} onValueChange={(value) => setFilter(value)}>
             <option value="all">Todas</option>
             <option value="going">Aceptaron</option>
             <option value="not_going">No asistirán</option>
             <option value="maybe">Pidieron tiempo</option>
             <option value="pending">Sin respuesta</option>
-          </select>
+          </Listbox>
         </label>
         <button onClick={() => setSorted(!sorted)}>
           {sorted ? "Orden: apellido ✓" : "Ordenar por apellido"}

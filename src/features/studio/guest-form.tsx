@@ -1,4 +1,5 @@
 "use client";
+import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
 import CompanionFields from "@/components/companion-fields";
 import { useState, type FormEvent } from "react";
@@ -85,19 +86,19 @@ export default function GuestForm({
         </label>
         <label>
           Icono
-          <select
+          <Listbox
             value={guest.gender}
-            onChange={(e) =>
+            onValueChange={(value) =>
               setGuest({
                 ...guest,
-                gender: e.target.value as GuestFields["gender"],
+                gender: value as GuestFields["gender"],
               })
             }
           >
             <option value="unspecified">Sin especificar</option>
             <option value="man">Hombre</option>
             <option value="woman">Mujer</option>
-          </select>
+          </Listbox>
         </label>
       </div>
       <p className="guest-hint">

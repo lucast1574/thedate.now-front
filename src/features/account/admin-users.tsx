@@ -1,4 +1,5 @@
 "use client";
+import Listbox from "@/components/listbox";
 import { useState } from "react";
 import type { User } from "@/lib/events/types";
 import type { Run } from "@/lib/account/types";
@@ -9,7 +10,7 @@ export default function AdminUsers({
   busy,
   run,
 }: {
-  users: User[];
+  users: (User & { canBeAdmin?: boolean; roleProtected?: boolean })[];
   current: User;
   busy: boolean;
   run: Run;
@@ -50,21 +51,17 @@ export default function AdminUsers({
                 <td>{u.name}</td>
                 <td>{u.email}</td>
                 <td>
-                  <select
+                  <Listbox
                     aria-label={`Rol de ${u.name}`}
                     value={u.role}
-                    disabled={
-                      busy ||
-                      u.id === current.id ||
-                      u.email === "lucasraulsantillanarevalo@gmail.com"
-                    }
-                    onChange={(e) =>
+                    disabled={busy || u.id === current.id || u.roleProtected}
+                    onValueChange={(value) =>
                       void run(
                         () =>
                           api(
                             `/api/backend/admin/users/${u.id}/role`,
                             "PATCH",
-                            { role: e.target.value },
+                            { role: value },
                           ),
                         "Rol actualizado. La persona deberá iniciar sesión nuevamente.",
                       )
@@ -73,8 +70,18 @@ export default function AdminUsers({
                     <option value="organizer">Organizador</option>
                     <option value="planner">Wedding planner</option>
                     <option value="couple">Colaborador (legado)</option>
-                    <option value="admin">Administrador</option>
-                  </select>
+                    <option value="admin" disabled={u.canBeAdmin === false}>
+                      Administrador
+                    </option>
+                  </Listbox>
+                  {u.roleProtected || u.id === current.id ? (
+                    <small>Cuenta protegida</small>
+                  ) : u.canBeAdmin === false ? (
+                    <small>
+                      Para ser administrador: iniciar sesión con Google
+                      verificado.
+                    </small>
+                  ) : null}
                 </td>
               </tr>
             ))}

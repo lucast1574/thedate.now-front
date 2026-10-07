@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import GuestTextEditor from "./guest-text-editor";
 import type { DesignSection } from "@/lib/events/types";
 import { sectionIcons as icons } from "@/lib/events/section-icons";
@@ -51,16 +52,16 @@ export default function SectionEditor({
       </div>
       <label>
         Icono
-        <select
+        <Listbox
           value={section.icon}
-          onChange={(e) => onUpdate({ icon: e.target.value })}
+          onValueChange={(value) => onUpdate({ icon: value })}
         >
           {Object.entries(icons).map(([key, symbol]) => (
             <option key={key} value={key}>
               {symbol} {key}
             </option>
           ))}
-        </select>
+        </Listbox>
       </label>
       <label>
         Encabezado
@@ -90,9 +91,9 @@ export default function SectionEditor({
       )}
       <label>
         Imagen
-        <select
+        <Listbox
           value={section.photoKey || ""}
-          onChange={(e) => onUpdate({ photoKey: e.target.value })}
+          onValueChange={(value) => onUpdate({ photoKey: value })}
         >
           <option value="">Sin imagen</option>
           {photos.map((key, n) => (
@@ -100,7 +101,7 @@ export default function SectionEditor({
               Imagen {n + 1}
             </option>
           ))}
-        </select>
+        </Listbox>
       </label>
     </div>
   );

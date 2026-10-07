@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import Icon from "@/components/icon";
 import type { SeatingTable } from "@/lib/events/seating";
 type Props = {
@@ -42,13 +43,13 @@ export default function SeatingTools({
       </label>
       <label>
         Forma
-        <select
+        <Listbox
           value={shape}
-          onChange={(e) => onShape(e.target.value as SeatingTable["shape"])}
+          onValueChange={(value) => onShape(value as SeatingTable["shape"])}
         >
           <option value="round">Circular</option>
           <option value="rectangle">Rectangular</option>
-        </select>
+        </Listbox>
       </label>
       <button disabled={busy || full} onClick={onAdd}>
         ＋ Añadir mesa

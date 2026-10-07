@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import { useState } from "react";
 import PersonGlyph from "@/components/person-glyph";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
@@ -57,15 +58,15 @@ export default function TableInspector({
         </label>
         <label>
           Forma
-          <select
+          <Listbox
             value={table.shape}
-            onChange={(e) =>
-              patch({ shape: e.target.value as SeatingTable["shape"] })
+            onValueChange={(value) =>
+              patch({ shape: value as SeatingTable["shape"] })
             }
           >
             <option value="round">Circular</option>
             <option value="rectangle">Rectangular</option>
-          </select>
+          </Listbox>
         </label>
         <label>
           Capacidad

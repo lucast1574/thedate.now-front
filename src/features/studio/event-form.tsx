@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
@@ -29,19 +30,19 @@ export default function EventForm({
       <div className="form-grid">
         <label>
           Aforo del evento
-          <select
+          <Listbox
             value={draft.capacityUnlimited ? "unlimited" : "limited"}
-            onChange={(e) =>
+            onValueChange={(value) =>
               setDraft({
                 ...draft,
-                capacityUnlimited: e.target.value === "unlimited",
+                capacityUnlimited: value === "unlimited",
                 capacity: draft.capacity || 50,
               })
             }
           >
             <option value="limited">Aforo limitado</option>
             <option value="unlimited">Aforo ilimitado</option>
-          </select>
+          </Listbox>
           {!draft.capacityUnlimited && (
             <input
               aria-label="Aforo máximo de personas"

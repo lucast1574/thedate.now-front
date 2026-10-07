@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import CanvasLayers from "./canvas-layers";
 import { guestNameElement } from "@/lib/events/guest-name";
 import { useState } from "react";
@@ -127,17 +128,17 @@ export default function FlyerWorkspace({
         </label>
         <label>
           Formato
-          <select
+          <Listbox
             value={`${canvas.width}x${canvas.height}`}
-            onChange={(e) => {
-              const [width, height] = e.target.value.split("x").map(Number);
+            onValueChange={(value) => {
+              const [width, height] = value.split("x").map(Number);
               change(canvasFormat(canvas, width, height));
             }}
           >
             <option value="720x960">Vertical · 3:4</option>
             <option value="720x720">Cuadrado · 1:1</option>
             <option value="720x1200">Historia · 3:5</option>
-          </select>
+          </Listbox>
         </label>
         <h3>Imágenes</h3>
         <div className="editor-photo-grid">

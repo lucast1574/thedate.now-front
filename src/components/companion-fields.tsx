@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 import type { Person } from "@/lib/events/seating";
 export default function CompanionFields({
   people,
@@ -46,16 +47,16 @@ export default function CompanionFields({
           </label>
           <label>
             Icono
-            <select
+            <Listbox
               value={person.gender}
-              onChange={(e) =>
-                patch(n, { gender: e.target.value as Person["gender"] })
+              onValueChange={(value) =>
+                patch(n, { gender: value as Person["gender"] })
               }
             >
               <option value="unspecified">Sin especificar</option>
               <option value="man">Hombre</option>
               <option value="woman">Mujer</option>
-            </select>
+            </Listbox>
           </label>
           <button
             type="button"

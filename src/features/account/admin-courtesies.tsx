@@ -1,4 +1,5 @@
 "use client";
+import Listbox from "@/components/listbox";
 import { useState, type FormEvent } from "react";
 import type { Event } from "@/lib/events/types";
 import type { Run } from "@/lib/account/types";
@@ -36,14 +37,14 @@ export default function AdminCourtesies({
       <form onSubmit={submit}>
         <label>
           Evento
-          <select required value={id} onChange={(e) => setId(e.target.value)}>
+          <Listbox required value={id} onValueChange={(value) => setId(value)}>
             <option value="">Elige un evento pendiente</option>
             {eligible.map((e) => (
               <option key={e.id} value={e.id}>
                 {e.kind === "wedding" ? "Boda" : "Evento"} · {e.title}
               </option>
             ))}
-          </select>
+          </Listbox>
         </label>
         <label>
           Motivo

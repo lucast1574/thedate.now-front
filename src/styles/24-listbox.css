@@ -1,0 +1,112 @@
+button.custom-listbox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 11px 14px;
+  border: 1px solid #dacfc4;
+  border-radius: 8px;
+  background: #fffcf8;
+  color: #302b26;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+button.custom-listbox > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+button.custom-listbox .ui-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.18s;
+}
+button.custom-listbox[aria-expanded="true"] .ui-icon {
+  transform: rotate(180deg);
+}
+button.custom-listbox:focus-visible,
+button.custom-listbox[aria-expanded="true"] {
+  outline: 2px solid #bd9174;
+  outline-offset: 2px;
+}
+button.custom-listbox:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.listbox-menu {
+  position: fixed;
+  z-index: 10000;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 5px;
+  border: 1px solid #ded5cc;
+  border-radius: 10px;
+  background: #fffcf8;
+  color: #302b26;
+  box-shadow: 0 12px 36px #302b2624;
+  font:
+    13px/1.5 Arial,
+    sans-serif;
+}
+.listbox-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.listbox-option.active {
+  background: #f1e8df;
+}
+.listbox-option[aria-selected="true"] {
+  color: #925d3e;
+  font-weight: 600;
+}
+.listbox-option[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.listbox-option .ui-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+.office input.listbox-validation,
+input.listbox-validation {
+  position: absolute;
+  width: 1px;
+  max-width: 1px;
+  padding: 0;
+  border: 0;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+:is(.office-general, .editor-general, .manager-general) button.custom-listbox {
+  border-color: #ddd7ed;
+  background: #fff;
+}
+:is(.office-general, .editor-general, .manager-general)
+  button.custom-listbox:focus-visible,
+:is(.office-general, .editor-general, .manager-general)
+  button.custom-listbox[aria-expanded="true"] {
+  outline-color: #a17de0;
+}
+.listbox-general {
+  background: #fff;
+  border-color: #ddd7ed;
+}
+.listbox-general .listbox-option.active {
+  background: #f0eafb;
+}
+.listbox-general .listbox-option[aria-selected="true"] {
+  color: #7850b6;
+}

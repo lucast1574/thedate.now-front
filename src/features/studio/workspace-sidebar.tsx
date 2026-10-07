@@ -25,13 +25,6 @@ export default function WorkspaceSidebar({
           Mis invitaciones
         </Link>
         <Link
-          href="/profile"
-          aria-current={active === "profile" ? "page" : undefined}
-        >
-          <Icon name="users" />
-          Mi perfil
-        </Link>
-        <Link
           href="/affiliates"
           aria-current={active === "affiliates" ? "page" : undefined}
         >
@@ -50,11 +43,16 @@ export default function WorkspaceSidebar({
       </nav>
       <div className="workspace-sidebar-bottom">
         <ProductAlternative wedding={wedding} />
-        <Link className="workspace-user" href="/profile">
+        <Link
+          className="workspace-user"
+          href="/profile"
+          aria-label="Mi perfil"
+          aria-current={active === "profile" ? "page" : undefined}
+        >
           <UserAvatar user={user} />
           <span>
             <strong>{user.name}</strong>
-            <small>Tu cuenta</small>
+            <small>Mi perfil</small>
           </span>
         </Link>
       </div>

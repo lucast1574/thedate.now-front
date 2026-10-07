@@ -1,3 +1,4 @@
+import Listbox from "@/components/listbox";
 type Style = { template: string; accentColor: string };
 type Props = Style & {
   classicLabel?: string;
@@ -16,13 +17,13 @@ export default function StyleFields({
     <div className="form-grid">
       <label>
         Estilo
-        <select
+        <Listbox
           value={template}
-          onChange={(e) => onChange({ template: e.target.value })}
+          onValueChange={(value) => onChange({ template: value })}
         >
           <option value="classic">{classicLabel}</option>
           <option value="modern">Moderno</option>
-        </select>
+        </Listbox>
       </label>
       <label>
         {colorLabel}
