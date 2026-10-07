@@ -1,0 +1,140 @@
+.calendar-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.calendar-navigation > div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.calendar-navigation button {
+  border: 0;
+  background: transparent;
+  color: #665443;
+  padding: 6px;
+  border-radius: 8px;
+  text-transform: capitalize;
+  font-size: 14px;
+  font-weight: 600;
+}
+.calendar-navigation > div > button:first-child {
+  font-family: var(--font-serif), Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+.calendar-navigation button:hover {
+  background: var(--picker-soft);
+}
+.calendar-navigation svg {
+  width: 17px;
+  height: 17px;
+  color: var(--picker-tone);
+}
+.calendar-prev {
+  transform: rotate(90deg);
+}
+.calendar-next {
+  transform: rotate(-90deg);
+}
+.calendar-weekdays,
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+.calendar-weekdays {
+  font-size: 10px;
+  color: #ab9a89;
+  text-align: center;
+  margin-bottom: 8px;
+}
+.calendar-days button {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #655647;
+  font-size: 12px;
+  padding: 0;
+}
+.calendar-days button:hover {
+  background: var(--picker-soft);
+}
+.calendar-days button[aria-current="date"] {
+  box-shadow: inset 0 0 0 1px var(--picker-tone);
+}
+.calendar-days button[aria-pressed="true"] {
+  background: var(--picker-tone);
+  color: white;
+}
+.date-time-popover button:focus-visible {
+  outline: 2px solid var(--picker-tone);
+  outline-offset: 2px;
+}
+.calendar-today {
+  width: 100%;
+  margin-top: 14px;
+  padding: 9px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--picker-soft);
+  color: var(--picker-tone);
+  font-size: 12px;
+}
+.calendar-choices {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  padding: 8px 0;
+}
+.calendar-choices button {
+  border: 1px solid #e6d9cb;
+  border-radius: 10px;
+  background: transparent;
+  color: #75624f;
+  padding: 13px 0;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+.calendar-choices button[aria-pressed="true"] {
+  background: var(--picker-soft);
+  border-color: var(--picker-tone);
+}
+.office-general .date-time-trigger,
+.editor-general .date-time-trigger {
+  background: #fdfbff;
+  border-color: #e0d5ee;
+}
+.office-general .date-time-trigger svg,
+.editor-general .date-time-trigger svg {
+  color: #8150c7;
+}
+.office-general .date-time-trigger:hover,
+.office-general .date-time-trigger[aria-expanded="true"] {
+  border-color: #8150c7;
+  box-shadow: 0 0 0 2px #8150c715;
+}
+.picker-general {
+  background: linear-gradient(160deg, #fffaff, #f7f1ff);
+  border-color: #ded0ef;
+  --picker-tone: #8150c7;
+  --picker-soft: #ede2fb;
+}
+.picker-general .calendar-navigation > div > button:first-child {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+.picker-general .calendar-days button {
+  border-radius: 10px;
+  color: #574b65;
+}
+.picker-general .calendar-days button[aria-pressed="true"] {
+  color: white;
+}
+.picker-general .calendar-navigation button {
+  color: #6e508f;
+}

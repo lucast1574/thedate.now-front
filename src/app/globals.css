@@ -38,3 +38,9 @@
 
 @import "../styles/27-simple-event-form.css";
 @import "../styles/event-form-options.css";
+
+@import "../styles/28-date-time-pickers.css";
+@import "../styles/calendar-picker.css";
+@import "../styles/time-picker.css";
+
+@import "../styles/event-start-options.css";

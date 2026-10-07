@@ -1,5 +1,7 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
+import DatePicker from "@/components/date-picker";
+import TimePicker from "@/components/time-picker";
 import SubdomainField from "./subdomain-field";
 import { browserTimeZone } from "@/lib/events/draft";
 import { suggestedAddress } from "@/lib/events/event-form";
@@ -36,36 +38,30 @@ export default function EventBasics({
         />
       </label>
       <div className="form-grid event-date-row">
-        <label>
-          ¿Qué día?
-          <input
-            required
-            type="date"
-            value={date || ""}
-            onChange={(e) =>
-              setDraft({
-                ...draft,
-                startAt: `${e.target.value}T${time?.slice(0, 5) || "18:00"}`,
-                timeZone: browserTimeZone(),
-              })
-            }
-          />
-        </label>
-        <label>
-          ¿A qué hora?
-          <input
-            required
-            type="time"
-            value={time?.slice(0, 5) || "18:00"}
-            onChange={(e) =>
-              setDraft({
-                ...draft,
-                startAt: `${date || ""}T${e.target.value}`,
-                timeZone: browserTimeZone(),
-              })
-            }
-          />
-        </label>
+        <DatePicker
+          label="¿Qué día?"
+          required
+          value={date || ""}
+          onChange={(value) =>
+            setDraft({
+              ...draft,
+              startAt: `${value}T${time?.slice(0, 5) || "18:00"}`,
+              timeZone: browserTimeZone(),
+            })
+          }
+        />
+        <TimePicker
+          label="¿A qué hora?"
+          required
+          value={time?.slice(0, 5) || "18:00"}
+          onChange={(value) =>
+            setDraft({
+              ...draft,
+              startAt: `${date || ""}T${value}`,
+              timeZone: browserTimeZone(),
+            })
+          }
+        />
       </div>
       <SubdomainField
         kind={draft.kind}

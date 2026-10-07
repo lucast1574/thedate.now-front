@@ -1,0 +1,64 @@
+.template-start,
+.guest-hold-field {
+  --office-accent: #ad7254;
+  --office-soft: #f6efe7;
+  --office-border: #e6ddd1;
+}
+.office-general .template-start,
+.office-general .guest-hold-field {
+  --office-accent: #7451ac;
+  --office-soft: #f1ebfa;
+  --office-border: #e5daf2;
+}
+.template-start {
+  display: grid;
+  gap: 16px;
+}
+.template-start-choice {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+.template-start-choice input {
+  width: 18px !important;
+  height: 18px;
+  min-height: 18px !important;
+  margin-top: 2px;
+  accent-color: var(--office-accent);
+}
+.template-start-choice small {
+  display: block;
+  margin-top: 5px;
+  font-weight: 400;
+}
+.template-start-preview {
+  border: 1px solid var(--office-accent);
+  border-radius: 10px;
+  padding: 12px 18px;
+  background: var(--office-soft);
+  color: var(--office-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+.template-start-preview:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.guest-hold-field {
+  display: grid;
+  gap: 12px;
+}
+.guest-hold-example {
+  margin: 0;
+  padding: 16px;
+  border: 1px solid var(--office-border);
+  border-radius: 12px;
+  background: var(--office-soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.guest-hold-example strong {
+  display: block;
+  margin-bottom: 4px;
+}

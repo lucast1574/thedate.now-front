@@ -5,7 +5,8 @@ import type { Event } from "@/lib/events/types";
 import EventBasics from "./event-basics";
 import EventLocationFields from "./event-location-fields";
 import EventCapacity from "./event-capacity";
-import StyleFields from "@/components/style-fields";
+import EventTemplateStart from "./event-template-start";
+import GuestHoldField from "./guest-hold-field";
 export default function EventForm({
   draft,
   setDraft,
@@ -71,7 +72,7 @@ export default function EventForm({
         <summary>
           <Icon name="sparkle" />
           <span>
-            Mensaje y estilo
+            {selected ? "Mensaje para tus invitados" : "Mensaje y estilo"}
             <small>Puedes personalizarlos ahora o en el editor.</small>
           </span>
           <Icon name="chevron" />
@@ -88,15 +89,9 @@ export default function EventForm({
               placeholder="Queremos celebrar este momento contigo…"
             />
           </label>
-          <StyleFields
-            template={draft.template}
-            accentColor={draft.accentColor}
-            classicLabel="Clásico editorial"
-            colorLabel="Color de acento"
-            onChange={(patch) =>
-              setDraft((current) => ({ ...current, ...patch }))
-            }
-          />
+          {!selected && (
+            <EventTemplateStart draft={draft} setDraft={setDraft} />
+          )}
         </div>
       </details>
       <details className="event-form-options">
@@ -118,23 +113,7 @@ export default function EventForm({
               }
             />
           </label>
-          <label>
-            Si responden «Tal vez», ¿cuántas horas guardamos su lugar?
-            <input
-              required
-              type="number"
-              min="1"
-              max="168"
-              value={draft.maybeHoldHours}
-              onChange={(e) =>
-                setDraft({ ...draft, maybeHoldHours: Number(e.target.value) })
-              }
-            />
-            <small>
-              Por defecto, 48 horas. Después podrán confirmar si todavía hay
-              espacio.
-            </small>
-          </label>
+          <GuestHoldField draft={draft} setDraft={setDraft} />
         </div>
       </details>
       <div className="event-form-submit">

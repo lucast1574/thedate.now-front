@@ -12,7 +12,7 @@
   border: 1px solid #0002;
   flex-shrink: 0;
 }
-.color-hex-row label {
+.color-picker .color-hex-row label {
   flex: 1;
   min-width: 0;
   display: grid;
@@ -76,4 +76,27 @@
   .style-option-body {
     padding: 10px;
   }
+}
+
+.template-customization {
+  border: 1px solid #e1d6c8;
+  padding: 14px;
+  border-radius: 12px;
+  background: #fffcf8;
+}
+.template-customization summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a46e55;
+}
+.template-customization .style-fields {
+  margin-top: 16px;
+}
+.editor-general .template-customization {
+  background: #fdfbff;
+  border-color: #e3d9ee;
+}
+.editor-general .template-customization summary {
+  color: #8150c7;
 }

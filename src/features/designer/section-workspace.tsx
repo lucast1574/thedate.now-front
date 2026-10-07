@@ -1,3 +1,7 @@
+import {
+  invitationTemplates,
+  resolveTemplateId,
+} from "@/lib/events/template-catalog";
 import StyleFields from "@/components/style-fields";
 import SectionEditor from "./section-editor";
 import type { useInvitationDesign } from "./use-invitation-design";
@@ -7,6 +11,12 @@ export default function SectionWorkspace({
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
   const { draft, setDraft } = editor;
+  const template = invitationTemplates.find(
+    (item) =>
+      item.id === draft.templateId &&
+      item.kind === draft.kind &&
+      item.mode === "sections",
+  );
   return (
     <section className="section-workspace designer-controls">
       <h2>Diseño por secciones</h2>
@@ -34,12 +44,31 @@ export default function SectionWorkspace({
           }
         />
       </label>
-      <StyleFields
-        template={draft.template}
-        accentColor={draft.accentColor}
-        classicLabel="Clásico"
-        onChange={(patch) => setDraft((current) => ({ ...current, ...patch }))}
-      />
+      {template && (
+        <details className="template-customization">
+          <summary>Personalizar plantilla · {template.name}</summary>
+          <StyleFields
+            template={draft.template}
+            accentColor={draft.accentColor}
+            classicLabel="Clásico"
+            onChange={(patch) =>
+              setDraft((current) => ({
+                ...current,
+                ...patch,
+                ...(patch.template
+                  ? {
+                      templateId: resolveTemplateId(
+                        current.kind,
+                        patch.template,
+                        "sections",
+                      ),
+                    }
+                  : {}),
+              }))
+            }
+          />
+        </details>
+      )}
       <div className="designer-sections">
         {editor.sections.map((section, index) => (
           <SectionEditor

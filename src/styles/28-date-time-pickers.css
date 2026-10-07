@@ -1,0 +1,94 @@
+.date-time-field {
+  position: relative;
+  min-width: 0;
+}
+.date-time-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 650;
+  color: #5e574f;
+  margin-bottom: 7px;
+}
+button.date-time-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid #dcd2c6;
+  border-radius: 10px;
+  background: #fffcf8;
+  color: #504538;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+}
+.date-time-trigger svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #ad7254;
+}
+.date-time-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.picker-placeholder {
+  color: #9b8f81;
+}
+.date-time-trigger:hover,
+.date-time-trigger[aria-expanded="true"] {
+  border-color: #ad7254;
+  box-shadow: 0 0 0 2px #ad725417;
+}
+.date-time-field .picker-validation {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  opacity: 0;
+  pointer-events: none;
+  bottom: 0;
+}
+.date-time-popover {
+  position: fixed;
+  z-index: 1000;
+  overflow: auto;
+  padding: 18px;
+  border: 1px solid #e3d8ca;
+  border-radius: 18px;
+  background: #fffcf8;
+  box-shadow: 0 20px 70px #37271826;
+  color: #504538;
+  font-family: var(--font-sans), sans-serif;
+  --picker-tone: #ad7254;
+  --picker-soft: #f2e5d9;
+}
+.date-time-popover button {
+  cursor: pointer;
+  font-family: inherit;
+}
+.date-time-popover-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9dfd4;
+  margin-bottom: 12px;
+  font-size: 11px;
+  color: #a38b74;
+}
+.date-time-popover-heading > button {
+  border: 0;
+  background: var(--picker-soft);
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
+  color: var(--picker-tone);
+  font-size: 18px;
+}

@@ -82,8 +82,8 @@
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
-.color-slider-label,
-.color-adjustments label {
+.color-picker label.color-slider-label,
+.color-picker .color-adjustments label {
   display: grid;
   gap: 7px;
   font-size: 10px;
@@ -99,7 +99,7 @@
   accent-color: var(--picker-accent);
   cursor: pointer;
 }
-input.color-hue {
+.color-picker input.color-hue {
   appearance: none;
   border-radius: 20px;
   background: linear-gradient(to right, red, #ff0, #0f0, #0ff, #00f, #f0f, red);
