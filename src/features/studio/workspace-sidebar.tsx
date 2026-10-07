@@ -8,12 +8,10 @@ export default function WorkspaceSidebar({
   wedding,
   user,
   active = "events",
-  onSignOut,
 }: {
   wedding: boolean;
   user: User;
   active?: "events" | "profile" | "admin" | "affiliates";
-  onSignOut: () => void;
 }) {
   return (
     <aside className="workspace-sidebar">
@@ -59,9 +57,6 @@ export default function WorkspaceSidebar({
             <small>Tu cuenta</small>
           </span>
         </Link>
-        <button className="workspace-signout" onClick={onSignOut}>
-          Cerrar sesión
-        </button>
       </div>
     </aside>
   );

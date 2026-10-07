@@ -17,7 +17,11 @@ export default function AccountShell({
   wedding: boolean;
   googleEnabled: boolean;
   admin?: boolean;
-  children: (user: User, update: (user: User) => void) => ReactNode;
+  children: (
+    user: User,
+    update: (user: User) => void,
+    signOut: () => Promise<void>,
+  ) => ReactNode;
   active?: "admin" | "profile" | "affiliates";
 }) {
   const [user, setUser] = useState<User | null>(null),
@@ -43,16 +47,7 @@ export default function AccountShell({
       className={`office ${user ? "workspace" : ""} ${wedding ? "office-wedding" : "office-general"}`}
     >
       {user ? (
-        <WorkspaceSidebar
-          wedding={wedding}
-          user={user}
-          active={active}
-          onSignOut={() => {
-            void api("/api/session", "DELETE")
-              .then(() => setUser(null))
-              .catch((e) => setError(e.message));
-          }}
-        />
+        <WorkspaceSidebar wedding={wedding} user={user} active={active} />
       ) : (
         <StudioHeader wedding={wedding} />
       )}
@@ -94,7 +89,10 @@ export default function AccountShell({
             <Link href="/">Volver a mis eventos</Link>
           </section>
         ) : (
-          children(user, setUser)
+          children(user, setUser, async () => {
+            await api("/api/session", "DELETE");
+            setUser(null);
+          })
         )}
         {user && <ProductAlternative wedding={wedding} footer />}
       </div>

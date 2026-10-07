@@ -14,7 +14,9 @@ export default function ProfilePage({
       googleEnabled={googleEnabled}
       active="profile"
     >
-      {(user, update) => <ProfileForm user={user} onSaved={update} />}
+      {(user, update, signOut) => (
+        <ProfileForm user={user} onSaved={update} onSignOut={signOut} />
+      )}
     </AccountShell>
   );
 }

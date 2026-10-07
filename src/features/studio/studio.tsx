@@ -34,13 +34,6 @@ export default function Studio({
   const router = useRouter();
   const creating = useSearchParams().get("new") === "1",
     wedding = portal === "wedding";
-  async function signOut() {
-    await feedback.run(async () => {
-      await session.signOut();
-      events.reset();
-      router.replace("/");
-    });
-  }
   function create() {
     events.createDraft();
     feedback.clear();
@@ -83,11 +76,7 @@ export default function Studio({
     <main
       className={`office workspace ${wedding ? "office-wedding" : "office-general"}`}
     >
-      <WorkspaceSidebar
-        wedding={wedding}
-        user={session.user}
-        onSignOut={() => void signOut()}
-      />
+      <WorkspaceSidebar wedding={wedding} user={session.user} />
       <div className="workspace-content">
         {events.selected || creating ? (
           <EventWorkspace

@@ -7,9 +7,11 @@ import { profilePhoto } from "./profile-photo";
 export default function ProfileForm({
   user,
   onSaved,
+  onSignOut,
 }: {
   user: User;
   onSaved: (user: User) => void;
+  onSignOut: () => Promise<void>;
 }) {
   const [current, setCurrent] = useState(user),
     [name, setName] = useState(user.name),
@@ -106,6 +108,26 @@ export default function ProfileForm({
             Guardar perfil
           </button>
         </form>
+      </div>
+      <div className="profile-session">
+        <button
+          type="button"
+          className="profile-signout"
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            setError("");
+            try {
+              await onSignOut();
+            } catch (e) {
+              setError((e as Error).message);
+            } finally {
+              setBusy(false);
+            }
+          }}
+        >
+          Cerrar sesión
+        </button>
       </div>
     </section>
   );
