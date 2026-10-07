@@ -1,0 +1,98 @@
+.demo-cover {
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.demo-cover-content {
+  position: relative;
+  height: 100%;
+  padding: 6cqw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6cqw;
+  text-align: center;
+}
+.demo-cover-content > .ui-icon {
+  width: 9cqw;
+  height: 9cqw;
+  flex-shrink: 0;
+}
+.demo-cover-kicker {
+  font:
+    600 clamp(6px, 2.5cqw, 9px)/1.3 var(--font-sans),
+    sans-serif;
+  letter-spacing: 0.15em;
+}
+.demo-cover-content strong {
+  font:
+    400 clamp(16px, 9cqw, 30px)/1.06 var(--font-serif),
+    serif;
+  overflow-wrap: anywhere;
+}
+.demo-cover-content p {
+  margin: 0;
+  font:
+    italic clamp(9px, 4cqw, 13px)/1.3 var(--font-serif),
+    serif;
+}
+.demo-cover-rule {
+  width: 16cqw;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+  flex-shrink: 0;
+}
+.demo-cover-wedding {
+  color: #7f513b;
+  background: linear-gradient(135deg, #f5ecdf, #fffbf5);
+}
+.demo-cover-wedding strong {
+  color: #352b22;
+}
+.demo-cover-wedding p {
+  color: #8f7867;
+}
+.demo-cover-general {
+  color: #eae0ff;
+  background: linear-gradient(135deg, #5739a3, #8852cc 65%, #a668d2);
+}
+.demo-cover-general::before,
+.demo-cover-general::after {
+  content: "";
+  position: absolute;
+  width: 42%;
+  aspect-ratio: 1;
+  border: 1px solid #ffffff30;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.demo-cover-general::before {
+  top: -20%;
+  right: -12%;
+  box-shadow: 0 0 0 12px #ffffff0a;
+}
+.demo-cover-general::after {
+  bottom: -25%;
+  left: -15%;
+  box-shadow: 0 0 0 18px #ffffff08;
+}
+.demo-cover-general strong {
+  color: #fff;
+  font-family: var(--font-party), var(--font-sans), sans-serif;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+.demo-cover-general p {
+  color: #efe6ff;
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+}
+.demo-cover-general .ui-icon {
+  color: #ffdb85;
+}
+.demo-cover-general .demo-cover-rule {
+  color: #ffdb85;
+}

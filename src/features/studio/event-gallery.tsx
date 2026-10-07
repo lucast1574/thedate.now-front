@@ -2,6 +2,8 @@ import Link from "next/link";
 import Icon from "@/components/icon";
 import type { Event, Kind, User } from "@/lib/events/types";
 import { galleryEvents } from "@/lib/events/studio-gallery";
+import DemoCover from "./demo-cover";
+import { defaultDemoCover } from "@/lib/events/thumbnail";
 import InvitationThumbnail from "./invitation-thumbnail";
 export default function EventGallery({
   events,
@@ -73,47 +75,45 @@ export default function EventGallery({
                 href={`/editor/${encodeURIComponent(event.id)}`}
                 aria-label={`Editar ${event.title}`}
               >
-                <InvitationThumbnail event={event} />
-                <span className="card-edit">
-                  <Icon name="arrow" />
-                  Abrir editor
-                </span>
-              </Link>
-              <div className="invitation-card-meta">
-                <div>
-                  <span className={`card-status ${event.isDemo ? "demo" : ""}`}>
-                    {event.isDemo
-                      ? "Tu muestra gratuita"
-                      : event.publishedAt
-                        ? "Publicada"
-                        : "Borrador"}
-                    {event.ownerId !== user.id ? " · Compartida" : ""}
-                  </span>
-                  <h3>
-                    <Link href={`/editor/${encodeURIComponent(event.id)}`}>
-                      {event.title}
-                    </Link>
-                  </h3>
-                  <small>
-                    {new Intl.DateTimeFormat("es", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                      timeZone: event.timeZone || "UTC",
-                    }).format(new Date(event.startAt))}
-                  </small>
-                </div>
-                {!event.isDemo && (
-                  <Link
-                    className="card-manage"
-                    href={`/?event=${encodeURIComponent(event.id)}`}
-                    aria-label={`Gestionar ${event.title}`}
-                  >
-                    <Icon name="users" />
-                    Gestionar
-                  </Link>
+                {defaultDemoCover(event) ? (
+                  <DemoCover event={event} />
+                ) : (
+                  <InvitationThumbnail event={event} />
                 )}
-              </div>
+              </Link>
+              {!event.isDemo && (
+                <div className="invitation-card-meta">
+                  <div>
+                    <span className="card-status">
+                      {event.publishedAt ? "Publicada" : "Borrador"}
+                      {event.ownerId !== user.id ? " · Compartida" : ""}
+                    </span>
+                    <h3>
+                      <Link href={`/editor/${encodeURIComponent(event.id)}`}>
+                        {event.title}
+                      </Link>
+                    </h3>
+                    <small>
+                      {new Intl.DateTimeFormat("es", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        timeZone: event.timeZone || "UTC",
+                      }).format(new Date(event.startAt))}
+                    </small>
+                  </div>
+                  {!event.isDemo && (
+                    <Link
+                      className="card-manage"
+                      href={`/?event=${encodeURIComponent(event.id)}`}
+                      aria-label={`Gestionar ${event.title}`}
+                    >
+                      <Icon name="users" />
+                      Gestionar
+                    </Link>
+                  )}
+                </div>
+              )}
             </article>
           ))}
           <button className="invitation-new-card" onClick={onCreate}>

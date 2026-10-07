@@ -178,3 +178,36 @@
     gap: 10px;
   }
 }
+
+.preview-device {
+  position: relative;
+}
+.preview-watermark {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+  color: #744f39;
+  opacity: 0.16;
+}
+.preview-watermark[data-product="general"] {
+  color: #65429f;
+}
+.preview-watermark > span {
+  transform: rotate(-24deg);
+  text-align: center;
+  font:
+    700 clamp(24px, 4vw, 38px)/1.3 var(--font-sans),
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.preview-watermark small {
+  display: block;
+  font-size: 0.5em;
+  letter-spacing: 0.15em;
+}

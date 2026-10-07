@@ -131,3 +131,7 @@ El inicio muestra `studio/event-gallery.tsx`; no selecciona automáticamente una
 `components/listbox.tsx` y `listbox-menu.tsx` comparten los desplegables de ambas marcas: teclado, búsqueda por letras, opciones deshabilitadas, validación requerida y popup fuera de los contenedores con overflow. La lógica de navegación y posición está en `lib/ui/listbox.ts`. El perfil tiene un único acceso mediante el avatar del sidebar. Administración consume `roleProtected`; el servidor decide los permisos.
 
 Los roles administrativos pueden asignarse a cuentas de Google o correo/contraseña. Afiliados muestra los enlaces de ambas marcas activos automáticamente para las cuentas elegibles, sin botón de activación; conserva la exclusión de comisiones de administradores/cortesías.
+
+`studio/demo-cover.tsx` da una portada violeta/festiva a la muestra intacta de The Date y una portada floral/editorial a Save the Date. `lib/events/thumbnail.ts` reconoce únicamente la muestra original: cualquier diseño editado conserva el renderer. Las miniaturas miden título/párrafo o el primer lienzo y ajustan su escala al alto de la tarjeta, sin recortar texto; la tarjeta de crear conserva las mismas dimensiones.
+
+Las muestras no repiten aviso, título ni fecha debajo de su tarjeta. `designer/preview-watermark.tsx` marca únicamente el visor de muestras/eventos pendientes: el editor no tiene esa capa y eventos pagados/cortesías no la muestran. El acceso directo al manager se ofrece únicamente con evento habilitado.
