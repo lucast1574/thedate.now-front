@@ -40,6 +40,8 @@ export type Event = DesignEvent & {
   paymentStatus: string;
   publishedAt: string | null;
   updatedAt?: string;
+  createdAt?: string;
+  coupleUserIds?: string[];
 };
 export type PublicEvent = Pick<
   Event,
@@ -80,6 +82,8 @@ export type Guest = {
   sentAt?: string;
 };
 export type User = {
+  googlePhotoUrl?: string;
+  avatarVersion?: number;
   portals?: Kind[];
   creatorPortals?: Kind[];
   id: string;

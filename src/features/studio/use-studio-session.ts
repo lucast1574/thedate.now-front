@@ -6,6 +6,7 @@ export function useStudioSession(
   portal: Kind,
   _onError: (message: string) => void,
 ) {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     let active = true;
@@ -13,7 +14,10 @@ export function useStudioSession(
       .then((u) => {
         if (active) setUser(u);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false);
+      });
     return () => {
       active = false;
     };
@@ -31,5 +35,5 @@ export function useStudioSession(
     await api("/api/session", "DELETE");
     setUser(null);
   }
-  return { user, signIn, signOut };
+  return { user, loading, signIn, signOut };
 }

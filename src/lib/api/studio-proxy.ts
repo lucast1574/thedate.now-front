@@ -2,7 +2,7 @@ import "server-only";
 import { sessionToken } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
 const allowedPath =
-  /^(?:events(?:\/[a-z0-9-]+(?:\/(?:guests(?:\/import)?|seating|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
+  /^(?:profile|events(?:\/[a-z0-9-]+(?:\/(?:guests(?:\/import)?|seating|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
 
 export async function proxyStudio(
   request: Request,

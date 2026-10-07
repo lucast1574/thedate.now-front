@@ -1,0 +1,390 @@
+/* Shared navigation, with a warm wedding studio and a lively event space. */
+.workspace {
+  --workspace-accent: #98664f;
+  --workspace-tint: #eee4d8;
+  --workspace-ink: #302b26;
+  display: grid;
+  grid-template-columns: 242px minmax(0, 1fr);
+  min-height: 100dvh;
+  background: #f8f5ef;
+}
+.workspace.office-general {
+  --workspace-accent: #7952c8;
+  --workspace-tint: #eee7fa;
+  --workspace-ink: #292336;
+  background: #faf8ff;
+}
+.workspace-sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 38px 22px 24px;
+  border-right: 1px solid #ddd5ca;
+  background: #f1ece4;
+}
+.office-general .workspace-sidebar {
+  background: #f1ecf9;
+  border-color: #e5def0;
+}
+.workspace-brand {
+  display: block;
+  margin: 0 8px 48px;
+}
+.workspace-label {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: #938375;
+  margin: 0 14px 18px;
+  font-weight: 700;
+}
+.workspace-sidebar nav {
+  display: grid;
+  gap: 8px;
+}
+.workspace-sidebar nav a {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 13px 14px;
+  font-size: 13px;
+  color: #776b61;
+  border-radius: 7px;
+}
+.workspace-sidebar nav .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.workspace-sidebar nav a:hover,
+.workspace-sidebar nav a[aria-current="page"] {
+  background: #fffdf9;
+  color: var(--workspace-ink);
+  box-shadow: 0 3px 14px #58433105;
+}
+.office-general .workspace-sidebar nav a {
+  border-radius: 12px;
+}
+.workspace-sidebar-bottom {
+  margin-top: auto;
+  padding-top: 32px;
+}
+.workspace-alternative {
+  border-bottom: 1px solid #dfd5c8;
+  padding: 18px 12px 24px;
+  margin-bottom: 24px;
+  font-size: 10px;
+  color: #938375;
+  line-height: 1.6;
+}
+.workspace-alternative span {
+  display: block;
+}
+.workspace-alternative a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: #76665b;
+}
+.workspace-alternative .ui-icon {
+  width: 12px;
+  height: 12px;
+}
+.workspace-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 0 12px;
+}
+.workspace-user > span:last-child {
+  min-width: 0;
+}
+.workspace-user strong {
+  display: block;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+.workspace-user small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #938375;
+}
+.user-avatar {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #dfd2c2;
+  color: #76523c;
+  font-size: 12px;
+  font-weight: 700;
+  overflow: hidden;
+}
+.office-general .user-avatar {
+  background: #e1d4f5;
+  color: #7046a4;
+}
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.workspace-signout {
+  margin: 18px 12px 0;
+  background: none;
+  border: 0;
+  color: #938375;
+  font-size: 11px;
+  cursor: pointer;
+}
+.workspace-content {
+  min-width: 0;
+}
+.workspace-content > .alert {
+  margin: 30px;
+}
+.workspace-event.office-main {
+  margin: 0 auto;
+  padding-top: 48px;
+}
+.workspace-back {
+  display: inline-block;
+  margin-bottom: 26px;
+  font-size: 12px;
+  color: var(--workspace-accent);
+}
+.workspace a:focus-visible,
+.workspace button:focus-visible {
+  outline: 2px solid var(--workspace-accent);
+  outline-offset: 4px;
+}
+.profile-page {
+  max-width: 860px;
+  padding: 64px clamp(24px, 5vw, 72px);
+  margin: auto;
+}
+.profile-page h1 {
+  font:
+    400 46px/1.1 var(--font-serif),
+    serif;
+  margin: 16px 0;
+}
+.office-general .profile-page h1 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 650;
+  font-size: 38px;
+}
+.profile-page > p {
+  color: #84796f;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.profile-panel {
+  padding: 32px;
+  background: #fffdf9;
+  border: 1px solid #e3dcd2;
+  border-radius: 12px;
+  margin-top: 32px;
+}
+.profile-photo {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid #e7dfd5;
+  margin-bottom: 28px;
+}
+.profile-photo .user-avatar {
+  width: 90px;
+  height: 90px;
+  font-size: 24px;
+}
+.profile-photo h2 {
+  font-size: 15px;
+  margin: 0 0 8px;
+}
+.profile-photo p,
+.profile-photo small {
+  color: #84796f;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.profile-photo small {
+  display: block;
+  margin-top: 8px;
+}
+.office .profile-upload {
+  cursor: pointer;
+  display: inline-flex;
+  width: auto;
+  padding: 10px 16px;
+  border: 1px solid #d5c5b6;
+  border-radius: 6px;
+  margin-top: 10px;
+  position: relative;
+}
+.profile-upload input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.profile-panel form {
+  display: grid;
+  gap: 20px;
+}
+.profile-panel .office-button {
+  justify-self: start;
+}
+@media (max-width: 900px) {
+  .workspace {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+  .workspace-sidebar {
+    padding: 30px 12px 20px;
+  }
+}
+@media (max-width: 640px) {
+  .workspace {
+    display: block;
+  }
+  .workspace-sidebar {
+    position: static;
+    height: auto;
+    padding: 20px;
+    border-right: 0;
+    border-bottom: 1px solid #dfd5c8;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 18px;
+  }
+  .workspace-brand {
+    margin: 0;
+    align-self: center;
+  }
+  .workspace-label {
+    display: none;
+  }
+  .workspace-sidebar nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    grid-column: 1/-1;
+    grid-row: 2;
+  }
+  .workspace-sidebar nav a {
+    padding: 9px 10px;
+    font-size: 11px;
+    gap: 6px;
+  }
+  .workspace-sidebar nav .ui-icon {
+    width: 15px;
+    height: 15px;
+  }
+  .workspace-sidebar-bottom {
+    display: contents;
+  }
+  .workspace-user {
+    padding: 0;
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .workspace-user > span:last-child {
+    display: none;
+  }
+  .workspace-alternative {
+    grid-column: 1/-1;
+    grid-row: 3;
+    padding: 8px 4px 0;
+    margin: 0;
+    border: 0;
+  }
+  .workspace-alternative span {
+    display: inline;
+    margin-right: 6px;
+  }
+  .workspace-signout {
+    grid-column: 2;
+    grid-row: 3;
+    justify-self: end;
+    margin: 10px 0 0;
+    background: #f1ece4;
+  }
+  .workspace-alternative {
+    padding-right: 78px;
+  }
+  .office-general .workspace-signout {
+    background: #f1ecf9;
+  }
+  .profile-page {
+    padding: 36px 20px;
+  }
+  .profile-page h1 {
+    font-size: 36px;
+  }
+  .profile-panel {
+    padding: 22px;
+  }
+  .profile-photo {
+    align-items: start;
+    gap: 18px;
+  }
+  .profile-photo .user-avatar {
+    width: 62px;
+    height: 62px;
+  }
+  .workspace-event.office-main {
+    padding: 30px 20px 60px;
+  }
+}
+
+.workspace-brand .brand {
+  max-width: 100%;
+  gap: 9px;
+}
+.workspace-brand .wedding-mark {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
+.workspace-brand .brand-wedding-title {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+.workspace-brand .brand-wedding-subtitle {
+  font-size: 6px;
+  letter-spacing: 0.2em;
+}
+.workspace-brand .brand-wordmark {
+  font-size: 28px;
+}
+.workspace-brand .brand-mark {
+  width: 28px;
+  height: 28px;
+}
+
+.workspace-mobile-alternative {
+  display: none;
+}
+@media (max-width: 640px) {
+  .workspace-sidebar .workspace-alternative {
+    display: none;
+  }
+  .workspace-mobile-alternative {
+    display: block;
+    margin: 0 20px 30px;
+    border-top: 1px solid #e4dad0;
+    padding: 22px 0 0;
+    font-size: 11px;
+  }
+}

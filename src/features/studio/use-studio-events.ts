@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { blankEvent, eventPayload, normalizeEvent } from "@/lib/events/draft";
 import type { Event, Guest, Kind, User } from "@/lib/events/types";
@@ -9,6 +10,9 @@ export function useStudioEvents(
   user: User | null,
   onError: (message: string) => void,
 ) {
+  const requested = useSearchParams().get("event");
+  const creating = useSearchParams().get("new") === "1";
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [selected, setSelected] = useState<Event | null>(null);
   const [draft, setDraft] = useState<Event>(() => blankEvent(portal));
@@ -29,12 +33,7 @@ export function useStudioEvents(
       .then((all) => {
         if (!active) return;
         const list = all.filter((event) => event.kind === portal);
-        const requested = new URLSearchParams(window.location.search).get(
-          "event",
-        );
-        const demo =
-          list.find((event) => event.id === requested) ??
-          list.find((event) => event.isDemo);
+        const demo = list.find((event) => event.id === requested);
         setEvents(list);
         setSelected(demo ?? null);
         setDraft(
@@ -46,11 +45,14 @@ export function useStudioEvents(
       })
       .catch((err) => {
         if (active) onError(err.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
       });
     return () => {
       active = false;
     };
-  }, [user, portal, onError]);
+  }, [user, portal, requested, creating, onError]);
 
   async function refreshGuests(event: Event) {
     setGuests(await api<Guest[]>(`/api/backend/events/${event.id}/guests`));
@@ -98,11 +100,13 @@ export function useStudioEvents(
     }
   }
   function reset() {
+    setLoading(true);
     setEvents([]);
     createDraft();
   }
   return {
     events,
+    loading,
     selected,
     draft,
     setDraft,
