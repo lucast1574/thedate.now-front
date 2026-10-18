@@ -1,14 +1,23 @@
 import WeddingHeader from "./header";
 import WeddingHero from "./hero";
-import WeddingFeatures from "./features";
 import WeddingFooter from "./footer";
+import WeddingStory from "./story";
+import MarketingFAQ from "../questions";
+import MarketingSchema from "../schema";
 export default function WeddingLanding() {
   return (
-    <main className="site wedding">
+    <main className="site wedding wedding-atlas" id="inicio">
+      <a className="marketing-skip" href="#contenido">
+        Ir al contenido
+      </a>
       <WeddingHeader />
-      <WeddingHero />
-      <WeddingFeatures />
+      <div id="contenido">
+        <WeddingHero />
+      </div>
+      <WeddingStory />
+      <MarketingFAQ wedding />
       <WeddingFooter />
+      <MarketingSchema wedding />
     </main>
   );
 }

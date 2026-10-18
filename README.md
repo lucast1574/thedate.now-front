@@ -74,3 +74,19 @@ tests/           Regresiones de contratos, eventos y widgets
 - RSVP restaura elección/motivo persistidos, y los cupos Maybe respetan su vencimiento.
 
 La configuración operativa, migración de reservas y límites de escala están documentados en el backend (`docs/rollout.md`).
+
+## Landings y SEO
+
+Las identidades de Save the Date y The Date están documentadas en `brand/`.
+Las nuevas secciones se mantienen en `src/features/marketing/`, con estilos
+limitados a `.wedding-atlas` y `.festival-site`. El estudio y las invitaciones
+conservan sus componentes existentes.
+
+Cada dominio público tiene título, descripción, canonical, Open Graph, imagen
+social PNG (con SVG editable), Twitter Card y JSON-LD WebSite/WebPage propios.
+`public-origin.ts` permite sitemap y robots únicamente en `thedate.now` y
+`save.thedate.now`; estudios, rutas privadas e invitaciones no heredan el canonical
+de una landing. Las FAQ tienen contenido visible, sin promesas de rich results.
+
+Validación: `npm run check`; `tests/marketing-seo.test.mjs` cubre aislamiento por
+host, contenedores de invitaciones, sitemap y metadatos de las dos marcas.

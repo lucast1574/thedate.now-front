@@ -1,108 +1,63 @@
 import Icon from "@/components/icon";
 export default function GeneralHero() {
   return (
-    <section className="party-hero party-shell">
-      <div className="party-copy">
-        <p className="party-eyebrow">
-          <span className="party-sparkle">
-            <Icon name="sparkle" />
-          </span>{" "}
-          CUALQUIER EXCUSA ES BUENA
-        </p>
+    <section className="festival-hero party-shell" id="contenido">
+      <div className="festival-copy">
+        <p>Invitaciones digitales para tus eventos</p>
         <h1>
-          Haz del día
+          El plan empieza
           <br />
-          un <em>gran plan.</em>
+          con un
+          <br />
+          «¿te apuntas?»
         </h1>
         <p>
-          Invitaciones con personalidad para cumpleaños, fiestas y encuentros.
-          Organiza a todos, comparte cada detalle y deja que empiece la emoción.
+          Cumpleaños, fiestas y encuentros. Crea una invitación tan tuya como el
+          plan, compártela por WhatsApp y reúne a tu gente.
         </p>
-        <div className="party-hero-actions">
+        <div className="festival-actions">
           <a className="party-button" href="https://crea.thedate.now">
-            Crear mi invitación{" "}
-            <span>
-              <Icon name="external" />
-            </span>
+            Crear mi invitación <Icon name="external" />
           </a>
-          <a className="party-link" href="#como-funciona">
-            Así funciona{" "}
-            <span>
-              <Icon name="down" />
-            </span>
+          <a href="#ideas">
+            Encontrar mi ocasión <Icon name="down" />
           </a>
         </div>
-        <div className="party-chips">
-          <span>
-            <Icon name="star" /> Cumpleaños
-          </span>
-          <span>
-            <Icon name="sparkle" /> Fiestas
-          </span>
-          <span>
-            <Icon name="users" /> Reuniones
-          </span>
-          <span>
-            <Icon name="heart" /> Más momentos
-          </span>
-        </div>
+        <small>Diseña y guarda gratis. Publica cuando tengas todo listo.</small>
       </div>
-      <div className="party-stage" aria-label="Ejemplo de invitación">
-        <span className="party-doodle party-doodle-one">
+      <figure className="festival-stage">
+        <div className="festival-orbit" aria-hidden="true" />
+        <div className="festival-ticket">
+          <span>The Date te invita</span>
           <Icon name="sparkle" />
-        </span>
-        <span className="party-doodle party-doodle-two">
-          <Icon name="sparkle" />
-        </span>
-        <span className="party-doodle party-doodle-three">
-          <Icon name="circle" />
-        </span>
-        <div className="party-paper party-paper-back" />
-        <div className="party-paper party-paper-front">
-          <div className="party-paper-top">
-            <span>THE DATE PRESENTA</span>
-            <span>
-              <Icon name="star" />
-            </span>
-          </div>
-          <span className="party-paper-kicker">NOS VEMOS PARA CELEBRAR</span>
           <strong>
-            ¡Es mi
+            Nos vemos
             <br />
-            <i>cumple!</i>
+            en la pista.
           </strong>
-          <div className="party-paper-confetti">
-            <span>
-              <Icon name="sparkle" />
-            </span>
-            <span>
-              <Icon name="circle" />
-            </span>
-            <span>
-              <Icon name="sparkle" />
-            </span>
-          </div>
-          <div className="party-paper-bottom">
-            <span>12 OCT · 7:00 PM</span>
-            <span>BOGOTÁ, CO</span>
-          </div>
-        </div>
-        <div className="party-rsvp">
-          <span>
-            <Icon name="check" />
-          </span>
+          <p>Tu gente. Tu música. Tu noche.</p>
           <div>
-            <b>¡Voy de una!</b>
-            <small>Respuesta confirmada</small>
+            <span>
+              Sábado 24
+              <br />
+              20:00 h
+            </span>
+            <span>
+              Dress code:
+              <br />
+              ganas de bailar
+            </span>
           </div>
+          <span className="festival-tear">Esta noche tiene tu nombre</span>
         </div>
-        <div className="party-address">
-          cumplelucas.thedate.now{" "}
+        <div className="festival-response">
+          <Icon name="check" />
           <span>
-            <Icon name="external" />
+            ¡Me apunto!<small>Así se siente recibir un sí.</small>
           </span>
         </div>
-      </div>
+        <figcaption>Invitación y respuesta ilustrativas</figcaption>
+      </figure>
     </section>
   );
 }

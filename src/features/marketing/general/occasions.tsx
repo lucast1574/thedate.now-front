@@ -18,7 +18,7 @@ export default function GeneralOccasions() {
       </div>
       <div className="party-occasion-grid">
         <article className="occasion-birthday">
-          <span>01 / SOPLA LAS VELAS</span>
+          <span>Pide un deseo</span>
           <b aria-hidden="true">
             <Icon name="cake" />
           </b>
@@ -26,7 +26,7 @@ export default function GeneralOccasions() {
           <p>Otra vuelta al sol merece algo más que un mensaje en el grupo.</p>
         </article>
         <article className="occasion-party">
-          <span>02 / SUBE EL VOLUMEN</span>
+          <span>Sube el volumen</span>
           <b aria-hidden="true">
             <Icon name="music" />
           </b>
@@ -34,7 +34,7 @@ export default function GeneralOccasions() {
           <p>Reúne a tu gente y deja que todos sepan dónde, cuándo y cómo.</p>
         </article>
         <article className="occasion-gather">
-          <span>03 / HAGAMOS PLAN</span>
+          <span>Hagamos plan</span>
           <b aria-hidden="true">
             <Icon name="circle" />
           </b>

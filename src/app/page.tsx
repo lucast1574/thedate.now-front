@@ -1,3 +1,4 @@
+import { landingMetadata } from "@/features/marketing/metadata";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import Studio from "@/features/studio/studio";
@@ -7,6 +8,18 @@ import Invitation from "@/features/invitations/invitation";
 import { findEvent } from "@/features/invitations/load-invitation";
 import { invitationFromHost } from "@/lib/events/domains";
 import { invitationTarget } from "@/lib/events/invitation-runtime";
+export async function generateMetadata() {
+  const host = ((await headers()).get("host") ?? "")
+    .toLowerCase()
+    .replace(/:\d+$/, "")
+    .replace(/\.$/, "");
+  if (
+    !invitationTarget() &&
+    (host === "save.thedate.now" || host === "thedate.now")
+  )
+    return landingMetadata(host === "save.thedate.now");
+  return {};
+}
 export default async function Home() {
   const pinned = invitationTarget();
   if (pinned) {
