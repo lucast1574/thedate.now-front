@@ -18,7 +18,8 @@ test("marketing crawl rules expose only the landing on its own product host", as
     assert.equal(robots.sitemap, `${origin}/sitemap.xml`);
     assert.ok(robots.rules.disallow.includes("/rsvp/"));
     assert.ok(robots.rules.disallow.includes("/api/"));
-    assert.equal(sitemap.length, 1);
+    assert.equal(sitemap.length, 2);
+    assert.ok(sitemap[1].url.startsWith(origin + "/invitaciones-digitales-"));
     assert.equal(sitemap[0].url, `${origin}/`);
   }
 });

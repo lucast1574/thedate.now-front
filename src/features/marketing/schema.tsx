@@ -24,6 +24,18 @@ export default function MarketingSchema({
           : "Invitaciones digitales para eventos",
         isPartOf: { "@id": `${url}#website` },
         inLanguage: "es",
+        primaryImageOfPage: {
+          "@type": "ImageObject",
+          url: `${url}${wedding ? "wedding" : "event"}-social.png`,
+          width: 1200,
+          height: 630,
+        },
+        about: {
+          "@type": "Thing",
+          name: wedding
+            ? "Invitaciones digitales de boda"
+            : "Invitaciones digitales para eventos",
+        },
         description: wedding
           ? "Diseñen su invitación de boda, compartan los detalles y organicen invitados y confirmaciones."
           : "Crea invitaciones para cumpleaños, fiestas y reuniones. Comparte tu evento y organiza confirmaciones.",

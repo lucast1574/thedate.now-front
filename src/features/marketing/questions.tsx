@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 export const weddingQuestions = [
   [
     "¿Qué incluye una invitación digital de boda?",
@@ -53,12 +54,26 @@ export default function MarketingFAQ({
         </h2>
       </div>
       <div>
+        <a
+          className="marketing-guide-link"
+          href={
+            wedding
+              ? "/invitaciones-digitales-de-boda"
+              : "/invitaciones-digitales-para-eventos"
+          }
+        >
+          {wedding
+            ? "Guía para crear y compartir su invitación de boda"
+            : "Guía para crear y compartir tu invitación digital"}
+        </a>
         {(wedding ? weddingQuestions : generalQuestions).map(
           ([question, answer]) => (
             <details key={question}>
               <summary>
                 {question}
-                <span aria-hidden="true">+</span>
+                <span aria-hidden="true">
+                  <Icon name="plus" />
+                </span>
               </summary>
               <p>{answer}</p>
             </details>

@@ -90,3 +90,9 @@ de una landing. Las FAQ tienen contenido visible, sin promesas de rich results.
 
 Validación: `npm run check`; `tests/marketing-seo.test.mjs` cubre aislamiento por
 host, contenedores de invitaciones, sitemap y metadatos de las dos marcas.
+
+Las landings incorporan animaciones de papel/sello para bodas y de ticket/cinta
+para eventos. Cada una tiene control de pausa y respeta movimiento reducido.
+Las guías públicas `/invitaciones-digitales-de-boda` y
+`/invitaciones-digitales-para-eventos` se sirven únicamente en su dominio de
+producto; robots y sitemap mantienen aisladas las rutas privadas.
