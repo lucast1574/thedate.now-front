@@ -6,7 +6,7 @@
   position: fixed;
   inset: 0;
   z-index: 600;
-  display: grid;
+  display: none;
   place-items: center;
   overflow: clip;
   pointer-events: none;
@@ -192,5 +192,30 @@
   }
   .entrance-frame {
     inset: -65px 9%;
+  }
+}
+
+/* The head bootstrap covers the very first paint, independently of hydration. */
+html[data-brand-arrival] .brand-entrance {
+  display: grid;
+}
+html[data-brand-arrival]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 599;
+  pointer-events: none;
+  animation: brand-entrance-exit 0.5s 1.25s cubic-bezier(0.7, 0, 0.3, 1)
+    forwards;
+}
+html[data-brand-arrival="wedding"]::before {
+  background: #f5eee1;
+}
+html[data-brand-arrival="event"]::before {
+  background: #302145;
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-brand-arrival]::before {
+    display: none !important;
   }
 }
