@@ -502,3 +502,10 @@
     display: inline-flex;
   }
 }
+/* Small text uses the existing ink for WCAG contrast on paper surfaces. */
+.wedding-atlas .brand-wedding-subtitle,
+.wedding-atlas .vow-intro,
+.wedding-atlas .vow-copy > .vow-intro,
+.wedding-atlas .vow-steps article > span {
+  color: var(--vow-ink);
+}

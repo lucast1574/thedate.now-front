@@ -536,3 +536,13 @@
     transition: none !important;
   }
 }
+/* Dark violet text retains contrast on the saturated pink invitation. */
+.festival-ticket > span,
+.festival-ticket > p,
+.festival-ticket > div,
+.festival-site .occasion-gather {
+  color: #241638;
+}
+.festival-site .party-footer > span {
+  color: #463466;
+}
