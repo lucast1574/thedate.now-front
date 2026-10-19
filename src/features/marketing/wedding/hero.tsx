@@ -1,4 +1,3 @@
-import MotionControl from "../motion-control";
 import Icon from "@/components/icon";
 import { WeddingMark } from "@/components/brand";
 export default function WeddingHero() {
@@ -27,7 +26,6 @@ export default function WeddingHero() {
         <span className="vow-footnote">
           Diseñen y guarden gratis. Publiquen cuando esté lista.
         </span>
-        <MotionControl />
       </div>
       <figure className="vow-scene">
         <div className="vow-envelope" aria-hidden="true" />

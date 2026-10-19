@@ -1,4 +1,3 @@
-import MotionControl from "../motion-control";
 import Icon from "@/components/icon";
 export default function GeneralHero() {
   return (
@@ -25,7 +24,6 @@ export default function GeneralHero() {
           </a>
         </div>
         <small>Diseña y guarda gratis. Publica cuando tengas todo listo.</small>
-        <MotionControl />
       </div>
       <figure className="festival-stage">
         <div className="festival-orbit" aria-hidden="true" />

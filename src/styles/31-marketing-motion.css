@@ -1,32 +1,4 @@
 /* Paper, celebration and interaction each keep their own rhythm. */
-.marketing-motion-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  font-size: 11px;
-  padding: 12px 0;
-  margin-top: 12px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.marketing-motion-control:disabled {
-  cursor: default;
-  text-decoration: none;
-}
-.marketing-motion-control .ui-icon {
-  width: 14px;
-  height: 14px;
-}
-.marketing-motion-control:focus-visible {
-  outline: 0;
-  box-shadow: none;
-  background: #e9d7c6;
-}
 @media (prefers-reduced-motion: no-preference) {
   .wedding-atlas .vow-envelope {
     animation: vow-envelope-enter 1.3s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -165,14 +137,6 @@
       }
     }
   }
-}
-.wedding-atlas[data-motion="paused"] *,
-.wedding-atlas[data-motion="paused"] *:before,
-.wedding-atlas[data-motion="paused"] *:after,
-.festival-site[data-motion="paused"] *,
-.festival-site[data-motion="paused"] *:before,
-.festival-site[data-motion="paused"] *:after {
-  animation-play-state: paused !important;
 }
 @media (prefers-reduced-motion: reduce) {
   .wedding-atlas *,
