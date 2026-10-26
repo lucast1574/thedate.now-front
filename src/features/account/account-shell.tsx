@@ -22,7 +22,7 @@ export default function AccountShell({
     update: (user: User) => void,
     signOut: () => Promise<void>,
   ) => ReactNode;
-  active?: "admin" | "profile" | "affiliates";
+  active?: "admin" | "profile" | "affiliates" | "support";
 }) {
   const [user, setUser] = useState<User | null>(null),
     [loading, setLoading] = useState(true),

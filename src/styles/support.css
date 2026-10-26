@@ -1,0 +1,479 @@
+.support-page,
+.support-inbox {
+  --support-line: color-mix(
+    in srgb,
+    var(--workspace-accent, #98664f) 18%,
+    white
+  );
+  --support-muted: #706974;
+  min-width: 0;
+}
+.office-general .support-page > h1,
+.office-general :is(.support-composer, .support-inbox) h2 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}
+.support-section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+.support-section-head h2 {
+  margin: 5px 0 8px;
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+}
+.support-section-head > .ui-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--workspace-accent);
+  flex-shrink: 0;
+}
+.support-composer fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.support-composer label,
+.support-update label {
+  font-size: 13px;
+  font-weight: 600;
+  gap: 9px;
+}
+.support-composer :is(input, textarea),
+.support-update textarea {
+  background: #faf9fb;
+  border-color: var(--support-line);
+  resize: vertical;
+  font-weight: 400;
+  line-height: 1.65;
+}
+.support-composer :is(input, textarea):focus,
+.support-update textarea:focus {
+  outline: none;
+  box-shadow: none;
+  background: var(--workspace-tint);
+  border-color: var(--workspace-accent);
+}
+.support-composer .office-button {
+  gap: 18px;
+  margin-top: 16px;
+  background: var(--workspace-accent);
+}
+.support-composer .office-button:hover {
+  background: var(--workspace-ink);
+}
+.support-attachment-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 22px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.support-attachment-heading > span small {
+  color: var(--support-muted);
+  font-weight: 400;
+  display: block;
+  margin-top: 4px;
+}
+.support-composer label.support-upload {
+  position: relative;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 12px;
+  min-height: 44px;
+  background: var(--workspace-tint);
+  border-radius: 8px;
+  color: var(--workspace-ink);
+  cursor: pointer;
+}
+.support-upload input[type="file"] {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.support-upload:focus-within {
+  background: var(--support-line);
+  text-decoration: underline;
+}
+.account-card p.support-hint,
+.support-hint {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--support-muted);
+  margin: 8px 0 0;
+}
+.support-previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0 6px;
+}
+.support-previews > div {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--support-line);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.support-previews img {
+  display: block;
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  background: #f7f5f8;
+}
+.support-previews button {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 40px;
+  width: 40px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--workspace-ink);
+  background: #ffffffed;
+  cursor: pointer;
+}
+.support-previews > div > span {
+  display: block;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 8px;
+}
+.support-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--support-line);
+}
+.support-filters button,
+.support-refresh,
+.support-pagination button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 8px;
+  color: var(--support-muted);
+  font:
+    600 12px var(--font-sans),
+    sans-serif;
+  cursor: pointer;
+}
+.support-filters button[aria-pressed="true"] {
+  background: var(--workspace-tint);
+  color: var(--workspace-ink);
+}
+.support-filters button:hover,
+.support-refresh:hover,
+.support-pagination button:hover {
+  background: var(--workspace-tint);
+  color: var(--workspace-ink);
+}
+.support-refresh {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+  border-color: var(--support-line);
+}
+.support-count {
+  margin: 16px 0;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.support-layout {
+  display: grid;
+  grid-template-columns: minmax(210px, 0.8fr) minmax(0, 1.65fr);
+  align-items: start;
+  gap: 28px;
+}
+.support-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+.support-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  text-align: left;
+  padding: 18px 16px;
+  border: 1px solid var(--support-line);
+  border-left: 3px solid transparent;
+  border-radius: 8px;
+  color: var(--workspace-ink);
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.support-list button:hover,
+.support-list button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--workspace-tint) 60%, white);
+}
+.support-list button[aria-pressed="true"] {
+  border-left-color: var(--workspace-accent);
+}
+.support-list button > strong {
+  font-size: 14px;
+  line-height: 1.45;
+}
+.support-list button > span:not(.support-state),
+.support-list time,
+.support-list small {
+  font-size: 11px;
+  color: var(--support-muted);
+}
+.support-list small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.support-list small .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+.support-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #8b621f;
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.support-state::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.support-state[data-state="IN_PROGRESS"] {
+  color: var(--workspace-accent);
+}
+.support-state[data-state="WAITING"] {
+  color: #746b79;
+}
+.support-state[data-state="DONE"] {
+  color: #39714e;
+}
+.support-detail {
+  min-width: 0;
+  padding: 4px 0 0;
+}
+.support-detail h3 {
+  font-size: 21px;
+  line-height: 1.4;
+  margin: 12px 0 0;
+  overflow-wrap: anywhere;
+}
+.support-requester {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  margin: 18px 0;
+  padding: 12px 14px;
+  background: #faf9fb;
+  border-radius: 7px;
+  overflow-wrap: anywhere;
+}
+.support-requester span {
+  color: var(--support-muted);
+}
+.account-card .support-description {
+  color: var(--workspace-ink);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.8;
+  font-size: 14px;
+  margin: 24px 0;
+}
+.support-screenshots {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 20px 0 26px;
+}
+.support-screenshots a {
+  display: block;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--support-line);
+}
+.support-screenshots img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: contain;
+  background: #f8f7f9;
+}
+.support-screenshots span {
+  display: block;
+  padding: 10px;
+  font-size: 11px;
+  color: var(--workspace-accent);
+}
+.support-detail h4 {
+  font-size: 13px;
+  margin: 26px 0 14px;
+}
+.support-history {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.support-history li {
+  padding: 12px 0 12px 15px;
+  border-left: 2px solid var(--support-line);
+}
+.support-history li > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 12px;
+}
+.support-history time {
+  font-size: 10px;
+  color: var(--support-muted);
+}
+.account-card .support-history p {
+  font-size: 13px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 8px 0 0;
+}
+.support-update {
+  margin-top: 24px;
+  border-top: 1px solid var(--support-line);
+}
+.support-update .office-button {
+  background: var(--workspace-accent);
+}
+.support-closed {
+  padding: 14px 16px;
+  background: #f1f7f2;
+  border-radius: 7px;
+  font-size: 12px;
+}
+.support-empty,
+.support-detail-placeholder {
+  text-align: center;
+  padding: 45px 20px;
+  color: var(--support-muted);
+}
+.support-empty > .ui-icon,
+.support-detail-placeholder > .ui-icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 10px;
+  color: var(--workspace-accent);
+}
+.support-empty h3,
+.support-detail-placeholder h3 {
+  color: var(--workspace-ink);
+  font-size: 17px;
+  margin: 8px 0;
+}
+.support-empty p,
+.support-detail-placeholder p {
+  font-size: 13px;
+  max-width: 390px;
+  margin: 0 auto;
+}
+.support-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--support-line);
+  margin-top: 24px;
+  padding-top: 14px;
+  font-size: 12px;
+}
+.support-pagination button:disabled,
+.support-refresh:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.workspace :is(.support-inbox, .support-composer) button:focus-visible,
+.workspace .support-update button.custom-listbox:focus-visible,
+.workspace .support-update button.custom-listbox[aria-expanded="true"] {
+  outline: none;
+  box-shadow: none;
+  background: var(--workspace-tint);
+  color: var(--workspace-ink);
+  text-decoration: underline;
+}
+@media (max-width: 1000px) {
+  .support-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .support-list {
+    max-height: 360px;
+    overflow-y: auto;
+  }
+  .support-detail {
+    border-top: 1px solid var(--support-line);
+    padding-top: 22px;
+  }
+}
+@media (max-width: 600px) {
+  .support-page {
+    padding-inline: 18px;
+  }
+  .support-page .account-card,
+  .support-inbox.account-card {
+    padding: 20px 16px;
+  }
+  .support-section-head {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .support-attachment-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .support-refresh {
+    padding-inline: 10px;
+  }
+  .support-previews {
+    gap: 7px;
+  }
+  .support-previews img {
+    height: 100px;
+  }
+  .support-filters {
+    gap: 3px;
+  }
+  .support-filters button {
+    padding-inline: 10px;
+  }
+}

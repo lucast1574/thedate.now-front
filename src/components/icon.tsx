@@ -1,5 +1,9 @@
 import type { CSSProperties } from "react";
 const paths = {
+  ticket: "M4 4h16v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6V4Zm9 1v3m0 3v2m0 3v3",
+  close: "m6 6 12 12M6 18 18 6",
+  refresh:
+    "M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1",
   pause: "M8 5v14M16 5v14",
   play: "m7 4 14 8-14 8V4Z",
   clock: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 7v5l3 2",

@@ -11,7 +11,7 @@ export default function WorkspaceSidebar({
 }: {
   wedding: boolean;
   user: User;
-  active?: "events" | "profile" | "admin" | "affiliates";
+  active?: "events" | "profile" | "admin" | "affiliates" | "support";
 }) {
   return (
     <aside className="workspace-sidebar">
@@ -30,6 +30,13 @@ export default function WorkspaceSidebar({
         >
           <Icon name="sparkle" />
           Afiliados
+        </Link>
+        <Link
+          href="/support"
+          aria-current={active === "support" ? "page" : undefined}
+        >
+          <Icon name="ticket" />
+          Soporte
         </Link>
         {user.role === "admin" && (
           <Link

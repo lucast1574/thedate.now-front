@@ -8,6 +8,7 @@ import AdminRevenue from "./admin-revenue";
 import AdminUsers from "./admin-users";
 import AdminCourtesies from "./admin-courtesies";
 import AdminPayouts from "./admin-payouts";
+import SupportBoard from "@/features/support/support-board";
 async function fetchAdmin() {
   const [overview, users, events, payouts] = await Promise.all([
     api<Overview>("/api/backend/admin/overview"),
@@ -52,14 +53,15 @@ export default function AdminDashboard({ user }: { user: User }) {
   }
   return (
     <section className="account-content">
-      <p className="office-kicker">ADMINISTRACIÓN · AMBAS MARCAS</p>
+      <p className="office-kicker">ADMINISTRACIÓN</p>
       <h1>La mirada completa.</h1>
       <p className="office-lead">
-        Ingresos, cuentas, cortesías y afiliados de The Date y Save the Date en
-        un mismo panel.
+        Ingresos, cuentas, reportes y afiliados de tu plataforma en un mismo
+        panel.
       </p>
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
+      <SupportBoard admin />
       {data ? (
         <>
           <AdminRevenue overview={data.overview} />

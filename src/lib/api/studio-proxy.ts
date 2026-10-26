@@ -1,8 +1,9 @@
 import "server-only";
 import { sessionToken } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
+import { readRequestText, RequestBodyTooLarge } from "./request-body";
 const allowedPath =
-  /^(?:profile|events(?:\/[a-z0-9-]+(?:\/(?:guests(?:\/import)?|seating|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
+  /^(?:profile|support\/tickets|events(?:\/[a-z0-9-]+(?:\/(?:guests(?:\/import)?|seating|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:support\/tickets(?:\/[a-z0-9-]+)?|overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
 
 export async function proxyStudio(
   request: Request,
@@ -17,9 +18,29 @@ export async function proxyStudio(
   const token = await sessionToken();
   if (!token)
     return Response.json({ error: "Sign in required" }, { status: 401 });
-  const body =
-    method === "GET" || method === "DELETE" ? undefined : await request.text();
-  const result = await backendFetch(joined, {
+  let body: string | undefined;
+  if (method !== "GET" && method !== "DELETE") {
+    try {
+      body = await readRequestText(
+        request,
+        joined === "support/tickets" ? 5 * 1024 * 1024 : 1024 * 1024,
+      );
+    } catch (error) {
+      return Response.json(
+        {
+          error:
+            error instanceof RequestBodyTooLarge
+              ? "El reporte supera el tamaño permitido."
+              : "No se pudo leer la solicitud.",
+        },
+        { status: error instanceof RequestBodyTooLarge ? 413 : 400 },
+      );
+    }
+  }
+  const query = joined.includes("support/tickets")
+    ? new URL(request.url).search
+    : "";
+  const result = await backendFetch(joined + query, {
     method,
     headers: {
       Authorization: `Bearer ${token}`,
@@ -27,5 +48,7 @@ export async function proxyStudio(
     },
     body,
   });
-  return forwardJSON(result);
+  const response = forwardJSON(result);
+  response.headers.set("Cache-Control", "private, no-store");
+  return response;
 }
