@@ -18,6 +18,7 @@ export default function ListboxMenu({
     position: CSSProperties;
     title: string;
     general: boolean;
+    editor?: boolean;
     container: Element;
   };
   options: Choice[];
@@ -32,7 +33,7 @@ export default function ListboxMenu({
       id={id}
       role="listbox"
       aria-label={popup.title}
-      className={`listbox-menu ${popup.general ? "listbox-general" : ""}`}
+      className={`listbox-menu ${popup.general ? "listbox-general" : ""} ${popup.editor ? "listbox-editor-general" : ""}`}
       style={popup.position}
       onPointerDown={(event) => event.preventDefault()}
     >

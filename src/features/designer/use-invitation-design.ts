@@ -54,7 +54,7 @@ export function useInvitationDesign(
               ? "Escribe aquí vuestra historia."
               : "Añade los detalles de tu evento.",
           ...(current.designMode === "flyer"
-            ? { canvas: blankCanvas(current.accentColor) }
+            ? { canvas: blankCanvas(current.accentColor, current.kind) }
             : {}),
         },
       ],

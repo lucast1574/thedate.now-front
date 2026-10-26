@@ -25,7 +25,7 @@ export default function InvitationDesigner({
               icon: "none",
               heading: "Sección 1",
               body: "",
-              canvas: blankCanvas(event.accentColor),
+              canvas: blankCanvas(event.accentColor, event.kind),
             },
           ],
     }),

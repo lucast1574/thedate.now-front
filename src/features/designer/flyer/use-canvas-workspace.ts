@@ -18,7 +18,7 @@ export function useCanvasWorkspace(
   const active = sections[index];
   const canvas = active
     ? sectionCanvas(active, draft)
-    : blankCanvas(draft.accentColor);
+    : blankCanvas(draft.accentColor, draft.kind);
   const selected = canvas.elements.find((el) => el.id === selectedId);
   function change(next: FlyerCanvas) {
     if (active) editor.updateSection(index, { canvas: next });
@@ -73,7 +73,7 @@ export function useCanvasWorkspace(
           icon: "none",
           heading: `Sección ${sections.length + 1}`,
           body: "",
-          canvas: blankCanvas(current.accentColor),
+          canvas: blankCanvas(current.accentColor, current.kind),
         },
       ],
     }));

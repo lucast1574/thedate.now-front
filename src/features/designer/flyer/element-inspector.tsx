@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
@@ -14,7 +15,6 @@ export default function ElementInspector({
   onChange,
   onDuplicate,
   onRemove,
-  onLayer,
 }: {
   item: FlyerElement;
   photos: string[];
@@ -37,7 +37,40 @@ export default function ElementInspector({
             : "Texto";
   return (
     <section className="element-inspector">
-      <h3>{title}</h3>
+      <header className="inspector-heading">
+        <div>
+          <h3>{title}</h3>
+          <p>
+            {item.binding === "guest_name"
+              ? "Personalizado para cada invitado"
+              : item.binding === "location"
+                ? "Un acceso al lugar de tu celebración"
+                : item.type === "image"
+                  ? "Tu imagen, completa y sin recortes"
+                  : item.type === "icon"
+                    ? "Un detalle para tu invitación"
+                    : "Dale voz a tu invitación"}
+          </p>
+        </div>
+        <div className="inspector-quick-actions">
+          {onDuplicate && (
+            <button
+              title="Duplicar elemento"
+              aria-label="Duplicar elemento"
+              onClick={onDuplicate}
+            >
+              <Icon name="lucide:copy" />
+            </button>
+          )}
+          <button
+            title="Eliminar elemento"
+            aria-label="Eliminar elemento"
+            onClick={onRemove}
+          >
+            <Icon name="lucide:trash" />
+          </button>
+        </div>
+      </header>
       {item.binding === "guest_name" ? (
         <GuestBindingField
           text={item.text || ""}
@@ -73,9 +106,6 @@ export default function ElementInspector({
               ))}
             </Listbox>
           </label>
-          <p className="editor-hint">
-            La imagen se muestra completa, sin recortes.
-          </p>
         </>
       ) : (
         <>
@@ -88,33 +118,32 @@ export default function ElementInspector({
               />
             </details>
           )}
-          <div className="color-field">
-            <span>Color</span>
-            <ColorPicker
-              value={item.color}
-              onChange={(color) => onChange({ color })}
-            />
-          </div>
-          {item.type === "text" && item.locationStyle !== "icon" && (
-            <TextStyleFields item={item} onChange={onChange} />
-          )}
+          <details
+            className="inspector-disclosure"
+            open={item.binding !== "location" || undefined}
+            key={`style-${item.id}`}
+          >
+            <summary>
+              <Icon name="lucide:palette" />
+              <span>Estilo</span>
+              <Icon name="chevron" />
+            </summary>
+            <div className="inspector-disclosure-body">
+              <div className="color-field">
+                <span>Color</span>
+                <ColorPicker
+                  value={item.color}
+                  onChange={(color) => onChange({ color })}
+                />
+              </div>
+              {item.type === "text" && item.locationStyle !== "icon" && (
+                <TextStyleFields item={item} onChange={onChange} />
+              )}
+            </div>
+          </details>
         </>
       )}
       <ElementGeometryFields item={item} canvas={canvas} onChange={onChange} />
-      <div className="editor-button-row">
-        <button disabled={!onLayer} onClick={() => onLayer?.(-1)}>
-          Enviar atrás
-        </button>
-        <button disabled={!onLayer} onClick={() => onLayer?.(1)}>
-          Traer delante
-        </button>
-      </div>
-      <div className="editor-button-row">
-        <button disabled={!onDuplicate} onClick={onDuplicate}>
-          Duplicar
-        </button>
-        <button onClick={onRemove}>Eliminar elemento</button>
-      </div>
     </section>
   );
 }

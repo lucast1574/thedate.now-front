@@ -207,3 +207,50 @@ test("public images render without cropping and location elements render safe cl
   assert.match(location, /Cómo llegar/);
   assert.match(location, /noopener noreferrer/);
 });
+
+test("location parts support every nonempty combination and cannot become empty", () => {
+  const { locationParts, toggleLocationPart, locationStyles } = loadSource(
+    "src/lib/events/location-element.ts",
+  );
+  assert.equal(toggleLocationPart("icon", "icon"), "icon");
+  assert.equal(toggleLocationPart("icon-address", "label"), "all");
+  assert.equal(toggleLocationPart("all", "label"), "icon-address");
+  assert.equal(Object.keys(locationStyles).length, 7);
+  const { renderToStaticMarkup } = require("react-dom/server"),
+    { createElement } = require("react");
+  const { LocationContent } = loadSource("src/components/flyer-location.tsx");
+  for (const style of Object.keys(locationStyles)) {
+    const html = renderToStaticMarkup(
+      createElement(LocationContent, {
+        item: element("text", {
+          binding: "location",
+          locationStyle: style,
+          text: "Nos vemos",
+          address: "Bogotá",
+        }),
+      }),
+    );
+    const parts = locationParts(style);
+    assert.equal(html.includes("<svg"), parts.includes("icon"));
+    assert.equal(html.includes("Nos vemos"), parts.includes("label"));
+    assert.equal(html.includes("Bogotá"), parts.includes("address"));
+  }
+});
+test("inspector action icons exist in the local symbol sprite", () => {
+  const catalog = JSON.parse(
+    fs.readFileSync("src/lib/events/symbol-catalog.json", "utf8"),
+  );
+  for (const file of [
+    "element-inspector.tsx",
+    "canvas-context-menu.tsx",
+    "text-style-fields.tsx",
+    "location-presentation.tsx",
+  ]) {
+    const source = fs.readFileSync(
+      `src/features/designer/flyer/${file}`,
+      "utf8",
+    );
+    for (const match of source.matchAll(/lucide:([a-z0-9-]+)/g))
+      assert.ok(catalog[match[1]], match[1]);
+  }
+});

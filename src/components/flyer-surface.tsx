@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import Photo from "./photo";
-import { locationHref } from "@/lib/events/location-element";
+import FlyerLocation from "./flyer-location";
 import {
   flyerFonts,
   type FlyerCanvas,
@@ -43,32 +43,7 @@ export function FlyerContent({
         draggable={false}
       />
     );
-  if (item.binding === "location") {
-    const icon = item.locationStyle === "icon";
-    const content = icon ? (
-      <Icon name="lucide:map-pin" style={{ width: "100%", height: "100%" }} />
-    ) : item.locationStyle === "label" ? (
-      item.text || "Cómo llegar"
-    ) : (
-      item.address || "Ubicación"
-    );
-    const href = locationHref(item);
-    return href ? (
-      <a
-        className="flyer-location"
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={
-          icon ? `Ver ubicación: ${item.address || "Google Maps"}` : undefined
-        }
-      >
-        {content}
-      </a>
-    ) : (
-      <span className="flyer-location">{content}</span>
-    );
-  }
+  if (item.binding === "location") return <FlyerLocation item={item} />;
   return (
     <span
       style={

@@ -18,69 +18,74 @@ export default function ElementGeometryFields({
   };
   const proportional = item.type !== "text" || item.locationStyle === "icon";
   return (
-    <section className="element-geometry">
-      <h4>
-        Tamaño y posición{" "}
+    <details className="element-geometry inspector-disclosure" key={item.id}>
+      <summary>
+        <Icon name="lucide:move" />
+        <span>Posición y tamaño</span>
+        <Icon name="chevron" />
+      </summary>
+      <div className="inspector-disclosure-body">
         {proportional && (
-          <span title="Proporciones protegidas">
-            <Icon name="lock" />
-          </span>
+          <p className="inspector-proportions">
+            <Icon name="lock" /> Proporciones vinculadas
+          </p>
         )}
-      </h4>
-      <div className="inspector-grid">
-        {(
-          [
-            ["width", "Ancho"],
-            ["height", "Alto"],
-            ["x", "Horizontal"],
-            ["y", "Vertical"],
-            ["rotation", "Giro °"],
-          ] as const
-        ).map(([field, label]) => (
-          <label key={field}>
-            {label}
-            <input
-              type="number"
-              value={Math.round(item[field])}
-              min={
-                field === "rotation"
-                  ? -180
-                  : field === "width" || field === "height"
-                    ? 16
-                    : 0
-              }
-              max={field === "rotation" ? 180 : undefined}
-              onChange={(e) => {
-                const value = Number(e.target.value);
-                onChange(
-                  proportional && (field === "width" || field === "height")
-                    ? scaleElement(item, value, field, bounds)
-                    : { [field]: value },
-                );
-              }}
-            />
-          </label>
-        ))}
-      </div>
-      {canvas && (
-        <div className="editor-button-row">
-          <button
-            onClick={() => onChange({ x: (canvas.width - item.width) / 2 })}
-          >
-            Centrar horizontal
-          </button>
-          <button
-            onClick={() => onChange({ y: (canvas.height - item.height) / 2 })}
-          >
-            Centrar vertical
-          </button>
+        <div className="inspector-grid">
+          {(
+            [
+              ["width", "Ancho"],
+              ["height", "Alto"],
+              ["x", "Posición X"],
+              ["y", "Posición Y"],
+              ["rotation", "Giro °"],
+            ] as const
+          ).map(([field, label]) => (
+            <label key={field}>
+              {label}
+              <input
+                type="number"
+                value={Math.round(item[field])}
+                min={
+                  field === "rotation"
+                    ? -180
+                    : field === "width" || field === "height"
+                      ? 16
+                      : 0
+                }
+                max={field === "rotation" ? 180 : undefined}
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  onChange(
+                    proportional && (field === "width" || field === "height")
+                      ? scaleElement(item, value, field, bounds)
+                      : { [field]: value },
+                  );
+                }}
+              />
+            </label>
+          ))}
         </div>
-      )}
-      {proportional && (
-        <p className="editor-hint">
-          Arrastra una esquina para cambiar el tamaño sin deformar.
-        </p>
-      )}
-    </section>
+        {canvas && (
+          <div
+            className="inspector-center-actions"
+            role="group"
+            aria-label="Centrar en el lienzo"
+          >
+            <button
+              onClick={() => onChange({ x: (canvas.width - item.width) / 2 })}
+            >
+              <Icon name="lucide:align-center-horizontal" />
+              Horizontal
+            </button>
+            <button
+              onClick={() => onChange({ y: (canvas.height - item.height) / 2 })}
+            >
+              <Icon name="lucide:align-center-vertical" />
+              Vertical
+            </button>
+          </div>
+        )}
+      </div>
+    </details>
   );
 }

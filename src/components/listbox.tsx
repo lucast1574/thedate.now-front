@@ -45,6 +45,7 @@ export default function Listbox({
     position: ReturnType<typeof listboxPosition>;
     title: string;
     general: boolean;
+    editor?: boolean;
     container: Element;
   } | null>(null);
   const [active, setActive] = useState(-1);
@@ -62,6 +63,7 @@ export default function Listbox({
       general: !!button.current?.closest(
         ".office-general, .editor-general, .manager-general",
       ),
+      editor: !!button.current?.closest(".editor-general"),
       container: button.current?.closest("dialog") || document.body,
     });
     setActive(

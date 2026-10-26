@@ -4,7 +4,7 @@ import Icon from "@/components/icon";
 import Photo from "@/components/photo";
 import type { DesignEvent, Event } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
-import { guestNameElement } from "@/lib/events/guest-name";
+import CanvasEventTools from "./canvas-event-tools";
 import { element } from "./canvas-model";
 export default function CanvasToolbox({
   event,
@@ -34,6 +34,8 @@ export default function CanvasToolbox({
         width: canvas.width - 120,
         height: 160,
         fontSize: size,
+        font: event.kind === "general" ? "sans" : "serif",
+        bold: event.kind === "general" && size > 40,
         color: draft.accentColor,
       }),
     );
@@ -48,85 +50,39 @@ export default function CanvasToolbox({
           <div className="canvas-text-presets">
             <button
               disabled={disabled}
-              onClick={() => text("Un día inolvidable", 56)}
+              onClick={() =>
+                text(
+                  event.kind === "general"
+                    ? "¡Tenemos un plan!"
+                    : "Un día inolvidable",
+                  56,
+                )
+              }
             >
               Añadir un título
             </button>
             <button
               disabled={disabled}
-              onClick={() => text("Escribe tu historia aquí", 28)}
+              onClick={() =>
+                text(
+                  event.kind === "general"
+                    ? "Nos vemos para celebrar."
+                    : "Escribe tu historia aquí",
+                  28,
+                )
+              }
             >
               Añadir un texto
             </button>
           </div>
-          <h3>Elementos de tu invitación</h3>
-          <div className="canvas-special-tools">
-            <button
-              disabled={disabled}
-              onClick={() =>
-                onAdd({
-                  ...guestNameElement(draft.accentColor, crypto.randomUUID()),
-                  x: 60,
-                  y: 120,
-                  width: canvas.width - 120,
-                })
-              }
-            >
-              <Icon name="users" />
-              <span>
-                Nombre del invitado
-                <small>Personalizado para cada persona</small>
-              </span>
-              <Icon name="plus" />
-            </button>
-            <button
-              disabled={disabled}
-              onClick={() =>
-                onAdd(
-                  element("text", {
-                    binding: "location",
-                    locationStyle: "address",
-                    address: event.location || "",
-                    link: event.mapUrl || "",
-                    text: "Cómo llegar",
-                    x: 60,
-                    y: 120,
-                    width: canvas.width - 120,
-                    height: 120,
-                    fontSize: 28,
-                    color: draft.accentColor,
-                  }),
-                )
-              }
-            >
-              <Icon name="external" />
-              <span>
-                Ubicación<small>Dirección de tu evento</small>
-              </span>
-              <Icon name="plus" />
-            </button>
-            <button
-              disabled={disabled}
-              onClick={() =>
-                text(
-                  event.startAt
-                    ? new Intl.DateTimeFormat("es", {
-                        dateStyle: "long",
-                        timeStyle: "short",
-                        timeZone: event.timeZone || "America/Bogota",
-                      }).format(new Date(event.startAt))
-                    : "Fecha y hora",
-                  30,
-                )
-              }
-            >
-              <Icon name="calendar" />
-              <span>
-                Fecha y hora<small>El día que van a recordar</small>
-              </span>
-              <Icon name="plus" />
-            </button>
-          </div>
+          <CanvasEventTools
+            event={event}
+            draft={draft}
+            canvas={canvas}
+            disabled={disabled}
+            onAdd={onAdd}
+            text={text}
+          />
           <h3>Símbolos</h3>
           <SymbolLibrary
             kind={event.kind}

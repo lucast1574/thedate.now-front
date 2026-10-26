@@ -1,7 +1,14 @@
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
   binding?: "guest_name" | "location";
-  locationStyle?: "icon" | "label" | "address";
+  locationStyle?:
+    | "icon"
+    | "label"
+    | "address"
+    | "icon-label"
+    | "icon-address"
+    | "label-address"
+    | "all";
   address?: string;
   link?: string;
   id: string;

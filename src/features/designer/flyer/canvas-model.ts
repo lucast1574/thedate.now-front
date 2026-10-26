@@ -27,11 +27,14 @@ export function element(
     ...patch,
   };
 }
-export function blankCanvas(_accent: string): FlyerCanvas {
+export function blankCanvas(
+  _accent: string,
+  kind: "wedding" | "general" = "wedding",
+): FlyerCanvas {
   return {
     width: 720,
     height: 960,
-    background: "#fff9ed",
+    background: kind === "general" ? "#ffffff" : "#fff9ed",
     elements: [],
   };
 }

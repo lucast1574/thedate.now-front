@@ -23,3 +23,42 @@ export function locationHref(item: FlyerElement) {
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address.trim())}`
     : "";
 }
+
+export type LocationPart = "icon" | "label" | "address";
+export const locationStyles: Record<
+  NonNullable<FlyerElement["locationStyle"]>,
+  readonly LocationPart[]
+> = {
+  icon: ["icon"],
+  label: ["label"],
+  address: ["address"],
+  "icon-label": ["icon", "label"],
+  "icon-address": ["icon", "address"],
+  "label-address": ["label", "address"],
+  all: ["icon", "label", "address"],
+};
+export function locationParts(style: FlyerElement["locationStyle"]) {
+  return locationStyles[style || "address"] || locationStyles.address;
+}
+export function toggleLocationPart(
+  style: FlyerElement["locationStyle"],
+  part: LocationPart,
+): NonNullable<FlyerElement["locationStyle"]> {
+  const parts = locationParts(style),
+    next = parts.includes(part)
+      ? parts.filter((value) => value !== part)
+      : [...parts, part];
+  return (
+    (
+      Object.keys(locationStyles) as NonNullable<
+        FlyerElement["locationStyle"]
+      >[]
+    ).find(
+      (key) =>
+        locationStyles[key].length === next.length &&
+        next.every((value) => locationStyles[key].includes(value)),
+    ) ||
+    style ||
+    "address"
+  );
+}

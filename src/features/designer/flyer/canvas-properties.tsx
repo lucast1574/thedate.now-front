@@ -52,7 +52,7 @@ export default function CanvasProperties({
           onRemove={remove}
         />
       )}{" "}
-      {active && (
+      {active && !selected && (
         <section className="canvas-settings">
           <h3>Sección {index + 1}</h3>
           <label>

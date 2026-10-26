@@ -76,6 +76,7 @@ export default function CanvasWorkspace({
       >
         {selected && (
           <button
+            className="canvas-panel-back"
             onClick={() => {
               select("");
               setTab("elements");
@@ -84,11 +85,12 @@ export default function CanvasWorkspace({
             <Icon name="undo" /> Volver a elementos
           </button>
         )}
-        <header>
+        <header hidden={!!selected}>
           <span>TU INVITACIÓN</span>
           <h2>
             {{
-              elements: "Hazla tuya",
+              elements:
+                event.kind === "general" ? "Arma tu invitación" : "Hazla tuya",
               photos: "Tus imágenes",
               pages: "Secciones",
               music: "Ponle música",

@@ -33,7 +33,11 @@ export default function SymbolLibrary({
         <Icon name="search" />
         <input
           aria-label="Buscar símbolos"
-          placeholder="Busca flores, corazones, música…"
+          placeholder={
+            kind === "general"
+              ? "Globos, regalos, música…"
+              : "Flores, corazones, música…"
+          }
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);

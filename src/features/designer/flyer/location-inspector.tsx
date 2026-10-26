@@ -1,3 +1,5 @@
+import LocationPresentation from "./location-presentation";
+import { locationParts } from "@/lib/events/location-element";
 import { useLocationAddress } from "./use-location-address";
 import Icon from "@/components/icon";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -15,95 +17,83 @@ export default function LocationInspector({
   const invalid = !!item.link && !validMapLink(item.link);
   return (
     <section className="location-inspector">
-      <h4>Ubicación con enlace</h4>
-      <p className="editor-hint">
-        Elige cómo se verá. Al tocarla, tus invitados abrirán Google Maps.
-      </p>
-      <div className="location-display-options">
-        {(
-          [
-            ["icon", "Solo icono"],
-            ["label", "Texto"],
-            ["address", "Dirección"],
-          ] as const
-        ).map(([value, label]) => (
-          <button
-            key={value}
-            aria-pressed={(item.locationStyle || "address") === value}
-            onClick={() =>
-              onChange({
-                locationStyle: value,
-                ...(value === "icon"
-                  ? { width: 96, height: 96 }
-                  : item.locationStyle === "icon"
-                    ? { width: 400, height: 120 }
-                    : {}),
-              })
-            }
-          >
-            {value === "icon" && <Icon name="lucide:map-pin" />}
-            {label}
-          </button>
-        ))}
-      </div>
-      <label>
-        Dirección
-        <textarea
-          maxLength={500}
-          rows={2}
-          value={item.address || ""}
-          onChange={(e) => onChange({ address: e.target.value })}
-        />
-      </label>
-      {item.locationStyle === "label" && (
+      <LocationPresentation item={item} onChange={onChange} />
+      <div className="inspector-group">
+        <h4>Destino</h4>
         <label>
-          Texto del enlace
-          <input
-            maxLength={120}
-            value={item.text || ""}
-            onChange={(e) => onChange({ text: e.target.value })}
-            placeholder="Cómo llegar"
+          Dirección
+          <textarea
+            maxLength={500}
+            rows={2}
+            value={item.address || ""}
+            onChange={(e) => onChange({ address: e.target.value })}
           />
         </label>
-      )}
-      <label>
-        Enlace de Google Maps
-        <input
-          type="url"
-          maxLength={2048}
-          value={item.link || ""}
-          placeholder="https://maps.app.goo.gl/…"
-          aria-invalid={invalid}
-          onChange={(e) => onChange({ link: e.target.value.trim() })}
-        />
-      </label>
-      {item.link && !invalid && (
-        <button disabled={lookup.busy} onClick={() => void lookup.resolve()}>
-          {lookup.busy ? "Buscando dirección…" : "Obtener dirección del enlace"}
-        </button>
-      )}
-      {lookup.status && (
-        <p role="status" className="editor-hint">
-          {lookup.status}
-        </p>
-      )}
-      {invalid ? (
-        <p role="alert">
-          Pega un enlace válido de Google Maps o deja el campo vacío para buscar
-          la dirección.
-        </p>
-      ) : (
-        <p className="editor-hint">
-          {item.link
-            ? "Se abrirá el lugar exacto de este enlace."
-            : "Sin enlace, Maps buscará la dirección que escribiste."}
-        </p>
-      )}
-      {!invalid && locationHref(item) && (
-        <a href={locationHref(item)} target="_blank" rel="noopener noreferrer">
-          Probar ubicación <Icon name="external" />
-        </a>
-      )}
+        {locationParts(item.locationStyle).includes("label") && (
+          <label>
+            Texto del enlace
+            <input
+              maxLength={120}
+              value={item.text || ""}
+              onChange={(e) => onChange({ text: e.target.value })}
+              placeholder="Cómo llegar"
+            />
+          </label>
+        )}
+        <label>
+          Enlace de Google Maps
+          <input
+            type="url"
+            maxLength={2048}
+            value={item.link || ""}
+            placeholder="https://maps.app.goo.gl/…"
+            aria-invalid={invalid}
+            onChange={(e) => onChange({ link: e.target.value.trim() })}
+          />
+        </label>
+        {item.link && !invalid && !item.address?.trim() && (
+          <button
+            className="inspector-secondary-action"
+            disabled={lookup.busy}
+            onClick={() => void lookup.resolve()}
+          >
+            <Icon name="lucide:map-pin-plus" />
+            {lookup.busy
+              ? "Buscando dirección…"
+              : "Completar dirección desde Maps"}
+          </button>
+        )}
+        {lookup.status && (
+          <p role="status" className="editor-hint">
+            {lookup.status}
+          </p>
+        )}
+        {invalid ? (
+          <p role="alert">
+            Pega un enlace válido de Google Maps o deja el campo vacío para
+            buscar la dirección.
+          </p>
+        ) : null}
+        {!invalid && locationHref(item) && (
+          <a
+            className="inspector-map-preview"
+            href={locationHref(item)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Icon name="lucide:map-pin" />
+            <span>
+              Abrir en Google Maps
+              <small>
+                {item.link
+                  ? "Comprobar el lugar elegido"
+                  : "Buscar esta dirección"}
+              </small>
+            </span>
+            <Icon name="external" />
+          </a>
+        )}
+      </div>
     </section>
   );
 }

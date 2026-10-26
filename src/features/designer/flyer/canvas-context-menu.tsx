@@ -16,7 +16,7 @@ const commands: [CanvasCommand, string, string][] = [
   ["back", "Enviar al fondo", "lucide:layers"],
   ["center-x", "Centrar horizontalmente", "lucide:align-center-horizontal"],
   ["center-y", "Centrar verticalmente", "lucide:align-center-horizontal"],
-  ["delete", "Eliminar", "lucide:trash-2"],
+  ["delete", "Eliminar", "lucide:trash"],
 ];
 export default function CanvasContextMenu({
   position,
