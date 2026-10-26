@@ -105,7 +105,7 @@ export default function EventGallery({
                   {!event.isDemo && (
                     <Link
                       className="card-manage"
-                      href={`/?event=${encodeURIComponent(event.id)}`}
+                      href={`/manager/${encodeURIComponent(event.id)}`}
                       aria-label={`Gestionar ${event.title}`}
                     >
                       <Icon name="users" />

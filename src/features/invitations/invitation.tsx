@@ -6,12 +6,14 @@ import type { PublicEvent } from "@/lib/events/types";
 import Brand from "@/components/brand";
 import InvitationSections from "./invitation-sections";
 export default function Invitation({
+  giftURL,
   event,
   photoURL,
   audioURL,
   preview = false,
   guestName,
 }: {
+  giftURL?: string;
   event: PublicEvent;
   guestName?: string;
   photoURL?: (key: string) => string;
@@ -122,6 +124,16 @@ export default function Invitation({
               </small>
             )}
           </>
+        )}
+        {event.wishlistEnabled && (
+          <a className="invitation-gifts-link" href={giftURL || "/regalos"}>
+            <Icon name="lucide:gift" />
+            <span>
+              Lista de regalos
+              <small>Elige un detalle para la celebración</small>
+            </span>
+            <Icon name="arrow" />
+          </a>
         )}
         {preview && (
           <p className="preview-demo-note">Vista previa · {event.title}</p>

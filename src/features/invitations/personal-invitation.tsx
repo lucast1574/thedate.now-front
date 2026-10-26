@@ -35,7 +35,11 @@ export default async function PersonalInvitation({ token }: { token: string }) {
       <a className="personal-confirm-link" href="#confirmacion">
         Confirmar asistencia
       </a>
-      <Invitation event={data.event} guestName={data.guestName} />
+      <Invitation
+        event={data.event}
+        guestName={data.guestName}
+        giftURL={`/regalos/${token}`}
+      />
       <div id="confirmacion">
         <RSVPForm token={token} />
       </div>

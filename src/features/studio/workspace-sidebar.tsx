@@ -5,16 +5,34 @@ import Icon from "@/components/icon";
 import UserAvatar from "@/components/user-avatar";
 import type { User } from "@/lib/events/types";
 export default function WorkspaceSidebar({
+  eventId,
+  guard,
   wedding,
   user,
   active = "events",
 }: {
+  eventId?: string;
+  guard?: () => boolean;
   wedding: boolean;
   user: User;
-  active?: "events" | "profile" | "admin" | "affiliates" | "support";
+  active?:
+    | "events"
+    | "profile"
+    | "admin"
+    | "affiliates"
+    | "support"
+    | "guests"
+    | "tables"
+    | "gifts";
 }) {
   return (
-    <aside className="workspace-sidebar">
+    <aside
+      className="workspace-sidebar"
+      onClickCapture={(e) => {
+        if ((e.target as HTMLElement).closest("a") && guard && !guard())
+          e.preventDefault();
+      }}
+    >
       <Link className="workspace-brand" href="/">
         <Brand wedding={wedding} />
       </Link>
@@ -24,6 +42,34 @@ export default function WorkspaceSidebar({
           <Icon name="layout" />
           Mis invitaciones
         </Link>
+        {(
+          [
+            ["guests", "users", "Invitados", "Lista y respuestas"],
+            ["tables", "table", "Mesas", "Distribución del evento"],
+            [
+              "gifts",
+              "lucide:gift",
+              "Lista de regalos",
+              "Quién regala cada detalle",
+            ],
+          ] as const
+        ).map(([key, icon, title, hint]) => (
+          <Link
+            key={key}
+            href={
+              eventId
+                ? `/manager/${eventId}?tab=${key}`
+                : `/organizar?tool=${key}`
+            }
+            aria-current={active === key ? "page" : undefined}
+          >
+            <Icon name={icon} />
+            <span>
+              {title}
+              <small>{hint}</small>
+            </span>
+          </Link>
+        ))}
         <Link
           href="/affiliates"
           aria-current={active === "affiliates" ? "page" : undefined}

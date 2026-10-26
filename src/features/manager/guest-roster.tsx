@@ -67,6 +67,7 @@ export default function GuestRoster({
               <th>Respuesta</th>
               <th>Cupos</th>
               <th>Mesa</th>
+              <th>Regalo</th>
               <th>Contacto</th>
             </tr>
           </thead>
@@ -113,6 +114,20 @@ export default function GuestRoster({
                       {p.slot ? ` · +${p.slot}` : ""}
                     </small>
                   ))}
+                </td>
+                <td>
+                  {g.gift ? (
+                    <>
+                      <strong>{g.gift.title}</strong>
+                      <small>
+                        {g.gift.delivered
+                          ? "Recibido"
+                          : "Se comprometió a regalarlo"}
+                      </small>
+                    </>
+                  ) : (
+                    <small>Sin elección</small>
+                  )}
                 </td>
                 <td>
                   {g.phone}

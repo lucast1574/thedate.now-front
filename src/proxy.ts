@@ -7,7 +7,7 @@ import {
 } from "@/lib/events/invitation-runtime";
 export function proxy(request: NextRequest) {
   const target = invitationTarget();
-  const personal = /^\/(?:rsvp|join|api\/(?:rsvp|join))\//.test(
+  const personal = /^\/(?:rsvp|join|regalos|api\/(?:rsvp|join|gifts))\//.test(
     request.nextUrl.pathname,
   );
   const next = () => {

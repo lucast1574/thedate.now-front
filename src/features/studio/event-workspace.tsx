@@ -71,9 +71,9 @@ export default function EventWorkspace({
           Abrir editor de invitación ↗
         </Link>
       )}
-      {selected && !selected.isDemo && selected.paymentStatus === "paid" && (
+      {selected && (
         <Link className="office-button" href={`/manager/${selected.id}`}>
-          Invitados, mesas y Excel de entrada ↗
+          Invitados, mesas y regalos ↗
         </Link>
       )}
       {selected &&

@@ -1,0 +1,781 @@
+/* Product previews and commitments share one visual language, with no account required for guests. */
+:where(
+  .wishlist-panel,
+  .gift-page,
+  .gift-code-page,
+  .organization-page,
+  .organization-preview
+) {
+  --gift-accent: #89664b;
+  --gift-soft: #f3ede5;
+  --gift-ink: #332d28;
+  color: var(--gift-ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+:where(.office-general)
+  :where(.wishlist-panel, .organization-page, .organization-preview),
+.gift-page.gifts-general {
+  --gift-accent: #2860cf;
+  --gift-soft: #edf2fb;
+  --gift-ink: #252d3b;
+}
+.gift-primary,
+.gift-secondary,
+.gift-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 12px 17px;
+  border: 0;
+  border-radius: 7px;
+  font:
+    600 13px Arial,
+    sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1.4;
+}
+.gift-primary {
+  background: var(--gift-accent, #89664b);
+  color: white;
+}
+.gift-secondary {
+  background: var(--gift-soft, #f3ede5);
+  color: var(--gift-accent, #89664b);
+}
+.gift-danger {
+  background: #f7e9e6;
+  color: #a14c3d;
+}
+.gift-primary .ui-icon,
+.gift-secondary .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.gift-primary:hover,
+.gift-primary:focus-visible {
+  filter: brightness(0.93);
+  outline: none;
+}
+.gift-secondary:hover,
+.gift-secondary:focus-visible {
+  background: color-mix(in srgb, var(--gift-accent, #89664b) 15%, white);
+  outline: none;
+}
+:where(.gift-primary, .gift-secondary, .gift-danger):disabled {
+  opacity: 0.5;
+  cursor: default;
+  filter: none;
+}
+.wishlist-panel {
+  background: white;
+  padding: 28px;
+  border-radius: 12px;
+  max-width: 1180px;
+}
+.wishlist-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.wishlist-heading h2 {
+  font:
+    500 28px/1.2 Georgia,
+    serif;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.office-general .wishlist-heading h2 {
+  font:
+    650 27px/1.2 Arial,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.wishlist-heading p,
+.wishlist-explainer {
+  font:
+    13px/1.6 Arial,
+    sans-serif;
+  color: #84786c;
+  margin: 0;
+}
+.wishlist-explainer {
+  max-width: 700px;
+  margin: 22px 0;
+}
+.wishlist-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 8px;
+  background: var(--gift-soft);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.wishlist-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.wishlist-switch > span {
+  width: 34px;
+  height: 20px;
+  background: #cbc5bc;
+  border-radius: 20px;
+  padding: 3px;
+}
+.wishlist-switch > span::after {
+  content: "";
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: white;
+  border-radius: 50%;
+}
+.wishlist-switch input:checked + span {
+  background: var(--gift-accent);
+}
+.wishlist-switch input:checked + span::after {
+  transform: translateX(14px);
+}
+.wishlist-switch:focus-within {
+  background: color-mix(in srgb, var(--gift-accent) 18%, white);
+}
+.gift-draft-notice {
+  padding: 13px 16px;
+  background: var(--gift-soft);
+  font:
+    12px/1.6 Arial,
+    sans-serif;
+  border-radius: 7px;
+  color: var(--gift-accent);
+}
+.gift-list-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font:
+    500 13px Arial,
+    sans-serif;
+  color: var(--gift-accent);
+  margin: 18px 0;
+}
+.wishlist-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+.wishlist-summary span {
+  padding: 16px;
+  background: #f8f7f4;
+  border-radius: 8px;
+  font:
+    11px Arial,
+    sans-serif;
+  color: #82786d;
+}
+.wishlist-summary strong {
+  display: block;
+  font:
+    600 25px Arial,
+    sans-serif;
+  color: var(--gift-ink);
+  margin-bottom: 6px;
+}
+.gift-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 26px;
+}
+.owner-gift-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.gift-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  min-width: 0;
+}
+.owner-gift-card {
+  background: #faf9f6;
+}
+.gift-image {
+  aspect-ratio: 1.2;
+  display: grid;
+  place-items: center;
+  background: var(--gift-soft);
+  overflow: hidden;
+}
+.gift-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.gift-image > .ui-icon {
+  width: 64px;
+  height: 64px;
+  color: color-mix(in srgb, var(--gift-accent) 55%, white);
+}
+.gift-card-content {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.gift-card-content h2,
+.gift-card-content h3 {
+  font:
+    600 17px/1.35 Arial,
+    sans-serif;
+  margin: 0;
+  color: var(--gift-ink);
+}
+.gift-card-content h2 a,
+.gift-card-content h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.gift-card-content h2 a .ui-icon,
+.gift-card-content h3 a .ui-icon {
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  color: #95897c;
+}
+.gift-card-content p {
+  font:
+    12px/1.6 Arial,
+    sans-serif;
+  color: #8a7e71;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.gift-status {
+  font:
+    600 10px Arial,
+    sans-serif;
+  color: #85786c;
+}
+.gift-status.is-mine {
+  color: #4c7550;
+}
+.gift-card.is-reserved .gift-image {
+  opacity: 0.6;
+}
+.gift-card-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.gift-icon-button {
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  width: 36px;
+  height: 36px;
+  color: #927b6a;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.gift-icon-button:hover,
+.gift-icon-button:focus-visible {
+  background: var(--gift-soft);
+  outline: none;
+}
+.gift-icon-button .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.gift-assignment {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+}
+.gift-assignment > span {
+  flex: 1;
+  min-width: 0;
+}
+.gift-assignment small {
+  display: block;
+  font:
+    10px Arial,
+    sans-serif;
+  color: #938474;
+  margin-bottom: 4px;
+}
+.gift-assignment strong {
+  font:
+    600 12px Arial,
+    sans-serif;
+}
+.gift-assignment details {
+  width: 100%;
+  font:
+    11px Arial,
+    sans-serif;
+  color: #938474;
+}
+.gift-assignment summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+.gift-assignment details p {
+  margin: 8px 0;
+}
+.gift-error,
+.gift-success {
+  padding: 14px 16px;
+  font:
+    13px/1.6 Arial,
+    sans-serif;
+  border-radius: 8px;
+}
+.gift-error {
+  background: #fbebe7;
+  color: #a34c3c;
+}
+.gift-success {
+  background: #eaf3e8;
+  color: #537a4e;
+}
+.gift-error button {
+  margin: 8px 0 0 12px;
+}
+.gift-form {
+  max-width: 650px;
+  background: var(--gift-soft);
+  padding: 22px;
+  border-radius: 10px;
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+.gift-form > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+.gift-form h3 {
+  font:
+    600 17px Arial,
+    sans-serif;
+  margin: 0;
+}
+.gift-form > header > button {
+  border: 0;
+  background: transparent;
+  padding: 5px;
+  color: var(--gift-ink);
+  cursor: pointer;
+}
+.gift-form label,
+.gift-code-page label {
+  display: grid;
+  gap: 7px;
+  font:
+    500 12px Arial,
+    sans-serif;
+  color: #71695f;
+}
+.gift-form input,
+.gift-form textarea,
+.gift-code-page input {
+  padding: 11px 12px;
+  font:
+    13px/1.5 Arial,
+    sans-serif;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e2ddd5;
+  border-radius: 6px;
+  background: white;
+  color: #332d28;
+}
+.gift-form input:focus,
+.gift-form textarea:focus,
+.gift-code-page input:focus {
+  outline: none;
+  background: #fffdfa;
+  border-color: #b1a18d;
+}
+.gift-form details {
+  font:
+    12px Arial,
+    sans-serif;
+}
+.gift-form summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.gift-form details label {
+  margin-top: 14px;
+}
+.gift-form-hint {
+  font:
+    12px/1.6 Arial,
+    sans-serif;
+  color: #7c7164;
+  margin: 0;
+}
+.gift-form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+.gift-empty {
+  text-align: center;
+  padding: 48px 24px;
+  background: #faf9f6;
+  border-radius: 10px;
+  margin-top: 24px;
+}
+.gift-empty > .ui-icon {
+  width: 42px;
+  height: 42px;
+  color: var(--gift-accent);
+  margin-bottom: 12px;
+}
+.gift-empty h2,
+.gift-empty h3 {
+  font:
+    600 19px Arial,
+    sans-serif;
+  margin: 0 0 12px;
+}
+.gift-empty p {
+  font:
+    13px/1.7 Arial,
+    sans-serif;
+  color: #8a7e71;
+  max-width: 470px;
+  margin: 0 auto;
+}
+.gift-page {
+  min-height: 100vh;
+  background: #f7f3ed;
+  padding: 30px max(24px, calc((100vw - 1200px) / 2)) 50px;
+}
+.gift-page.gifts-general {
+  background: #f3f6fb;
+}
+.gift-page > nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font:
+    12px Arial,
+    sans-serif;
+  color: #918374;
+}
+.gift-page > nav a {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--gift-accent);
+  text-decoration: none;
+}
+.gift-page-heading {
+  text-align: center;
+  max-width: 660px;
+  margin: 55px auto 30px;
+}
+.gift-page-heading > .ui-icon {
+  width: 38px;
+  height: 38px;
+  color: var(--gift-accent);
+}
+.gift-page-heading h1 {
+  font:
+    500 43px/1.15 Georgia,
+    serif;
+  letter-spacing: -0.03em;
+  margin: 16px 0;
+}
+.gifts-general .gift-page-heading h1 {
+  font:
+    650 38px/1.15 Arial,
+    sans-serif;
+  letter-spacing: -0.045em;
+}
+.gift-page-heading p {
+  font:
+    14px/1.7 Arial,
+    sans-serif;
+  color: #8c7e6e;
+  margin: 0;
+}
+.gift-page-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border-radius: 10px;
+  padding: 18px 22px;
+  font:
+    600 13px Arial,
+    sans-serif;
+}
+.gift-page-note > .ui-icon {
+  width: 23px;
+  height: 23px;
+  color: var(--gift-accent);
+}
+.gift-page-note small {
+  display: block;
+  font:
+    12px/1.5 Arial,
+    sans-serif;
+  color: #918374;
+  margin-top: 5px;
+}
+.gift-page > footer {
+  text-align: center;
+  font:
+    12px/1.7 Arial,
+    sans-serif;
+  color: #968777;
+  margin-top: 40px;
+}
+.gift-code-page {
+  max-width: 480px;
+  margin: 12vh auto;
+  padding: 30px;
+  text-align: center;
+}
+.gift-code-page > .ui-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--gift-accent);
+}
+.gift-code-page h1 {
+  font:
+    500 35px/1.2 Georgia,
+    serif;
+  letter-spacing: -0.03em;
+  margin: 22px 0 18px;
+}
+.gift-code-page p {
+  font:
+    14px/1.7 Arial,
+    sans-serif;
+  color: #8c7e6e;
+}
+.gift-code-page form {
+  display: grid;
+  gap: 16px;
+  margin-top: 28px;
+  text-align: left;
+}
+.invitation-gifts-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 460px;
+  padding: 20px;
+  margin: 28px auto;
+  background: #f2ede5;
+  border-radius: 10px;
+  color: var(--accent);
+  text-decoration: none;
+  text-align: left;
+  font:
+    600 16px Arial,
+    sans-serif;
+}
+.invitation-gifts-link > .ui-icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.invitation-gifts-link > .ui-icon:last-child {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+}
+.invitation-gifts-link small {
+  display: block;
+  font:
+    12px/1.5 Arial,
+    sans-serif;
+  color: #8a7c6c;
+  margin-top: 5px;
+}
+@media (max-width: 1000px) {
+  .gift-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wishlist-heading {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .wishlist-panel {
+    padding: 24px;
+  }
+}
+@media (max-width: 640px) {
+  .gift-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .gift-page {
+    padding: 22px 18px 40px;
+  }
+  .gift-page > nav {
+    align-items: flex-start;
+  }
+  .gift-page > nav > span {
+    max-width: 130px;
+    text-align: right;
+  }
+  .gift-page-heading {
+    margin: 38px auto 28px;
+  }
+  .gift-page-heading h1,
+  .gifts-general .gift-page-heading h1 {
+    font-size: 31px;
+  }
+  .wishlist-summary {
+    gap: 6px;
+  }
+  .wishlist-summary span {
+    padding: 12px 9px;
+    font-size: 10px;
+  }
+  .wishlist-panel {
+    padding: 20px 16px;
+  }
+  .gift-form {
+    padding: 18px 14px;
+  }
+  .gift-form-actions {
+    flex-wrap: wrap;
+  }
+  .gift-card-content {
+    padding: 20px;
+  }
+}
+
+:where(.gift-page, .gift-code-page, .wishlist-panel, .organization-page)
+  :focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+:where(.gift-page, .wishlist-panel) a:focus-visible {
+  text-decoration: underline;
+}
+.gift-product-link:focus-visible .gift-image {
+  background: color-mix(in srgb, var(--gift-accent) 20%, white);
+}
+.gift-form summary:focus-visible {
+  background: white;
+}
+.workspace-sidebar a:focus-visible {
+  outline: none;
+  background: white;
+  color: var(--workspace-accent);
+}
+
+.gift-card-content > p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.gift-form header button:focus-visible,
+.gift-page nav a:focus-visible {
+  background: var(--gift-soft);
+  outline: none;
+}
+
+.gift-page > nav > span {
+  min-width: 0;
+  max-width: 50%;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+.gift-card-content h2,
+.gift-card-content h3 {
+  overflow-wrap: anywhere;
+}
+
+:is(
+    .wishlist-panel,
+    .gift-page,
+    .gift-code-page,
+    .organization-preview,
+    .organization-page
+  )
+  .gift-primary {
+  border: 0;
+  background: var(--gift-accent, #89664b);
+  color: white;
+}
+:is(
+    .wishlist-panel,
+    .gift-page,
+    .gift-code-page,
+    .organization-preview,
+    .organization-page
+  )
+  .gift-secondary {
+  border: 0;
+  background: var(--gift-soft, #f3ede5);
+  color: var(--gift-accent, #89664b);
+}
+.wishlist-panel .gift-danger {
+  border: 0;
+  background: #f7e9e6;
+  color: #a14c3d;
+}
+.wishlist-panel .gift-icon-button {
+  border: 0;
+  background: transparent;
+  color: #927b6a;
+}
+.manager-page .wishlist-panel :focus-visible,
+.organization-page :focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.manager-page .wishlist-panel .gift-primary {
+  border: 0;
+  background: var(--gift-accent);
+  color: white;
+}
+.manager-page .wishlist-panel .gift-secondary {
+  border: 0;
+  background: var(--gift-soft);
+  color: var(--gift-accent);
+}
+.manager-page .wishlist-panel .gift-danger {
+  border: 0;
+  background: #f7e9e6;
+  color: #a14c3d;
+}
+.manager-page .wishlist-panel .gift-icon-button {
+  border: 0;
+  background: transparent;
+  color: #927b6a;
+}

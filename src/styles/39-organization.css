@@ -1,0 +1,363 @@
+/* Event-scoped navigation is discoverable before purchase. */
+.workspace.office-general {
+  --workspace-accent: #2860cf;
+  --workspace-tint: #e7eefb;
+  --workspace-ink: #252d3b;
+  background: #f7f9fc;
+}
+.office-general .workspace-sidebar {
+  background: #eef2f8;
+  border-color: #e0e6ef;
+}
+.workspace-sidebar {
+  overflow-y: auto;
+  padding-top: 26px;
+}
+.workspace-brand {
+  margin-bottom: 28px;
+}
+.workspace-label {
+  margin-bottom: 14px;
+}
+.workspace-sidebar nav a {
+  min-height: 58px;
+  padding: 14px 12px;
+  font-size: 15px;
+  gap: 13px;
+}
+.workspace-sidebar nav .ui-icon {
+  width: 23px;
+  height: 23px;
+  flex-shrink: 0;
+}
+.workspace-sidebar nav a > span {
+  display: block;
+  min-width: 0;
+}
+.workspace-sidebar nav a small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #928679;
+  margin-top: 4px;
+  font-weight: 400;
+}
+.workspace-sidebar nav a[aria-current="page"] small {
+  color: var(--workspace-accent);
+}
+.workspace-sidebar-bottom {
+  padding-top: 20px;
+}
+.workspace-sidebar .workspace-alternative {
+  padding: 12px 10px 16px;
+  margin-bottom: 16px;
+}
+.office-general .workspace-sidebar nav a small {
+  color: #7d8797;
+}
+.office-general .workspace-sidebar nav a:hover,
+.office-general .workspace-sidebar nav a[aria-current="page"] {
+  background: white;
+  box-shadow: none;
+}
+.organization-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 80px;
+  color: var(--workspace-ink);
+}
+.organization-heading h1 {
+  font:
+    500 38px/1.15 Georgia,
+    serif;
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+}
+.office-general .organization-heading h1 {
+  font:
+    650 34px/1.15 Arial,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.organization-heading p {
+  font:
+    14px/1.6 Arial,
+    sans-serif;
+  color: #81786d;
+  margin: 0;
+  max-width: 600px;
+}
+.organization-event-picker {
+  display: flex;
+  align-items: end;
+  gap: 18px;
+  padding: 22px 0 30px;
+}
+.organization-event-picker label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  flex: 1;
+  max-width: 440px;
+  font:
+    500 12px Arial,
+    sans-serif;
+}
+.organization-event-picker .custom-listbox {
+  min-height: 48px;
+}
+.organization-preview {
+  padding: 30px;
+  background: white;
+  border-radius: 14px;
+  margin-top: 20px;
+}
+.preview-label {
+  display: inline-block;
+  font:
+    500 11px Arial,
+    sans-serif;
+  color: #8c8073;
+  margin-bottom: 14px;
+  background: #f5f1eb;
+  padding: 7px 10px;
+  border-radius: 5px;
+}
+.organization-preview header h2 {
+  font:
+    500 28px/1.2 Georgia,
+    serif;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+}
+.office-general .organization-preview header h2 {
+  font:
+    650 25px/1.2 Arial,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.organization-preview header p {
+  font:
+    13px/1.6 Arial,
+    sans-serif;
+  max-width: 620px;
+  color: #82776c;
+  margin: 0 0 26px;
+}
+.preview-roster {
+  overflow: auto;
+}
+.preview-roster > div {
+  display: grid;
+  grid-template-columns: 1.6fr 0.65fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  min-width: 560px;
+  padding: 16px 14px;
+  font:
+    13px Arial,
+    sans-serif;
+  background: #faf8f4;
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+.preview-roster > .preview-roster-head {
+  font:
+    500 11px Arial,
+    sans-serif;
+  background: transparent;
+  color: #8d8276;
+  padding-top: 0;
+}
+.preview-response {
+  width: fit-content;
+  padding: 6px 8px;
+  border-radius: 5px;
+  background: #ece8df;
+  color: #7a6f62;
+  font-size: 11px;
+}
+.preview-response.is-confirmed {
+  background: #e5eee5;
+  color: #4e7152;
+}
+.organization-benefits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 28px 0;
+  font:
+    13px Arial,
+    sans-serif;
+}
+.organization-benefits span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.organization-benefits .ui-icon {
+  width: 19px;
+  height: 19px;
+  color: var(--workspace-accent);
+}
+.organization-preview footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #f7f4ef;
+  padding: 20px;
+  border-radius: 8px;
+}
+.organization-preview footer p {
+  font:
+    12px/1.7 Arial,
+    sans-serif;
+  margin: 0;
+  max-width: 460px;
+  color: #7b7166;
+}
+.organization-preview .preview-seating .seating-scroll {
+  border: 0;
+  padding: 12px;
+}
+.preview-seating .seating-board {
+  min-width: 520px;
+}
+.workspace > .manager-page {
+  min-width: 0;
+  padding: 32px;
+}
+.workspace .manager-header {
+  gap: 20px;
+}
+.workspace .manager-header .product-heading > small {
+  display: none;
+}
+.workspace .manager-header .action-row {
+  flex-wrap: wrap;
+}
+.office-general .manager-page {
+  background: #f7f9fc;
+}
+.office-general .manager-header h1 {
+  font-family: Arial, sans-serif;
+  letter-spacing: -0.035em;
+}
+.office-general .manager-tabs button[aria-current="page"] {
+  background: #2860cf;
+  color: white;
+}
+/* Three stable columns keep the special tools optically centered. */
+.canvas-studio .canvas-special-tools button {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 72px;
+  padding: 14px 10px;
+}
+.canvas-studio .canvas-special-tools button > .ui-icon {
+  justify-self: center;
+  align-self: center;
+  vertical-align: middle;
+}
+.canvas-studio .canvas-special-tools button > .ui-icon:first-child {
+  width: 24px;
+  height: 24px;
+}
+.canvas-studio .canvas-special-tools button > .ui-icon:last-child {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+.canvas-studio .canvas-special-tools button > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  min-width: 0;
+  line-height: 1.35;
+}
+.canvas-studio .canvas-special-tools button small {
+  margin: 0;
+  line-height: 1.4;
+}
+@media (min-width: 1000px) {
+  .workspace {
+    grid-template-columns: 268px minmax(0, 1fr);
+  }
+}
+@media (max-width: 900px) {
+  .organization-page {
+    padding: 30px 20px 60px;
+  }
+  .workspace > .manager-page {
+    padding: 24px 18px;
+  }
+  .organization-preview {
+    padding: 22px;
+  }
+  .organization-preview footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .organization-event-picker {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 640px) {
+  .workspace-sidebar nav {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+  .workspace-sidebar nav a {
+    flex-shrink: 0;
+    font-size: 13px;
+    min-height: 50px;
+  }
+  .workspace-sidebar nav a small {
+    display: none;
+  }
+  .workspace-sidebar nav .ui-icon {
+    width: 21px;
+    height: 21px;
+  }
+  .organization-heading h1 {
+    font-size: 29px;
+  }
+  .organization-benefits {
+    grid-template-columns: 1fr;
+  }
+  .organization-event-picker label {
+    width: 100%;
+    max-width: none;
+    flex-basis: 100%;
+  }
+  .preview-seating {
+    max-width: 100%;
+    overflow: auto;
+  }
+}
+
+.office-general .manager-general .product-heading-mark {
+  background: #e4ecfb;
+  color: #2860cf;
+}
+.office-general .manager-general .product-heading strong {
+  color: #2860cf;
+}
+.office-general .manager-general .table-shape {
+  background: #e4ecfb;
+  border-color: #adc3ee;
+  color: #2860cf;
+  box-shadow: none;
+}
+.office-general .manager-general .seating-board {
+  background-color: #fbfdff;
+}
+.office-general .manager-general .seating-scroll {
+  background: #e9eef6;
+}

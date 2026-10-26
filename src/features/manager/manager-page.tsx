@@ -1,19 +1,34 @@
 "use client";
 import ProductHeading from "@/components/product-heading";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
+import OrganizationPreview from "./organization-preview";
+import WishlistPanel from "@/features/gifts/wishlist-panel";
+import ManagerTools from "./manager-tools";
 import Alert from "@/components/alert";
-import GuestForm from "@/features/studio/guest-form";
-import GuestImport from "@/features/studio/guest-import";
-import DoorPanel from "./door-panel";
 import { useManager } from "./use-manager";
 import GuestSummary from "./guest-summary";
-import GuestRoster from "./guest-roster";
-import SeatingEditor from "./seating-editor";
 export default function ManagerPage({ id }: { id: string }) {
   const manager = useManager(id);
-  const [tab, setTab] = useState("guests");
-  const { event, guests, plan, user, busy, error, dirty, stale } = manager;
+  const router = useRouter(),
+    params = useSearchParams();
+  const requested = params.get("tab"),
+    tab =
+      requested === "tables" || requested === "gifts" || requested === "door"
+        ? requested
+        : "guests";
+  const setTab = (next: string) => {
+    if (
+      manager.dirty &&
+      !window.confirm(
+        "Hay cambios del plano sin guardar. ¿Cambiar de herramienta?",
+      )
+    )
+      return;
+    router.replace(`/manager/${id}?tab=${next}`);
+  };
+  const { event, guests, user, busy, error, dirty, stale } = manager;
   if (!event)
     return (
       <main className="editor-loading">
@@ -25,162 +40,128 @@ export default function ManagerPage({ id }: { id: string }) {
       </main>
     );
   const allowed = event.paymentStatus === "paid" && !event.isDemo;
-  const canSend = user?.role === "admin" || user?.id === event.ownerId;
+  const guard = () =>
+    !dirty ||
+    window.confirm("Hay cambios del plano sin guardar. ¿Salir y descartarlos?");
   return (
-    <main
-      className={`manager-page ${event.kind === "wedding" ? "manager-wedding" : "manager-general"}`}
+    <div
+      className={`office workspace ${event.kind === "wedding" ? "office-wedding" : "office-general"}`}
     >
-      <header className="manager-header">
-        <div>
-          <ProductHeading kind={event.kind} area="manager" />
-          <h1>{event.title}</h1>
-          <p>De la confirmación al asiento: cada persona cuenta.</p>
-        </div>
-        <div className="action-row">
-          <Link
-            href="/"
-            onClick={(e) => {
-              if (
-                dirty &&
-                !window.confirm(
-                  "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
+      {user && (
+        <WorkspaceSidebar
+          wedding={event.kind === "wedding"}
+          user={user}
+          active={
+            tab === "door" ? "guests" : (tab as "guests" | "tables" | "gifts")
+          }
+          eventId={id}
+          guard={guard}
+        />
+      )}
+      <main
+        className={`manager-page ${event.kind === "wedding" ? "manager-wedding" : "manager-general"}`}
+      >
+        <header className="manager-header">
+          <div>
+            <ProductHeading kind={event.kind} area="manager" />
+            <h1>{event.title}</h1>
+            <p>De la confirmación al asiento: cada persona cuenta.</p>
+          </div>
+          <div className="action-row">
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (
+                  dirty &&
+                  !window.confirm(
+                    "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
+                  )
                 )
-              )
-                e.preventDefault();
-            }}
-          >
-            Estudio
-          </Link>
-          <Link
-            href={`/editor/${id}`}
-            onClick={(e) => {
-              if (
-                dirty &&
-                !window.confirm(
-                  "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
-                )
-              )
-                e.preventDefault();
-            }}
-          >
-            Editar invitación ↗
-          </Link>
-        </div>
-      </header>
-      <Alert>{error}</Alert>
-      <Alert variant="success">{manager.notice}</Alert>
-      {!allowed ? (
-        <section className="guest-locked">
-          <h2>Activa el gestor de tu evento</h2>
-          <p>
-            Guardar y previsualizar tu invitación es gratis. El pago habilita
-            publicación, invitados, WhatsApp y mesas.
-          </p>
-          <Link href="/">Volver al estudio para activar</Link>
-        </section>
-      ) : (
-        <>
-          <GuestSummary event={event} guests={guests} />
-          <nav className="manager-tabs" aria-label="Herramientas de invitados">
-            {[
-              ["guests", "Invitados y respuestas"],
-              ["tables", "Plano de mesas"],
-              ["door", "Excel para entrada"],
-            ].map(([key, label]) => (
-              <button
-                key={key}
-                aria-current={tab === key ? "page" : undefined}
-                onClick={() => setTab(key)}
-              >
-                {label}
-              </button>
-            ))}
-            <button
-              disabled={busy}
-              onClick={() => {
-                void manager.run(
-                  () => manager.refresh(),
-                  "Respuestas actualizadas.",
-                );
+                  e.preventDefault();
               }}
             >
-              Actualizar respuestas ↻
-            </button>
-          </nav>
-          {stale && (
-            <p className="manager-warning" role="alert">
-              Hay respuestas o cambios nuevos. Conservamos tu borrador; recarga
-              el plano antes de guardarlo o exportar.
-            </p>
-          )}
-          {tab === "guests" && (
-            <>
-              <div className="manager-additions">
-                <GuestForm busy={busy} onAdd={manager.add} />
-                <GuestImport
-                  eventId={id}
-                  onImported={() => manager.refresh()}
-                />
-              </div>
-              {canSend && (
-                <div className="manager-send">
-                  <button
-                    className="office-button"
-                    disabled={
-                      busy ||
-                      !event.publishedAt ||
-                      !guests.some((g) => !g.sentAt)
-                    }
-                    onClick={() => {
-                      void manager.send();
-                    }}
-                  >
-                    Enviar invitaciones por WhatsApp ↗
-                  </button>
-                  <p>
-                    {event.publishedAt
-                      ? "El enlace personal permite registrar acompañantes y confirmar asistencia."
-                      : "Publica la invitación desde el estudio para habilitar el envío."}
-                  </p>
-                </div>
-              )}
-              <GuestRoster guests={guests} plan={plan} />
-            </>
-          )}
-          {tab === "tables" && (
-            <SeatingEditor
-              event={event}
-              guests={guests}
-              plan={plan}
-              dirty={dirty}
-              stale={stale}
-              busy={busy}
-              onChange={manager.update}
-              onSave={() => {
-                void manager.save();
+              Estudio
+            </Link>
+            <Link
+              href={`/?event=${id}`}
+              onClick={(e) => {
+                if (!guard()) e.preventDefault();
               }}
-              onReload={() => {
-                void manager.run(
-                  () => manager.refresh(true),
-                  "Plano recargado.",
-                );
+            >
+              Datos y activación
+            </Link>
+            <Link
+              href={`/editor/${id}`}
+              onClick={(e) => {
+                if (
+                  dirty &&
+                  !window.confirm(
+                    "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
+                  )
+                )
+                  e.preventDefault();
               }}
-            />
-          )}
-          {tab === "door" && (
-            <DoorPanel
-              event={event}
-              guests={guests}
-              plan={plan}
-              blocked={busy || dirty || stale}
-              dirty={dirty}
-              onExport={(task) => {
-                void manager.run(task, "Excel generado.");
-              }}
-            />
-          )}
-        </>
-      )}
-    </main>
+            >
+              Editar invitación ↗
+            </Link>
+          </div>
+        </header>
+        <Alert>{error}</Alert>
+        <Alert variant="success">{manager.notice}</Alert>
+        {!allowed ? (
+          <>
+            {tab === "gifts" ? (
+              <WishlistPanel key={event.id} event={event} />
+            ) : (
+              <OrganizationPreview
+                tool={tab}
+                eventId={event.isDemo ? undefined : event.id}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            {tab !== "gifts" && <GuestSummary event={event} guests={guests} />}
+            <nav
+              className="manager-tabs"
+              aria-label="Herramientas de invitados"
+            >
+              {[
+                ["guests", "Invitados y respuestas"],
+                ["tables", "Plano de mesas"],
+                ["door", "Excel para entrada"],
+                ["gifts", "Lista de regalos"],
+              ].map(([key, label]) => (
+                <button
+                  key={key}
+                  aria-current={tab === key ? "page" : undefined}
+                  onClick={() => setTab(key)}
+                >
+                  {label}
+                </button>
+              ))}
+              <button
+                disabled={busy}
+                onClick={() => {
+                  void manager.run(
+                    () => manager.refresh(),
+                    "Respuestas actualizadas.",
+                  );
+                }}
+              >
+                Actualizar respuestas ↻
+              </button>
+            </nav>
+            {stale && (
+              <p className="manager-warning" role="alert">
+                Hay respuestas o cambios nuevos. Conservamos tu borrador;
+                recarga el plano antes de guardarlo o exportar.
+              </p>
+            )}
+            <ManagerTools manager={manager} tab={tab} />
+          </>
+        )}
+      </main>
+    </div>
   );
 }

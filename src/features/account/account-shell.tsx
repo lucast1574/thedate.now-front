@@ -8,12 +8,16 @@ import AuthPanel from "@/features/studio/auth-panel";
 import { api } from "@/lib/api/client";
 import type { User } from "@/lib/events/types";
 export default function AccountShell({
+  eventId,
+  next,
   wedding,
   googleEnabled,
   admin = false,
   children,
   active = admin ? "admin" : "affiliates",
 }: {
+  eventId?: string;
+  next?: string;
   wedding: boolean;
   googleEnabled: boolean;
   admin?: boolean;
@@ -22,7 +26,14 @@ export default function AccountShell({
     update: (user: User) => void,
     signOut: () => Promise<void>,
   ) => ReactNode;
-  active?: "admin" | "profile" | "affiliates" | "support";
+  active?:
+    | "admin"
+    | "profile"
+    | "affiliates"
+    | "support"
+    | "guests"
+    | "tables"
+    | "gifts";
 }) {
   const [user, setUser] = useState<User | null>(null),
     [loading, setLoading] = useState(true),
@@ -47,7 +58,12 @@ export default function AccountShell({
       className={`office ${user ? "workspace" : ""} ${wedding ? "office-wedding" : "office-general"}`}
     >
       {user ? (
-        <WorkspaceSidebar wedding={wedding} user={user} active={active} />
+        <WorkspaceSidebar
+          wedding={wedding}
+          user={user}
+          active={active}
+          eventId={eventId}
+        />
       ) : (
         <StudioHeader wedding={wedding} />
       )}
@@ -60,7 +76,7 @@ export default function AccountShell({
             googleEnabled={googleEnabled}
             busy={busy}
             error={error}
-            googleNext={`/${active}`}
+            googleNext={next || `/${active}`}
             onClearError={() => setError("")}
             onSignIn={async (fields, mode) => {
               setBusy(true);

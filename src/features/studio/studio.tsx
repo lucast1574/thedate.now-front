@@ -78,7 +78,11 @@ export default function Studio({
       <main
         className={`office workspace ${wedding ? "office-wedding" : "office-general"}`}
       >
-        <WorkspaceSidebar wedding={wedding} user={session.user} />
+        <WorkspaceSidebar
+          wedding={wedding}
+          user={session.user}
+          eventId={events.selected?.id}
+        />
         <div className="workspace-content">
           {events.selected || creating ? (
             <EventWorkspace

@@ -12,6 +12,7 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  wishlistEnabled?: boolean;
   music?: InvitationMusic | null;
   audioKeys?: string[];
   publishedAt?: string | null;
@@ -67,8 +68,10 @@ export type PublicEvent = Pick<
   | "sections"
   | "photoKeys"
   | "music"
+  | "wishlistEnabled"
 >;
 export type Guest = {
+  gift?: { id: string; title: string; delivered: boolean };
   lastName?: string;
   family?: string;
   gender?: Gender;
