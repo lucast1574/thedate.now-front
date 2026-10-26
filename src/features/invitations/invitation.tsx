@@ -1,3 +1,4 @@
+import InvitationMotion from "./invitation-motion";
 import InvitationMusic from "./invitation-music";
 import Icon from "@/components/icon";
 import EventDetails from "@/components/event-details";
@@ -39,8 +40,10 @@ export default function Invitation({
       data-invitation-event={preview ? undefined : event.id}
       data-template={event.templateId}
       data-product={event.kind}
+      data-design={event.designMode || "sections"}
       style={{ "--accent": accent } as React.CSSProperties}
     >
+      <InvitationMotion />
       <header className="invite-top">
         <a
           href={
@@ -51,7 +54,9 @@ export default function Invitation({
         >
           <Brand wedding={event.kind === "wedding"} />
         </a>
-        <span>UNA INVITACIÓN ESPECIAL</span>
+        <span>
+          {event.kind === "wedding" ? "INVITACIÓN DE BODA" : "VAMOS A CELEBRAR"}
+        </span>
       </header>
       <section className="invite-content">
         {event.designMode !== "flyer" && (
@@ -151,7 +156,16 @@ export default function Invitation({
         }
       />
       <footer className="invite-footer">
-        Una invitación creada con <b>the date.</b>
+        Creada con{" "}
+        <a
+          href={
+            event.kind === "wedding"
+              ? "https://save.thedate.now"
+              : "https://thedate.now"
+          }
+        >
+          {event.kind === "wedding" ? "Save the Date" : "the date."}
+        </a>
       </footer>
     </main>
   );

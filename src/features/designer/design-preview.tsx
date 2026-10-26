@@ -1,12 +1,10 @@
 "use client";
 import { useState } from "react";
-import { createPortal } from "react-dom";
-import PreviewWatermark from "./preview-watermark";
-import Invitation from "@/features/invitations/invitation";
+import Icon from "@/components/icon";
+import PreviewViewport from "./preview-viewport";
 import type { Event } from "@/lib/events/types";
 export default function DesignPreview({ draft }: { draft: Event }) {
   const [guestName, setGuestName] = useState("María Rojas");
-  const [body, setBody] = useState<HTMLElement | null>(null);
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   return (
     <section
@@ -14,79 +12,51 @@ export default function DesignPreview({ draft }: { draft: Event }) {
       aria-label="Vista previa de la invitación"
     >
       <div className="preview-toolbar">
-        <strong>Así la verán tus invitados</strong>
-        <div className="editor-button-row">
+        <div
+          className="preview-device-tabs"
+          role="group"
+          aria-label="Dispositivo de la vista previa"
+        >
           <button
             type="button"
             aria-pressed={device === "mobile"}
             onClick={() => setDevice("mobile")}
           >
-            Móvil
+            <Icon name="lucide:smartphone" /> Móvil
           </button>
           <button
             type="button"
             aria-pressed={device === "desktop"}
             onClick={() => setDevice("desktop")}
           >
-            Escritorio
+            <Icon name="lucide:monitor" /> Escritorio
           </button>
         </div>
+        <label className="preview-name">
+          <Icon name="users" />
+          <span>Invitado de ejemplo</span>
+          <input
+            maxLength={200}
+            value={guestName}
+            placeholder="Nombre del invitado"
+            onChange={(e) => setGuestName(e.target.value)}
+          />
+        </label>
       </div>
-      <p className="editor-hint">
-        Guardar y previsualizar es gratis. El pago habilita la publicación y las
-        herramientas de invitados.
-      </p>
-      <label className="preview-name">
-        Nombre de ejemplo
-        <input
-          maxLength={200}
-          value={guestName}
-          onChange={(e) => setGuestName(e.target.value)}
+      <div className="preview-stage-wrap">
+        <PreviewViewport
+          key={device}
+          draft={draft}
+          device={device}
+          guestName={guestName}
         />
-      </label>
-      <div className="preview-device" data-device={device}>
-        <iframe
-          title="Vista previa real de tu invitación"
-          sandbox="allow-same-origin"
-          srcDoc={
-            '<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vista previa</title></head><body></body></html>'
-          }
-          onLoad={(e) => {
-            const doc = e.currentTarget.contentDocument;
-            if (!doc) return;
-            for (const node of document.querySelectorAll(
-              'link[rel="stylesheet"], style',
-            ))
-              doc.head.appendChild(node.cloneNode(true));
-            const style = doc.createElement("style");
-            style.textContent = "html,body{margin:0}";
-            doc.head.appendChild(style);
-            setBody(doc.body);
-          }}
-        />
-        {(draft.isDemo || draft.paymentStatus !== "paid") && (
-          <PreviewWatermark wedding={draft.kind === "wedding"} />
-        )}
-        {body &&
-          createPortal(
-            <div
-              onClickCapture={(e) => {
-                if ((e.target as HTMLElement).closest("a")) e.preventDefault();
-              }}
-            >
-              <Invitation
-                guestName={guestName}
-                event={draft}
-                preview={Boolean(draft.isDemo)}
-                audioURL={(key) => `/api/audio/${draft.id}/${key}`}
-                photoURL={(key) =>
-                  `/api/photos/${draft.id}/${encodeURIComponent(key)}`
-                }
-              />
-            </div>,
-            body,
-          )}
       </div>
+      <footer className="preview-caption">
+        <span>
+          <Icon name="lock" /> Vista previa privada
+        </span>
+        <p>Explora tu invitación desplazándote dentro de ella.</p>
+      </footer>
     </section>
   );
 }

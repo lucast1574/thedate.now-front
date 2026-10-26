@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 export default function PreviewWatermark({ wedding }: { wedding: boolean }) {
   return (
     <div
@@ -6,7 +7,8 @@ export default function PreviewWatermark({ wedding }: { wedding: boolean }) {
       data-product={wedding ? "wedding" : "general"}
     >
       <span>
-        Vista previa<small>{wedding ? "Save the Date" : "The Date"}</small>
+        <Icon name="eye" /> Vista previa
+        <small>{wedding ? "Save the Date" : "The Date"}</small>
       </span>
     </div>
   );
