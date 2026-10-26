@@ -5,6 +5,7 @@ import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
 import type { useInvitationDesign } from "../use-invitation-design";
 import CanvasPages from "./canvas-pages";
+import CanvasSectionPanel from "./canvas-section-panel";
 import CanvasProperties from "./canvas-properties";
 import CanvasToolbox from "./canvas-toolbox";
 import CanvasLayers from "./canvas-layers";
@@ -23,7 +24,6 @@ export default function CanvasWorkspace({
 }) {
   const {
     draft,
-    sections,
     active,
     selected,
     canvas,
@@ -37,18 +37,30 @@ export default function CanvasWorkspace({
     add,
     patch,
     layer,
-    addPage,
+    addPage: appendPage,
   } = useCanvasWorkspace(editor);
   const tab = tool,
     setTab = onToolChange;
-  const panel = useCanvasPanel(tab, selectedId);
+  const panel = useCanvasPanel(tab, selectedId, active?.id || "");
+  function addPage() {
+    appendPage();
+    setTab("pages");
+  }
+  function selectPage(id: string) {
+    setActiveId(id);
+    select("");
+    if (window.matchMedia("(min-width: 761px)").matches)
+      document
+        .getElementById(`page-${id}`)
+        ?.scrollIntoView({ block: "nearest" });
+  }
   return (
     <div className="canvas-workbench">
       <nav className="canvas-rail" aria-label="Herramientas de diseño">
         {[
+          ["pages", "layout", "Secciones"],
           ["elements", "sparkle", "Elementos"],
           ["photos", "image", "Imágenes"],
-          ["pages", "layout", "Secciones"],
           ["layers", "table", "Capas"],
           ["music", "music", "Música"],
           ["templates", "layout", "Plantillas"],
@@ -112,27 +124,15 @@ export default function CanvasWorkspace({
           />
         )}
         {tab === "pages" && (
-          <div className="canvas-page-list">
-            {sections.map((s, n) => (
-              <button
-                key={s.id}
-                aria-pressed={s.id === active?.id}
-                onClick={() => {
-                  setActiveId(s.id);
-                  select("");
-                  document
-                    .getElementById(`page-${s.id}`)
-                    ?.scrollIntoView({ block: "nearest" });
-                }}
-              >
-                <span>{String(n + 1).padStart(2, "0")}</span>
-                {s.heading || "Sección sin título"}
-              </button>
-            ))}
-            <button disabled={sections.length >= 20} onClick={addPage}>
-              <Icon name="plus" /> Añadir sección
-            </button>
-          </div>
+          <CanvasSectionPanel
+            editor={editor}
+            active={active}
+            index={index}
+            canvas={canvas}
+            onSelect={selectPage}
+            onAdd={addPage}
+            onChange={change}
+          />
         )}
         {tab === "layers" && (
           <CanvasLayers
@@ -157,16 +157,12 @@ export default function CanvasWorkspace({
             }}
           />
         )}
-        {tab !== "music" && tab !== "templates" && (
+        {selected && tab !== "music" && tab !== "templates" && (
           <CanvasProperties
             kind={draft.kind}
-            active={active}
-            index={index}
             canvas={canvas}
             selected={selected}
             photos={draft.photoKeys}
-            update={(patch) => editor.updateSection(index, patch)}
-            change={change}
             patch={patch}
             layer={layer}
             add={add}
@@ -189,7 +185,11 @@ export default function CanvasWorkspace({
         onSelect={(page, element) => {
           setActiveId(page);
           select(element);
-          if (element) setTab("elements");
+          setTab(element ? "elements" : "pages");
+          if (!element) {
+            panel.current?.scrollTo({ top: 0 });
+            panel.current?.scrollIntoView({ block: "nearest" });
+          }
         }}
         zoom={zoom}
         setZoom={setZoom}

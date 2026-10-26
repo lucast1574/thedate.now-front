@@ -33,7 +33,7 @@ export default function InvitationDesigner({
   );
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);
-  const [tool, setTool] = useState("elements");
+  const [tool, setTool] = useState("pages");
   useEffect(() => {
     if (!editor.dirty) return;
     const leave = (e: BeforeUnloadEvent) => e.preventDefault();

@@ -1,0 +1,140 @@
+/* Section selection leads the editor; element tools follow the selection. */
+.canvas-section-panel {
+  display: grid;
+  gap: 20px;
+}
+.canvas-section-help,
+.canvas-section-background > small {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--editor-ink) 65%, transparent);
+}
+.canvas-section-background > small {
+  display: block;
+  margin-top: 8px;
+  font-size: 11px;
+}
+.canvas-section-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.canvas-section-list-heading h3 {
+  margin: 0;
+}
+.canvas-section-list-heading > span {
+  font-size: 11px;
+  color: color-mix(in srgb, var(--editor-ink) 60%, transparent);
+}
+.canvas-section-panel .canvas-page-list button {
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  background: var(--editor-ground);
+}
+.canvas-section-panel .canvas-page-list button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--editor-accent) 12%, white);
+  color: var(--editor-accent);
+}
+.canvas-section-panel .canvas-page-list button:hover,
+.canvas-section-panel .canvas-page-list button:focus-visible,
+.canvas-section-details summary:hover,
+.canvas-section-details summary:focus-visible {
+  background: color-mix(in srgb, var(--editor-accent) 8%, white);
+  color: var(--editor-accent);
+  outline: none;
+}
+.canvas-section-panel .canvas-section-swatch {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--editor-ink) 15%, transparent);
+}
+.canvas-section-panel .canvas-section-caption {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  flex: 1;
+  color: inherit;
+}
+.canvas-section-caption strong {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.canvas-section-caption small {
+  font-size: 10px;
+}
+.canvas-section-panel .canvas-section-add {
+  justify-content: center;
+  color: var(--editor-accent);
+}
+.canvas-section-details summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-size: 12px;
+  border-radius: 4px;
+}
+.canvas-context .canvas-background-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 6px 8px;
+  color: var(--editor-ink);
+}
+.canvas-background-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--editor-ink) 20%, transparent);
+  flex-shrink: 0;
+}
+.canvas-background-control > span:last-child {
+  font-size: 11px;
+  color: var(--editor-accent);
+}
+.canvas-page.is-active > header {
+  background: color-mix(in srgb, var(--editor-accent) 8%, transparent);
+  border-radius: 6px;
+}
+.canvas-page-name small {
+  font-size: 9px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .canvas-panel[data-tool="pages"] {
+    padding: 16px 20px;
+  }
+  .canvas-section-panel {
+    gap: 12px;
+  }
+  .canvas-section-help,
+  .canvas-section-background > small {
+    display: none;
+  }
+  .canvas-section-panel .canvas-page-list button {
+    padding: 8px;
+  }
+  .canvas-section-panel .canvas-section-swatch {
+    flex-basis: 24px;
+    width: 24px;
+    height: 32px;
+  }
+  .canvas-context {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .canvas-page-name {
+    gap: 6px;
+  }
+  .canvas-page-name small,
+  .canvas-background-control > span:last-child {
+    display: none;
+  }
+}

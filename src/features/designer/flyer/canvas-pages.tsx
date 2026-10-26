@@ -27,12 +27,35 @@ export default function CanvasPages({
   patch: (patch: Partial<FlyerElement>) => void;
 }) {
   const { draft, sections } = editor;
+  const activeIndex = Math.max(
+    0,
+    sections.findIndex((s) => s.id === activeId),
+  );
+  const active = sections[activeIndex];
   const photoURL = (key: string) =>
     `/api/photos/${draft.id}/${encodeURIComponent(key)}`;
   return (
     <section className="canvas-desk" aria-label="Lienzos de la invitación">
       <div className="canvas-context">
-        <CanvasFormatting item={selected} onChange={patch} />
+        {selected ? (
+          <CanvasFormatting item={selected} onChange={patch} />
+        ) : active ? (
+          <button
+            className="canvas-background-control"
+            aria-label={`Editar color de fondo de la sección ${activeIndex + 1}`}
+            onClick={() => onSelect(active.id, "")}
+          >
+            <span
+              className="canvas-background-swatch"
+              style={{
+                backgroundColor: sectionCanvas(active, draft).background,
+              }}
+              aria-hidden="true"
+            />
+            <strong>Fondo</strong>
+            <span>Sección {activeIndex + 1}</span>
+          </button>
+        ) : null}
         <div>
           <button
             disabled={zoom <= 30}
@@ -65,12 +88,14 @@ export default function CanvasPages({
               <header>
                 <button
                   className="canvas-page-name"
+                  aria-pressed={activeId === section.id}
                   onClick={() => {
                     onSelect(section.id, "");
                   }}
                 >
                   {String(n + 1).padStart(2, "0")}{" "}
                   <span>{section.heading || "Sección sin título"}</span>
+                  {activeId === section.id && <small>En edición</small>}
                 </button>
                 <div>
                   <button
