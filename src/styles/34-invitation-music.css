@@ -126,90 +126,6 @@
   aspect-ratio: 16 / 9;
   min-height: 200px;
 }
-.invitation-audio {
-  max-width: 560px;
-  margin: 24px auto;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  font-size: 13px;
-}
-.invitation-audio audio {
-  max-width: 100%;
-  height: 40px;
-}
-.invitation-audio small {
-  flex-basis: 100%;
-}
-.invitation-audio.awaiting-entry {
-  visibility: hidden;
-}
-.invitation-music-entry {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  padding: 28px;
-  background: #faf6ee;
-  color: #594736;
-  text-align: center;
-}
-.invitation-music-entry > div {
-  max-width: 440px;
-}
-.invitation-music-entry .ui-icon {
-  width: 32px;
-  height: 32px;
-}
-.invitation-music-entry p {
-  font-size: 14px;
-  margin: 24px 0;
-}
-.invitation-music-entry h2 {
-  font:
-    400 clamp(36px, 7vw, 64px)/1.1 Georgia,
-    serif;
-  margin: 0 0 32px;
-}
-.invitation-music-entry button {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0 auto;
-  padding: 16px 24px;
-  border: 0;
-  border-radius: 6px;
-  background: var(--accent, #826148);
-  color: #fff;
-  cursor: pointer;
-  font:
-    14px Arial,
-    sans-serif;
-}
-.invitation-music-entry button .ui-icon {
-  width: 20px;
-  height: 20px;
-}
-.invitation-music-entry small {
-  display: block;
-  margin: 20px 0 8px;
-  font-size: 12px;
-}
-.invitation-music-entry button.music-enter-silent {
-  background: transparent;
-  color: inherit;
-  padding: 12px;
-  text-decoration: underline;
-  font-size: 12px;
-}
-.invitation-music-entry button:focus-visible {
-  outline: none;
-  filter: brightness(0.9);
-}
 @media (max-width: 760px) {
   .canvas-workbench {
     grid-template-columns: 76px minmax(0, 1fr);
@@ -229,21 +145,6 @@
     grid-template-columns: repeat(3, 1fr);
   }
 }
-.invitation-music-entry {
-  width: 100vw;
-  height: 100dvh;
-  max-width: none;
-  max-height: none;
-  margin: 0;
-  border: 0;
-  box-sizing: border-box;
-}
-.invitation-music-entry:not([open]) {
-  display: none;
-}
-.invitation-music-entry::backdrop {
-  background: #faf6ee;
-}
 @media (max-width: 760px) {
   .canvas-studio {
     height: auto;
@@ -261,44 +162,4 @@
   .canvas-studio .editor-toolbar {
     flex-wrap: wrap;
   }
-}
-.invitation-audio-floating {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  z-index: 30;
-  max-width: min(340px, calc(100vw - 40px));
-  padding: 8px 16px 8px 8px;
-  margin: 0;
-  border: 1px solid #82614820;
-  border-radius: 32px;
-  background: #fffcf6;
-  color: #594736;
-  box-sizing: border-box;
-}
-.invitation-audio > span {
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.invitation-audio-toggle {
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  flex: 0 0 44px;
-  border: 0;
-  border-radius: 50%;
-  background: var(--accent, #826148);
-  color: #fff;
-  cursor: pointer;
-}
-.invitation-audio-toggle:focus-visible {
-  outline: none;
-  filter: brightness(0.8);
-}
-.invitation-audio-toggle .ui-icon {
-  width: 20px;
-  height: 20px;
 }
