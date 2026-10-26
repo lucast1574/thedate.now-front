@@ -203,3 +203,9 @@ La sidebar compartida muestra Invitados, Mesas y Lista de regalos en ambas marca
 `experience-panel.tsx` configura sobres clásico, botánico y ticket, colores, mensaje y entrada directa. Las nuevas plantillas ofrecen sobre por defecto y respetan una desactivación explícita. Las miniaturas muestran el diseño; el visor permite recorrer la apertura real. `celebration` conserva dress code y el aviso opcional de adultos. Los valores sirven para añadir elementos/plantillas; los bloques ya colocados se editan en el lienzo. WhatsApp incluye el aviso solo cuando `adultsOnly` y `whatsappNotice` están activados; guardar no reenvía mensajes.
 
 Desplegar primero la API que acepta `opening`, `celebration`, los bindings `dress_code`/`adults_notice` y el marcador reservado; después el frontend y los renderers de invitaciones. Los clientes antiguos no borran estas opciones al omitirlas.
+
+## Barra de herramientas del editor
+
+El editor recibe en Elementos. `canvas-section-controls.tsx` comparte la sección activa, añadir sección y el color de fondo entre Elementos, Imágenes, Capas y Secciones, antes de las herramientas. Elegir una página conserva la herramienta actual; crear una sección o pulsar el fondo del lienzo vuelve a Elementos. Seleccionar un objeto abre su inspector.
+
+`canvas-rail.tsx` agrupa creación, organización y configuración con etiquetas cortas. Texto y foto tienen accesos directos; símbolos se despliega bajo demanda. `canvas-images.tsx` mantiene la subida y la inserción de fotos en una sola implementación. Los controles usan el selector personalizado del proyecto y el foco no añade contornos ni anillos.

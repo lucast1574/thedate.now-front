@@ -1,4 +1,3 @@
-import ColorPicker from "@/components/color-picker";
 import Icon from "@/components/icon";
 import type { DesignSection } from "@/lib/events/types";
 import type { FlyerCanvas } from "@/lib/events/flyer";
@@ -12,7 +11,6 @@ export default function CanvasSectionPanel({
   index,
   canvas,
   onSelect,
-  onAdd,
   onChange,
 }: {
   editor: Editor;
@@ -20,7 +18,6 @@ export default function CanvasSectionPanel({
   index: number;
   canvas: FlyerCanvas;
   onSelect: (id: string) => void;
-  onAdd: () => void;
   onChange: (canvas: FlyerCanvas) => void;
 }) {
   return (
@@ -28,17 +25,6 @@ export default function CanvasSectionPanel({
       <p className="canvas-section-help">
         Elige una sección aquí o pulsa su fondo en el lienzo.
       </p>
-      {active && (
-        <div className="color-field canvas-section-background" key={active.id}>
-          <span>Color de fondo · Sección {index + 1}</span>
-          <ColorPicker
-            label={`Color de fondo de la sección ${index + 1}`}
-            value={canvas.background}
-            onChange={(background) => onChange({ ...canvas, background })}
-          />
-          <small>Solo cambia el fondo de la sección seleccionada.</small>
-        </div>
-      )}
       <div className="canvas-section-list-heading">
         <h3>Tus secciones</h3>
         <span>{editor.sections.length} de 20</span>
@@ -68,13 +54,6 @@ export default function CanvasSectionPanel({
             {section.id === active?.id && <Icon name="check" />}
           </button>
         ))}
-        <button
-          className="canvas-section-add"
-          disabled={editor.sections.length >= 20}
-          onClick={onAdd}
-        >
-          <Icon name="plus" /> Añadir sección
-        </button>
       </div>
       {active && (
         <details className="canvas-section-details">

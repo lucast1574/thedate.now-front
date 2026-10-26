@@ -58,7 +58,7 @@ export default function CelebrationElements({
           <small>
             {details.adultsOnly
               ? "Coloca tu aviso en la invitación"
-              : "Actívalo en Entrada y detalles"}
+              : "Actívalo en Detalles"}
           </small>
         </span>
         <Icon name="plus" />

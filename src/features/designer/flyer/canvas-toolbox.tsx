@@ -1,7 +1,6 @@
+import CanvasImages from "./canvas-images";
 import SymbolLibrary from "./symbol-library";
-import { imagePlacement } from "./canvas-geometry";
 import Icon from "@/components/icon";
-import Photo from "@/components/photo";
 import type { DesignEvent, Event } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import CanvasEventTools from "./canvas-event-tools";
@@ -15,6 +14,7 @@ export default function CanvasToolbox({
   onAdd,
   onUpload,
   busy,
+  onPhotos,
 }: {
   event: Event;
   draft: DesignEvent;
@@ -24,6 +24,7 @@ export default function CanvasToolbox({
   onAdd: (item: FlyerElement) => void;
   onUpload: (file: File) => Promise<unknown>;
   busy: boolean;
+  onPhotos: () => void;
 }) {
   function text(value: string, size = 36) {
     onAdd(
@@ -40,13 +41,21 @@ export default function CanvasToolbox({
       }),
     );
   }
+  if (photosOnly)
+    return (
+      <CanvasImages
+        draft={draft}
+        canvas={canvas}
+        disabled={disabled}
+        busy={busy}
+        onAdd={onAdd}
+        onUpload={onUpload}
+      />
+    );
   return (
     <div className="canvas-toolbox">
       {!photosOnly && (
         <>
-          <p className="canvas-panel-description">
-            Elige un elemento y colócalo donde quieras.
-          </p>
           <div className="canvas-text-presets">
             <button
               disabled={disabled}
@@ -75,6 +84,14 @@ export default function CanvasToolbox({
               Añadir un texto
             </button>
           </div>
+          <button className="canvas-photo-shortcut" onClick={onPhotos}>
+            <Icon name="image" />
+            <span>
+              Añadir una foto
+              <small>Sube una imagen o elige una de las tuyas</small>
+            </span>
+            <Icon name="chevron" />
+          </button>
           <CanvasEventTools
             event={event}
             draft={draft}
@@ -83,70 +100,30 @@ export default function CanvasToolbox({
             onAdd={onAdd}
             text={text}
           />
-          <h3>Símbolos</h3>
-          <SymbolLibrary
-            kind={event.kind}
-            disabled={disabled}
-            onPick={(icon) =>
-              onAdd(
-                element("icon", {
-                  icon,
-                  x: (canvas.width - 120) / 2,
-                  y: (canvas.height - 120) / 2,
-                  width: 120,
-                  height: 120,
-                  color: draft.accentColor,
-                }),
-              )
-            }
-          />
-        </>
-      )}
-      <h3>Imágenes</h3>
-      <label className="canvas-upload">
-        <Icon name="image" /> Subir una imagen
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          disabled={busy}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) void onUpload(file);
-            e.target.value = "";
-          }}
-        />
-      </label>
-      <div className="editor-photo-grid">
-        {draft.photoKeys.map((key, n) => (
-          <button
-            key={key}
-            disabled={disabled}
-            aria-label={`Añadir imagen ${n + 1}`}
-            onClick={(e) => {
-              const image = e.currentTarget.querySelector("img");
-              onAdd(
-                element("image", {
-                  photoKey: key,
-                  ...imagePlacement(
-                    image?.naturalWidth || 300,
-                    image?.naturalHeight || 300,
-                    canvas,
-                  ),
-                }),
-              );
-            }}
-          >
-            <Photo
-              src={`/api/photos/${draft.id}/${encodeURIComponent(key)}`}
-              alt={`Imagen ${n + 1}`}
+          <details className="canvas-symbol-disclosure">
+            <summary>
+              <Icon name="sparkle" />
+              <span>Símbolos y adornos</span>
+              <Icon name="chevron" />
+            </summary>
+            <SymbolLibrary
+              kind={event.kind}
+              disabled={disabled}
+              onPick={(icon) =>
+                onAdd(
+                  element("icon", {
+                    icon,
+                    x: (canvas.width - 120) / 2,
+                    y: (canvas.height - 120) / 2,
+                    width: 120,
+                    height: 120,
+                    color: draft.accentColor,
+                  }),
+                )
+              }
             />
-          </button>
-        ))}
-      </div>
-      {!draft.photoKeys.length && (
-        <p className="canvas-panel-description">
-          Tus fotos aparecerán aquí, listas para añadir al lienzo.
-        </p>
+          </details>
+        </>
       )}
     </div>
   );

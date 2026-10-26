@@ -1,0 +1,241 @@
+/* Start with the page context, then the tools that add content to it. */
+.canvas-rail {
+  gap: 8px;
+  padding: 12px 6px;
+}
+.canvas-rail-group {
+  display: grid;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--editor-ink) 9%, transparent);
+}
+.canvas-rail-group:last-of-type {
+  border-bottom: 0;
+}
+.canvas-rail button {
+  min-height: 56px;
+  padding: 10px 4px;
+  gap: 6px;
+  font-size: 10px;
+  line-height: 1.2;
+  border-radius: 8px;
+}
+.canvas-rail button > span {
+  white-space: nowrap;
+}
+.canvas-rail .ui-icon {
+  width: 22px;
+  height: 22px;
+}
+.canvas-rail button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--editor-accent) 12%, transparent);
+  color: var(--editor-accent);
+}
+.canvas-studio .canvas-rail-brand {
+  padding: 12px 0;
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+}
+.canvas-rail-brand .brand-wedding-type,
+.canvas-rail-brand .brand-wordmark {
+  display: none;
+}
+.canvas-rail-brand .wedding-mark,
+.canvas-rail-brand .brand-mark {
+  width: 22px;
+  height: 22px;
+}
+.canvas-section-controls {
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--editor-ground);
+  display: grid;
+  gap: 8px;
+}
+.section-controls-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--editor-accent);
+}
+.section-controls-row {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+}
+.section-controls-row .listbox {
+  flex: 1;
+  min-width: 0;
+}
+.canvas-studio .section-controls-row .custom-listbox {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+.canvas-studio .section-controls-add {
+  display: grid;
+  place-items: center;
+  padding: 8px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+.section-controls-background {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.section-controls-background > span {
+  font-size: 11px;
+}
+.section-controls-background .color-picker {
+  width: 120px;
+  flex-shrink: 0;
+}
+.canvas-studio .section-controls-background .color-trigger {
+  padding: 6px 8px;
+  min-height: 32px;
+  gap: 6px;
+}
+.section-controls-background .color-trigger-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+.section-controls-background .color-trigger strong {
+  font-size: 11px;
+}
+.section-controls-background .color-trigger small {
+  display: none;
+}
+.section-controls-background .color-trigger .ui-icon {
+  width: 12px;
+  height: 12px;
+}
+.canvas-panel > .canvas-section-controls + header {
+  margin: 20px 0 12px;
+}
+.canvas-panel > .canvas-section-controls + header > span {
+  display: none;
+}
+.canvas-panel > .canvas-section-controls + header h2 {
+  margin: 0;
+}
+.canvas-studio .canvas-text-presets {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.canvas-studio .canvas-text-presets button {
+  min-height: 56px;
+  padding: 12px;
+  font:
+    600 12px/1.4 Arial,
+    sans-serif;
+}
+.canvas-studio .canvas-photo-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--editor-ground);
+  text-align: left;
+}
+.canvas-photo-shortcut > span {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+.canvas-photo-shortcut small {
+  font-size: 10px;
+  color: color-mix(in srgb, var(--editor-ink) 65%, transparent);
+}
+.canvas-photo-shortcut > .ui-icon:last-child {
+  width: 14px;
+  rotate: -90deg;
+}
+.canvas-studio .canvas-special-tools button {
+  min-height: 56px;
+  padding: 10px 12px;
+}
+.canvas-symbol-disclosure {
+  margin-top: 20px;
+}
+.canvas-symbol-disclosure > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--editor-ground);
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 12px;
+  list-style: none;
+}
+.canvas-symbol-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+.canvas-symbol-disclosure > summary > span {
+  flex: 1;
+}
+.canvas-symbol-disclosure > summary > .ui-icon:last-child {
+  width: 14px;
+  height: 14px;
+}
+.canvas-symbol-disclosure[open] > summary > .ui-icon:last-child {
+  rotate: 180deg;
+}
+.canvas-symbol-disclosure > summary:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--editor-accent) 12%, white);
+  color: var(--editor-accent);
+}
+.canvas-symbol-disclosure[open] > summary {
+  margin-bottom: 12px;
+}
+@media (max-width: 760px) {
+  .canvas-workbench {
+    grid-template-columns: 68px minmax(0, 1fr);
+  }
+  .canvas-rail {
+    padding-inline: 4px;
+  }
+  .canvas-rail button {
+    font-size: 10px;
+    min-height: 52px;
+  }
+  .canvas-panel[data-tool="elements"],
+  .canvas-panel[data-tool="pages"] {
+    padding: 16px;
+  }
+  .canvas-section-controls {
+    padding: 10px;
+  }
+  .canvas-panel > .canvas-section-controls + header {
+    margin: 16px 0 12px;
+  }
+}
+
+.canvas-studio .section-controls-row .custom-listbox:focus-visible,
+.canvas-studio .section-controls-row .custom-listbox[aria-expanded="true"] {
+  outline: none;
+  box-shadow: none;
+  background: color-mix(in srgb, var(--editor-accent) 10%, white);
+}
+
+.section-controls-background:has(.color-trigger[aria-expanded="true"]) {
+  flex-direction: column;
+  align-items: stretch;
+}
+.section-controls-background:has(.color-trigger[aria-expanded="true"])
+  .color-picker {
+  width: 100%;
+}
+
+.canvas-studio .canvas-text-presets button:first-child,
+.canvas-studio .canvas-text-presets button:last-child {
+  font:
+    600 12px/1.4 Arial,
+    sans-serif;
+}

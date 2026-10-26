@@ -7,6 +7,7 @@ import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
 import type { useInvitationDesign } from "../use-invitation-design";
 import CanvasPages from "./canvas-pages";
+import CanvasSectionControls from "./canvas-section-controls";
 import CanvasSectionPanel from "./canvas-section-panel";
 import CanvasProperties from "./canvas-properties";
 import CanvasToolbox from "./canvas-toolbox";
@@ -46,7 +47,7 @@ export default function CanvasWorkspace({
   const panel = useCanvasPanel(tab, selectedId, active?.id || "");
   function addPage() {
     appendPage();
-    setTab("pages");
+    setTab("elements");
   }
   function selectPage(id: string) {
     setActiveId(id);
@@ -82,12 +83,24 @@ export default function CanvasWorkspace({
             <Icon name="undo" /> Volver a elementos
           </button>
         )}
+        {!selected &&
+          active &&
+          ["elements", "pages", "photos", "layers"].includes(tab) && (
+            <CanvasSectionControls
+              key={tab}
+              sections={editor.sections}
+              activeId={active.id}
+              canvas={canvas}
+              onSelect={selectPage}
+              onAdd={addPage}
+              onChange={change}
+            />
+          )}
         <header hidden={!!selected}>
           <span>TU INVITACIÓN</span>
           <h2>
             {{
-              elements:
-                event.kind === "general" ? "Arma tu invitación" : "Hazla tuya",
+              elements: "Añadir elementos",
               photos: "Tus imágenes",
               experience: "Entrada y detalles",
               pages: "Secciones",
@@ -102,6 +115,7 @@ export default function CanvasWorkspace({
             event={event}
             draft={draft}
             canvas={canvas}
+            onPhotos={() => setTab("photos")}
             photosOnly={tab === "photos"}
             disabled={!active || canvas.elements.length >= 60}
             onAdd={add}
@@ -116,7 +130,6 @@ export default function CanvasWorkspace({
             index={index}
             canvas={canvas}
             onSelect={selectPage}
-            onAdd={addPage}
             onChange={change}
           />
         )}
@@ -172,7 +185,7 @@ export default function CanvasWorkspace({
         onSelect={(page, element) => {
           setActiveId(page);
           select(element);
-          setTab(element ? "elements" : "pages");
+          setTab("elements");
           if (!element) {
             panel.current?.scrollTo({ top: 0 });
             panel.current?.scrollIntoView({ block: "nearest" });

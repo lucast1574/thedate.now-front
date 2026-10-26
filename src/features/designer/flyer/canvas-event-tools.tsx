@@ -22,7 +22,6 @@ export default function CanvasEventTools({
   return (
     <>
       <h3>Elementos de tu invitación</h3>
-      <CelebrationElements draft={draft} disabled={disabled} onAdd={onAdd} />
       <div className="canvas-special-tools">
         <button
           disabled={disabled}
@@ -97,6 +96,7 @@ export default function CanvasEventTools({
           <Icon name="plus" />
         </button>
       </div>
+      <CelebrationElements draft={draft} disabled={disabled} onAdd={onAdd} />
     </>
   );
 }
