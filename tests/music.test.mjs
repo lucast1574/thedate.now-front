@@ -4,14 +4,18 @@ import { loadSource } from "./support/load-source.cjs";
 const { musicFromLink, musicEmbed } = loadSource("src/lib/events/music.ts", {
   globals: { URL },
 });
-test("music links canonicalize provider URLs and reject spoofed hosts", () => {
+test("music links accept YouTube and reject Spotify and spoofed hosts", () => {
   const spotify = musicFromLink(
     "https://open.spotify.com/intl-es/track/4uLU6hMCjMI75M1A2tKUQC?si=share",
   );
-  assert.equal(spotify.source, "spotify");
+  assert.equal(spotify, null);
   assert.equal(
-    musicEmbed(spotify),
-    "https://open.spotify.com/embed/track/4uLU6hMCjMI75M1A2tKUQC",
+    musicEmbed({
+      source: "spotify",
+      value: "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC",
+      title: "Legacy",
+    }),
+    null,
   );
   for (const url of [
     "https://music.youtube.com/watch?v=dQw4w9WgXcQ&si=share",

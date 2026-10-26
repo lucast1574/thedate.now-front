@@ -1,4 +1,6 @@
+import { useState } from "react";
 import Icon from "@/components/icon";
+import { musicFromLink } from "@/lib/events/music";
 import type { useInvitationDesign } from "./use-invitation-design";
 import { useMusicUpload } from "./use-music-upload";
 export default function MusicPanel({
@@ -9,6 +11,12 @@ export default function MusicPanel({
   const { draft, setDraft } = editor;
   const { upload, busy, error } = useMusicUpload(editor);
   const music = draft.music;
+  const [link, setLink] = useState(
+    music?.source === "youtube"
+      ? `https://www.youtube.com/watch?v=${music.value}`
+      : "",
+  );
+  const [linkError, setLinkError] = useState("");
   return (
     <section className="music-panel" aria-label="Música de la invitación">
       <p className="canvas-panel-description">
@@ -39,10 +47,37 @@ export default function MusicPanel({
         />
       </label>
       {error && <p role="alert">{error}</p>}
+      <h3>Enlace de YouTube</h3>
       <p className="canvas-panel-description">
-        Para este fondo musical utiliza un MP3. Los enlaces de Spotify y YouTube
-        requieren su reproductor visible.
+        También puedes pegar una canción de YouTube o YouTube Music. Intentará
+        sonar automáticamente, con volumen bajo y sin controles. Puede requerir
+        un toque; anuncios, bloqueos o disponibilidad dependen de YouTube.
       </p>
+      <label>
+        Enlace de la canción
+        <input
+          type="url"
+          placeholder="https://music.youtube.com/watch?v=…"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+        />
+      </label>
+      <button
+        type="button"
+        disabled={busy || !link.trim()}
+        onClick={() => {
+          const next = musicFromLink(link);
+          if (!next || next.source !== "youtube") {
+            setLinkError("Pega un enlace de video de YouTube o YouTube Music.");
+            return;
+          }
+          setLinkError("");
+          setDraft((current) => ({ ...current, music: next }));
+        }}
+      >
+        Usar canción de YouTube
+      </button>
+      {linkError && <p role="alert">{linkError}</p>}
       {music && (
         <section className="music-current">
           <h3>Canción elegida</h3>
@@ -73,10 +108,9 @@ export default function MusicPanel({
             />
           ) : (
             <p>
-              Este diseño conserva un enlace de{" "}
-              {music.source === "spotify" ? "Spotify" : "YouTube"} con su
-              reproductor visible. Sube un MP3 para sustituirlo por música de
-              fondo discreta.
+              {music.source === "spotify"
+                ? "Spotify ya no está disponible. Sustituye esta canción por YouTube o un MP3."
+                : "YouTube · volumen suave y reproducción en bucle."}
             </p>
           )}
           <button

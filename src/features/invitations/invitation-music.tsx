@@ -1,8 +1,8 @@
 "use client";
 import { useRef } from "react";
-import Icon from "@/components/icon";
-import { musicEmbed, type InvitationMusic as Music } from "@/lib/events/music";
+import type { InvitationMusic as Music } from "@/lib/events/music";
 import { useBackgroundMusic } from "./use-background-music";
+import YouTubeBackground from "./youtube-background";
 export default function InvitationMusic({
   music,
   audioSrc,
@@ -28,32 +28,7 @@ export default function InvitationMusic({
         aria-hidden="true"
       />
     );
-  // Existing provider links keep their official visible players. The editor
-  // asks the author to replace them with an MP3 for invisible background audio.
-  const embed = musicEmbed(music);
-  if (!embed) return null;
-  return (
-    <section className="invitation-music-embed">
-      <Icon name="music" />
-      <p>{music.title || "Nuestra música"}</p>
-      {preview ? (
-        <p>
-          Este enlace conserva el reproductor visible de{" "}
-          {music.source === "spotify" ? "Spotify" : "YouTube"}. Para música de
-          fondo sin controles, sube un MP3.
-        </p>
-      ) : (
-        <iframe
-          src={embed}
-          title={music.title || "Música de la invitación"}
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className={
-            music.source === "youtube" ? "youtube-music" : "spotify-music"
-          }
-        />
-      )}
-    </section>
-  );
+  if (music.source === "youtube" && /^[A-Za-z0-9_-]{11}$/.test(music.value))
+    return <YouTubeBackground videoId={music.value} preview={preview} />;
+  return null;
 }
