@@ -87,6 +87,10 @@ export default function Listbox({
   function keyDown(event: KeyboardEvent<HTMLButtonElement>) {
     const key = event.key;
     if (key === "Tab" || key === "Escape") {
+      if (key === "Escape" && popup) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       search.current.text = "";
       setPopup(null);
       return;
