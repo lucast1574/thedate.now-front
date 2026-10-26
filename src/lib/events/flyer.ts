@@ -1,6 +1,6 @@
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
-  binding?: "guest_name" | "location";
+  binding?: "guest_name" | "location" | "dress_code" | "adults_notice";
   locationStyle?:
     | "icon"
     | "label"

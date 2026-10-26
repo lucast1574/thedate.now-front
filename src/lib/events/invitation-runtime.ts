@@ -22,6 +22,7 @@ export function allowedInvitationPath(path: string) {
     path === "/" ||
     path === "/api/invitation-health" ||
     path === "/favicon.ico" ||
+    path === "/template-photos/placeholder.svg" ||
     path === "/regalos" ||
     /^\/regalos\/[a-f0-9]{48}$/.test(path) ||
     /^\/api\/gifts\/[a-f0-9]{48}(?:\/images\/[a-zA-Z0-9-]{1,64})?$/.test(

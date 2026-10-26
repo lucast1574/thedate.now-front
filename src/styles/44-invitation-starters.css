@@ -1,0 +1,265 @@
+.canvas-rail {
+  overflow-y: auto;
+}
+.template-complete-preview {
+  display: grid;
+  gap: 16px;
+  max-height: 470px;
+  overflow-y: auto;
+  margin-bottom: 16px;
+}
+.template-complete-preview > div > span {
+  display: block;
+  margin: 4px 0 8px;
+  font-size: 11px;
+  color: var(--editor-accent);
+}
+.template-complete-preview .flyer-surface {
+  max-width: 220px;
+  margin-inline: auto;
+}
+.template-replace-confirm {
+  padding: 12px;
+  background: var(--editor-ground);
+  border-radius: 8px;
+}
+.template-replace-confirm > p {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.template-replace-confirm > button {
+  margin-top: 8px;
+}
+.experience-panel {
+  display: grid;
+  gap: 12px;
+}
+.experience-panel > p,
+.experience-panel > small {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--editor-ink);
+}
+.canvas-studio .experience-panel .experience-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  line-height: 1.5;
+}
+.canvas-studio .experience-check input {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--editor-accent);
+}
+.opening-styles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.opening-styles button {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 12px 4px;
+}
+.canvas-replace-file {
+  display: none;
+}
+.canvas-photo-hint {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  translate: -50% 0;
+  width: max-content !important;
+  max-width: 95%;
+  padding: 8px 10px;
+  border-radius: 20px;
+  background: #fffdf6e8;
+  color: #302720;
+  font:
+    500 11px Arial,
+    sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.canvas-photo-hint .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.invitation-opening {
+  position: fixed;
+  inset: 0;
+  margin: 0;
+  padding: clamp(20px, 5vw, 60px);
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  border: 0;
+  background: var(--envelope-paper);
+  color: var(--envelope-ink);
+  text-align: center;
+  overflow-y: auto;
+}
+.invitation-opening[open] {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+}
+.invitation-opening::backdrop {
+  background: var(--envelope-paper);
+}
+.opening-intro {
+  max-width: 600px;
+}
+.opening-intro > span {
+  font:
+    500 10px var(--font-sans),
+    Arial,
+    sans-serif;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.opening-intro h1 {
+  margin: 16px 0;
+  font:
+    400 clamp(30px, 6vw, 56px)/1.1 var(--font-serif),
+    Georgia,
+    serif;
+  overflow-wrap: anywhere;
+}
+.opening-intro p {
+  margin: 0 auto;
+  max-width: 380px;
+  font:
+    13px/1.7 var(--font-sans),
+    sans-serif;
+}
+.opening-envelope {
+  position: relative;
+  width: min(360px, 100%);
+  height: 210px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--envelope-ink) 20%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--envelope-paper) 80%, white);
+  color: inherit;
+  box-shadow: 0 20px 50px #30272015;
+  cursor: pointer;
+  isolation: isolate;
+}
+.opening-letter {
+  position: absolute;
+  inset: 18px 20px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  background: color-mix(in srgb, var(--envelope-paper) 40%, white);
+  color: var(--envelope-ink);
+  font:
+    24px var(--font-serif),
+    serif;
+  transition: translate 600ms ease;
+}
+.opening-fold {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--envelope-ink) 7%, var(--envelope-paper));
+  clip-path: polygon(0 0, 50% 63%, 100% 0, 100% 100%, 0 100%);
+}
+.opening-seal {
+  position: absolute;
+  top: 49%;
+  left: 50%;
+  translate: -50% -50%;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--envelope-ink);
+  color: var(--envelope-paper);
+  box-shadow: 0 6px 18px #30272020;
+  transition: opacity 250ms ease;
+}
+.opening-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px 22px;
+  border: 1px solid currentColor;
+  border-radius: 30px;
+  background: transparent;
+  color: inherit;
+  font:
+    500 12px var(--font-sans),
+    sans-serif;
+  cursor: pointer;
+}
+.opening-action:hover,
+.opening-action:focus-visible,
+.opening-envelope:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: color-mix(
+    in srgb,
+    var(--envelope-ink) 12%,
+    var(--envelope-paper)
+  );
+}
+.invitation-opening[data-style="arch"] .opening-envelope {
+  border-radius: 100px 100px 8px 8px;
+}
+.invitation-opening[data-style="ticket"] .opening-envelope {
+  border-radius: 12px;
+  border-style: dashed;
+}
+.invitation-opening[data-style="ticket"] .opening-intro h1 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 700;
+}
+.invitation-opening[data-phase="opening"] .opening-letter {
+  translate: 0 -70px;
+}
+.invitation-opening[data-phase="opening"] .opening-seal {
+  opacity: 0;
+}
+.invitation-opening[data-phase="opening"] {
+  animation: opening-depart 650ms ease forwards;
+}
+@keyframes opening-depart {
+  70% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@media (max-height: 600px) {
+  .invitation-opening[open] {
+    gap: 16px;
+    justify-content: flex-start;
+  }
+  .opening-envelope {
+    min-height: 150px;
+    height: 150px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .invitation-opening,
+  .opening-letter,
+  .opening-seal {
+    animation: none !important;
+    transition: none !important;
+  }
+}

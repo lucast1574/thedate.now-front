@@ -1,4 +1,6 @@
 import { useCanvasPanel } from "./use-canvas-panel";
+import CanvasRail from "./canvas-rail";
+import ExperiencePanel from "../experience-panel";
 import TemplatePanel from "../template-panel";
 import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
@@ -56,31 +58,14 @@ export default function CanvasWorkspace({
   }
   return (
     <div className="canvas-workbench">
-      <nav className="canvas-rail" aria-label="Herramientas de diseño">
-        {[
-          ["pages", "layout", "Secciones"],
-          ["elements", "sparkle", "Elementos"],
-          ["photos", "image", "Imágenes"],
-          ["layers", "table", "Capas"],
-          ["music", "music", "Música"],
-          ["templates", "layout", "Plantillas"],
-        ].map(([id, icon, label]) => (
-          <button
-            key={id}
-            aria-pressed={tab === id}
-            onClick={() => {
-              setTab(id);
-              select("");
-            }}
-          >
-            <Icon name={icon} />
-            <span>{label}</span>
-          </button>
-        ))}
-        <span className="canvas-rail-brand">
-          {event.kind === "wedding" ? "Save the Date" : "the date."}
-        </span>
-      </nav>
+      <CanvasRail
+        tab={tab}
+        kind={event.kind}
+        onChange={(id) => {
+          setTab(id);
+          select("");
+        }}
+      />
       <aside
         ref={panel}
         className="canvas-panel designer-controls"
@@ -104,6 +89,7 @@ export default function CanvasWorkspace({
               elements:
                 event.kind === "general" ? "Arma tu invitación" : "Hazla tuya",
               photos: "Tus imágenes",
+              experience: "Entrada y detalles",
               pages: "Secciones",
               music: "Ponle música",
               layers: "Capas del lienzo",
@@ -142,6 +128,7 @@ export default function CanvasWorkspace({
           />
         )}
         {tab === "music" && <MusicPanel editor={editor} />}
+        {tab === "experience" && <ExperiencePanel editor={editor} />}
         {tab === "templates" && (
           <TemplatePanel
             editor={editor}

@@ -128,11 +128,36 @@ export function useInvitationDesign(
       }));
       await onSaved();
       setMessage("Imagen añadida. Ahora puedes usarla en una sección.");
+      return body.key as string;
     } catch (error) {
       setMessage((error as Error).message);
+      return null;
     } finally {
       setBusy(false);
     }
+  }
+  async function replaceImage(sectionId: string, imageId: string, file: File) {
+    const key = await upload(file);
+    if (!key) return;
+    setDraft((current) => ({
+      ...current,
+      sections: current.sections?.map((s) =>
+        s.id !== sectionId || !s.canvas
+          ? s
+          : {
+              ...s,
+              canvas: {
+                ...s.canvas,
+                elements: s.canvas.elements.map((item) =>
+                  item.id === imageId && item.type === "image"
+                    ? { ...item, photoKey: key }
+                    : item,
+                ),
+              },
+            },
+      ),
+    }));
+    setMessage("Foto reemplazada. Guarda el diseño para aplicar el cambio.");
   }
   return {
     ...history,
@@ -146,5 +171,6 @@ export function useInvitationDesign(
     addGuestSection,
     save,
     upload,
+    replaceImage,
   };
 }

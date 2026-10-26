@@ -22,7 +22,7 @@ export default function CanvasToolbox({
   photosOnly: boolean;
   disabled: boolean;
   onAdd: (item: FlyerElement) => void;
-  onUpload: (file: File) => Promise<void>;
+  onUpload: (file: File) => Promise<unknown>;
   busy: boolean;
 }) {
   function text(value: string, size = 36) {

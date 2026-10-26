@@ -1,3 +1,4 @@
+import { useImageReplacement } from "./use-image-replacement";
 import CanvasContextMenu from "./canvas-context-menu";
 import { useCanvasMenu } from "./use-canvas-menu";
 import { snapCenter } from "./canvas-geometry";
@@ -16,14 +17,17 @@ export default function CanvasEditor({
   onSelect,
   onChange,
   photoURL,
+  onReplace,
 }: {
   canvas: FlyerCanvas;
   selectedId: string;
   onSelect: (id: string) => void;
   onChange: (canvas: FlyerCanvas) => void;
   photoURL: (key: string) => string;
+  onReplace?: (file: File, id: string) => Promise<void>;
 }) {
   const gesture = useCanvasGesture(canvas, onChange);
+  const replacement = useImageReplacement(onReplace);
   const context = useCanvasMenu(canvas, onChange, onSelect);
   const moving = gesture.transient;
   const candidate =
@@ -64,6 +68,7 @@ export default function CanvasEditor({
   }
   return (
     <div className="canvas-editor" onClick={() => onSelect("")}>
+      {replacement.input}
       <FlyerSurface canvas={canvas} photoURL={photoURL} label="Lienzo editable">
         {moving && guides?.vertical && (
           <div className="canvas-guide is-vertical" aria-hidden="true" />
@@ -89,13 +94,28 @@ export default function CanvasEditor({
               tabIndex={0}
               aria-pressed={selected}
               aria-label={`${item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
+              data-photo={item.type === "image" || undefined}
               onClick={(e) => {
                 e.stopPropagation();
                 if ((e.target as HTMLElement).closest("a")) e.preventDefault();
                 onSelect(item.id);
+                if (
+                  item.type === "image" &&
+                  !gesture.wasDragged() &&
+                  !(e.target as HTMLElement).closest(".canvas-handle")
+                )
+                  replacement.request(item.id);
               }}
               onFocus={() => onSelect(item.id)}
-              onKeyDown={(e) => keyboard(e, item.id)}
+              onKeyDown={(e) => {
+                if (
+                  item.type === "image" &&
+                  (e.key === "Enter" || e.key === " ")
+                ) {
+                  e.preventDefault();
+                  replacement.request(item.id);
+                } else keyboard(e, item.id);
+              }}
               onContextMenu={(e) => context.open(e, item.id)}
               onPointerDown={(e) => {
                 if (e.button !== 0) return;
@@ -108,6 +128,11 @@ export default function CanvasEditor({
               onPointerCancel={(e) => gesture.end(e, true)}
             >
               <FlyerContent item={item} photoURL={photoURL} />
+              {item.type === "image" && (
+                <span className="canvas-photo-hint">
+                  <Icon name="image" /> Pulsa para cambiar foto
+                </span>
+              )}
               {selected && (
                 <>
                   <button

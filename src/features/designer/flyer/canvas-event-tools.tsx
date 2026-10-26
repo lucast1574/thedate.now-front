@@ -1,3 +1,4 @@
+import CelebrationElements from "./celebration-elements";
 import Icon from "@/components/icon";
 import { guestNameElement } from "@/lib/events/guest-name";
 import type { DesignEvent, Event } from "@/lib/events/types";
@@ -21,6 +22,7 @@ export default function CanvasEventTools({
   return (
     <>
       <h3>Elementos de tu invitación</h3>
+      <CelebrationElements draft={draft} disabled={disabled} onAdd={onAdd} />
       <div className="canvas-special-tools">
         <button
           disabled={disabled}

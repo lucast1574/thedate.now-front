@@ -1,3 +1,4 @@
+import InvitationOpening from "./invitation-opening";
 import InvitationMotion from "./invitation-motion";
 import InvitationMusic from "./invitation-music";
 import Icon from "@/components/icon";
@@ -9,6 +10,7 @@ import InvitationSections from "./invitation-sections";
 export default function Invitation({
   giftURL,
   showBrand = true,
+  showOpening = true,
   event,
   photoURL,
   audioURL,
@@ -17,6 +19,7 @@ export default function Invitation({
 }: {
   giftURL?: string;
   showBrand?: boolean;
+  showOpening?: boolean;
   event: PublicEvent;
   guestName?: string;
   photoURL?: (key: string) => string;
@@ -46,6 +49,13 @@ export default function Invitation({
       }
     >
       <InvitationMotion />
+      {showOpening && event.opening?.enabled && (
+        <InvitationOpening
+          opening={event.opening}
+          title={event.title}
+          wedding={event.kind === "wedding"}
+        />
+      )}
       <section className="invite-content">
         {event.designMode !== "flyer" && (
           <>

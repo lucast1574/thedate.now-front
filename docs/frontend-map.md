@@ -193,3 +193,13 @@ La sidebar compartida muestra Invitados, Mesas y Lista de regalos en ambas marca
 `/regalos` admite el código o enlace personal de WhatsApp; `/regalos/[token]` muestra los productos sin cuenta y reserva uno por invitación. Los huéspedes solo ven disponibilidad y su propia elección. `gift-scope.ts` valida producto, subdominio y evento fijado antes de cualquier lectura, reserva o imagen. Los tokens son los mismos de RSVP, las páginas son privadas/no indexables y los enlaces a las tiendas no envían Referer. Las imágenes se sirven por proxies verificados; el navegador no envía el código a la tienda. `invitation-runtime.ts` permite exclusivamente las rutas de regalos del contenedor. La invitación personal enlaza con el token; la pública abre la entrada de código cuando el organizador activó la lista.
 
 `39-organization.css` amplía la sidebar y centra las tres tarjetas de datos del editor con columnas estables; `40-wishlist.css` comparte tarjetas, formularios y estados entre organización y página de invitados, con variantes de boda/evento.
+
+## Invitaciones completas y entrada
+
+`designer/template-sequence.ts` genera seis secciones editables por plantilla: portada, presentación con foto, fecha, ubicación, dress code y cierre. El aviso de adultos añade una séptima sección solo si se eligió. Usar una plantilla completa reemplaza las secciones después de confirmarlo cuando hay contenido, conserva fotos/música y permite deshacer. Los valores de fecha y lugar proceden del evento; no se copian datos personales de la invitación de referencia.
+
+`template-photos.ts` resuelve únicamente el marcador reservado `template-photo` al SVG local «Pon tu foto aquí». El clic o Enter/Espacio sobre una imagen abre el explorador; `replaceImage` actualiza solo el elemento de la sección original sin perder geometría ni sobrescribir cambios realizados durante la subida. Arrastrar no abre el explorador. Las muestras no consumen almacenamiento privado.
+
+`experience-panel.tsx` configura sobres clásico, botánico y ticket, colores, mensaje y entrada directa. Las nuevas plantillas ofrecen sobre por defecto y respetan una desactivación explícita. Las miniaturas muestran el diseño; el visor permite recorrer la apertura real. `celebration` conserva dress code y el aviso opcional de adultos. Los valores sirven para añadir elementos/plantillas; los bloques ya colocados se editan en el lienzo. WhatsApp incluye el aviso solo cuando `adultsOnly` y `whatsappNotice` están activados; guardar no reenvía mensajes.
+
+Desplegar primero la API que acepta `opening`, `celebration`, los bindings `dress_code`/`adults_notice` y el marcador reservado; después el frontend y los renderers de invitaciones. Los clientes antiguos no borran estas opciones al omitirlas.

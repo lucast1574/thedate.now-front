@@ -85,6 +85,7 @@ export default function InvitationThumbnail({ event }: { event: Event }) {
         createPortal(
           <Invitation
             event={event}
+            showOpening={false}
             preview={true}
             photoURL={(key) =>
               `/api/photos/${event.id}/${encodeURIComponent(key)}`

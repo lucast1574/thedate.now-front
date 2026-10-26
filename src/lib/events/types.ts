@@ -1,3 +1,4 @@
+import type { Opening, Celebration } from "./celebration";
 import type { InvitationMusic } from "./music";
 import type { Gender, Person } from "./seating";
 import type { DesignMode, FlyerCanvas, FlyerElement } from "./flyer";
@@ -12,6 +13,8 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  opening?: Opening | null;
+  celebration?: Celebration | null;
   wishlistEnabled?: boolean;
   music?: InvitationMusic | null;
   audioKeys?: string[];
@@ -68,6 +71,8 @@ export type PublicEvent = Pick<
   | "sections"
   | "photoKeys"
   | "music"
+  | "opening"
+  | "celebration"
   | "wishlistEnabled"
 >;
 export type Guest = {

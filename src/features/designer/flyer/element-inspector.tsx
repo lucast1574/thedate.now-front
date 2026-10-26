@@ -28,13 +28,17 @@ export default function ElementInspector({
   const title =
     item.binding === "guest_name"
       ? "Nombre del invitado"
-      : item.binding === "location"
-        ? "Ubicación"
-        : item.type === "image"
-          ? "Imagen"
-          : item.type === "icon"
-            ? "Símbolo"
-            : "Texto";
+      : item.binding === "dress_code"
+        ? "Dress code"
+        : item.binding === "adults_notice"
+          ? "Solo adultos"
+          : item.binding === "location"
+            ? "Ubicación"
+            : item.type === "image"
+              ? "Imagen"
+              : item.type === "icon"
+                ? "Símbolo"
+                : "Texto";
   return (
     <section className="element-inspector">
       <header className="inspector-heading">

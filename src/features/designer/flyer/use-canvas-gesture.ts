@@ -18,6 +18,7 @@ export function useCanvasGesture(
   onChange: (canvas: FlyerCanvas) => void,
 ) {
   const gesture = useRef<Gesture | null>(null);
+  const dragged = useRef(false);
   const [transient, setTransient] = useState<FlyerElement | null>(null);
   function begin(
     e: PointerEvent<HTMLElement>,
@@ -25,6 +26,7 @@ export function useCanvasGesture(
     action: Gesture["action"] = "move",
   ) {
     if (e.button !== 0) return;
+    dragged.current = false;
     e.preventDefault();
     e.stopPropagation();
     const surface = e.currentTarget
@@ -49,6 +51,8 @@ export function useCanvasGesture(
   function move(e: PointerEvent<HTMLElement>) {
     const g = gesture.current;
     if (!g) return;
+    if (Math.hypot(e.clientX - g.startX, e.clientY - g.startY) > 5)
+      dragged.current = true;
     const dx = (e.clientX - g.startX) * g.scale;
     const dy = (e.clientY - g.startY) * g.scale;
     let next = moveElement(g.item, dx, dy, canvas);
@@ -85,5 +89,5 @@ export function useCanvasGesture(
     if (e.currentTarget.hasPointerCapture(e.pointerId))
       e.currentTarget.releasePointerCapture(e.pointerId);
   }
-  return { transient, begin, move, end };
+  return { transient, begin, move, end, wasDragged: () => dragged.current };
 }

@@ -44,7 +44,7 @@ export default function PreviewViewport({
         >
           <iframe
             title="Vista previa real de tu invitación"
-            sandbox="allow-same-origin"
+            sandbox="allow-same-origin allow-modals"
             srcDoc={
               '<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vista previa</title></head><body></body></html>'
             }

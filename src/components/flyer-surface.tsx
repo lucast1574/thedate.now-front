@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
+import { templatePhotoURL } from "@/lib/events/template-photos";
 import Photo from "./photo";
 import FlyerLocation from "./flyer-location";
 import {
@@ -37,7 +38,9 @@ export function FlyerContent({
   if (item.type === "image")
     return (
       <Photo
-        src={photoURL(item.photoKey || "")}
+        src={
+          templatePhotoURL(item.photoKey || "") || photoURL(item.photoKey || "")
+        }
         style={{ objectFit: "contain" }}
         alt="Imagen de la invitación"
         draggable={false}

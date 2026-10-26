@@ -7,8 +7,8 @@ import {
 } from "@/lib/events/template-catalog";
 import type { useInvitationDesign } from "./use-invitation-design";
 import { templateCanvas } from "./template-canvas";
-import { applyTemplateToSection } from "./templates";
-import { blankCanvas } from "./flyer/canvas-model";
+import { applyTemplate } from "./templates";
+import { applyCompleteTemplate, templateSequence } from "./template-sequence";
 import TemplateDetail from "./template-detail";
 import { useTemplateNavigation } from "./use-template-navigation";
 const searchable = (text: string) =>
@@ -54,42 +54,17 @@ export default function TemplatePanel({
   const selected = catalog.find((item) => item.id === selectedId);
   const section = draft.sections?.find((item) => item.id === sectionId);
   function apply(template: InvitationTemplate, styleOnly = false) {
-    const populated = Boolean(section?.canvas?.elements.length);
-    if (populated && !styleOnly) {
-      if ((draft.sections?.length || 0) >= 20) return;
-      const id = crypto.randomUUID();
-      setDraft((current) =>
-        applyTemplateToSection(
-          {
-            ...current,
-            sections: [
-              ...(current.sections || []),
-              {
-                id,
-                heading: template.name,
-                body: "",
-                icon: "none",
-                canvas: blankCanvas(current.accentColor),
-              },
-            ],
-          },
-          template,
-          id,
-        ),
-      );
-      onActivate(id);
-      setMessage(
-        `«${template.name}» añadido como nueva sección. Puedes deshacer el cambio.`,
-      );
-    } else {
-      setDraft((current) =>
-        applyTemplateToSection(current, template, sectionId),
-      );
-      setMessage(
-        `Diseño aplicado a «${section?.heading || "tu sección"}». Puedes deshacer el cambio.`,
-      );
-      onActivate(sectionId);
-    }
+    const next = styleOnly
+      ? applyTemplate(draft, template)
+      : applyCompleteTemplate(draft, template);
+    setDraft(next);
+    if (next.sections?.[0]) onActivate(next.sections[0].id);
+    setMessage(
+      styleOnly
+        ? "Colores y tipografía actualizados. Puedes deshacer."
+        : "Invitación completa lista: cambia textos y pulsa las fotos para reemplazarlas. Puedes deshacer.",
+    );
+    // The generated section IDs are owned by the new draft; activate after render.
     setSelectedId("");
   }
   return (
@@ -108,7 +83,7 @@ export default function TemplatePanel({
           onBack={() => setSelectedId("")}
           onApply={() => apply(selected)}
           onStyle={() => apply(selected, true)}
-          canAdd={(draft.sections?.length || 0) < 20}
+          canAdd={true}
         />
       ) : (
         <>
@@ -117,7 +92,7 @@ export default function TemplatePanel({
             {draft.kind === "wedding"
               ? "contar vuestra historia"
               : "tu próxima celebración"}
-            . Elige uno y hazlo tuyo.
+            . Invitaciones completas listas para editar.
           </p>
           <label className="template-search">
             <Icon name="search" />
@@ -167,7 +142,10 @@ export default function TemplatePanel({
                   />
                 </div>
                 <strong>{template.name}</strong>
-                <span>{template.category}</span>
+                <span>
+                  {templateSequence(template).length} secciones ·{" "}
+                  {template.category}
+                </span>
               </button>
             ))}
           </div>

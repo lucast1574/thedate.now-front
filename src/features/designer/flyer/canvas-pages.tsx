@@ -129,6 +129,9 @@ export default function CanvasPages({
                 }}
                 onChange={(next) => editor.updateSection(n, { canvas: next })}
                 photoURL={photoURL}
+                onReplace={(file, id) =>
+                  editor.replaceImage(section.id, id, file)
+                }
               />
               {!section.canvas?.elements.length && (
                 <p className="canvas-empty-caption">

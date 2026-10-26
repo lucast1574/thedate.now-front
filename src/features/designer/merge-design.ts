@@ -8,6 +8,8 @@ export function mergeDesign(
   const merged = { ...current };
   for (const field of [
     "music",
+    "opening",
+    "celebration",
     "title",
     "description",
     "template",
