@@ -1,5 +1,6 @@
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import { sectionCanvas } from "./flyer/canvas-model";
+import { templateCanvas } from "./template-canvas";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 function starterSections(draft: DesignEvent): DesignSection[] {
   const wedding = draft.kind === "wedding";
@@ -45,6 +46,15 @@ export function applyTemplate(
   const sections = source.map((section) => {
     if (template.mode === "sections") return { ...section };
     const canvas = sectionCanvas(section, updated);
+    if (!canvas.elements.length)
+      return {
+        ...section,
+        canvas: templateCanvas(template, {
+          title: draft.title,
+          body: draft.description,
+          photoKey: draft.photoKeys[0],
+        }),
+      };
     // Keep existing content, photos and layers; only change the visual theme.
     return {
       ...section,
@@ -60,4 +70,19 @@ export function applyTemplate(
     };
   });
   return { ...updated, sections };
+}
+export function applyTemplateToSection(
+  draft: DesignEvent,
+  template: InvitationTemplate,
+  sectionId: string,
+): DesignEvent {
+  const section = draft.sections?.find((item) => item.id === sectionId);
+  if (!section || template.kind !== draft.kind) return draft;
+  const themed = applyTemplate({ ...draft, sections: [section] }, template);
+  return {
+    ...themed,
+    sections: draft.sections!.map((item) =>
+      item.id === sectionId ? themed.sections![0] : item,
+    ),
+  };
 }

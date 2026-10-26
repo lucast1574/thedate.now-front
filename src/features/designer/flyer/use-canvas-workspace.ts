@@ -8,7 +8,6 @@ export function useCanvasWorkspace(
   const { draft, sections } = editor;
   const [activeId, setActiveId] = useState(sections[0]?.id || "");
   const [selectedId, select] = useState("");
-  const [tab, setTab] = useState("elements");
   const [zoom, setZoom] = useState(70);
   const index = Math.max(
     0,
@@ -86,8 +85,6 @@ export function useCanvasWorkspace(
     index,
     selectedId,
     select,
-    tab,
-    setTab,
     zoom,
     setZoom,
     setActiveId,

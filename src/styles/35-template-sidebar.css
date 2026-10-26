@@ -1,0 +1,212 @@
+.template-panel {
+  padding-top: 4px;
+}
+.canvas-studio .template-panel .template-search {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+  margin: 20px 0 16px;
+  background: #f4f2ee;
+  border-radius: 6px;
+}
+.template-search .ui-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #817970;
+}
+.canvas-studio .template-panel .template-search input {
+  background: transparent;
+  border: 0;
+  padding: 10px 0;
+  min-width: 0;
+  margin: 0;
+  font-size: 12px;
+}
+.template-search:focus-within {
+  background: #eae5de;
+}
+.template-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.canvas-studio .template-filters button {
+  border-color: transparent;
+  background: #f5f3ef;
+  padding: 8px 10px;
+  font-size: 11px;
+  min-height: 34px;
+}
+.canvas-studio .template-filters button[aria-pressed="true"] {
+  background: var(--editor-accent);
+  color: #fff;
+}
+.template-panel-count {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 0;
+  color: #8b837a;
+  font-size: 10px;
+}
+.template-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 12px;
+  padding-bottom: 12px;
+}
+.canvas-studio .template-panel-card {
+  display: block;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+}
+.canvas-studio .template-panel-card:hover,
+.canvas-studio .template-panel-card:focus-visible {
+  background: transparent;
+}
+.template-panel-art {
+  overflow: hidden;
+  border-radius: 5px;
+  aspect-ratio: 3 / 4;
+  background: #f4f1eb;
+  border: 1px solid #302c2912;
+}
+.template-panel-art .flyer-surface {
+  height: 100%;
+}
+.template-panel-card > strong {
+  display: block;
+  margin: 10px 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--editor-ink);
+}
+.template-panel-card > span {
+  color: #8b837a;
+  font-size: 10px;
+}
+.template-panel-card:hover > strong,
+.template-panel-card:focus-visible > strong {
+  color: var(--editor-accent);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.template-panel-empty {
+  padding: 20px 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #817970;
+}
+.canvas-studio .template-back {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  padding: 10px 0;
+  background: transparent;
+  margin: 0 0 16px;
+  font-size: 12px;
+}
+.template-back .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+.template-detail-art {
+  max-width: 200px;
+  margin: 0 auto 16px;
+  overflow: hidden;
+  border-radius: 5px;
+  border: 1px solid #302c2912;
+}
+.template-detail-caption {
+  margin: 8px 0 16px;
+}
+.template-detail-caption > span {
+  color: #8b837a;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.canvas-studio .template-detail-caption h3 {
+  font:
+    500 24px Georgia,
+    serif;
+  margin: 8px 0;
+}
+.template-detail-caption > p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #817970;
+  margin: 8px 0 0;
+}
+.template-detail-actions {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding: 16px 0 8px;
+  border-top: 1px solid #302c2914;
+}
+.template-detail-actions > p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #817970;
+  margin: 0 0 12px;
+}
+.canvas-studio .template-apply {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  color: #fff;
+  background: var(--editor-accent);
+  border: 0;
+}
+.canvas-studio .template-apply:hover,
+.canvas-studio .template-apply:focus-visible {
+  filter: brightness(0.9);
+  background: var(--editor-accent);
+}
+.canvas-studio .template-style-only {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 8px;
+  background: transparent;
+  border: 0;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.template-panel-feedback {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #4d6553;
+  padding: 12px;
+  background: #f0f4ee;
+  border-radius: 6px;
+  margin: 0 0 16px;
+}
+.template-panel-feedback .ui-icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+@media (max-width: 760px) {
+  .canvas-panel[data-tool="templates"] {
+    max-height: min(70dvh, 620px);
+  }
+}

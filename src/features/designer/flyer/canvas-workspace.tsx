@@ -1,3 +1,4 @@
+import TemplatePanel from "../template-panel";
 import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
@@ -11,11 +12,13 @@ type Editor = ReturnType<typeof useInvitationDesign>;
 export default function CanvasWorkspace({
   editor,
   event,
-  onTemplates,
+  tool,
+  onToolChange,
 }: {
   editor: Editor;
   event: Event;
-  onTemplates: () => void;
+  tool: string;
+  onToolChange: (tool: string) => void;
 }) {
   const {
     draft,
@@ -26,8 +29,6 @@ export default function CanvasWorkspace({
     index,
     selectedId,
     select,
-    tab,
-    setTab,
     zoom,
     setZoom,
     setActiveId,
@@ -37,6 +38,8 @@ export default function CanvasWorkspace({
     layer,
     addPage,
   } = useCanvasWorkspace(editor);
+  const tab = tool,
+    setTab = onToolChange;
   return (
     <div className="canvas-workbench">
       <nav className="canvas-rail" aria-label="Herramientas de diseño">
@@ -46,6 +49,7 @@ export default function CanvasWorkspace({
           ["pages", "layout", "Secciones"],
           ["layers", "table", "Capas"],
           ["music", "music", "Música"],
+          ["templates", "layout", "Plantillas"],
         ].map(([id, icon, label]) => (
           <button
             key={id}
@@ -59,32 +63,32 @@ export default function CanvasWorkspace({
             <span>{label}</span>
           </button>
         ))}
-        <button onClick={onTemplates}>
-          <Icon name="layout" />
-          <span>Plantillas</span>
-        </button>
         <span className="canvas-rail-brand">
           {event.kind === "wedding" ? "Save the Date" : "the date."}
         </span>
       </nav>
-      <aside className="canvas-panel designer-controls">
+      <aside className="canvas-panel designer-controls" data-tool={tab}>
         {selected && (
-          <button onClick={() => select("")}>
+          <button
+            onClick={() => {
+              select("");
+              setTab("elements");
+            }}
+          >
             <Icon name="undo" /> Volver a elementos
           </button>
         )}
         <header>
           <span>TU INVITACIÓN</span>
           <h2>
-            {tab === "elements"
-              ? "Hazla tuya"
-              : tab === "photos"
-                ? "Tus imágenes"
-                : tab === "pages"
-                  ? "Secciones"
-                  : tab === "music"
-                    ? "Ponle música"
-                    : "Capas del lienzo"}
+            {{
+              elements: "Hazla tuya",
+              photos: "Tus imágenes",
+              pages: "Secciones",
+              music: "Ponle música",
+              layers: "Capas del lienzo",
+              templates: "Elige tu diseño",
+            }[tab] || "Tu invitación"}
           </h2>
         </header>
         {!selected && (tab === "elements" || tab === "photos") && (
@@ -130,7 +134,22 @@ export default function CanvasWorkspace({
           />
         )}
         {tab === "music" && <MusicPanel editor={editor} />}
-        {tab !== "music" && (
+        {tab === "templates" && (
+          <TemplatePanel
+            editor={editor}
+            sectionId={active?.id || ""}
+            onActivate={(id) => {
+              setActiveId(id);
+              select("");
+              requestAnimationFrame(() =>
+                document
+                  .getElementById(`page-${id}`)
+                  ?.scrollIntoView({ block: "start" }),
+              );
+            }}
+          />
+        )}
+        {tab !== "music" && tab !== "templates" && (
           <CanvasProperties
             active={active}
             index={index}
@@ -161,6 +180,7 @@ export default function CanvasWorkspace({
         onSelect={(page, element) => {
           setActiveId(page);
           select(element);
+          if (element) setTab("elements");
         }}
         zoom={zoom}
         setZoom={setZoom}

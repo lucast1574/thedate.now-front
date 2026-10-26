@@ -10,6 +10,20 @@ export type InvitationTemplate = {
   font: "serif" | "sans";
   style: "classic" | "modern";
   tagline: string;
+  layout?:
+    | "floral"
+    | "editorial"
+    | "nocturne"
+    | "frame"
+    | "monogram"
+    | "botanical"
+    | "minimal"
+    | "ticket"
+    | "poster"
+    | "arch"
+    | "celebration"
+    | "sunburst";
+  category?: string;
 };
 import { weddingTemplates } from "./wedding-templates";
 import { generalTemplates } from "./general-templates";

@@ -1,4 +1,5 @@
 import type { InvitationTemplate } from "./template-catalog";
+import { generalCanvasTemplates } from "./general-canvas-templates";
 export const generalTemplates: InvitationTemplate[] = [
   {
     id: "general-classic",
@@ -24,6 +25,8 @@ export const generalTemplates: InvitationTemplate[] = [
   },
   {
     id: "general-flyer-party",
+    layout: "poster",
+    category: "Fiestas",
     name: "Fiesta en color",
     kind: "general",
     mode: "flyer",
@@ -35,6 +38,8 @@ export const generalTemplates: InvitationTemplate[] = [
   },
   {
     id: "general-flyer-meet",
+    layout: "minimal",
+    category: "Encuentros",
     name: "Nos encontramos",
     kind: "general",
     mode: "flyer",
@@ -57,6 +62,8 @@ export const generalTemplates: InvitationTemplate[] = [
   },
   {
     id: "general-flyer-conference",
+    layout: "editorial",
+    category: "Encuentros",
     kind: "general",
     mode: "flyer",
     name: "Punto de encuentro",
@@ -66,4 +73,5 @@ export const generalTemplates: InvitationTemplate[] = [
     style: "modern",
     tagline: "Conferencias, lanzamientos y encuentros",
   },
+  ...generalCanvasTemplates,
 ];

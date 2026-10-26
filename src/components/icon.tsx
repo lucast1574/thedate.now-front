@@ -1,5 +1,11 @@
 import type { CSSProperties } from "react";
 const paths = {
+  search: "M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15ZM16 16l5 5",
+  frame: "M1 1h22v22H1V1Zm1 1h20v20H2V2Z",
+  arch: "M2 23V11a10 10 0 0 1 20 0v12H2Z",
+  leaf: "M5 23C8 17 15 11 20 2M9 18C2 17 2 12 3 10c5 0 8 2 6 8Zm4-6C7 10 8 6 9 4c4 1 6 4 4 8Zm1 0c0-6 5-6 8-6 0 4-3 7-8 6Zm-6 9c1-6 7-6 10-5-1 4-5 6-10 5Z",
+  sunburst:
+    "M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10ZM12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2",
   ticket: "M4 4h16v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6V4Zm9 1v3m0 3v2m0 3v3",
   close: "m6 6 12 12M6 18 18 6",
   refresh:
@@ -54,7 +60,16 @@ export default function Icon({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth={
+        name === "frame" || name === "arch"
+          ? 0.18
+          : name === "leaf" || name === "sunburst"
+            ? 0.55
+            : 1.6
+      }
+      preserveAspectRatio={
+        name === "frame" || name === "arch" ? "none" : undefined
+      }
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"

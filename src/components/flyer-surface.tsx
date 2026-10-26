@@ -42,9 +42,28 @@ export function FlyerContent({
       />
     );
   return (
-    <span>
+    <span
+      style={
+        item.type === "icon" &&
+        ["frame", "arch", "leaf", "sunburst"].includes(item.icon || "")
+          ? {
+              display: "flex",
+              height: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+            }
+          : undefined
+      }
+    >
       {item.type === "icon" ? (
-        <Icon name={item.icon || "none"} />
+        <Icon
+          name={item.icon || "none"}
+          style={
+            ["frame", "arch", "leaf", "sunburst"].includes(item.icon || "")
+              ? { width: "100%", height: "100%" }
+              : undefined
+          }
+        />
       ) : (
         personalizedText(item, guestName)
       )}

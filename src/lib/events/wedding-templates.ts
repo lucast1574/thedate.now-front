@@ -1,4 +1,5 @@
 import type { InvitationTemplate } from "./template-catalog";
+import { weddingCanvasTemplates } from "./wedding-canvas-templates";
 export const weddingTemplates: InvitationTemplate[] = [
   {
     id: "wedding-classic",
@@ -24,6 +25,8 @@ export const weddingTemplates: InvitationTemplate[] = [
   },
   {
     id: "wedding-flyer-floral",
+    layout: "floral",
+    category: "Románticas",
     name: "Jardín de amor",
     kind: "wedding",
     mode: "flyer",
@@ -35,6 +38,8 @@ export const weddingTemplates: InvitationTemplate[] = [
   },
   {
     id: "wedding-flyer-editorial",
+    layout: "editorial",
+    category: "Editoriales",
     name: "Nuestra portada",
     kind: "wedding",
     mode: "flyer",
@@ -57,6 +62,8 @@ export const weddingTemplates: InvitationTemplate[] = [
   },
   {
     id: "wedding-flyer-night",
+    layout: "nocturne",
+    category: "De noche",
     kind: "wedding",
     mode: "flyer",
     name: "Noche de gala",
@@ -66,4 +73,5 @@ export const weddingTemplates: InvitationTemplate[] = [
     style: "modern",
     tagline: "Elegancia nocturna y detalles en oro",
   },
+  ...weddingCanvasTemplates,
 ];

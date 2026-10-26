@@ -4,8 +4,6 @@ import type { Event } from "@/lib/events/types";
 import PreviewModal from "./preview-modal";
 import EditorToolbar from "./editor-toolbar";
 import CanvasWorkspace from "./flyer/canvas-workspace";
-import TemplateGallery from "./template-gallery";
-import { applyTemplate } from "./templates";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
 export default function InvitationDesigner({
@@ -35,7 +33,7 @@ export default function InvitationDesigner({
   );
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);
-  const [gallery, setGallery] = useState(false);
+  const [tool, setTool] = useState("elements");
   useEffect(() => {
     if (!editor.dirty) return;
     const leave = (e: BeforeUnloadEvent) => e.preventDefault();
@@ -50,7 +48,7 @@ export default function InvitationDesigner({
         editor={editor}
         preview={preview}
         onPreview={() => setPreview(!preview)}
-        onTemplates={() => setGallery(true)}
+        onTemplates={() => setTool("templates")}
       />
       {editor.message && (
         <p role="status" className="editor-feedback">
@@ -60,32 +58,13 @@ export default function InvitationDesigner({
       <CanvasWorkspace
         editor={editor}
         event={source}
-        onTemplates={() => setGallery(true)}
+        tool={tool}
+        onToolChange={setTool}
       />
       {preview && (
         <PreviewModal
           draft={editor.draft as Event}
           onClose={() => setPreview(false)}
-        />
-      )}
-      {gallery && (
-        <TemplateGallery
-          draft={editor.draft}
-          onClose={() => setGallery(false)}
-          onApply={(template) => {
-            editor.setDraft((current) => {
-              const next = applyTemplate(current, {
-                ...template,
-                mode: "flyer",
-              });
-              return {
-                ...next,
-                designMode: "flyer",
-                sections: flyerSections(next),
-              };
-            });
-            setGallery(false);
-          }}
         />
       )}
     </main>

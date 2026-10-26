@@ -1,4 +1,8 @@
 export const sectionIcons: Record<string, string> = {
+  frame: "Marco",
+  arch: "Arco",
+  leaf: "Rama",
+  sunburst: "Sol",
   heart: "Corazón",
   sparkle: "Destello",
   flower: "Flor",
