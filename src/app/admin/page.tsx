@@ -1,3 +1,4 @@
+import { googleEnabled } from "@/lib/auth/google";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import AdminPage from "@/features/account/admin-page";
@@ -11,9 +12,7 @@ export default async function Page() {
   return (
     <AdminPage
       wedding={host === "studio.save.thedate.now"}
-      googleEnabled={Boolean(
-        process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
-      )}
+      googleEnabled={googleEnabled(host)}
     />
   );
 }

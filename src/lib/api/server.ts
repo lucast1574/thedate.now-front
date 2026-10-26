@@ -1,9 +1,29 @@
 import "server-only";
 import { backendURL } from "./config";
+import { headers } from "next/headers";
+import { invitationFromHost } from "@/lib/events/domains";
+async function requestProduct() {
+  if (process.env.INVITATION_KIND) return process.env.INVITATION_KIND;
+  const host = ((await headers()).get("host") ?? "")
+    .toLowerCase()
+    .split(":")[0];
+  if (["studio.save.thedate.now", "save.thedate.now"].includes(host))
+    return "wedding";
+  if (
+    ["crea.thedate.now", "thedate.now", "backoffice.thedate.now"].includes(host)
+  )
+    return "general";
+  return invitationFromHost(host)?.kind;
+}
 export async function backendFetch(path: string, init: RequestInit = {}) {
-  return fetch(`${backendURL()}/${path}`, { ...init, cache: "no-store" }).catch(
-    () => null,
-  );
+  const product =
+    process.env.API_PRODUCT_ISOLATION === "true"
+      ? await requestProduct()
+      : undefined;
+  return fetch(`${backendURL(product)}/${path}`, {
+    ...init,
+    cache: "no-store",
+  }).catch(() => null);
 }
 export function forwardJSON(result: Response | null) {
   if (!result)

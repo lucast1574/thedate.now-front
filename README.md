@@ -1,5 +1,16 @@
 # Mapa del frontend
 
+## Google por marca
+
+Configura los clientes de los proyectos independientes con
+`GOOGLE_GENERAL_CLIENT_ID`, `GOOGLE_GENERAL_CLIENT_SECRET`,
+`GOOGLE_WEDDING_CLIENT_ID` y `GOOGLE_WEDDING_CLIENT_SECRET`.
+El host determina qué credenciales se usan; una marca sin configuración no
+hereda las de la otra. Con `API_PRODUCT_ISOLATION=true`, el mismo host selecciona
+la API `/products/general/` o `/products/wedding/`, con cuentas y sesiones
+independientes. Requiere activar primero `ISOLATE_PRODUCTS=true` en el backend.
+Las credenciales se guardan únicamente en Dokploy.
+
 Lee este mapa antes de explorar todo `src/`. Después abre solo el módulo de la tarea.
 
 ## Estructura

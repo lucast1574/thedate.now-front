@@ -1,3 +1,4 @@
+import { googleEnabled as googleEnabledFor } from "@/lib/auth/google";
 import { landingMetadata } from "@/features/marketing/metadata";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -32,9 +33,7 @@ export default async function Home() {
     .replace(/:\d+$/, "")
     .replace(/\.$/, "");
   if (host === "backoffice.thedate.now") redirect("https://crea.thedate.now");
-  const googleEnabled = Boolean(
-    process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
-  );
+  const googleEnabled = googleEnabledFor(host);
   const paymentsEnabled = process.env.PAYMENTS_ENABLED === "true";
   if (host === "crea.thedate.now")
     return (

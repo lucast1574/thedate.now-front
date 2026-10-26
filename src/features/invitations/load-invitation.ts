@@ -5,7 +5,7 @@ export async function findEvent(
   kind: Kind,
   slug: string,
 ): Promise<PublicEvent | null> {
-  const api = backendURL();
+  const api = backendURL(kind);
   try {
     const result = await fetch(`${api}/public/events/${kind}/${slug}`, {
       cache: "no-store",

@@ -1,13 +1,14 @@
 import { safeContinuation, safeReferral } from "@/lib/auth/continuation";
-import { callbackFor } from "@/lib/auth/google";
+import { callbackFor, googleConfig } from "@/lib/auth/google";
 import { setSession } from "@/lib/auth/session";
 import { backendFetch } from "@/lib/api/server";
 import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
   const redirectUri = callbackFor(request);
-  const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const { clientId, clientSecret } = googleConfig(
+    request.headers.get("host") ?? "",
+  );
   const home = new URL(redirectUri || request.url).origin;
   const fail = (reason: string) =>
     Response.redirect(`${home}/?authError=${encodeURIComponent(reason)}`, 302);

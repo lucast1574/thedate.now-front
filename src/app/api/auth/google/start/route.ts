@@ -1,10 +1,10 @@
 import { safeContinuation } from "@/lib/auth/continuation";
-import { callbackFor } from "@/lib/auth/google";
+import { callbackFor, googleConfig } from "@/lib/auth/google";
 import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const { clientId } = googleConfig(request.headers.get("host") ?? "");
   const redirectUri = callbackFor(request);
   if (!clientId || !redirectUri)
     return Response.json(
