@@ -9,8 +9,9 @@ import type { DesignEvent, DesignSection } from "@/lib/events/types";
 export function useInvitationDesign(
   event: DesignEvent,
   onSaved: () => Promise<void>,
+  initialDraft?: DesignEvent,
 ) {
-  const history = useDesignHistory(event);
+  const history = useDesignHistory(event, initialDraft);
   const { draft, setDraft } = history;
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");

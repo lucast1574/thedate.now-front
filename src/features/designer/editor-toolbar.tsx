@@ -28,7 +28,20 @@ export default function EditorToolbar({
         >
           ← Estudio
         </Link>
-        <h1>{editor.draft.title || "Tu invitación"}</h1>
+        <h1>
+          <input
+            aria-label="Nombre de la invitación"
+            maxLength={120}
+            value={editor.draft.title}
+            placeholder="Tu invitación"
+            onChange={(e) =>
+              editor.setDraft((current) => ({
+                ...current,
+                title: e.target.value,
+              }))
+            }
+          />
+        </h1>
         <small role="status">
           {editor.busy
             ? "Procesando…"

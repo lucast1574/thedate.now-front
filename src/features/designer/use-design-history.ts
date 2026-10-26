@@ -2,9 +2,12 @@ import { useState, type SetStateAction } from "react";
 import type { DesignEvent } from "@/lib/events/types";
 import { mergeDesign } from "./merge-design";
 import { sameDesign } from "./design-state";
-export function useDesignHistory(event: DesignEvent) {
+export function useDesignHistory(
+  event: DesignEvent,
+  initialDraft: DesignEvent = event,
+) {
   const [state, setState] = useState({
-    draft: event,
+    draft: initialDraft,
     baseline: event,
     past: [] as DesignEvent[],
     future: [] as DesignEvent[],

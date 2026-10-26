@@ -126,3 +126,17 @@ test("guest CSV supports quoted names and validates the complete list before upl
     /comillas/,
   );
 });
+
+test("new canvas sections start empty and do not share editable layers", () => {
+  const { blankCanvas } = loadSource(
+    "src/features/designer/flyer/canvas-model.ts",
+    { globals },
+  );
+  const first = blankCanvas("#8c684b");
+  const second = blankCanvas("#69509b");
+  assert.deepEqual(Array.from(first.elements), []);
+  first.elements.push({ id: "new-layer" });
+  assert.equal(second.elements.length, 0);
+  assert.equal(first.width, 720);
+  assert.equal(first.height, 960);
+});

@@ -51,11 +51,9 @@ export default function TemplateGallery({
           ×
         </button>
       </header>
-      {(["sections", "flyer"] as const).map((mode) => (
+      {(["flyer"] as const).map((mode) => (
         <section key={mode}>
-          <h3>
-            {mode === "sections" ? "Por secciones" : "Flyer · lienzos libres"}
-          </h3>
+          <h3>Estilos para tu invitación</h3>
           <div className="template-grid">
             {catalog
               .filter(

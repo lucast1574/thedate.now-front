@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 import type { KeyboardEvent } from "react";
 import type { FlyerCanvas } from "@/lib/events/flyer";
 import FlyerSurface, {
@@ -21,6 +22,11 @@ export default function CanvasEditor({
 }) {
   const gesture = useCanvasGesture(canvas, onChange);
   function keyboard(e: KeyboardEvent, id: string) {
+    if (e.key === "Escape") {
+      e.stopPropagation();
+      onSelect("");
+      return;
+    }
     const item = canvas.elements.find((el) => el.id === id)!;
     const keys: Record<string, [number, number]> = {
       ArrowLeft: [-1, 0],
@@ -91,7 +97,7 @@ export default function CanvasEditor({
                     onPointerUp={gesture.end}
                     onPointerCancel={(e) => gesture.end(e, true)}
                   >
-                    ↻
+                    <Icon name="refresh" />
                   </button>
                   <button
                     type="button"
@@ -102,7 +108,7 @@ export default function CanvasEditor({
                     onPointerUp={gesture.end}
                     onPointerCancel={(e) => gesture.end(e, true)}
                   >
-                    ↘
+                    <Icon name="external" />
                   </button>
                 </>
               )}

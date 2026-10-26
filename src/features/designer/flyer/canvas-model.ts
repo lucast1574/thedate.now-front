@@ -27,19 +27,12 @@ export function element(
     ...patch,
   };
 }
-export function blankCanvas(accent: string): FlyerCanvas {
+export function blankCanvas(_accent: string): FlyerCanvas {
   return {
     width: 720,
     height: 960,
     background: "#fff9ed",
-    elements: [
-      element("text", {
-        text: "Una nueva sección",
-        color: accent,
-        y: 300,
-        fontSize: 54,
-      }),
-    ],
+    elements: [],
   };
 }
 export function sectionCanvas(
