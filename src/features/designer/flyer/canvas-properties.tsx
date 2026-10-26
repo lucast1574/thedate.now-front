@@ -4,6 +4,7 @@ import { clamp } from "./canvas-model";
 import type { DesignSection } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 export default function CanvasProperties({
+  kind,
   active,
   index,
   canvas,
@@ -16,6 +17,7 @@ export default function CanvasProperties({
   add,
   remove,
 }: {
+  kind?: "wedding" | "general";
   active?: DesignSection;
   index: number;
   canvas: FlyerCanvas;
@@ -34,6 +36,8 @@ export default function CanvasProperties({
       {selected && (
         <ElementInspector
           item={selected}
+          canvas={canvas}
+          kind={kind}
           photos={photos}
           onChange={patch}
           onLayer={layer}

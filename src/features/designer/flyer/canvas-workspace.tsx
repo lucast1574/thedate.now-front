@@ -1,3 +1,4 @@
+import { useCanvasPanel } from "./use-canvas-panel";
 import TemplatePanel from "../template-panel";
 import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
@@ -40,6 +41,7 @@ export default function CanvasWorkspace({
   } = useCanvasWorkspace(editor);
   const tab = tool,
     setTab = onToolChange;
+  const panel = useCanvasPanel(tab, selectedId);
   return (
     <div className="canvas-workbench">
       <nav className="canvas-rail" aria-label="Herramientas de diseño">
@@ -67,7 +69,11 @@ export default function CanvasWorkspace({
           {event.kind === "wedding" ? "Save the Date" : "the date."}
         </span>
       </nav>
-      <aside className="canvas-panel designer-controls" data-tool={tab}>
+      <aside
+        ref={panel}
+        className="canvas-panel designer-controls"
+        data-tool={tab}
+      >
         {selected && (
           <button
             onClick={() => {
@@ -151,6 +157,7 @@ export default function CanvasWorkspace({
         )}
         {tab !== "music" && tab !== "templates" && (
           <CanvasProperties
+            kind={draft.kind}
             active={active}
             index={index}
             canvas={canvas}

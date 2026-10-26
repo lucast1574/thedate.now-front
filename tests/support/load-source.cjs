@@ -14,6 +14,10 @@ function loadSource(
     const sourceModule = { exports: {} };
     cache.set(filename, sourceModule);
     const source = fs.readFileSync(filename, "utf8");
+    if (filename.endsWith(".json")) {
+      sourceModule.exports = { default: JSON.parse(source) };
+      return sourceModule.exports;
+    }
     const compiled = ts.transpileModule(source, {
       compilerOptions: {
         module: ts.ModuleKind.CommonJS,

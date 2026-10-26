@@ -1,10 +1,16 @@
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
-import type { FlyerElement } from "@/lib/events/flyer";
-import { sectionIcons } from "@/lib/events/section-icons";
+import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
+import GuestBindingField from "./guest-binding-field";
+import LocationInspector from "./location-inspector";
+import ElementGeometryFields from "./element-geometry-fields";
+import TextStyleFields from "./text-style-fields";
+import SymbolLibrary from "./symbol-library";
 export default function ElementInspector({
   item,
   photos,
+  canvas,
+  kind,
   onChange,
   onDuplicate,
   onRemove,
@@ -12,66 +18,75 @@ export default function ElementInspector({
 }: {
   item: FlyerElement;
   photos: string[];
+  canvas?: FlyerCanvas;
+  kind?: "wedding" | "general";
   onChange: (patch: Partial<FlyerElement>) => void;
   onDuplicate?: () => void;
   onRemove: () => void;
   onLayer?: (direction: number) => void;
 }) {
+  const title =
+    item.binding === "guest_name"
+      ? "Nombre del invitado"
+      : item.binding === "location"
+        ? "Ubicación"
+        : item.type === "image"
+          ? "Imagen"
+          : item.type === "icon"
+            ? "Símbolo"
+            : "Texto";
   return (
     <section className="element-inspector">
-      <h3>
-        {item.type === "text"
-          ? "Texto"
-          : item.type === "image"
-            ? "Imagen"
-            : "Icono"}{" "}
-        seleccionado
-      </h3>
-      {item.type === "text" && (
-        <label>
-          {item.binding === "guest_name"
-            ? "Texto con nombre del invitado"
-            : "Contenido"}
-          <textarea
-            rows={3}
-            maxLength={2000}
-            value={item.text || ""}
-            onChange={(e) => onChange({ text: e.target.value })}
-          />
-        </label>
+      <h3>{title}</h3>
+      {item.binding === "guest_name" ? (
+        <GuestBindingField
+          text={item.text || ""}
+          onChange={(text) => onChange({ text })}
+        />
+      ) : item.binding === "location" ? (
+        <LocationInspector key={item.id} item={item} onChange={onChange} />
+      ) : (
+        item.type === "text" && (
+          <label>
+            Contenido
+            <textarea
+              rows={3}
+              maxLength={2000}
+              value={item.text || ""}
+              onChange={(e) => onChange({ text: e.target.value })}
+            />
+          </label>
+        )
       )}
       {item.type === "image" ? (
-        <label>
-          Imagen
-          <Listbox
-            value={item.photoKey}
-            onValueChange={(value) => onChange({ photoKey: value })}
-          >
-            {photos.map((key, n) => (
-              <option key={key} value={key}>
-                Imagen {n + 1}
-              </option>
-            ))}
-          </Listbox>
-        </label>
+        <>
+          <label>
+            Reemplazar imagen
+            <Listbox
+              value={item.photoKey}
+              onValueChange={(photoKey) => onChange({ photoKey })}
+            >
+              {photos.map((key, n) => (
+                <option key={key} value={key}>
+                  Imagen {n + 1}
+                </option>
+              ))}
+            </Listbox>
+          </label>
+          <p className="editor-hint">
+            La imagen se muestra completa, sin recortes.
+          </p>
+        </>
       ) : (
         <>
           {item.type === "icon" && (
-            <label>
-              Símbolo
-              <Listbox
-                value={item.icon}
-                onValueChange={(value) => onChange({ icon: value })}
-              >
-                {Object.entries(sectionIcons)
-                  .filter(([key]) => key !== "none")
-                  .map(([key, symbol]) => (
-                    <option key={key} value={key}>
-                      {symbol} {key}
-                    </option>
-                  ))}
-              </Listbox>
-            </label>
+            <details className="symbol-replace">
+              <summary>Cambiar símbolo</summary>
+              <SymbolLibrary
+                kind={kind}
+                onPick={(icon) => onChange({ icon })}
+              />
+            </details>
           )}
           <div className="color-field">
             <span>Color</span>
@@ -80,99 +95,25 @@ export default function ElementInspector({
               onChange={(color) => onChange({ color })}
             />
           </div>
-          <label>
-            Tipografía
-            <Listbox
-              value={item.font}
-              onValueChange={(value) =>
-                onChange({ font: value as FlyerElement["font"] })
-              }
-            >
-              <option value="serif">Elegante · Serif</option>
-              <option value="sans">Moderna · Sans</option>
-              <option value="script">Manuscrita</option>
-              <option value="mono">Monoespaciada</option>
-            </Listbox>
-          </label>
-          <label>
-            Tamaño del texto
-            <input
-              type="number"
-              min={8}
-              max={160}
-              value={item.fontSize}
-              onChange={(e) =>
-                onChange({
-                  fontSize: Math.max(8, Math.min(160, Number(e.target.value))),
-                })
-              }
-            />
-          </label>
-          <div className="editor-button-row">
-            <button
-              type="button"
-              aria-pressed={item.bold}
-              onClick={() => onChange({ bold: !item.bold })}
-            >
-              Negrita
-            </button>
-            <Listbox
-              aria-label="Alineación del texto"
-              value={item.align}
-              onValueChange={(value) =>
-                onChange({ align: value as FlyerElement["align"] })
-              }
-            >
-              <option value="left">Izquierda</option>
-              <option value="center">Centro</option>
-              <option value="right">Derecha</option>
-            </Listbox>
-          </div>
+          {item.type === "text" && item.locationStyle !== "icon" && (
+            <TextStyleFields item={item} onChange={onChange} />
+          )}
         </>
       )}
-      <div className="inspector-grid">
-        {(
-          [
-            ["x", "Posición X"],
-            ["y", "Posición Y"],
-            ["width", "Ancho"],
-            ["height", "Alto"],
-            ["rotation", "Rotación °"],
-          ] as const
-        ).map(([field, label]) => (
-          <label key={field}>
-            {label}
-            <input
-              type="number"
-              value={Math.round(item[field])}
-              min={
-                field === "rotation"
-                  ? -180
-                  : field === "width" || field === "height"
-                    ? 16
-                    : 0
-              }
-              max={field === "rotation" ? 180 : undefined}
-              onChange={(e) => onChange({ [field]: Number(e.target.value) })}
-            />
-          </label>
-        ))}
-      </div>
+      <ElementGeometryFields item={item} canvas={canvas} onChange={onChange} />
       <div className="editor-button-row">
-        <button type="button" disabled={!onLayer} onClick={() => onLayer?.(-1)}>
+        <button disabled={!onLayer} onClick={() => onLayer?.(-1)}>
           Enviar atrás
         </button>
-        <button type="button" disabled={!onLayer} onClick={() => onLayer?.(1)}>
+        <button disabled={!onLayer} onClick={() => onLayer?.(1)}>
           Traer delante
         </button>
       </div>
       <div className="editor-button-row">
-        <button type="button" disabled={!onDuplicate} onClick={onDuplicate}>
+        <button disabled={!onDuplicate} onClick={onDuplicate}>
           Duplicar
         </button>
-        <button type="button" onClick={onRemove}>
-          Eliminar elemento
-        </button>
+        <button onClick={onRemove}>Eliminar elemento</button>
       </div>
     </section>
   );

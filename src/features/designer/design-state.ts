@@ -1,3 +1,4 @@
+import { protectedGuestText } from "@/lib/events/guest-name";
 import { resolveTemplateId } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
 export function designPayload(draft: DesignEvent) {
@@ -14,7 +15,29 @@ export function designPayload(draft: DesignEvent) {
     ),
     accentColor: draft.accentColor,
     designMode: draft.designMode || "sections",
-    sections: draft.sections || [],
+    sections: (draft.sections || []).map((section) => ({
+      ...section,
+      ...(section.guestText
+        ? {
+            guestText: {
+              ...section.guestText,
+              text: protectedGuestText(section.guestText.text || ""),
+            },
+          }
+        : {}),
+      ...(section.canvas
+        ? {
+            canvas: {
+              ...section.canvas,
+              elements: section.canvas.elements.map((item) =>
+                item.binding === "guest_name"
+                  ? { ...item, text: protectedGuestText(item.text || "") }
+                  : item,
+              ),
+            },
+          }
+        : {}),
+    })),
   };
 }
 export function sameDesign(a: DesignEvent, b: DesignEvent) {

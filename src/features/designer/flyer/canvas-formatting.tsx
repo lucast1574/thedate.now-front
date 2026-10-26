@@ -12,11 +12,13 @@ export default function CanvasFormatting({
   return (
     <div className="canvas-formatting" aria-label="Formato del elemento">
       <span>
-        {item.type === "image"
-          ? "Imagen seleccionada"
-          : item.type === "icon"
-            ? "Símbolo"
-            : "Texto"}
+        {item.binding === "location"
+          ? "Ubicación"
+          : item.type === "image"
+            ? "Imagen seleccionada"
+            : item.type === "icon"
+              ? "Símbolo"
+              : "Texto"}
       </span>
       {item.type !== "image" && (
         <ColorPicker
@@ -24,7 +26,7 @@ export default function CanvasFormatting({
           onChange={(color) => onChange({ color })}
         />
       )}
-      {item.type === "text" && (
+      {item.type === "text" && item.locationStyle !== "icon" && (
         <>
           <Listbox
             aria-label="Fuente del texto"

@@ -1,3 +1,5 @@
+import { useCanvasShortcuts } from "./use-canvas-shortcuts";
+import { protectedGuestText } from "@/lib/events/guest-name";
 import { useState } from "react";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import type { useInvitationDesign } from "../use-invitation-design";
@@ -39,6 +41,8 @@ export function useCanvasWorkspace(
       elements: canvas.elements.map((item) => {
         if (item.id !== selectedId) return item;
         const next = { ...item, ...patch };
+        if (next.binding === "guest_name")
+          next.text = protectedGuestText(next.text || "");
         next.width = clamp(next.width, 16, canvas.width);
         next.height = clamp(next.height, 16, canvas.height);
         next.x = clamp(next.x, 0, canvas.width - next.width);
@@ -76,6 +80,7 @@ export function useCanvasWorkspace(
     setActiveId(id);
     select("");
   }
+  useCanvasShortcuts(canvas, selectedId, change, select);
   return {
     draft,
     sections,

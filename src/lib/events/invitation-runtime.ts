@@ -22,6 +22,7 @@ export function allowedInvitationPath(path: string) {
     path === "/" ||
     path === "/api/invitation-health" ||
     path === "/favicon.ico" ||
+    path === "/symbols/lucide-1.61.svg" ||
     path.startsWith("/_next/static/") ||
     /^\/(?:rsvp|api\/rsvp)\/[a-f0-9]{48}$/.test(path) ||
     /^\/api\/public-(?:photos|audio)\/(wedding|general)\/[a-z0-9-]+\/[a-z0-9.-]+$/.test(

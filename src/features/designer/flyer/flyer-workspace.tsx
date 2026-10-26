@@ -89,8 +89,7 @@ export default function FlyerWorkspace({
       <aside className="flyer-tools designer-controls">
         <h3>Tu lienzo</h3>
         <p className="editor-hint">
-          Arrastra un elemento. Usa sus controles para rotar y ampliar, o las
-          flechas del teclado para ajustar.
+          Arrastra para mover; usa las esquinas para cambiar el tamaño.
         </p>
         <div className="editor-button-row">
           <button
@@ -162,6 +161,7 @@ export default function FlyerWorkspace({
         {selected && (
           <ElementInspector
             item={selected}
+            canvas={canvas}
             photos={draft.photoKeys}
             onChange={patchElement}
             onDuplicate={duplicate}

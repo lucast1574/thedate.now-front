@@ -1,3 +1,5 @@
+import SymbolLibrary from "./symbol-library";
+import { imagePlacement } from "./canvas-geometry";
 import Icon from "@/components/icon";
 import Photo from "@/components/photo";
 import type { DesignEvent, Event } from "@/lib/events/types";
@@ -80,7 +82,21 @@ export default function CanvasToolbox({
             <button
               disabled={disabled}
               onClick={() =>
-                text(event.location || "Añade la ubicación de tu evento", 28)
+                onAdd(
+                  element("text", {
+                    binding: "location",
+                    locationStyle: "address",
+                    address: event.location || "",
+                    link: event.mapUrl || "",
+                    text: "Cómo llegar",
+                    x: 60,
+                    y: 120,
+                    width: canvas.width - 120,
+                    height: 120,
+                    fontSize: 28,
+                    color: draft.accentColor,
+                  }),
+                )
               }
             >
               <Icon name="external" />
@@ -112,29 +128,22 @@ export default function CanvasToolbox({
             </button>
           </div>
           <h3>Símbolos</h3>
-          <div className="canvas-symbols">
-            {["heart", "flower", "star", "sparkle", "ring", "music"].map(
-              (icon) => (
-                <button
-                  key={icon}
-                  disabled={disabled}
-                  aria-label={`Añadir ${icon}`}
-                  onClick={() =>
-                    onAdd(
-                      element("icon", {
-                        icon,
-                        x: 60,
-                        y: 80,
-                        color: draft.accentColor,
-                      }),
-                    )
-                  }
-                >
-                  <Icon name={icon} />
-                </button>
-              ),
-            )}
-          </div>
+          <SymbolLibrary
+            kind={event.kind}
+            disabled={disabled}
+            onPick={(icon) =>
+              onAdd(
+                element("icon", {
+                  icon,
+                  x: (canvas.width - 120) / 2,
+                  y: (canvas.height - 120) / 2,
+                  width: 120,
+                  height: 120,
+                  color: draft.accentColor,
+                }),
+              )
+            }
+          />
         </>
       )}
       <h3>Imágenes</h3>
@@ -157,17 +166,19 @@ export default function CanvasToolbox({
             key={key}
             disabled={disabled}
             aria-label={`Añadir imagen ${n + 1}`}
-            onClick={() =>
+            onClick={(e) => {
+              const image = e.currentTarget.querySelector("img");
               onAdd(
                 element("image", {
                   photoKey: key,
-                  x: 60,
-                  y: 80,
-                  width: 300,
-                  height: 300,
+                  ...imagePlacement(
+                    image?.naturalWidth || 300,
+                    image?.naturalHeight || 300,
+                    canvas,
+                  ),
                 }),
-              )
-            }
+              );
+            }}
           >
             <Photo
               src={`/api/photos/${draft.id}/${encodeURIComponent(key)}`}

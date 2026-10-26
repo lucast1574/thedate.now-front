@@ -1,4 +1,5 @@
 "use client";
+import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
 import { designPayload } from "./design-state";
@@ -79,6 +80,19 @@ export function useInvitationDesign(
     setBusy(true);
     setMessage("");
     try {
+      if (
+        sections.some((section) =>
+          section.canvas?.elements.some(
+            (item) =>
+              item.binding === "location" &&
+              item.link &&
+              !validMapLink(item.link),
+          ),
+        )
+      )
+        throw new Error(
+          "Revisa el enlace de Google Maps en la ubicación antes de guardar.",
+        );
       await api(
         `/api/backend/events/${draft.id}/design`,
         "PATCH",

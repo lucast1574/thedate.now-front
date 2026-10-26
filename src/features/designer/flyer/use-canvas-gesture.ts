@@ -1,12 +1,13 @@
 import { useRef, useState, type PointerEvent } from "react";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
-import { clamp, moveElement, resizeElement } from "./canvas-model";
+import { clamp, moveElement } from "./canvas-model";
+import { resizeCorner, snapCenter, type Corner } from "./canvas-geometry";
 type Gesture = {
   startX: number;
   startY: number;
   scale: number;
   item: FlyerElement;
-  action: "move" | "resize" | "rotate";
+  action: "move" | "rotate" | `resize-${Corner}`;
   centerX: number;
   centerY: number;
   angle: number;
@@ -51,15 +52,10 @@ export function useCanvasGesture(
     const dx = (e.clientX - g.startX) * g.scale;
     const dy = (e.clientY - g.startY) * g.scale;
     let next = moveElement(g.item, dx, dy, canvas);
-    if (g.action === "resize") {
-      const angle = (g.item.rotation * Math.PI) / 180;
-      next = resizeElement(
-        g.item,
-        g.item.width + dx * Math.cos(angle) + dy * Math.sin(angle),
-        g.item.height - dx * Math.sin(angle) + dy * Math.cos(angle),
-        canvas,
-      );
-    }
+    if (g.action.startsWith("resize-"))
+      next = resizeCorner(g.item, dx, dy, g.action.slice(7) as Corner, canvas);
+    if (g.action === "move" && !e.altKey)
+      next = snapCenter(next, canvas, 6 * g.scale).item;
     if (g.action === "rotate") {
       const degrees =
         g.item.rotation +

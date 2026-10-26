@@ -1,7 +1,10 @@
 import type { FlyerElement } from "./flyer";
 export const guestNameToken = "{{nombre_invitado}}";
 export function personalizedText(item: FlyerElement, name?: string) {
-  const text = item.text || "";
+  const text =
+    item.binding === "guest_name"
+      ? protectedGuestText(item.text || "")
+      : item.text || "";
   return item.binding === "guest_name"
     ? text.replaceAll(guestNameToken, () => name?.trim() || "Invitado/a")
     : text;
@@ -23,4 +26,10 @@ export function guestNameElement(accent: string, id: string): FlyerElement {
     bold: false,
     align: "center",
   };
+}
+
+export function protectedGuestText(text: string) {
+  return text.includes(guestNameToken)
+    ? text
+    : `${text}${text ? " " : ""}${guestNameToken}`;
 }

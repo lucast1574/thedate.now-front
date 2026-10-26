@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 const paths = {
+  lock: "M6 11h12v10H6z M8 11V7a4 4 0 0 1 8 0v4",
   search: "M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15ZM16 16l5 5",
   frame: "M1 1h22v22H1V1Zm1 1h20v20H2V2Z",
   arch: "M2 23V11a10 10 0 0 1 20 0v12H2Z",
@@ -75,7 +76,11 @@ export default function Icon({
       aria-hidden="true"
       focusable="false"
     >
-      <path d={paths[name as IconName] || paths.sparkle} />
+      {name.startsWith("lucide:") && /^[a-z0-9-]+$/.test(name.slice(7)) ? (
+        <use href={`/symbols/lucide-1.61.svg#${name.slice(7)}`} />
+      ) : (
+        <path d={paths[name as IconName] || paths.sparkle} />
+      )}
     </svg>
   );
 }

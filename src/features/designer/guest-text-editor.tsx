@@ -13,9 +13,8 @@ export default function GuestTextEditor({
   return (
     <div className="guest-text-editor">
       <p className="editor-hint">
-        Cada invitado verá su nombre y apellido desde su enlace de WhatsApp.
-        Conserva {"{{nombre_invitado}}"} donde deba aparecer. Área de texto: 720
-        × 240.
+        Cada invitado verá su nombre y apellido desde su enlace de WhatsApp. El
+        nombre se conserva automáticamente. Área de texto: 720 × 240.
       </p>
       <ElementInspector
         item={item}

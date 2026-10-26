@@ -1,3 +1,6 @@
+import CanvasContextMenu from "./canvas-context-menu";
+import { useCanvasMenu } from "./use-canvas-menu";
+import { snapCenter } from "./canvas-geometry";
 import Icon from "@/components/icon";
 import type { KeyboardEvent } from "react";
 import type { FlyerCanvas } from "@/lib/events/flyer";
@@ -21,6 +24,11 @@ export default function CanvasEditor({
   photoURL: (key: string) => string;
 }) {
   const gesture = useCanvasGesture(canvas, onChange);
+  const context = useCanvasMenu(canvas, onChange, onSelect);
+  const moving = gesture.transient;
+  const candidate =
+    moving || canvas.elements.find((item) => item.id === selectedId);
+  const guides = candidate ? snapCenter(candidate, canvas, 0.1) : null;
   function keyboard(e: KeyboardEvent, id: string) {
     if (e.key === "Escape") {
       e.stopPropagation();
@@ -36,6 +44,7 @@ export default function CanvasEditor({
     };
     if (e.key === "Delete" || e.key === "Backspace") {
       e.preventDefault();
+      e.stopPropagation();
       onChange({
         ...canvas,
         elements: canvas.elements.filter((el) => el.id !== id),
@@ -56,6 +65,15 @@ export default function CanvasEditor({
   return (
     <div className="canvas-editor" onClick={() => onSelect("")}>
       <FlyerSurface canvas={canvas} photoURL={photoURL} label="Lienzo editable">
+        {moving && guides?.vertical && (
+          <div className="canvas-guide is-vertical" aria-hidden="true" />
+        )}
+        {moving && guides?.horizontal && (
+          <div className="canvas-guide is-horizontal" aria-hidden="true" />
+        )}
+        {guides && (guides.vertical || guides.horizontal) && (
+          <span className="canvas-center-label">Centrado</span>
+        )}
         {canvas.elements.map((original, index) => {
           const item =
             gesture.transient?.id === original.id
@@ -70,14 +88,18 @@ export default function CanvasEditor({
               role="button"
               tabIndex={0}
               aria-pressed={selected}
-              aria-label={`${item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Icono"}, capa ${index + 1}`}
+              aria-label={`${item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
               onClick={(e) => {
                 e.stopPropagation();
+                if ((e.target as HTMLElement).closest("a")) e.preventDefault();
                 onSelect(item.id);
               }}
               onFocus={() => onSelect(item.id)}
               onKeyDown={(e) => keyboard(e, item.id)}
+              onContextMenu={(e) => context.open(e, item.id)}
               onPointerDown={(e) => {
+                if (e.button !== 0) return;
+                e.currentTarget.focus({ preventScroll: true });
                 onSelect(item.id);
                 gesture.begin(e, original);
               }}
@@ -99,23 +121,33 @@ export default function CanvasEditor({
                   >
                     <Icon name="refresh" />
                   </button>
-                  <button
-                    type="button"
-                    className="canvas-handle canvas-resize"
-                    aria-label="Cambiar tamaño del elemento"
-                    onPointerDown={(e) => gesture.begin(e, original, "resize")}
-                    onPointerMove={gesture.move}
-                    onPointerUp={gesture.end}
-                    onPointerCancel={(e) => gesture.end(e, true)}
-                  >
-                    <Icon name="external" />
-                  </button>
+                  {(["nw", "ne", "sw", "se"] as const).map((corner) => (
+                    <button
+                      key={corner}
+                      type="button"
+                      className={`canvas-handle canvas-resize corner-${corner}`}
+                      aria-label="Cambiar tamaño del elemento"
+                      onPointerDown={(e) =>
+                        gesture.begin(e, original, `resize-${corner}`)
+                      }
+                      onPointerMove={gesture.move}
+                      onPointerUp={gesture.end}
+                      onPointerCancel={(e) => gesture.end(e, true)}
+                    ></button>
+                  ))}
                 </>
               )}
             </div>
           );
         })}
       </FlyerSurface>
+      {context.menu && (
+        <CanvasContextMenu
+          position={context.menu}
+          onCommand={context.command}
+          onClose={context.close}
+        />
+      )}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import Photo from "./photo";
+import { locationHref } from "@/lib/events/location-element";
 import {
   flyerFonts,
   type FlyerCanvas,
@@ -37,15 +38,41 @@ export function FlyerContent({
     return (
       <Photo
         src={photoURL(item.photoKey || "")}
+        style={{ objectFit: "contain" }}
         alt="Imagen de la invitación"
         draggable={false}
       />
     );
+  if (item.binding === "location") {
+    const icon = item.locationStyle === "icon";
+    const content = icon ? (
+      <Icon name="lucide:map-pin" style={{ width: "100%", height: "100%" }} />
+    ) : item.locationStyle === "label" ? (
+      item.text || "Cómo llegar"
+    ) : (
+      item.address || "Ubicación"
+    );
+    const href = locationHref(item);
+    return href ? (
+      <a
+        className="flyer-location"
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={
+          icon ? `Ver ubicación: ${item.address || "Google Maps"}` : undefined
+        }
+      >
+        {content}
+      </a>
+    ) : (
+      <span className="flyer-location">{content}</span>
+    );
+  }
   return (
     <span
       style={
-        item.type === "icon" &&
-        ["frame", "arch", "leaf", "sunburst"].includes(item.icon || "")
+        item.type === "icon"
           ? {
               display: "flex",
               height: "100%",
@@ -58,11 +85,7 @@ export function FlyerContent({
       {item.type === "icon" ? (
         <Icon
           name={item.icon || "none"}
-          style={
-            ["frame", "arch", "leaf", "sunburst"].includes(item.icon || "")
-              ? { width: "100%", height: "100%" }
-              : undefined
-          }
+          style={{ width: "100%", height: "100%" }}
         />
       ) : (
         personalizedText(item, guestName)
