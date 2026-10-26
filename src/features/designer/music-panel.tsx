@@ -23,35 +23,11 @@ export default function MusicPanel({
         Una canción para acompañar toda la invitación, sin añadirla a cada
         sección.
       </p>
-      <div className="music-recommendation">
-        <Icon name="music" />
-        <strong>Música de fondo</strong>
-        <p>
-          Tu MP3 sonará en bucle, a volumen suave y sin reproductor visible. Si
-          el navegador bloquea el inicio automático, comienza con el primer
-          toque en la invitación.
-        </p>
-      </div>
-      <label className="canvas-upload">
-        <Icon name="plus" />
-        {busy ? "Subiendo canción…" : "Subir MP3 · hasta 10 MB"}
-        <input
-          type="file"
-          accept="audio/mpeg,.mp3"
-          disabled={busy || editor.busy}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) void upload(file);
-            e.target.value = "";
-          }}
-        />
-      </label>
-      {error && <p role="alert">{error}</p>}
       <h3>Enlace de YouTube</h3>
       <p className="canvas-panel-description">
-        También puedes pegar una canción de YouTube o YouTube Music. Intentará
-        sonar automáticamente, con volumen bajo y sin controles. Puede requerir
-        un toque; anuncios, bloqueos o disponibilidad dependen de YouTube.
+        Pega una canción de YouTube o YouTube Music. Intentará sonar
+        automáticamente, con volumen bajo y sin controles. Puede requerir un
+        toque; anuncios, bloqueos o disponibilidad dependen de YouTube.
       </p>
       <label>
         Enlace de la canción
@@ -78,6 +54,30 @@ export default function MusicPanel({
         Usar canción de YouTube
       </button>
       {linkError && <p role="alert">{linkError}</p>}
+      <div className="music-recommendation">
+        <Icon name="music" />
+        <strong>O sube tu archivo MP3</strong>
+        <p>
+          Tu MP3 sonará en bucle, a volumen suave y sin reproductor visible. Si
+          el navegador bloquea el inicio automático, comienza con el primer
+          toque en la invitación.
+        </p>
+      </div>
+      <label className="canvas-upload">
+        <Icon name="plus" />
+        {busy ? "Subiendo canción…" : "Subir MP3 · hasta 10 MB"}
+        <input
+          type="file"
+          accept="audio/mpeg,.mp3"
+          disabled={busy || editor.busy}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) void upload(file);
+            e.target.value = "";
+          }}
+        />
+      </label>
+      {error && <p role="alert">{error}</p>}
       {music && (
         <section className="music-current">
           <h3>Canción elegida</h3>
