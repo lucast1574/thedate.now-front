@@ -1,3 +1,4 @@
+import InvitationMusic from "./invitation-music";
 import Icon from "@/components/icon";
 import EventDetails from "@/components/event-details";
 import Photo from "@/components/photo";
@@ -7,12 +8,14 @@ import InvitationSections from "./invitation-sections";
 export default function Invitation({
   event,
   photoURL,
+  audioURL,
   preview = false,
   guestName,
 }: {
   event: PublicEvent;
   guestName?: string;
   photoURL?: (key: string) => string;
+  audioURL?: (key: string) => string;
   preview?: boolean;
 }) {
   const photo =
@@ -125,6 +128,16 @@ export default function Invitation({
         )}
         <p className="closing">Nos encantará compartir este momento contigo.</p>
       </section>
+      <InvitationMusic
+        music={event.music}
+        preview={Boolean(audioURL)}
+        audioSrc={
+          event.music?.source === "mp3"
+            ? (audioURL?.(event.music.value) ??
+              `/api/public-audio/${event.kind}/${event.slug}/${event.music.value}`)
+            : undefined
+        }
+      />
       <footer className="invite-footer">
         Una invitación creada con <b>the date.</b>
       </footer>

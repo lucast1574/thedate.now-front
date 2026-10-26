@@ -7,6 +7,7 @@ export function mergeDesign(
 ): DesignEvent {
   const merged = { ...current };
   for (const field of [
+    "music",
     "title",
     "description",
     "template",
@@ -20,6 +21,9 @@ export function mergeDesign(
   }
   merged.photoKeys = [
     ...new Set([...(incoming.photoKeys ?? []), ...(current.photoKeys ?? [])]),
+  ];
+  merged.audioKeys = [
+    ...new Set([...(incoming.audioKeys || []), ...(current.audioKeys || [])]),
   ];
   return merged;
 }

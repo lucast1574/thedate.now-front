@@ -37,7 +37,11 @@ export function useDesignHistory(
       if (!last) return current;
       return {
         ...current,
-        draft: { ...last, photoKeys: current.draft.photoKeys },
+        draft: {
+          ...last,
+          photoKeys: current.draft.photoKeys,
+          audioKeys: current.draft.audioKeys,
+        },
         past: current.past.slice(0, -1),
         future: [current.draft, ...current.future],
       };
@@ -49,7 +53,11 @@ export function useDesignHistory(
       if (!next) return current;
       return {
         ...current,
-        draft: { ...next, photoKeys: current.draft.photoKeys },
+        draft: {
+          ...next,
+          photoKeys: current.draft.photoKeys,
+          audioKeys: current.draft.audioKeys,
+        },
         past: [...current.past, current.draft],
         future: current.future.slice(1),
       };

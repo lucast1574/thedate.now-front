@@ -2,6 +2,7 @@ import { resolveTemplateId } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
 export function designPayload(draft: DesignEvent) {
   return {
+    music: draft.music ?? null,
     title: draft.title,
     description: draft.description,
     template: draft.template,

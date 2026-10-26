@@ -1,3 +1,4 @@
+import type { InvitationMusic } from "./music";
 import type { Gender, Person } from "./seating";
 import type { DesignMode, FlyerCanvas, FlyerElement } from "./flyer";
 export type Kind = "wedding" | "general";
@@ -11,6 +12,8 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  music?: InvitationMusic | null;
+  audioKeys?: string[];
   publishedAt?: string | null;
   templateId?: string;
   designMode?: DesignMode;
@@ -63,6 +66,7 @@ export type PublicEvent = Pick<
   | "designMode"
   | "sections"
   | "photoKeys"
+  | "music"
 >;
 export type Guest = {
   lastName?: string;

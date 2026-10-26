@@ -78,6 +78,7 @@ export default function DesignPreview({ draft }: { draft: Event }) {
                 guestName={guestName}
                 event={draft}
                 preview={Boolean(draft.isDemo)}
+                audioURL={(key) => `/api/audio/${draft.id}/${key}`}
                 photoURL={(key) =>
                   `/api/photos/${draft.id}/${encodeURIComponent(key)}`
                 }

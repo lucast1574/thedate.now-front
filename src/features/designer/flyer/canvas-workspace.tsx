@@ -1,3 +1,4 @@
+import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
 import type { useInvitationDesign } from "../use-invitation-design";
@@ -44,6 +45,7 @@ export default function CanvasWorkspace({
           ["photos", "image", "Imágenes"],
           ["pages", "layout", "Secciones"],
           ["layers", "table", "Capas"],
+          ["music", "music", "Música"],
         ].map(([id, icon, label]) => (
           <button
             key={id}
@@ -80,7 +82,9 @@ export default function CanvasWorkspace({
                 ? "Tus imágenes"
                 : tab === "pages"
                   ? "Secciones"
-                  : "Capas del lienzo"}
+                  : tab === "music"
+                    ? "Ponle música"
+                    : "Capas del lienzo"}
           </h2>
         </header>
         {!selected && (tab === "elements" || tab === "photos") && (
@@ -125,25 +129,28 @@ export default function CanvasWorkspace({
             onSelect={select}
           />
         )}
-        <CanvasProperties
-          active={active}
-          index={index}
-          canvas={canvas}
-          selected={selected}
-          photos={draft.photoKeys}
-          update={(patch) => editor.updateSection(index, patch)}
-          change={change}
-          patch={patch}
-          layer={layer}
-          add={add}
-          remove={() => {
-            change({
-              ...canvas,
-              elements: canvas.elements.filter((el) => el.id !== selectedId),
-            });
-            select("");
-          }}
-        />
+        {tab === "music" && <MusicPanel editor={editor} />}
+        {tab !== "music" && (
+          <CanvasProperties
+            active={active}
+            index={index}
+            canvas={canvas}
+            selected={selected}
+            photos={draft.photoKeys}
+            update={(patch) => editor.updateSection(index, patch)}
+            change={change}
+            patch={patch}
+            layer={layer}
+            add={add}
+            remove={() => {
+              change({
+                ...canvas,
+                elements: canvas.elements.filter((el) => el.id !== selectedId),
+              });
+              select("");
+            }}
+          />
+        )}
       </aside>
       <CanvasPages
         selected={selected}
