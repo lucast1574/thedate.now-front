@@ -6,6 +6,7 @@ import { invitationTarget } from "@/lib/events/invitation-runtime";
 import { invitationFromHost } from "@/lib/events/domains";
 import type { PublicEvent } from "@/lib/events/types";
 import Invitation from "./invitation";
+import InvitationBrand from "./invitation-brand";
 import LiveInvitation from "./live-invitation";
 import RSVPForm from "@/features/rsvp/rsvp-form";
 export default async function PersonalInvitation({ token }: { token: string }) {
@@ -36,6 +37,7 @@ export default async function PersonalInvitation({ token }: { token: string }) {
         Confirmar asistencia
       </a>
       <Invitation
+        showBrand={false}
         event={data.event}
         guestName={data.guestName}
         giftURL={`/regalos/${token}`}
@@ -43,6 +45,7 @@ export default async function PersonalInvitation({ token }: { token: string }) {
       <div id="confirmacion">
         <RSVPForm token={token} />
       </div>
+      <InvitationBrand event={data.event} />
     </>
   );
 }

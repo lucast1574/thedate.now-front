@@ -1,13 +1,14 @@
 import InvitationMotion from "./invitation-motion";
 import InvitationMusic from "./invitation-music";
 import Icon from "@/components/icon";
-import EventDetails from "@/components/event-details";
+import { invitationPaper } from "@/lib/events/invitation-paper";
+import InvitationBrand from "./invitation-brand";
 import Photo from "@/components/photo";
 import type { PublicEvent } from "@/lib/events/types";
-import Brand from "@/components/brand";
 import InvitationSections from "./invitation-sections";
 export default function Invitation({
   giftURL,
+  showBrand = true,
   event,
   photoURL,
   audioURL,
@@ -15,6 +16,7 @@ export default function Invitation({
   guestName,
 }: {
   giftURL?: string;
+  showBrand?: boolean;
   event: PublicEvent;
   guestName?: string;
   photoURL?: (key: string) => string;
@@ -28,12 +30,7 @@ export default function Invitation({
   const accent = /^#[0-9a-fA-F]{6}$/.test(event.accentColor)
     ? event.accentColor
     : "#ad7254";
-  const virtual = event.kind === "general" && event.isVirtual;
-  const placeLink = virtual ? event.virtualUrl : event.mapUrl;
-  const safeLink =
-    typeof placeLink === "string" && /^https:\/\/[^\s]+$/i.test(placeLink)
-      ? placeLink
-      : "";
+  const paper = invitationPaper(event);
   return (
     <main
       className={`invitation ${event.template === "modern" ? "invitation-modern" : ""}`}
@@ -41,36 +38,18 @@ export default function Invitation({
       data-template={event.templateId}
       data-product={event.kind}
       data-design={event.designMode || "sections"}
-      style={{ "--accent": accent } as React.CSSProperties}
+      style={
+        {
+          "--accent": accent,
+          "--invite-paper": paper.background,
+        } as React.CSSProperties
+      }
     >
       <InvitationMotion />
-      <header className="invite-top">
-        <a
-          href={
-            event.kind === "wedding"
-              ? "https://save.thedate.now"
-              : "https://thedate.now"
-          }
-        >
-          <Brand wedding={event.kind === "wedding"} />
-        </a>
-        <span>
-          {event.kind === "wedding" ? "INVITACIÓN DE BODA" : "VAMOS A CELEBRAR"}
-        </span>
-      </header>
       <section className="invite-content">
         {event.designMode !== "flyer" && (
           <>
-            <div className="ornament">
-              <Icon name={event.kind === "wedding" ? "flower" : "sparkle"} />
-            </div>
-            <p className="eyebrow">
-              {event.kind === "wedding"
-                ? "CELEBREMOS EL AMOR"
-                : "ESTÁS INVITADO"}
-            </p>
             <h1>{event.title}</h1>
-            <div className="rule" />
             <p className="description">{event.description}</p>
             {event.photoKeys?.length > 0 && (
               <div className="invite-gallery">
@@ -85,16 +64,6 @@ export default function Invitation({
             )}
           </>
         )}
-        {guestName &&
-          !event.sections?.some(
-            (s) =>
-              s.guestText ||
-              s.canvas?.elements.some((el) => el.binding === "guest_name"),
-          ) && (
-            <p className="personal-guest-name">
-              Una invitación para {guestName}
-            </p>
-          )}
         <InvitationSections
           guestName={guestName}
           sections={event.sections}
@@ -103,47 +72,13 @@ export default function Invitation({
           flyer={event.designMode === "flyer"}
           photoURL={photo}
         />
-        <EventDetails event={event} />
-        {safeLink && (
-          <>
-            <a
-              className="invite-place-link"
-              href={safeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {virtual
-                ? "Unirse al evento virtual"
-                : "Cómo llegar con Google Maps"}{" "}
-              ↗
-            </a>
-            {!virtual && (
-              <small className="map-credit">
-                <a
-                  href="https://www.openstreetmap.org/copyright"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  © OpenStreetMap contributors
-                </a>
-              </small>
-            )}
-          </>
-        )}
         {event.wishlistEnabled && (
           <a className="invitation-gifts-link" href={giftURL || "/regalos"}>
             <Icon name="lucide:gift" />
-            <span>
-              Lista de regalos
-              <small>Elige un detalle para la celebración</small>
-            </span>
+            <span>Lista de regalos</span>
             <Icon name="arrow" />
           </a>
         )}
-        {preview && (
-          <p className="preview-demo-note">Vista previa · {event.title}</p>
-        )}
-        <p className="closing">Nos encantará compartir este momento contigo.</p>
       </section>
       <InvitationMusic
         music={event.music}
@@ -155,18 +90,7 @@ export default function Invitation({
             : undefined
         }
       />
-      <footer className="invite-footer">
-        Creada con{" "}
-        <a
-          href={
-            event.kind === "wedding"
-              ? "https://save.thedate.now"
-              : "https://thedate.now"
-          }
-        >
-          {event.kind === "wedding" ? "Save the Date" : "the date."}
-        </a>
-      </footer>
+      {showBrand && <InvitationBrand event={event} />}
     </main>
   );
 }

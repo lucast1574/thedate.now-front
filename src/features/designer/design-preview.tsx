@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Icon from "@/components/icon";
+import PreviewWatermark from "./preview-watermark";
 import PreviewViewport from "./preview-viewport";
 import type { Event } from "@/lib/events/types";
 export default function DesignPreview({ draft }: { draft: Event }) {
@@ -55,6 +56,9 @@ export default function DesignPreview({ draft }: { draft: Event }) {
         <span>
           <Icon name="lock" /> Vista previa privada
         </span>
+        {(draft.isDemo || draft.paymentStatus !== "paid") && (
+          <PreviewWatermark wedding={draft.kind === "wedding"} />
+        )}
         <p>Explora tu invitación desplazándote dentro de ella.</p>
       </footer>
     </section>

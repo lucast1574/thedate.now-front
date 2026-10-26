@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Invitation from "@/features/invitations/invitation";
 import type { Event } from "@/lib/events/types";
-import PreviewWatermark from "./preview-watermark";
 export default function PreviewViewport({
   draft,
   device,
@@ -61,9 +60,6 @@ export default function PreviewViewport({
               setBody(doc.body);
             }}
           />
-          {(draft.isDemo || draft.paymentStatus !== "paid") && (
-            <PreviewWatermark wedding={draft.kind === "wedding"} />
-          )}
           {body &&
             createPortal(
               <div

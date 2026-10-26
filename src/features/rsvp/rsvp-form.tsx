@@ -2,7 +2,6 @@
 import CompanionFields from "@/components/companion-fields";
 import Alert from "@/components/alert";
 import ActionButton from "@/components/action-button";
-import Brand from "@/components/brand";
 import EventDetails from "@/components/event-details";
 import ResponseFields from "./response-fields";
 import { useRSVP } from "./use-rsvp";
@@ -33,16 +32,6 @@ export default function RSVPForm({ token }: { token: string }) {
   );
   return (
     <main className="rsvp-page">
-      <a
-        className="office-brand"
-        href={
-          details?.kind === "wedding"
-            ? "https://save.thedate.now"
-            : "https://thedate.now"
-        }
-      >
-        <Brand wedding={details?.kind === "wedding"} />
-      </a>
       <section className="rsvp-card">
         <p className="eyebrow">CONFIRMA TU ASISTENCIA</p>
         <h1>
