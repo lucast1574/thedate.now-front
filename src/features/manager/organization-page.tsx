@@ -40,6 +40,9 @@ function OrganizationTools({
     events.find((e) => !e.isDemo && e.paymentStatus === "paid") ||
     events.find((e) => !e.isDemo) ||
     events[0];
+  const hasPaidEvent = events.some(
+    (event) => !event.isDemo && event.paymentStatus === "paid",
+  );
   return (
     <section className="organization-page">
       <header className="organization-heading">
@@ -98,12 +101,13 @@ function OrganizationTools({
             : "Cargando tus eventos…"}
         </p>
       )}
-      <OrganizationPreview
-        wedding={wedding}
-        tool={tool}
-        eventId={selected?.id}
-        active={selected?.paymentStatus === "paid" && !selected.isDemo}
-      />
+      {loaded && !error && !hasPaidEvent && (
+        <OrganizationPreview
+          wedding={wedding}
+          tool={tool}
+          eventId={selected?.id}
+        />
+      )}
     </section>
   );
 }
