@@ -1,5 +1,4 @@
 import { useId, useRef } from "react";
-import Icon from "@/components/icon";
 import {
   moveInvitationLink,
   protectInvitationEdit,
@@ -50,17 +49,9 @@ export default function InvitationMessageInput({
         }}
       />
       <div className="invitation-message-tools">
-        <button
-          type="button"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={move}
-        >
-          <Icon name="external" />
-          Mover enlace aquí
-        </button>
         <small id={`${id}-hint`}>
-          El marcador {"{{link}}"} no se puede borrar. Pon el cursor donde lo
-          quieras y pulsa «Mover enlace aquí». Puedes escribir antes y después.
+          El marcador {"{{link}}"} no se puede borrar. Puedes escribir antes y
+          después.
         </small>
       </div>
     </div>
