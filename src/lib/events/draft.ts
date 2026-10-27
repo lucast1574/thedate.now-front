@@ -1,3 +1,4 @@
+import { ensureInvitationLink } from "./invitation-message";
 import { defaultInvitationMessage } from "./event-form";
 import { defaultCelebration } from "./celebration";
 import { resolveTemplateId } from "./template-catalog";
@@ -61,9 +62,9 @@ export function eventPayload(event: Event) {
     slug: event.slug,
     title: event.title,
     description: event.description,
-    invitationMessage: (event.invitationMessage ?? defaultInvitationMessage)
-      .replace(/\{\{(?:enlace|link)\}\}/g, "")
-      .trim(),
+    invitationMessage: ensureInvitationLink(
+      event.invitationMessage ?? defaultInvitationMessage,
+    ).trim(),
     startAt: new Date(event.startAt).toISOString(),
     timeZone: event.timeZone || browserTimeZone(),
     organizer: event.organizer,

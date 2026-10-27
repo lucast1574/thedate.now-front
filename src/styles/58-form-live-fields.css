@@ -60,35 +60,45 @@
   color: var(--ui-muted);
 }
 
-.event-message-fixed-link {
+.invitation-message-input {
   display: grid;
-  gap: 8px;
-  margin-top: -14px;
-  padding: 14px 16px;
+  gap: 10px;
+  min-width: 0;
+}
+.invitation-message-input textarea {
+  resize: vertical;
+  min-height: 160px;
+  line-height: 1.8;
+}
+.invitation-message-tools {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.invitation-message-tools button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   border: 1px solid var(--ui-border);
-  border-radius: 0 0 10px 10px;
   background: var(--ui-soft);
-}
-.event-message-fixed-link strong {
-  font-size: 11px;
   color: var(--ui-accent);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+  flex-shrink: 0;
 }
-.event-message-fixed-link span {
-  overflow-wrap: anywhere;
-  font-size: 13px;
-  color: var(--ui-ink);
-}
-.event-message-fixed-link small {
-  font-size: 11px;
-  line-height: 1.6;
-  color: var(--ui-muted);
-}
-
-.event-message-link-token {
-  justify-self: start;
-  padding: 5px 10px;
-  border-radius: 6px;
+.invitation-message-tools button:hover,
+.invitation-message-tools button:focus-visible {
   background: var(--ui-surface);
-  color: var(--ui-accent);
-  font-size: 13px;
+  text-decoration: underline;
+  outline: none;
+  box-shadow: none;
+}
+.invitation-message-tools small {
+  flex: 1;
+  min-width: 200px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ui-muted);
 }

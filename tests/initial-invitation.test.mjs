@@ -124,7 +124,7 @@ test("event payload persists dress defaults and private WhatsApp copy independen
     payload.celebration.dressExcludedColors,
     draft.celebration.dressExcludedColors,
   );
-  assert.equal(payload.invitationMessage, "Confirma aquí:");
+  assert.equal(payload.invitationMessage, "Confirma aquí: {{link}}");
   assert.equal(payload.description, draft.description);
 });
 
@@ -194,10 +194,10 @@ test("fixed link markers cannot be persisted as duplicate user-authored links", 
     startAt: "2026-12-01T18:00",
     invitationMessage: "Confirma aquí: {{link}} {{enlace}}",
   });
-  assert.equal(payload.invitationMessage, "Confirma aquí:");
+  assert.equal(payload.invitationMessage, "Confirma aquí: {{link}}");
 });
 
-test("an intentionally empty WhatsApp message stays empty so only the fixed link is sent", () => {
+test("an empty WhatsApp message persists only the protected link marker", () => {
   const { eventPayload } = loadSource("src/lib/events/draft.ts");
   assert.equal(
     eventPayload({
@@ -205,7 +205,7 @@ test("an intentionally empty WhatsApp message stays empty so only the fixed link
       startAt: "2026-12-01T18:00",
       invitationMessage: "",
     }).invitationMessage,
-    "",
+    "{{link}}",
   );
 });
 test("every canvas template carries the venue name and address into its location element", () => {

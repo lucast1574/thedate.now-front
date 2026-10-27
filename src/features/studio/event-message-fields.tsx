@@ -1,3 +1,8 @@
+import InvitationMessageInput from "./invitation-message-input";
+import {
+  ensureInvitationLink,
+  invitationMessagePreview,
+} from "@/lib/events/invitation-message";
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import { invitationHost } from "@/lib/events/domains";
@@ -9,49 +14,24 @@ export default function EventMessageFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
-  const message = (draft.invitationMessage ?? defaultInvitationMessage).replace(
-    /\{\{(?:enlace|link)\}\}/g,
-    "",
+  const message = ensureInvitationLink(
+    draft.invitationMessage ?? defaultInvitationMessage,
   );
   const link = `https://${invitationHost(draft.kind, draft.slug || "tucelebracion")}/rsvp/enlace-personal`;
   return (
     <section className="event-form-card event-message-card">
-      <label>
-        Mensaje de WhatsApp
-        <textarea
-          rows={5}
-          maxLength={4000}
-          value={message}
-          onChange={(e) =>
-            setDraft({
-              ...draft,
-              invitationMessage: e.target.value.replace(
-                /\{\{(?:enlace|link)\}\}/g,
-                "",
-              ),
-            })
-          }
-          placeholder={defaultInvitationMessage}
-        />
-      </label>
-      <div className="event-message-fixed-link">
-        <strong>Enlace personal incluido siempre</strong>
-        <code className="event-message-link-token">{"{{link}}"}</code>
-        <small>
-          Este marcador no se puede quitar. Al enviar se reemplaza por el enlace
-          único de cada invitado.
-        </small>
-      </div>
+      <InvitationMessageInput
+        value={message}
+        onChange={(invitationMessage) =>
+          setDraft({ ...draft, invitationMessage })
+        }
+      />
       <div
         className="event-message-preview"
         aria-label="Ejemplo del mensaje de WhatsApp"
       >
         <strong>Así lo verá tu invitado · ejemplo</strong>
-        <p>
-          {message.trim()}
-          {message.trim() ? "\n\n" : ""}
-          {link}
-        </p>
+        <p>{invitationMessagePreview(message, link)}</p>
         <small>
           Se envía desde el gestor después de publicar. Guardar aquí no envía
           mensajes.
