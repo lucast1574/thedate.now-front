@@ -125,10 +125,17 @@ export function templateSequence(
     page("Dress code", 700, [
       templateIcon(template, "lucide:shirt", 50),
       text("dress-title", "Dress code", 210, 80, 46),
-      templateText(template, "dress", celebration.dressCode, 330, 110, 54, {
-        binding: "dress_code",
-      }),
-      text("dress-note", celebration.dressNote, 490, 140, 28),
+      templateText(
+        template,
+        "dress",
+        `${celebration.dressCode}\n${celebration.dressNote}`,
+        330,
+        240,
+        36,
+        {
+          binding: "dress_code",
+        },
+      ),
     ]),
   ];
   if (celebration.adultsOnly)

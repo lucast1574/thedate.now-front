@@ -8,7 +8,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import ListboxMenu from "./listbox-menu";
-import { useListboxDismiss } from "./use-listbox-dismiss";
+import { focusListbox, useListboxDismiss } from "./use-listbox-dismiss";
 import {
   findChoice,
   listboxPosition,
@@ -152,6 +152,7 @@ export default function Listbox({
         }
         aria-required={required}
         disabled={disabled}
+        onPointerDown={focusListbox}
         onClick={() => {
           search.current.text = "";
           if (popup) setPopup(null);

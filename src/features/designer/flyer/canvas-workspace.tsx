@@ -1,5 +1,7 @@
 import { useCanvasPanel } from "./use-canvas-panel";
 import CanvasRail from "./canvas-rail";
+import CanvasPanelHeading from "./canvas-panel-heading";
+import OpeningPanel from "../opening-panel";
 import ExperiencePanel from "../experience-panel";
 import TemplatePanel from "../template-panel";
 import MusicPanel from "../music-panel";
@@ -96,20 +98,7 @@ export default function CanvasWorkspace({
               onChange={change}
             />
           )}
-        <header hidden={!!selected}>
-          <span>TU INVITACIÓN</span>
-          <h2>
-            {{
-              elements: "Añadir elementos",
-              photos: "Tus imágenes",
-              experience: "Entrada y detalles",
-              pages: "Secciones",
-              music: "Ponle música",
-              layers: "Capas del lienzo",
-              templates: "Elige tu diseño",
-            }[tab] || "Tu invitación"}
-          </h2>
-        </header>
+        <CanvasPanelHeading tool={tab} hidden={!!selected} />
         {!selected && (tab === "elements" || tab === "photos") && (
           <CanvasToolbox
             event={event}
@@ -129,6 +118,10 @@ export default function CanvasWorkspace({
             active={active}
             index={index}
             canvas={canvas}
+            onOpening={() => {
+              select("");
+              setTab("opening");
+            }}
             onSelect={selectPage}
             onChange={change}
           />
@@ -141,6 +134,7 @@ export default function CanvasWorkspace({
           />
         )}
         {tab === "music" && <MusicPanel editor={editor} />}
+        {tab === "opening" && <OpeningPanel editor={editor} />}
         {tab === "experience" && <ExperiencePanel editor={editor} />}
         {tab === "templates" && (
           <TemplatePanel
@@ -161,6 +155,12 @@ export default function CanvasWorkspace({
           <CanvasProperties
             kind={draft.kind}
             canvas={canvas}
+            replaceImage={(file, id) =>
+              editor.replaceImage(active.id, id, file)
+            }
+            photoURL={(key) =>
+              `/api/photos/${draft.id}/${encodeURIComponent(key)}`
+            }
             selected={selected}
             photos={draft.photoKeys}
             patch={patch}

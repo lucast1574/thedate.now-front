@@ -263,3 +263,10 @@
     transition: none !important;
   }
 }
+
+.template-detail .template-detail-actions {
+  position: static;
+  margin-bottom: 16px;
+  padding-top: 0;
+  border-top: 0;
+}

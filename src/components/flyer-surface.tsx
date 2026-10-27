@@ -1,5 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { templatePhotoURL } from "@/lib/events/template-photos";
+import FlyerGiftLink from "./flyer-gift-link";
+import FlyerDressCode from "./flyer-dress-code";
 import Photo from "./photo";
 import FlyerLocation from "./flyer-location";
 import {
@@ -30,7 +32,9 @@ export function FlyerContent({
   item,
   photoURL,
   guestName,
+  giftURL,
 }: {
+  giftURL?: string;
   guestName?: string;
   item: FlyerElement;
   photoURL: (key: string) => string;
@@ -46,6 +50,10 @@ export function FlyerContent({
         draggable={false}
       />
     );
+  if (item.binding === "gift_link")
+    return <FlyerGiftLink item={item} giftURL={giftURL} />;
+  if (item.binding === "dress_code")
+    return <FlyerDressCode item={item} photoURL={photoURL} />;
   if (item.binding === "location") return <FlyerLocation item={item} />;
   return (
     <span
@@ -76,10 +84,12 @@ export default function FlyerSurface({
   photoURL,
   children,
   guestName,
+  giftURL,
   label = "Sección de la invitación",
 }: {
   canvas: FlyerCanvas;
   guestName?: string;
+  giftURL?: string;
   photoURL: (key: string) => string;
   children?: ReactNode;
   label?: string;
@@ -105,6 +115,7 @@ export default function FlyerSurface({
               item={item}
               photoURL={photoURL}
               guestName={guestName}
+              giftURL={giftURL}
             />
           </div>
         ))}

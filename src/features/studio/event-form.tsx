@@ -2,6 +2,7 @@ import ActionButton from "@/components/action-button";
 import Icon from "@/components/icon";
 import type { Dispatch, SetStateAction, FormEvent } from "react";
 import type { Event } from "@/lib/events/types";
+import EventAudience from "./event-audience";
 import EventBasics from "./event-basics";
 import EventLocationFields from "./event-location-fields";
 import EventCapacity from "./event-capacity";
@@ -67,6 +68,7 @@ export default function EventForm({
           savedMapURL={selected?.mapUrl}
         />
         <EventCapacity draft={draft} setDraft={setDraft} />
+        <EventAudience draft={draft} setDraft={setDraft} />
       </section>
       <details className="event-form-options">
         <summary>

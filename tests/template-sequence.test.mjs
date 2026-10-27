@@ -115,7 +115,9 @@ test("adults-only is optional and its editable section appears only when selecte
   );
   assert.ok(
     applied.sections.some((s) =>
-      s.canvas.elements.some((e) => e.text === "Cóctel"),
+      s.canvas.elements.some(
+        (e) => e.binding === "dress_code" && e.text.includes("Cóctel"),
+      ),
     ),
   );
 });

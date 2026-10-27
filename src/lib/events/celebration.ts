@@ -1,4 +1,7 @@
 export type Opening = {
+  title?: string;
+  font?: "" | "serif" | "sans" | "script";
+  sealIcon?: string;
   enabled: boolean;
   style: "classic" | "arch" | "ticket";
   color: string;

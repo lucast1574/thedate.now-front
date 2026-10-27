@@ -10,8 +10,10 @@ export default function InvitationSections({
   flyer = false,
   photoURL,
   guestName,
+  giftURL,
 }: {
   guestName?: string;
+  giftURL?: string;
   sections?: DesignSection[];
   kind: "wedding" | "general";
   slug: string;
@@ -30,6 +32,7 @@ export default function InvitationSections({
           <FlyerSurface
             key={section.id}
             guestName={guestName}
+            giftURL={giftURL}
             canvas={section.canvas}
             photoURL={photo}
             label={section.heading || "Lienzo"}

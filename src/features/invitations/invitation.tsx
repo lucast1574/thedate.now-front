@@ -1,7 +1,6 @@
 import InvitationOpening from "./invitation-opening";
 import InvitationMotion from "./invitation-motion";
 import InvitationMusic from "./invitation-music";
-import Icon from "@/components/icon";
 import { invitationPaper } from "@/lib/events/invitation-paper";
 import InvitationBrand from "./invitation-brand";
 import Photo from "@/components/photo";
@@ -76,19 +75,13 @@ export default function Invitation({
         )}
         <InvitationSections
           guestName={guestName}
+          giftURL={giftURL}
           sections={event.sections}
           kind={event.kind}
           slug={event.slug}
           flyer={event.designMode === "flyer"}
           photoURL={photo}
         />
-        {event.wishlistEnabled && (
-          <a className="invitation-gifts-link" href={giftURL || "/regalos"}>
-            <Icon name="lucide:gift" />
-            <span>Lista de regalos</span>
-            <Icon name="arrow" />
-          </a>
-        )}
       </section>
       <InvitationMusic
         music={event.music}

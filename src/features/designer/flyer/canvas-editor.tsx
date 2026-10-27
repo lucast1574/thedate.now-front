@@ -99,8 +99,12 @@ export default function CanvasEditor({
                 e.stopPropagation();
                 if ((e.target as HTMLElement).closest("a")) e.preventDefault();
                 onSelect(item.id);
+                const imageTarget =
+                  item.type === "image" ||
+                  (item.binding === "dress_code" &&
+                    (e.target as HTMLElement).closest("[data-dress-image]"));
                 if (
-                  item.type === "image" &&
+                  imageTarget &&
                   !gesture.wasDragged() &&
                   !(e.target as HTMLElement).closest(".canvas-handle")
                 )

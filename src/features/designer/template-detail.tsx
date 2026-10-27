@@ -34,22 +34,6 @@ export default function TemplateDetail({
         <h3>{template.name}</h3>
         <p>{template.tagline}</p>
       </div>
-      <div className="template-complete-preview">
-        {pages.map((page, n) => (
-          <div key={page.id}>
-            <span>
-              {n + 1}. {page.heading}
-            </span>
-            <FlyerSurface
-              canvas={page.canvas!}
-              photoURL={(key) =>
-                `/api/photos/${draft.id}/${encodeURIComponent(key)}`
-              }
-              label={page.heading}
-            />
-          </div>
-        ))}
-      </div>
       <div className="template-detail-actions">
         <p>
           Sobre de apertura, fotos, fecha, ubicación y dress code. Pulsa las
@@ -80,6 +64,22 @@ export default function TemplateDetail({
             Solo colores y tipografía
           </button>
         )}
+      </div>
+      <div className="template-complete-preview">
+        {pages.map((page, n) => (
+          <div key={page.id}>
+            <span>
+              {n + 1}. {page.heading}
+            </span>
+            <FlyerSurface
+              canvas={page.canvas!}
+              photoURL={(key) =>
+                `/api/photos/${draft.id}/${encodeURIComponent(key)}`
+              }
+              label={page.heading}
+            />
+          </div>
+        ))}
       </div>
     </section>
   );

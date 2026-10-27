@@ -1,6 +1,17 @@
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
-  binding?: "guest_name" | "location" | "dress_code" | "adults_notice";
+  dressStyle?:
+    | "text"
+    | "icon"
+    | "image"
+    | "icon-text"
+    | "image-text"
+    | "icon-image"
+    | "all";
+  dressIcon?: string;
+  dressPhotoKey?: string;
+  binding?:
+    "guest_name" | "location" | "dress_code" | "adults_notice" | "gift_link";
   locationStyle?:
     | "icon"
     | "label"

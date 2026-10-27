@@ -78,20 +78,36 @@ test("both products print only authored canvas content and a linked brand credit
     assert.match(html, /--invite-paper:#123456/);
   }
 });
-test("the gift link is optional and preserves the selected personal destination", () => {
-  for (const wishlistEnabled of [false, true]) {
-    const html = renderToStaticMarkup(
-      createElement(Invitation, {
-        event: { ...event, wishlistEnabled },
-        giftURL: "/regalos/personal-code",
-      }),
-    );
-    assert.equal(html.includes("Lista de regalos"), wishlistEnabled);
-    assert.equal(
-      html.includes('href="/regalos/personal-code"'),
-      wishlistEnabled,
-    );
-  }
+test("only an authored gift element preserves the selected personal destination", () => {
+  for (const wishlistEnabled of [false, true])
+    for (const authored of [false, true]) {
+      const sections = event.sections.map((section) => ({
+        ...section,
+        canvas: {
+          ...section.canvas,
+          elements: authored
+            ? [
+                ...section.canvas.elements,
+                {
+                  ...section.canvas.elements[0],
+                  id: "gift",
+                  binding: "gift_link",
+                  text: "Lista de regalos",
+                  link: "/regalos",
+                },
+              ]
+            : section.canvas.elements,
+        },
+      }));
+      const html = renderToStaticMarkup(
+        createElement(Invitation, {
+          event: { ...event, wishlistEnabled, sections },
+          giftURL: "/regalos/personal-code",
+        }),
+      );
+      assert.equal(html.includes("Lista de regalos"), authored);
+      assert.equal(html.includes('href="/regalos/personal-code"'), authored);
+    }
 });
 test("brand credit can follow the RSVP form without appearing twice", () => {
   const html = renderToStaticMarkup(

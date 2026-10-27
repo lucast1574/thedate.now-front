@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import OpeningArtwork from "./opening-artwork";
+import { flyerFonts } from "@/lib/events/flyer";
 import Icon from "@/components/icon";
 import type { Opening } from "@/lib/events/celebration";
 export default function InvitationOpening({
@@ -62,7 +64,14 @@ export default function InvitationOpening({
     >
       <div className="opening-intro">
         <span>{wedding ? "Con todo nuestro cariño" : "Estás invitado"}</span>
-        <h1 id="opening-title">{title}</h1>
+        <h1
+          id="opening-title"
+          style={
+            opening.font ? { fontFamily: flyerFonts[opening.font] } : undefined
+          }
+        >
+          {opening.title || title}
+        </h1>
         <p>{opening.message}</p>
       </div>
       <button
@@ -71,24 +80,7 @@ export default function InvitationOpening({
         aria-label={opening.buttonLabel || "Abrir invitación"}
         disabled={phase === "opening"}
       >
-        <span className="opening-letter" aria-hidden="true">
-          <Icon name={wedding ? "flower" : "sparkle"} />
-          <span>{title}</span>
-        </span>
-        <span className="opening-fold" aria-hidden="true" />
-        <span className="opening-seal" aria-hidden="true">
-          <Icon
-            name={
-              opening.style === "arch"
-                ? "leaf"
-                : opening.style === "ticket"
-                  ? "ticket"
-                  : wedding
-                    ? "flower"
-                    : "sparkle"
-            }
-          />
-        </span>
+        <OpeningArtwork opening={opening} title={title} wedding={wedding} />
       </button>
       <button
         className="opening-action"

@@ -11,6 +11,7 @@ export default function CanvasSectionPanel({
   index,
   canvas,
   onSelect,
+  onOpening,
   onChange,
 }: {
   editor: Editor;
@@ -18,6 +19,7 @@ export default function CanvasSectionPanel({
   index: number;
   canvas: FlyerCanvas;
   onSelect: (id: string) => void;
+  onOpening: () => void;
   onChange: (canvas: FlyerCanvas) => void;
 }) {
   return (
@@ -25,6 +27,21 @@ export default function CanvasSectionPanel({
       <p className="canvas-section-help">
         Elige una sección aquí o pulsa su fondo en el lienzo.
       </p>
+      <button className="opening-section-card" onClick={onOpening}>
+        <Icon name="mail" />
+        <span>
+          <strong>
+            {editor.draft.opening?.enabled
+              ? "Sobre de apertura"
+              : "Añadir una apertura"}
+          </strong>
+          <small>
+            Inicio de la invitación ·{" "}
+            {editor.draft.opening?.enabled ? "Editar" : "Opcional"}
+          </small>
+        </span>
+        <Icon name="chevron" />
+      </button>
       <div className="canvas-section-list-heading">
         <h3>Tus secciones</h3>
         <span>{editor.sections.length} de 20</span>

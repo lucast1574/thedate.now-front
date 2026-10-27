@@ -1,3 +1,4 @@
+import { defaultCelebration } from "./celebration";
 import { resolveTemplateId } from "./template-catalog";
 import type { Event, Kind } from "./types";
 export function browserTimeZone() {
@@ -14,6 +15,7 @@ export function localDateTime(value: string) {
 export function blankEvent(kind: Kind): Event {
   return {
     id: "",
+    celebration: defaultCelebration(kind === "wedding"),
     kind,
     slug: "",
     title: "",
@@ -52,6 +54,7 @@ export function eventPayload(event: Event) {
   const virtual = event.kind === "general" && event.isVirtual;
   return {
     kind: event.kind,
+    celebration: event.celebration || undefined,
     slug: event.slug,
     title: event.title,
     description: event.description,

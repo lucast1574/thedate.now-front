@@ -1,4 +1,5 @@
 "use client";
+import { validGiftLink } from "@/lib/events/gift-link";
 import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
@@ -93,6 +94,17 @@ export function useInvitationDesign(
         throw new Error(
           "Revisa el enlace de Google Maps en la ubicación antes de guardar.",
         );
+      if (
+        sections.some((s) =>
+          s.canvas?.elements.some(
+            (item) =>
+              item.binding === "gift_link" && !validGiftLink(item.link || ""),
+          ),
+        )
+      )
+        throw new Error(
+          "Revisa el enlace de la lista de regalos antes de guardar.",
+        );
       await api(
         `/api/backend/events/${draft.id}/design`,
         "PATCH",
@@ -149,9 +161,13 @@ export function useInvitationDesign(
               canvas: {
                 ...s.canvas,
                 elements: s.canvas.elements.map((item) =>
-                  item.id === imageId && item.type === "image"
-                    ? { ...item, photoKey: key }
-                    : item,
+                  item.id !== imageId
+                    ? item
+                    : item.binding === "dress_code"
+                      ? { ...item, dressPhotoKey: key }
+                      : item.type === "image"
+                        ? { ...item, photoKey: key }
+                        : item,
                 ),
               },
             },

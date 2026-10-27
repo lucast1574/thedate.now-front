@@ -1,3 +1,6 @@
+import GiftLinkInspector from "./gift-link-inspector";
+import DressCodeInspector from "./dress-code-inspector";
+import { dressParts } from "@/lib/events/dress-code";
 import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
@@ -15,6 +18,8 @@ export default function ElementInspector({
   onChange,
   onDuplicate,
   onRemove,
+  onReplaceImage,
+  photoURL = (key) => key,
 }: {
   item: FlyerElement;
   photos: string[];
@@ -23,22 +28,26 @@ export default function ElementInspector({
   onChange: (patch: Partial<FlyerElement>) => void;
   onDuplicate?: () => void;
   onRemove: () => void;
+  onReplaceImage?: () => void;
+  photoURL?: (key: string) => string;
   onLayer?: (direction: number) => void;
 }) {
   const title =
-    item.binding === "guest_name"
-      ? "Nombre del invitado"
-      : item.binding === "dress_code"
-        ? "Dress code"
-        : item.binding === "adults_notice"
-          ? "Solo adultos"
-          : item.binding === "location"
-            ? "Ubicación"
-            : item.type === "image"
-              ? "Imagen"
-              : item.type === "icon"
-                ? "Símbolo"
-                : "Texto";
+    item.binding === "gift_link"
+      ? "Lista de regalos"
+      : item.binding === "guest_name"
+        ? "Nombre del invitado"
+        : item.binding === "dress_code"
+          ? "Dress code"
+          : item.binding === "adults_notice"
+            ? "Solo adultos"
+            : item.binding === "location"
+              ? "Ubicación"
+              : item.type === "image"
+                ? "Imagen"
+                : item.type === "icon"
+                  ? "Símbolo"
+                  : "Texto";
   return (
     <section className="element-inspector">
       <header className="inspector-heading">
@@ -79,6 +88,16 @@ export default function ElementInspector({
         <GuestBindingField
           text={item.text || ""}
           onChange={(text) => onChange({ text })}
+        />
+      ) : item.binding === "gift_link" ? (
+        <GiftLinkInspector key={item.id} item={item} onChange={onChange} />
+      ) : item.binding === "dress_code" ? (
+        <DressCodeInspector
+          item={item}
+          photos={photos}
+          onChange={onChange}
+          onReplace={onReplaceImage}
+          photoURL={photoURL}
         />
       ) : item.binding === "location" ? (
         <LocationInspector key={item.id} item={item} onChange={onChange} />
@@ -140,9 +159,12 @@ export default function ElementInspector({
                   onChange={(color) => onChange({ color })}
                 />
               </div>
-              {item.type === "text" && item.locationStyle !== "icon" && (
-                <TextStyleFields item={item} onChange={onChange} />
-              )}
+              {item.type === "text" &&
+                item.locationStyle !== "icon" &&
+                (item.binding !== "dress_code" ||
+                  dressParts(item.dressStyle).includes("text")) && (
+                  <TextStyleFields item={item} onChange={onChange} />
+                )}
             </div>
           </details>
         </>

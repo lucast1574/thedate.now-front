@@ -25,11 +25,12 @@ const groups = [
   {
     label: "Personalizar",
     tools: [
+      ["opening", "mail", "Apertura", "Añadir o editar el sobre de apertura"],
       [
         "experience",
         "lucide:sliders-horizontal",
         "Detalles",
-        "Sobre de apertura, dress code y avisos",
+        "Vestimenta y avisos para tus invitados",
       ],
       ["music", "music", "Música", "Elegir la música de la invitación"],
     ],

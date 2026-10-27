@@ -1,3 +1,4 @@
+import { useImageReplacement } from "./use-image-replacement";
 import ElementInspector from "./element-inspector";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 export default function CanvasProperties({
@@ -9,6 +10,8 @@ export default function CanvasProperties({
   layer,
   add,
   remove,
+  replaceImage,
+  photoURL,
 }: {
   kind?: "wedding" | "general";
   canvas: FlyerCanvas;
@@ -18,25 +21,33 @@ export default function CanvasProperties({
   layer: (direction: number) => void;
   add: (element: FlyerElement) => void;
   remove: () => void;
+  replaceImage: (file: File, id: string) => Promise<void>;
+  photoURL: (key: string) => string;
 }) {
+  const replacement = useImageReplacement(replaceImage);
   if (!selected) return null;
   return (
-    <ElementInspector
-      item={selected}
-      canvas={canvas}
-      kind={kind}
-      photos={photos}
-      onChange={patch}
-      onLayer={layer}
-      onDuplicate={() =>
-        add({
-          ...selected,
-          id: crypto.randomUUID(),
-          x: Math.min(selected.x + 16, canvas.width - selected.width),
-          y: Math.min(selected.y + 16, canvas.height - selected.height),
-        })
-      }
-      onRemove={remove}
-    />
+    <>
+      {replacement.input}
+      <ElementInspector
+        onReplaceImage={() => replacement.request(selected.id)}
+        photoURL={photoURL}
+        item={selected}
+        canvas={canvas}
+        kind={kind}
+        photos={photos}
+        onChange={patch}
+        onLayer={layer}
+        onDuplicate={() =>
+          add({
+            ...selected,
+            id: crypto.randomUUID(),
+            x: Math.min(selected.x + 16, canvas.width - selected.width),
+            y: Math.min(selected.y + 16, canvas.height - selected.height),
+          })
+        }
+        onRemove={remove}
+      />
+    </>
   );
 }

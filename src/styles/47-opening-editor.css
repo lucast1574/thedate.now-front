@@ -1,0 +1,191 @@
+.celebration-settings,
+.opening-editor {
+  display: grid;
+  gap: 16px;
+}
+.celebration-settings-card {
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--editor-ground);
+}
+.canvas-studio .celebration-settings-card > h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+.celebration-settings-card > p {
+  margin: 12px 0 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--editor-ink);
+}
+.celebration-settings-card .event-audience {
+  margin: 0;
+}
+.canvas-studio .audience-options button {
+  gap: 6px;
+  padding: 12px 6px;
+  min-height: 48px;
+  font-size: 11px;
+  background: #fff;
+}
+.canvas-studio .audience-options button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--editor-accent) 12%, white);
+  color: var(--editor-accent);
+  border-color: var(--editor-accent);
+}
+.event-audience .audience-whatsapp {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start;
+  gap: 10px;
+}
+.event-audience .audience-whatsapp input {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 3px 0 0;
+  flex-shrink: 0;
+  accent-color: var(--editor-accent, var(--accent));
+}
+.audience-whatsapp > span {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.audience-whatsapp small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+}
+.canvas-studio .event-audience legend {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.opening-editor-preview {
+  padding: 20px 16px;
+  border-radius: 12px;
+  background: var(--envelope-paper);
+  color: var(--envelope-ink);
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.canvas-studio .opening-editor-preview h3 {
+  margin: 0;
+  text-align: center;
+  overflow-wrap: anywhere;
+  font:
+    400 22px/1.2 var(--font-serif),
+    serif;
+}
+.opening-editor-preview[data-style="ticket"] h3 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 700;
+}
+.opening-editor-preview .opening-envelope {
+  width: 100%;
+  height: 140px;
+  max-width: 280px;
+  cursor: default;
+}
+.opening-editor-preview .opening-letter {
+  font-size: 16px;
+}
+.opening-editor-preview .opening-seal {
+  width: 40px;
+  height: 40px;
+}
+.opening-editor-preview[data-style="arch"] .opening-envelope {
+  border-radius: 70px 70px 8px 8px;
+}
+.opening-editor-preview[data-style="ticket"] .opening-envelope {
+  border-radius: 12px;
+  border-style: dashed;
+}
+.opening-editor-preview > p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+.opening-editor-preview > small {
+  padding: 8px 14px;
+  border: 1px solid currentColor;
+  border-radius: 24px;
+  font-size: 10px;
+}
+.opening-editor-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+}
+.opening-editor-state > span {
+  font-size: 11px;
+  color: var(--editor-accent);
+}
+.canvas-studio .opening-editor-state > button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px;
+  font-size: 10px;
+}
+.opening-editor-state .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.canvas-studio .opening-editor > h3 {
+  margin: 8px 0 0;
+}
+.opening-editor-fields {
+  display: grid;
+  gap: 12px;
+}
+.canvas-studio .opening-editor-fields > h3 {
+  margin: 8px 0 0;
+  font-size: 13px;
+}
+.canvas-studio .opening-editor-fields label {
+  margin: 0;
+}
+.canvas-studio .opening-editor-test {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--editor-accent);
+  color: white;
+}
+.canvas-studio .opening-section-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 12px;
+  text-align: left;
+  border: 0;
+  background: var(--editor-ground);
+}
+.opening-section-card > span {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+.opening-section-card strong {
+  font-size: 12px;
+}
+.opening-section-card small {
+  font-size: 10px;
+}
+.opening-section-card > .ui-icon:last-child {
+  width: 14px;
+  rotate: -90deg;
+}
+.canvas-item [data-dress-image] {
+  cursor: pointer;
+}

@@ -38,28 +38,24 @@ export default function CelebrationElements({
         <Icon name="plus" />
       </button>
       <button
-        disabled={disabled || !details.adultsOnly}
+        disabled={disabled}
         onClick={() =>
           onAdd(
             element("text", {
-              binding: "adults_notice",
-              text: details.adultsMessage,
+              binding: "gift_link",
+              link: "/regalos",
+              text: "Lista de regalos",
               font: draft.kind === "wedding" ? "serif" : "sans",
-              fontSize: 28,
+              fontSize: 30,
               color: draft.accentColor,
-              height: 220,
+              height: 120,
             }),
           )
         }
       >
-        <Icon name="lucide:shield-check" />
+        <Icon name="lucide:gift" />
         <span>
-          Solo adultos
-          <small>
-            {details.adultsOnly
-              ? "Coloca tu aviso en la invitación"
-              : "Actívalo en Detalles"}
-          </small>
+          Lista de regalos<small>Tu lista o un enlace de otra tienda</small>
         </span>
         <Icon name="plus" />
       </button>
