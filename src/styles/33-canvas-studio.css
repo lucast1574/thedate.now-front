@@ -59,7 +59,7 @@
 .editor-heading .editor-back-link .ui-icon {
   width: 16px;
   height: 16px;
-  transform: rotate(180deg);
+  transform: rotate(90deg);
 }
 .editor-toolbar .editor-heading .editor-back-link:hover,
 .editor-toolbar .editor-heading .editor-back-link:focus {

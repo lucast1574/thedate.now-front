@@ -28,7 +28,7 @@ export default function EditorToolbar({
               e.preventDefault();
           }}
         >
-          <Icon name="arrow" />
+          <Icon name="chevron" />
           <span>Estudio</span>
         </Link>
         <h1>
