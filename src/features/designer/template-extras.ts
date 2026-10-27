@@ -81,11 +81,15 @@ export function templateExtraPages(
     source?.sections
       ?.flatMap((s) => s.canvas?.elements || [])
       .filter((e) => e.binding === "restrictions") || [];
-  const rules = source?.creation?.restrictionText?.trim()
+  const restrictionText =
+    source?.celebration?.restrictionText ?? source?.creation?.restrictionText;
+  const restrictionIcon =
+    source?.celebration?.restrictionIcon ?? source?.creation?.restrictionIcon;
+  const rules = restrictionText?.trim()
     ? [
         {
-          text: source.creation.restrictionText,
-          restrictionIcon: source.creation.restrictionIcon,
+          text: restrictionText,
+          restrictionIcon,
         },
       ]
     : previous;

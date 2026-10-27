@@ -124,6 +124,65 @@ test("event payload persists dress defaults and private WhatsApp copy independen
     payload.celebration.dressExcludedColors,
     draft.celebration.dressExcludedColors,
   );
-  assert.equal(payload.invitationMessage, draft.invitationMessage);
+  assert.equal(payload.invitationMessage, "Confirma aquí:");
   assert.equal(payload.description, draft.description);
+});
+
+test("all 48 templates load saved dress, restrictions and adults-only choices", () => {
+  for (const template of invitationTemplates.filter(
+    (item) => item.mode === "flyer",
+  )) {
+    const draft = {
+      ...blankEvent(template.kind),
+      templateId: template.id,
+      template: template.style,
+      accentColor: template.accent,
+      startAt: "2026-12-01T18:00",
+    };
+    draft.celebration = {
+      ...draft.celebration,
+      adultsOnly: true,
+      adultsMessage: "Solo mayores de edad.",
+      dressCode: "Formal",
+      dressNote: "Traje oscuro.",
+      dressExcludedColors: [{ name: "Marfil", color: "#F5EFE2" }],
+      restrictionText: "Sin mascotas.",
+      restrictionIcon: "lucide:paw-print",
+    };
+    const payload = initialInvitation(draft);
+    const elements = payload.initialDesign.sections.flatMap(
+      (section) => section.canvas?.elements || [],
+    );
+    const dress = elements.find((item) => item.binding === "dress_code");
+    const rule = elements.find((item) => item.binding === "restrictions");
+    assert.match(dress.text, /Formal/);
+    assert.deepEqual(
+      dress.dressExcludedColors,
+      draft.celebration.dressExcludedColors,
+    );
+    assert.equal(rule.text, "Sin mascotas.");
+    assert.equal(rule.restrictionIcon, "lucide:paw-print");
+    assert.ok(
+      elements.some(
+        (item) =>
+          item.binding === "adults_notice" &&
+          item.text === "Solo mayores de edad.",
+      ),
+    );
+    assert.equal(payload.celebration.restrictionText, "Sin mascotas.");
+  }
+});
+test("new restrictions preload saved text, icon and adults-only notice", () => {
+  const { restrictionDefaults } = loadSource("src/lib/events/restrictions.ts");
+  const draft = blankEvent("wedding");
+  draft.celebration = {
+    ...draft.celebration,
+    adultsOnly: true,
+    adultsMessage: "Solo adultos.",
+    restrictionText: "Sin mascotas.",
+    restrictionIcon: "lucide:paw-print",
+  };
+  const defaults = restrictionDefaults(draft);
+  assert.equal(defaults.text, "Solo adultos.\n\nSin mascotas.");
+  assert.equal(defaults.restrictionIcon, "lucide:paw-print");
 });

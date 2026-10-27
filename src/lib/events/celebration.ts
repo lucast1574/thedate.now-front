@@ -13,6 +13,8 @@ export type Opening = {
   buttonLabel: string;
 };
 export type Celebration = {
+  restrictionText?: string;
+  restrictionIcon?: string;
   dressExcludedColors?: { name: string; color: string }[];
   adultsOnly: boolean;
   adultsMessage: string;

@@ -22,7 +22,13 @@ export default function EventDesignDetails({
   const celebration =
     draft.celebration || defaultCelebration(draft.kind === "wedding");
   const opening = draft.opening || templateOpening(template);
-  const creation = draft.creation || {};
+  const creation = {
+    ...draft.creation,
+    restrictionText:
+      celebration.restrictionText ?? draft.creation?.restrictionText,
+    restrictionIcon:
+      celebration.restrictionIcon ?? draft.creation?.restrictionIcon,
+  };
   const dress = element("text", {
     binding: "dress_code",
     dressExcludedColors:
@@ -31,7 +37,7 @@ export default function EventDesignDetails({
   function patchCreation(patch: Event["creation"]) {
     setDraft((current) => ({
       ...current,
-      creation: { ...current.creation, ...patch },
+      celebration: { ...celebration, ...patch },
     }));
   }
   return (

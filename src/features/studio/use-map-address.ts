@@ -6,13 +6,14 @@ import type { Event } from "@/lib/events/types";
 export function useMapAddress(
   draft: Event,
   setDraft: Dispatch<SetStateAction<Event>>,
+  manual = false,
 ) {
   const [attempt, setAttempt] = useState(0);
   const [resolvingMap, setResolvingMap] = useState(false);
   const [mapStatus, setMapStatus] = useState("");
   useEffect(() => {
     const url = draft.mapUrl.trim();
-    if (draft.isVirtual || !url || draft.location.trim()) return;
+    if (manual || draft.isVirtual || !url || draft.location.trim()) return;
     let active = true;
     const timer = window.setTimeout(async () => {
       setResolvingMap(true);
@@ -49,10 +50,17 @@ export function useMapAddress(
       active = false;
       window.clearTimeout(timer);
     };
-  }, [draft.mapUrl, draft.isVirtual, draft.location, attempt, setDraft]);
+  }, [
+    draft.mapUrl,
+    draft.isVirtual,
+    draft.location,
+    attempt,
+    setDraft,
+    manual,
+  ]);
   return {
-    resolvingMap: resolvingMap && !draft.location,
-    mapStatus,
+    resolvingMap: resolvingMap && !draft.location && !manual,
+    mapStatus: manual ? "" : mapStatus,
     setMapStatus,
     retry: () => setAttempt((n) => n + 1),
   };

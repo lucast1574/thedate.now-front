@@ -1,3 +1,4 @@
+import { defaultInvitationMessage } from "./event-form";
 import { defaultCelebration } from "./celebration";
 import { resolveTemplateId } from "./template-catalog";
 import type { Event, Kind } from "./types";
@@ -20,6 +21,7 @@ export function blankEvent(kind: Kind): Event {
     slug: "",
     title: "",
     description: "",
+    invitationMessage: defaultInvitationMessage,
     startAt: "",
     timeZone: browserTimeZone(),
     organizer: "",
@@ -59,7 +61,9 @@ export function eventPayload(event: Event) {
     slug: event.slug,
     title: event.title,
     description: event.description,
-    invitationMessage: event.invitationMessage || "",
+    invitationMessage:
+      event.invitationMessage?.replaceAll("{{enlace}}", "").trim() ||
+      defaultInvitationMessage,
     startAt: new Date(event.startAt).toISOString(),
     timeZone: event.timeZone || browserTimeZone(),
     organizer: event.organizer,

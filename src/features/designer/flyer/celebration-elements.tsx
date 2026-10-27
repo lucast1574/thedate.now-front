@@ -1,3 +1,4 @@
+import { restrictionDefaults } from "@/lib/events/restrictions";
 import Icon from "@/components/icon";
 import { defaultCelebration } from "@/lib/events/celebration";
 import type { DesignEvent } from "@/lib/events/types";
@@ -74,8 +75,7 @@ export default function CelebrationElements({
             element("text", {
               binding: "restrictions",
               restrictionStyle: "icon-text",
-              restrictionIcon: "lucide:shield-alert",
-              text: "Ten en cuenta estas indicaciones antes de asistir.",
+              ...restrictionDefaults(draft),
               font: draft.kind === "wedding" ? "serif" : "sans",
               fontSize: 28,
               color: draft.accentColor,

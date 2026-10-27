@@ -8,3 +8,6 @@ export function suggestedAddress(title: string) {
     .slice(0, 63)
     .replace(/^-+|-+$/g, "");
 }
+
+export const defaultInvitationMessage =
+  "¡Queremos celebrar este momento contigo!\nConoce todos los detalles y confirma tu asistencia.";

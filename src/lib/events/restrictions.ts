@@ -1,3 +1,4 @@
+import type { DesignEvent } from "./types";
 export const restrictionExamples = [
   {
     label: "Solo adultos",
@@ -20,3 +21,26 @@ export const restrictionExamples = [
     text: "Te invitamos a vivir este momento sin tomar fotografías durante la ceremonia.",
   },
 ] as const;
+
+export function restrictionDefaults(draft: DesignEvent, includeAdults = true) {
+  const details = draft.celebration;
+  const previous = draft.sections
+    ?.flatMap((section) => section.canvas?.elements || [])
+    .find((item) => item.binding === "restrictions");
+  const text = details?.restrictionText?.trim();
+  const adult =
+    includeAdults && details?.adultsOnly
+      ? details.adultsMessage.trim() ||
+        "Celebraremos este día solo entre adultos. Gracias por tu comprensión."
+      : "";
+  return {
+    text:
+      [adult, text].filter(Boolean).join("\n\n") ||
+      previous?.text ||
+      "Ten en cuenta estas indicaciones antes de asistir.",
+    restrictionIcon:
+      details?.restrictionIcon ||
+      (adult && !text ? "lucide:baby" : previous?.restrictionIcon) ||
+      "lucide:shield-alert",
+  };
+}

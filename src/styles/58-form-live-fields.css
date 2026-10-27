@@ -59,3 +59,27 @@
   line-height: 1.7;
   color: var(--ui-muted);
 }
+
+.event-message-fixed-link {
+  display: grid;
+  gap: 8px;
+  margin-top: -14px;
+  padding: 14px 16px;
+  border: 1px solid var(--ui-border);
+  border-radius: 0 0 10px 10px;
+  background: var(--ui-soft);
+}
+.event-message-fixed-link strong {
+  font-size: 11px;
+  color: var(--ui-accent);
+}
+.event-message-fixed-link span {
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  color: var(--ui-ink);
+}
+.event-message-fixed-link small {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--ui-muted);
+}

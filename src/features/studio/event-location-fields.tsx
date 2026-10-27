@@ -1,5 +1,12 @@
-import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import type { Event } from "@/lib/events/types";
+import EventResolvedLocation from "./event-resolved-location";
 import { useMapAddress } from "./use-map-address";
 export default function EventLocationFields({
   draft,
@@ -8,15 +15,18 @@ export default function EventLocationFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const [editingUrl, setEditingUrl] = useState<string | null>(null);
+  const editing = !!draft.mapUrl.trim() && editingUrl === draft.mapUrl;
   const mapInput = useRef<HTMLInputElement>(null);
   const { mapStatus, setMapStatus, resolvingMap, retry } = useMapAddress(
     draft,
     setDraft,
+    editing,
   );
   useEffect(() => {
     mapInput.current?.setCustomValidity(
       !draft.isVirtual && draft.mapUrl.trim() && !draft.location.trim()
-        ? "Escribe el nombre y la dirección del lugar o espera a que los encontremos con Google Maps."
+        ? "Espera a que encontremos la ubicación. Si la búsqueda falla, puedes corregirla manualmente."
         : "",
     );
   }, [draft.isVirtual, draft.mapUrl, draft.location]);
@@ -84,6 +94,7 @@ export default function EventLocationFields({
               maxLength={2048}
               value={draft.mapUrl}
               onChange={(e) => {
+                setEditingUrl(null);
                 setDraft({
                   ...draft,
                   mapUrl: e.target.value,
@@ -99,27 +110,16 @@ export default function EventLocationFields({
               Pega el enlace y buscaremos la dirección automáticamente.
             </small>
           </label>
-          <label>
-            Nombre y dirección del lugar
-            <input
-              required
-              maxLength={500}
-              value={draft.location}
-              onChange={(e) =>
-                setDraft({
-                  ...draft,
-                  location: e.target.value,
-                  isVirtual: false,
-                  virtualUrl: "",
-                })
-              }
-              placeholder="Ej. Hacienda Los Olivos, Lima"
-            />
-            <small>
-              Lo completamos con Maps. Puedes escribir o corregir el lugar
-              directamente.
-            </small>
-          </label>
+          <EventResolvedLocation
+            draft={draft}
+            setDraft={setDraft}
+            editing={editing}
+            canCorrect={
+              !!draft.mapUrl.trim() &&
+              (!!draft.location || (!!mapStatus && !resolvingMap))
+            }
+            onEdit={() => setEditingUrl(draft.mapUrl)}
+          />
           {mapStatus && !resolvingMap && !draft.location && (
             <button className="map-retry" type="button" onClick={retry}>
               Volver a buscar la ubicación
