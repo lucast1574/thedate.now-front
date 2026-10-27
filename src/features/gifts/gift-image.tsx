@@ -9,16 +9,16 @@ export default function GiftImage({
   src?: string;
   title: string;
 }) {
-  const [failed, setFailed] = useState(false);
+  const [failedSource, setFailedSource] = useState<string>();
   return (
     <div className="gift-image">
-      {src && !failed ? (
+      {src && src !== failedSource ? (
         <Photo
           src={src}
           alt={title}
           loading="lazy"
           referrerPolicy="no-referrer"
-          onError={() => setFailed(true)}
+          onError={() => setFailedSource(src)}
         />
       ) : (
         <Icon name="lucide:gift" />

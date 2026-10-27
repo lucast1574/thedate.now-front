@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import {
   emptyWishlist,
@@ -7,6 +7,8 @@ import {
   type WishlistOwner,
 } from "@/lib/events/wishlist";
 export function useWishlist(id: string) {
+  const submitting = useRef(false);
+  const [ready, setReady] = useState(false);
   const [data, setData] = useState<WishlistOwner>({
       list: emptyWishlist(),
       guests: {},
@@ -20,12 +22,17 @@ export function useWishlist(id: string) {
     setData((current) =>
       next.list.version >= current.list.version ? next : current,
     );
+    setReady(true);
+    setError("");
   }, [id]);
   useEffect(() => {
     let active = true;
     void api<WishlistOwner>(`/api/backend/events/${id}/wishlist`)
       .then((next) => {
-        if (active) setData(next);
+        if (active) {
+          setData(next);
+          setReady(true);
+        }
       })
       .catch((e) => {
         if (active) setError(e.message);
@@ -42,6 +49,8 @@ export function useWishlist(id: string) {
     };
   }, [id, load]);
   async function save(list: Wishlist) {
+    if (submitting.current || !ready) return false;
+    submitting.current = true;
     setBusy(true);
     setError("");
     setNotice("");
@@ -59,16 +68,20 @@ export function useWishlist(id: string) {
       setNotice("Lista guardada.");
       return true;
     } catch (e) {
+      await load().catch(() => {});
       setError((e as Error).message);
       return false;
     } finally {
       setBusy(false);
+      submitting.current = false;
     }
   }
   async function reservation(
     gift: string,
     action: "release" | "delivered" | "pending",
   ) {
+    if (submitting.current || !ready) return;
+    submitting.current = true;
     setBusy(true);
     setError("");
     try {
@@ -84,10 +97,12 @@ export function useWishlist(id: string) {
         action === "release" ? "Reserva liberada." : "Entrega actualizada.",
       );
     } catch (e) {
+      await load().catch(() => {});
       setError((e as Error).message);
     } finally {
       setBusy(false);
+      submitting.current = false;
     }
   }
-  return { data, loading, busy, error, notice, load, save, reservation };
+  return { data, loading, ready, busy, error, notice, load, save, reservation };
 }

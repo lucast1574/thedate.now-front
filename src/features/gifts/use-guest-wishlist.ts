@@ -1,8 +1,9 @@
 "use client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { GuestWishlist } from "@/lib/events/wishlist";
 export function useGuestWishlist(token: string, initial: GuestWishlist) {
+  const submitting = useRef(false);
   const [data, setData] = useState(initial),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
@@ -25,6 +26,8 @@ export function useGuestWishlist(token: string, initial: GuestWishlist) {
     };
   }, [refresh]);
   async function choose(giftId: string, release = false) {
+    if (submitting.current) return false;
+    submitting.current = true;
     setBusy(true);
     setError("");
     setNotice("");
@@ -39,11 +42,14 @@ export function useGuestWishlist(token: string, initial: GuestWishlist) {
           ? "Tu elección se liberó. Ya puedes escoger otro regalo."
           : "Este regalo quedó reservado para ti. ¡Gracias por ser parte!",
       );
+      return true;
     } catch (e) {
       setError((e as Error).message);
       await refresh().catch(() => {});
+      return false;
     } finally {
       setBusy(false);
+      submitting.current = false;
     }
   }
   return { data, busy, error, notice, choose, refresh };

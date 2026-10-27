@@ -123,20 +123,20 @@
   padding: 7px 10px;
   border-radius: 5px;
 }
-.organization-preview header h2 {
+.organization-preview > header h2 {
   font:
     500 28px/1.2 Georgia,
     serif;
   margin: 0 0 12px;
   letter-spacing: -0.02em;
 }
-.office-general .organization-preview header h2 {
+.office-general .organization-preview > header h2 {
   font:
     650 25px/1.2 Arial,
     sans-serif;
   letter-spacing: -0.035em;
 }
-.organization-preview header p {
+.organization-preview > header p {
   font:
     13px/1.6 Arial,
     sans-serif;
@@ -200,7 +200,7 @@
   height: 19px;
   color: var(--workspace-accent);
 }
-.organization-preview footer {
+.organization-preview > footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -209,7 +209,7 @@
   padding: 20px;
   border-radius: 8px;
 }
-.organization-preview footer p {
+.organization-preview > footer p {
   font:
     12px/1.7 Arial,
     sans-serif;
@@ -299,7 +299,7 @@
   .organization-preview {
     padding: 22px;
   }
-  .organization-preview footer {
+  .organization-preview > footer {
     align-items: flex-start;
     flex-direction: column;
   }

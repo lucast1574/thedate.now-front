@@ -188,6 +188,21 @@ El inspector oculta el encabezado genérico y los ajustes de sección mientras h
 
 ## Organización visible y lista de regalos
 
+La herramienta de regalos incluye un recorrido interactivo de entrada y elección
+con productos reales de Saga Falabella, Mercado Libre y Coolbox. Los ejemplos
+solo cambian estado local; no crean productos ni reservas. `gift-experience-preview.tsx`
+reutiliza `guest-wishlist-view.tsx` y las mismas tarjetas/confirmaciones de la lista
+personal. El organizador puede alternar su lista, su vista como invitado y el ejemplo.
+Las fotos de ejemplo y sus fuentes están documentadas en `docs/gift-examples.md`.
+
+`use-gift-draft.ts` ignora respuestas de enlaces anteriores y conserva ediciones
+manuales durante la lectura de metadatos. El formulario muestra una ficha inmediata.
+El fallo de una foto solo afecta a esa URL; una imagen nueva vuelve a intentarse.
+Las reservas requieren confirmación, bloquean dobles envíos y muestran el acceso a
+la tienda después de elegir. Cambiar de regalo libera primero la elección anterior.
+Los errores de carga inicial bloquean la edición; los conflictos recargan la versión
+vigente y conservan abierto el formulario. Estilos en `50-gift-experience.css`.
+
 La sidebar compartida muestra Invitados, Mesas y Lista de regalos en ambas marcas, con accesos mayores y contexto del evento cuando está seleccionado. `/organizar?tool=guests|tables|gifts` permite conocer las funciones y escoger un evento. `/manager/[id]?tab=...` abre su espacio propio; invitados/mesas sin pago muestran `organization-preview.tsx`, con un plano de ejemplo que se puede mover sin guardar en el evento. `manager-tools.tsx` mantiene las funciones activas separadas de la composición/navegación. Los enlaces al editor avisan si hay cambios del plano sin guardar.
 
 `features/gifts/` permite preparar una lista opcional de hasta 100 productos antes de pagar. Se activa su acceso público únicamente en eventos reales pagados y publicados. El formulario obtiene título e imagen de los metadatos de una URL HTTPS pública; nombre, imagen y nota pueden completarse manualmente si la tienda no comparte datos. `use-wishlist.ts` conserva versiones para no sobrescribir reservas nuevas. El organizador ve el nombre asociado, puede marcar recibido o liberar la reserva; la lista de invitados también muestra el regalo del titular.

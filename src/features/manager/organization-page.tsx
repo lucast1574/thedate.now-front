@@ -99,6 +99,7 @@ function OrganizationTools({
         </p>
       )}
       <OrganizationPreview
+        wedding={wedding}
         tool={tool}
         eventId={selected?.id}
         active={selected?.paymentStatus === "paid" && !selected.isDemo}

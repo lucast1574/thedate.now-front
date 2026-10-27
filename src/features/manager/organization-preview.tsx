@@ -4,6 +4,7 @@ import Link from "next/link";
 import Icon from "@/components/icon";
 import SeatingCanvas from "./seating-canvas";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
+import GiftExperiencePreview from "@/features/gifts/gift-experience-preview";
 const examples = [
   {
     name: "Valentina Torres",
@@ -23,10 +24,12 @@ export default function OrganizationPreview({
   tool = "guests",
   eventId,
   active = false,
+  wedding = false,
 }: {
   tool?: string;
   eventId?: string;
   active?: boolean;
+  wedding?: boolean;
 }) {
   const [selected, setSelected] = useState("");
   const [plan, setPlan] = useState<SeatingPlan>({
@@ -80,7 +83,9 @@ export default function OrganizationPreview({
               : "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento."}
         </p>
       </header>
-      {tool === "tables" ? (
+      {tool === "gifts" ? (
+        <GiftExperiencePreview wedding={wedding} />
+      ) : tool === "tables" ? (
         <div className="preview-seating">
           <SeatingCanvas
             plan={plan}
