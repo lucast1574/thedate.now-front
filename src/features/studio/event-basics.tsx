@@ -23,7 +23,7 @@ export default function EventBasics({
         {wedding ? "¿Cómo se llaman los novios?" : "¿Cómo se llama tu evento?"}
         <input
           required
-          maxLength={200}
+          maxLength={160}
           value={draft.title}
           onChange={(e) =>
             setDraft({

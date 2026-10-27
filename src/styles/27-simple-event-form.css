@@ -38,7 +38,7 @@
   margin: 0;
   line-height: 1.5;
 }
-.simple-event-form input,
+.simple-event-form input:not([type="radio"]):not([type="checkbox"]),
 .simple-event-form textarea {
   border-radius: 10px;
   min-height: 44px;

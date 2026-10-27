@@ -34,6 +34,11 @@ export type DesignEvent = {
   isDemo?: boolean;
 };
 export type Event = DesignEvent & {
+  creation?: {
+    dressExcludedColors?: FlyerElement["dressExcludedColors"];
+    restrictionText?: string;
+    restrictionIcon?: string;
+  };
   ownerId?: string;
   slug: string;
   startAt: string;

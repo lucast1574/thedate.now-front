@@ -1,22 +1,16 @@
-import type { DesignEvent, Event, DesignSection } from "@/lib/events/types";
+import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
-import { defaultCelebration, defaultOpening } from "@/lib/events/celebration";
+import { defaultCelebration } from "@/lib/events/celebration";
 import { formatEventDate } from "@/lib/events/date";
 import { element } from "./flyer/canvas-model";
 import { templateCanvas } from "./template-canvas";
 import { templatePage, templateText, templateIcon } from "./template-pages";
-type Source = DesignEvent &
-  Partial<
-    Pick<
-      Event,
-      | "startAt"
-      | "timeZone"
-      | "location"
-      | "mapUrl"
-      | "virtualUrl"
-      | "isVirtual"
-    >
-  >;
+import {
+  templateDress,
+  templateExtraPages,
+  templateOpening,
+  type TemplateSource as Source,
+} from "./template-extras";
 export function templateSequence(
   template: InvitationTemplate,
   source?: Source,
@@ -108,33 +102,40 @@ export function templateSequence(
         100,
         48,
       ),
-      templateText(template, "location", "Cómo llegar", 350, 170, 32, {
-        binding: "location",
-        locationStyle: "all",
-        address: source?.location || "Lugar de la celebración",
-        link: source?.mapUrl || "",
-      }),
+      templateText(
+        template,
+        "location",
+        source?.isVirtual ? "Entrar al evento" : "Cómo llegar",
+        350,
+        170,
+        32,
+        {
+          binding: "location",
+          locationStyle: "all",
+          address: source?.isVirtual
+            ? "Celebremos en línea"
+            : source?.location || "Lugar de la celebración",
+          link: source?.isVirtual
+            ? source.virtualUrl || ""
+            : source?.mapUrl || "",
+        },
+      ),
       text(
         "place-note",
-        "Pulsa la ubicación para ver cómo llegar.",
+        source?.isVirtual
+          ? "Pulsa para entrar a la celebración."
+          : "Pulsa la ubicación para ver cómo llegar.",
         560,
         90,
         24,
       ),
     ]),
     page("Dress code", 700, [
-      templateIcon(template, "lucide:shirt", 50),
-      text("dress-title", "Dress code", 210, 80, 46),
-      templateText(
+      text("dress-title", "Dress code", 80, 100, 46),
+      templateDress(
         template,
-        "dress",
+        source,
         `${celebration.dressCode}\n${celebration.dressNote}`,
-        330,
-        240,
-        36,
-        {
-          binding: "dress_code",
-        },
       ),
     ]),
   ];
@@ -154,6 +155,7 @@ export function templateSequence(
         ),
       ]),
     );
+  pages.push(...templateExtraPages(template, source));
   pages.push(
     page(wedding ? "Con todo nuestro cariño" : "Te esperamos", 560, [
       templateIcon(template, wedding ? "flower" : "sparkle", 70),
@@ -182,13 +184,7 @@ export function applyCompleteTemplate(
     templateId: template.id,
     designMode: "flyer",
     accentColor: template.accent,
-    opening:
-      draft.opening ||
-      defaultOpening(
-        draft.kind === "wedding",
-        template.background,
-        template.accent,
-      ),
+    opening: draft.opening || templateOpening(template),
     celebration:
       draft.celebration || defaultCelebration(draft.kind === "wedding"),
     sections: templateSequence(template, draft),

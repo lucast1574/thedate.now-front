@@ -60,6 +60,12 @@
   opacity: 1;
   cursor: default;
 }
+.opening-scene[data-style="classic"] .opening-envelope {
+  margin-top: clamp(60px, 10vw, 84px);
+}
+.opening-preview-screen .opening-scene[data-style="classic"] .opening-envelope {
+  margin-top: 40px;
+}
 .opening-scene .opening-action:disabled {
   opacity: 0.75;
 }
@@ -124,6 +130,7 @@
   z-index: 2;
 }
 .opening-artwork .opening-fold {
+  backface-visibility: hidden;
   inset: 0;
   clip-path: polygon(0 0, 100% 0, 50% 57%);
   background: color-mix(in srgb, var(--envelope-paper) 88%, white);
@@ -630,6 +637,10 @@
   }
 }
 @media (max-height: 650px) {
+  .invitation-opening .opening-scene[data-style="classic"] .opening-envelope {
+    width: min(180px, 70%);
+    margin-top: 32px;
+  }
   .invitation-opening .opening-scene {
     padding: 20px;
     gap: 16px;

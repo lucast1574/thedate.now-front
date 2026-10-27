@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { blankEvent, eventPayload, normalizeEvent } from "@/lib/events/draft";
 import type { Event, Guest, Kind, User } from "@/lib/events/types";
+import { initialInvitation } from "./initial-invitation";
 
 export function useStudioEvents(
   portal: Kind,
@@ -86,7 +87,7 @@ export function useStudioEvents(
       const created = await api<Event>(
         "/api/backend/events",
         "POST",
-        eventPayload(draft),
+        initialInvitation(draft),
       );
       await refreshEvents();
       await select(created);

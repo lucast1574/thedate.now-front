@@ -3,18 +3,24 @@ import type { PointerEvent } from "react";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
 import PersonGlyph from "@/components/person-glyph";
 import { fullName } from "@/lib/events/attendees";
+import VenueAreas from "./venue-areas";
+import type { VenueArea } from "@/lib/events/venue-areas";
 export default function SeatingCanvas({
   plan,
   people,
   selected,
   onSelect,
   onMove,
+  areas = [],
+  onMoveArea,
 }: {
   plan: SeatingPlan;
   people: Attendee[];
   selected: string;
   onSelect: (id: string) => void;
   onMove: (id: string, x: number, y: number) => void;
+  areas?: VenueArea[];
+  onMoveArea?: (id: string, x: number, y: number) => void;
 }) {
   const board = useRef<HTMLDivElement>(null);
   const drag = useRef<{
@@ -60,6 +66,16 @@ export default function SeatingCanvas({
         <div className="venue-label">
           SALÓN · 1600 × 1000 · distribución orientativa
         </div>
+        {onMoveArea && (
+          <VenueAreas
+            areas={areas}
+            width={plan.width}
+            height={plan.height}
+            selected={selected}
+            onSelect={onSelect}
+            onMove={onMoveArea}
+          />
+        )}
         {plan.tables.map((table) => {
           const assigned = people.filter(
             (p) => plan.assignments[p.id] === table.id,

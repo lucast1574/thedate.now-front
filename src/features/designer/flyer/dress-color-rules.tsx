@@ -33,6 +33,7 @@ export default function DressColorRules({
           <label>
             <span className="sr-only">Nombre del color {index + 1}</span>
             <input
+              required
               maxLength={40}
               value={rule.name}
               placeholder="Nombre del color"
@@ -40,6 +41,7 @@ export default function DressColorRules({
             />
           </label>
           <button
+            type="button"
             aria-label={`Quitar color ${rule.name || index + 1}`}
             onClick={() =>
               onChange({
@@ -52,6 +54,7 @@ export default function DressColorRules({
         </div>
       ))}
       <button
+        type="button"
         disabled={colors.length >= 8}
         className="inspector-secondary-action"
         onClick={() =>

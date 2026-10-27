@@ -51,7 +51,7 @@ test("the real guest catalogue shows the three stores, availability and a separa
     "Mercado Libre",
     "Coolbox",
     "Quiero regalarlo",
-    "Otra invitación lo eligió",
+    "Otro invitado lo eligió",
   ])
     assert.ok(html.includes(name), name);
   assert.match(html, /rel="noopener noreferrer"/);

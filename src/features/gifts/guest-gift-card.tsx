@@ -70,7 +70,7 @@ export default function GuestGiftCard({
             onClick={() => onChoose(item)}
           >
             {item.reserved
-              ? "Otra invitación lo eligió"
+              ? "Otro invitado lo eligió"
               : hasChoice
                 ? "Ya tienes un regalo elegido"
                 : "Quiero regalarlo"}

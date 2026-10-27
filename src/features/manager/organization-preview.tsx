@@ -5,6 +5,7 @@ import Icon from "@/components/icon";
 import SeatingCanvas from "./seating-canvas";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
 import GiftExperiencePreview from "@/features/gifts/gift-experience-preview";
+import { exampleVenueAreas } from "@/lib/events/venue-areas";
 const examples = [
   {
     name: "Valentina Torres",
@@ -32,6 +33,7 @@ export default function OrganizationPreview({
   wedding?: boolean;
 }) {
   const [selected, setSelected] = useState("");
+  const [areas, setAreas] = useState(exampleVenueAreas);
   const [plan, setPlan] = useState<SeatingPlan>({
     ...emptyPlan(),
     tables: [
@@ -40,8 +42,8 @@ export default function OrganizationPreview({
         name: "Familia",
         shape: "round",
         capacity: 8,
-        x: 240,
-        y: 280,
+        x: 130,
+        y: 360,
         rotation: 0,
       },
       {
@@ -49,8 +51,8 @@ export default function OrganizationPreview({
         name: "Amigos",
         shape: "round",
         capacity: 6,
-        x: 730,
-        y: 240,
+        x: 1230,
+        y: 360,
         rotation: 0,
       },
       {
@@ -58,8 +60,8 @@ export default function OrganizationPreview({
         name: "Mesa principal",
         shape: "rectangle",
         capacity: 8,
-        x: 530,
-        y: 650,
+        x: 680,
+        y: 740,
         rotation: 0,
       },
     ],
@@ -77,7 +79,7 @@ export default function OrganizationPreview({
         </h2>
         <p>
           {tool === "tables"
-            ? "Mueve las mesas del ejemplo y descubre cómo organizarás el espacio de tu evento."
+            ? "Mueve mesas, bocaditos, bar, escenario y pista de baile para distribuir el espacio de tu evento."
             : tool === "gifts"
               ? "Comparte ideas de tus tiendas favoritas y conoce quién se compromete con cada regalo."
               : "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento."}
@@ -92,6 +94,14 @@ export default function OrganizationPreview({
             people={[]}
             selected={selected}
             onSelect={setSelected}
+            areas={areas}
+            onMoveArea={(id, x, y) =>
+              setAreas((current) =>
+                current.map((area) =>
+                  area.id === id ? { ...area, x, y } : area,
+                ),
+              )
+            }
             onMove={(id, x, y) =>
               setPlan((current) => ({
                 ...current,

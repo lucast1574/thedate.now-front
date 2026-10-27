@@ -40,9 +40,7 @@ export default function EventForm({
     >
       <section className="event-form-card">
         <div className="event-form-card-heading">
-          <span>
-            <Icon name="calendar" />
-          </span>
+          <span>01</span>
           <div>
             <h2>
               {draft.kind === "wedding" ? "Su gran día" : "Tu celebración"}
@@ -54,12 +52,10 @@ export default function EventForm({
       </section>
       <section className="event-form-card">
         <div className="event-form-card-heading">
-          <span>
-            <Icon name="users" />
-          </span>
+          <span>02</span>
           <div>
-            <h2>El lugar y tus invitados</h2>
-            <p>Cuéntanos dónde será y cuántas personas esperas.</p>
+            <h2>El lugar de la celebración</h2>
+            <p>Una dirección clara para que todos puedan llegar.</p>
           </div>
         </div>
         <EventLocationFields
@@ -67,40 +63,44 @@ export default function EventForm({
           setDraft={setDraft}
           savedMapURL={selected?.mapUrl}
         />
-        <EventCapacity draft={draft} setDraft={setDraft} />
-        <EventAudience draft={draft} setDraft={setDraft} />
       </section>
-      <details className="event-form-options">
-        <summary>
-          <Icon name="sparkle" />
+      <section className="event-form-card event-guests-card">
+        <div className="event-form-card-heading">
           <span>
-            {selected ? "Mensaje para tus invitados" : "Mensaje y estilo"}
-            <small>Puedes personalizarlos ahora o en el editor.</small>
+            <Icon name="users" />
           </span>
-          <Icon name="chevron" />
-        </summary>
-        <div>
-          <label>
-            ¿Qué les quieres decir a tus invitados?
-            <textarea
-              rows={3}
-              value={draft.description}
-              onChange={(e) =>
-                setDraft({ ...draft, description: e.target.value })
-              }
-              placeholder="Queremos celebrar este momento contigo…"
-            />
-          </label>
-          {!selected && (
-            <EventTemplateStart draft={draft} setDraft={setDraft} />
-          )}
+          <div>
+            <h2>A quiénes esperamos</h2>
+            <p>Cupos y edades, reunidos en un solo lugar.</p>
+          </div>
         </div>
-      </details>
+        <div className="event-guest-settings">
+          <EventCapacity draft={draft} setDraft={setDraft} />
+          <EventAudience draft={draft} setDraft={setDraft} />
+        </div>
+      </section>
+      <section className="event-form-card event-message-card">
+        <label>
+          Un mensaje para tus invitados{" "}
+          <span className="form-optional">Opcional</span>
+          <textarea
+            rows={3}
+            maxLength={5000}
+            value={draft.description}
+            onChange={(e) =>
+              setDraft({ ...draft, description: e.target.value })
+            }
+            placeholder="Queremos celebrar este momento contigo…"
+          />
+        </label>
+      </section>
+      {!selected && <EventTemplateStart draft={draft} setDraft={setDraft} />}
       <details className="event-form-options">
         <summary>
           <Icon name="layout" />
           <span>
-            Más opciones<small>Quién organiza y tiempo para confirmar.</small>
+            Organización y confirmaciones
+            <small>Quién organiza y cuánto dura una respuesta «Tal vez».</small>
           </span>
           <Icon name="chevron" />
         </summary>

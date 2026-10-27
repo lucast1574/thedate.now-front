@@ -46,7 +46,7 @@ export default function EventWorkspace({
       <p className="office-lead">
         {selected
           ? "Ajusta los detalles y lleva el control de tus invitados."
-          : "Solo necesitamos unos detalles para empezar. El diseño viene después."}
+          : "Cuéntanos cuándo y dónde. Elige una plantilla y descubre cómo la verán tus invitados."}
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
       <Alert>{feedback.error}</Alert>
