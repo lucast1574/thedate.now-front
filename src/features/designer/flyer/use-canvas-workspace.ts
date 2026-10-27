@@ -53,12 +53,16 @@ export function useCanvasWorkspace(
     });
   }
   function layer(direction: number) {
+    moveLayer(selectedId, direction);
+  }
+  function moveLayer(id: string, direction: number) {
     const elements = [...canvas.elements];
-    const i = elements.findIndex((el) => el.id === selectedId);
+    const i = elements.findIndex((el) => el.id === id);
     const n = i + direction;
     if (i < 0 || n < 0 || n >= elements.length) return;
     [elements[i], elements[n]] = [elements[n], elements[i]];
     change({ ...canvas, elements });
+    select(id);
   }
   function addPage() {
     if (sections.length >= 20) return;
@@ -97,6 +101,7 @@ export function useCanvasWorkspace(
     add,
     patch,
     layer,
+    moveLayer,
     addPage,
   };
 }

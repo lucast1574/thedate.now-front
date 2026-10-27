@@ -1,41 +1,7 @@
 import Icon from "@/components/icon";
 import Brand from "@/components/brand";
 import type { Kind } from "@/lib/events/types";
-const groups = [
-  {
-    label: "Diseñar",
-    tools: [
-      ["elements", "sparkle", "Elementos", "Añadir texto, fotos y elementos"],
-      ["templates", "layout", "Plantillas", "Elegir una invitación completa"],
-      ["photos", "image", "Imágenes", "Subir y añadir tus fotos"],
-    ],
-  },
-  {
-    label: "Organizar",
-    tools: [
-      [
-        "pages",
-        "lucide:panels-top-left",
-        "Secciones",
-        "Organizar las secciones de la invitación",
-      ],
-      ["layers", "table", "Capas", "Ordenar los elementos de la sección"],
-    ],
-  },
-  {
-    label: "Personalizar",
-    tools: [
-      ["opening", "mail", "Apertura", "Añadir o editar el sobre de apertura"],
-      [
-        "experience",
-        "lucide:sliders-horizontal",
-        "Detalles",
-        "Vestimenta y avisos para tus invitados",
-      ],
-      ["music", "music", "Música", "Elegir la música de la invitación"],
-    ],
-  },
-];
+import { canvasToolGroups } from "./canvas-tools";
 export default function CanvasRail({
   tab,
   kind,
@@ -47,18 +13,22 @@ export default function CanvasRail({
 }) {
   return (
     <nav className="canvas-rail" aria-label="Herramientas de diseño">
-      {groups.map((group) => (
+      {canvasToolGroups.map((group) => (
         <div
           key={group.label}
           className="canvas-rail-group"
           role="group"
           aria-label={group.label}
         >
-          {group.tools.map(([id, icon, label, description]) => (
+          <span className="canvas-rail-group-label" aria-hidden="true">
+            {group.label}
+          </span>
+          {group.tools.map(({ id, icon, label, description }) => (
             <button
               key={id}
               aria-pressed={tab === id}
               title={description}
+              aria-controls="canvas-tools"
               onClick={() => onChange(id)}
             >
               <Icon name={icon} />

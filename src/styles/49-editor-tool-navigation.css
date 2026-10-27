@@ -1,0 +1,143 @@
+/* Creation first, structure second, the guest experience last. */
+.canvas-rail {
+  gap: 8px;
+}
+.canvas-rail-group {
+  gap: 2px;
+  padding-bottom: 8px;
+}
+.canvas-rail-group-label {
+  margin: 4px 0;
+  text-align: center;
+  font:
+    500 9px/1.4 var(--font-sans),
+    sans-serif;
+  color: var(--editor-ink);
+  opacity: 0.6;
+}
+.canvas-rail button {
+  min-height: 50px;
+  padding: 8px 4px;
+  gap: 5px;
+}
+.canvas-rail .ui-icon {
+  width: 20px;
+  height: 20px;
+}
+.canvas-rail button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: color-mix(in srgb, var(--editor-accent) 10%, transparent);
+  color: var(--editor-accent);
+}
+.canvas-layers-panel {
+  display: grid;
+  gap: 12px;
+}
+.canvas-layers-list {
+  display: grid;
+  gap: 8px;
+}
+.canvas-layer-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--editor-ground);
+}
+.canvas-layer-row[data-selected] {
+  background: color-mix(in srgb, var(--editor-accent) 12%, white);
+}
+.canvas-studio .canvas-layer-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 8px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+.canvas-layer-select > .ui-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.canvas-layer-select > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.canvas-layer-select small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  opacity: 0.6;
+}
+.canvas-layer-actions {
+  display: flex;
+}
+.canvas-studio .canvas-layer-actions button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  min-height: 40px;
+  padding: 8px;
+  background: transparent;
+  border: 0;
+}
+.canvas-layer-actions .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+.canvas-layer-actions button:hover,
+.canvas-layer-actions button:focus-visible {
+  color: var(--editor-accent);
+}
+.canvas-layers-empty {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  padding: 20px 16px;
+  border-radius: 12px;
+  background: var(--editor-ground);
+}
+.canvas-layers-empty > .ui-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--editor-accent);
+}
+.canvas-studio .canvas-layers-empty h3 {
+  margin: 0;
+  font-size: 15px;
+}
+.canvas-layers-empty p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.canvas-studio .canvas-section-add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  width: 100%;
+  margin: 12px 0;
+  color: var(--editor-accent);
+  background: var(--editor-ground);
+}
+@media (max-width: 760px) {
+  .canvas-rail button {
+    min-height: 48px;
+    font-size: 10px;
+  }
+  .canvas-rail-group-label {
+    font-size: 8px;
+  }
+}

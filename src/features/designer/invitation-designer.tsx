@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Event } from "@/lib/events/types";
 import PreviewModal from "./preview-modal";
 import EditorToolbar from "./editor-toolbar";
+import { initialCanvasTool } from "./flyer/canvas-tools";
 import CanvasWorkspace from "./flyer/canvas-workspace";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
@@ -33,7 +34,7 @@ export default function InvitationDesigner({
   );
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);
-  const [tool, setTool] = useState("elements");
+  const [tool, setTool] = useState<string>(initialCanvasTool);
   useEffect(() => {
     if (!editor.dirty) return;
     const leave = (e: BeforeUnloadEvent) => e.preventDefault();

@@ -10,7 +10,7 @@ import type { useInvitationDesign } from "../use-invitation-design";
 import CanvasPages from "./canvas-pages";
 import CanvasSectionControls from "./canvas-section-controls";
 import CanvasSectionPanel from "./canvas-section-panel";
-import CanvasProperties from "./canvas-properties";
+import CanvasSelectionInspector from "./canvas-selection-inspector";
 import CanvasToolbox from "./canvas-toolbox";
 import CanvasLayers from "./canvas-layers";
 import { useCanvasWorkspace } from "./use-canvas-workspace";
@@ -26,6 +26,7 @@ export default function CanvasWorkspace({
   tool: string;
   onToolChange: (tool: string) => void;
 }) {
+  const workspace = useCanvasWorkspace(editor);
   const {
     draft,
     active,
@@ -40,12 +41,16 @@ export default function CanvasWorkspace({
     change,
     add,
     patch,
-    layer,
+    moveLayer,
     addPage: appendPage,
-  } = useCanvasWorkspace(editor);
+  } = workspace;
   const tab = tool,
     setTab = onToolChange;
-  const panel = useCanvasPanel(tab, selectedId, active?.id || "");
+  const panel = useCanvasPanel(
+    tab,
+    tab === "elements" ? selectedId : "",
+    active?.id || "",
+  );
   function addPage() {
     appendPage();
     setTab("elements");
@@ -58,6 +63,7 @@ export default function CanvasWorkspace({
         .getElementById(`page-${id}`)
         ?.scrollIntoView({ block: "nearest" });
   }
+  const inspecting = !!selected && tab === "elements";
   return (
     <div className="canvas-workbench">
       <CanvasRail
@@ -69,11 +75,12 @@ export default function CanvasWorkspace({
         }}
       />
       <aside
+        id="canvas-tools"
         ref={panel}
         className="canvas-panel designer-controls"
         data-tool={tab}
       >
-        {selected && (
+        {inspecting && (
           <button
             className="canvas-panel-back"
             onClick={() => {
@@ -84,9 +91,9 @@ export default function CanvasWorkspace({
             <Icon name="undo" /> Volver a elementos
           </button>
         )}
-        {!selected &&
+        {!inspecting &&
           active &&
-          ["elements", "pages", "photos", "layers"].includes(tab) && (
+          ["elements", "background", "photos", "layers"].includes(tab) && (
             <CanvasSectionControls
               key={tab}
               sections={editor.sections}
@@ -94,12 +101,14 @@ export default function CanvasWorkspace({
               canvas={canvas}
               onSelect={selectPage}
               onAdd={addPage}
-              onBackground={() => setTab("background")}
+              onBackground={
+                tab === "background" ? undefined : () => setTab("background")
+              }
               onChange={change}
             />
           )}
-        <CanvasPanelHeading tool={tab} hidden={!!selected} />
-        {!selected && (tab === "elements" || tab === "photos") && (
+        <CanvasPanelHeading tool={tab} hidden={inspecting} />
+        {!inspecting && (tab === "elements" || tab === "photos") && (
           <CanvasToolbox
             event={event}
             draft={draft}
@@ -107,7 +116,10 @@ export default function CanvasWorkspace({
             onPhotos={() => setTab("photos")}
             photosOnly={tab === "photos"}
             disabled={!active || canvas.elements.length >= 60}
-            onAdd={add}
+            onAdd={(item) => {
+              add(item);
+              setTab("elements");
+            }}
             onUpload={editor.upload}
             busy={editor.busy}
           />
@@ -115,6 +127,7 @@ export default function CanvasWorkspace({
         {tab === "pages" && (
           <CanvasSectionPanel
             editor={editor}
+            onAdd={addPage}
             active={active}
             index={index}
             canvas={canvas}
@@ -131,6 +144,15 @@ export default function CanvasWorkspace({
             elements={canvas.elements}
             selectedId={selectedId}
             onSelect={select}
+            onMove={moveLayer}
+            onEdit={(id) => {
+              select(id);
+              setTab("elements");
+            }}
+            onElements={() => {
+              select("");
+              setTab("elements");
+            }}
           />
         )}
         {tab === "music" && <MusicPanel editor={editor} />}
@@ -150,29 +172,8 @@ export default function CanvasWorkspace({
             }}
           />
         )}
-        {selected && tab !== "music" && tab !== "templates" && (
-          <CanvasProperties
-            kind={draft.kind}
-            canvas={canvas}
-            replaceImage={(file, id) =>
-              editor.replaceImage(active.id, id, file)
-            }
-            photoURL={(key) =>
-              `/api/photos/${draft.id}/${encodeURIComponent(key)}`
-            }
-            selected={selected}
-            photos={draft.photoKeys}
-            patch={patch}
-            layer={layer}
-            add={add}
-            remove={() => {
-              change({
-                ...canvas,
-                elements: canvas.elements.filter((el) => el.id !== selectedId),
-              });
-              select("");
-            }}
-          />
+        {inspecting && (
+          <CanvasSelectionInspector editor={editor} workspace={workspace} />
         )}
       </aside>
       <CanvasPages

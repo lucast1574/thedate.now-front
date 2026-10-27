@@ -18,7 +18,7 @@ export default function CanvasSectionControls({
   onSelect: (id: string) => void;
   onAdd: () => void;
   onChange: (canvas: FlyerCanvas) => void;
-  onBackground: () => void;
+  onBackground?: () => void;
 }) {
   const index = Math.max(
     0,
@@ -64,10 +64,15 @@ export default function CanvasSectionControls({
           }
         />
       </div>
-      <button className="canvas-background-image-button" onClick={onBackground}>
-        <Icon name="image" />
-        Imagen de fondo
-      </button>
+      {onBackground && (
+        <button
+          className="canvas-background-image-button"
+          onClick={onBackground}
+        >
+          <Icon name="image" />
+          Imagen de fondo
+        </button>
+      )}
     </section>
   );
 }

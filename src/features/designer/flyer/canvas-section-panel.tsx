@@ -13,6 +13,7 @@ export default function CanvasSectionPanel({
   onSelect,
   onOpening,
   onChange,
+  onAdd,
 }: {
   editor: Editor;
   active?: DesignSection;
@@ -21,6 +22,7 @@ export default function CanvasSectionPanel({
   onSelect: (id: string) => void;
   onOpening: () => void;
   onChange: (canvas: FlyerCanvas) => void;
+  onAdd: () => void;
 }) {
   return (
     <div className="canvas-section-panel">
@@ -72,6 +74,14 @@ export default function CanvasSectionPanel({
           </button>
         ))}
       </div>
+      <button
+        className="canvas-section-add"
+        onClick={onAdd}
+        disabled={editor.sections.length >= 20}
+      >
+        <Icon name="plus" />
+        Añadir sección
+      </button>
       {active && (
         <details className="canvas-section-details">
           <summary>Opciones de la sección {index + 1}</summary>
