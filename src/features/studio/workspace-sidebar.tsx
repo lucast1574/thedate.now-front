@@ -23,7 +23,8 @@ export default function WorkspaceSidebar({
     | "support"
     | "guests"
     | "tables"
-    | "gifts";
+    | "gifts"
+    | "collaboration";
 }) {
   return (
     <aside
@@ -70,6 +71,23 @@ export default function WorkspaceSidebar({
             </span>
           </Link>
         ))}
+        {(user.role === "admin" ||
+          user.role === (wedding ? "planner" : "organizer")) && (
+          <Link
+            href="/compartir"
+            aria-current={active === "collaboration" ? "page" : undefined}
+          >
+            <Icon name="users" />
+            <span>
+              Celebraciones compartidas
+              <small>
+                {wedding
+                  ? "Diseña con tus parejas"
+                  : "Crea junto a tus clientes"}
+              </small>
+            </span>
+          </Link>
+        )}
         <Link
           href="/affiliates"
           aria-current={active === "affiliates" ? "page" : undefined}

@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import Icon from "@/components/icon";
 import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
@@ -13,6 +14,7 @@ export default function EditorToolbar({
   onPreview: () => void;
   onTemplates: () => void;
 }) {
+  const router = useRouter();
   return (
     <header className="editor-toolbar">
       <div className="editor-heading">
@@ -54,6 +56,21 @@ export default function EditorToolbar({
         </small>
       </div>
       <div className="editor-toolbar-actions">
+        {editor.draft.isDemo && (
+          <button
+            type="button"
+            disabled={editor.busy}
+            className="editor-activate"
+            onClick={async () => {
+              if (await editor.save())
+                router.push(
+                  `/?new=1&demo=${encodeURIComponent(editor.draft.id)}`,
+                );
+            }}
+          >
+            Activar mi invitación <Icon name="arrow" />
+          </button>
+        )}
         <button
           type="button"
           disabled={!editor.canUndo || editor.busy}

@@ -5,11 +5,13 @@ import type { User } from "@/lib/events/types";
 import type { Run } from "@/lib/account/types";
 import { api } from "@/lib/api/client";
 export default function AdminUsers({
+  wedding,
   users,
   current,
   busy,
   run,
 }: {
+  wedding: boolean;
   users: (User & { roleProtected?: boolean })[];
   current: User;
   busy: boolean;
@@ -68,9 +70,10 @@ export default function AdminUsers({
                       )
                     }
                   >
-                    <option value="organizer">Organizador</option>
-                    <option value="planner">Wedding planner</option>
-                    <option value="couple">Colaborador (legado)</option>
+                    <option value="user">Usuario</option>
+                    <option value={wedding ? "planner" : "organizer"}>
+                      {wedding ? "Wedding planner" : "Organizador de eventos"}
+                    </option>
                     <option value="admin">Administrador</option>
                   </Listbox>
                   {(u.roleProtected || u.id === current.id) && (

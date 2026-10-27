@@ -283,3 +283,9 @@ El formulario pide solo el enlace de Maps y presenta la ubicación resuelta como
 Hay 24 plantillas de lienzo por producto, más los diseños antiguos por secciones conservados por compatibilidad. `template-layouts-extended.ts` y `template-layout-pages.ts` aportan portadas, álbumes y programas. Todos los espacios iniciales usan `template-photo`: las fotos de la biblioteca solo se colocan mediante una acción explícita del usuario.
 
 El Dockerfile de The Date empaqueta el build raíz como artefacto `/app/renderer`. `scripts/renderer-image.Dockerfile` permite publicarlo como imagen de invitación sin mantener un servicio frontend antiguo activo. El servicio de bodas sigue compilándose y ejecutándose de forma independiente.
+
+## Activación de demos y espacio profesional
+
+Las cuentas nuevas usan `user`. Un botón en la galería activa `planner` en bodas u `organizer` en eventos; administración puede asignar los mismos tres roles de su producto, incluido `admin`. `/compartir` ofrece una demo local hasta que exista un evento propio pagado y luego gestiona dos accesos por correo. El servidor verifica rol profesional, propiedad y pago. Los invitados conservan el rol `user` y su pertenencia al evento; tras autenticar con el correo invitado entran al editor.
+
+El editor guarda la demo antes de abrir `/?new=1&demo=<id>`. La activación actualiza ese mismo evento de forma condicional mediante `POST /events/{id}/activate`: no regenera secciones ni cambia las claves de medios. La creación continúa al checkout y Stripe vuelve a `/editor/{id}?payment=success`; el editor consulta la confirmación sin conceder funciones pagadas por el parámetro de URL.

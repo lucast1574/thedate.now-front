@@ -33,7 +33,8 @@ export default function AccountShell({
     | "support"
     | "guests"
     | "tables"
-    | "gifts";
+    | "gifts"
+    | "collaboration";
 }) {
   const [user, setUser] = useState<User | null>(null),
     [loading, setLoading] = useState(true),
@@ -87,7 +88,7 @@ export default function AccountShell({
                   {
                     ...fields,
                     action: mode,
-                    role: wedding ? "planner" : "organizer",
+                    role: "user",
                   },
                 );
                 setUser(result.user);

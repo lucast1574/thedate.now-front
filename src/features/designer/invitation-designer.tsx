@@ -51,6 +51,13 @@ export default function InvitationDesigner({
         onPreview={() => setPreview(!preview)}
         onTemplates={() => setTool("templates")}
       />
+      {event.isDemo && (
+        <p className="demo-continuity-note">
+          <strong>Tu demo sí cuenta.</strong> Lo que diseñes aquí se conservará
+          al completar los datos y activar tu invitación.{" "}
+          <span>Diseña → Completa tus datos → Paga → Sigue editando</span>
+        </p>
+      )}
       {editor.message && (
         <p role="status" className="editor-feedback">
           {editor.message}

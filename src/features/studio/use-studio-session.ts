@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { AccountFields, AuthMode, Kind, User } from "@/lib/events/types";
 export function useStudioSession(
-  portal: Kind,
+  _portal: Kind,
   _onError: (message: string) => void,
 ) {
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ export function useStudioSession(
   async function signIn(fields: AccountFields, mode: AuthMode) {
     const result = await api<{ user: User }>("/api/session", "POST", {
       ...fields,
-      role: portal === "wedding" ? "planner" : "organizer",
+      role: "user",
       action: mode,
     });
     setUser(result.user);
@@ -35,5 +35,5 @@ export function useStudioSession(
     await api("/api/session", "DELETE");
     setUser(null);
   }
-  return { user, loading, signIn, signOut };
+  return { user, setUser, loading, signIn, signOut };
 }

@@ -10,7 +10,7 @@ export default function AdminPage({
 }) {
   return (
     <AccountShell wedding={wedding} googleEnabled={googleEnabled} admin>
-      {(user) => <AdminDashboard user={user} />}
+      {(user) => <AdminDashboard wedding={wedding} user={user} />}
     </AccountShell>
   );
 }

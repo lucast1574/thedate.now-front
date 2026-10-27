@@ -110,7 +110,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  role: "admin" | "planner" | "organizer" | "couple";
+  role: "admin" | "planner" | "organizer" | "user";
 };
 export type AccountFields = { name: string; email: string; password: string };
 export type GuestFields = Pick<

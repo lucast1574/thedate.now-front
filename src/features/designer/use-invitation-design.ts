@@ -121,8 +121,10 @@ export function useInvitationDesign(
           ? "Cambios publicados. Tus invitados los verán en el mismo enlace; no necesitas reenviar ni pagar de nuevo."
           : "Diseño guardado.",
       );
+      return true;
     } catch (error) {
       setMessage((error as Error).message);
+      return false;
     } finally {
       setBusy(false);
     }

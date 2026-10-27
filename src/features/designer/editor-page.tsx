@@ -1,11 +1,13 @@
 "use client";
 import { ColorMemoryProvider } from "@/components/color-memory";
 import { useCallback, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
+  const paymentReturn = useSearchParams().get("payment") === "success";
   const [event, setEvent] = useState<Event | null>(null);
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
@@ -35,6 +37,22 @@ export default function EditorPage({ id }: { id: string }) {
       active = false;
     };
   }, [id]);
+  useEffect(() => {
+    if (!paymentReturn || !event || event.paymentStatus === "paid") return;
+    let active = true;
+    const timer = window.setInterval(() => {
+      void api<Event[]>("/api/backend/events")
+        .then((list) => {
+          const latest = list.find((item) => item.id === id);
+          if (active && latest?.paymentStatus === "paid") setEvent(latest);
+        })
+        .catch(() => {});
+    }, 1500);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+    };
+  }, [paymentReturn, event, id]);
   if (error)
     return (
       <main className="editor-loading">
@@ -51,6 +69,13 @@ export default function EditorPage({ id }: { id: string }) {
     );
   return (
     <ColorMemoryProvider userId={userId}>
+      {paymentReturn && (
+        <p role="status" className="demo-continuity-note">
+          {event.paymentStatus === "paid"
+            ? "Pago confirmado. Tu diseño está listo para seguir editando."
+            : "Confirmando tu pago. Tu diseño y tus fotos están guardados."}
+        </p>
+      )}
       <InvitationDesigner key={event.id} event={event} onSaved={reload} />
     </ColorMemoryProvider>
   );

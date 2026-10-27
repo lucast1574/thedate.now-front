@@ -1,7 +1,7 @@
 import type { FormEvent } from "react";
 import Link from "next/link";
 import Alert from "@/components/alert";
-import CoupleAccess from "./couple-access";
+
 import EventForm from "./event-form";
 import GuestPanel from "./guest-panel";
 import PublicationPanel from "./publication-panel";
@@ -76,12 +76,6 @@ export default function EventWorkspace({
           Invitados, mesas y regalos ↗
         </Link>
       )}
-      {selected &&
-        !selected.isDemo &&
-        selected.paymentStatus === "paid" &&
-        (selected.ownerId === user.id || user.role === "admin") && (
-          <CoupleAccess eventId={selected.id} wedding={wedding} />
-        )}
       {selected &&
         !selected.isDemo &&
         (selected.ownerId === user.id || user.role === "admin") && (

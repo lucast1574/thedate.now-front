@@ -1,4 +1,5 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
 import Brand from "@/components/brand";
@@ -18,6 +19,7 @@ export default function Join({
   token: string;
   googleEnabled: boolean;
 }) {
+  const router = useRouter();
   const [invite, setInvite] = useState<Invite | null>(null),
     [user, setUser] = useState<User | null>(null),
     [message, setMessage] = useState(""),
@@ -26,22 +28,36 @@ export default function Join({
     [busy, setBusy] = useState(false);
   useEffect(() => {
     let active = true;
-    api<Invite>(`/api/join/${token}`)
-      .then((i) => {
-        if (active) setInvite(i);
+    Promise.all([
+      api<Invite>(`/api/join/${token}`),
+      api<User>("/api/session").catch(() => null),
+    ])
+      .then(async ([i, u]) => {
+        if (!active) return;
+        setInvite(i);
+        setUser(u);
+        if (u?.email === i.email) {
+          setBusy(true);
+          try {
+            const result = await api<{ eventId: string }>(
+              `/api/join/${token}`,
+              "POST",
+            );
+            router.replace(`/editor/${encodeURIComponent(result.eventId)}`);
+          } catch (e) {
+            if (active) setMessage((e as Error).message);
+          } finally {
+            if (active) setBusy(false);
+          }
+        }
       })
       .catch(() => {
         if (active) setMessage("Esta invitación ya no está disponible.");
       });
-    api<User>("/api/session")
-      .then((u) => {
-        if (active) setUser(u);
-      })
-      .catch(() => {});
     return () => {
       active = false;
     };
-  }, [token]);
+  }, [token, router]);
   async function signIn(fields: AccountFields, mode: AuthMode) {
     setBusy(true);
     setMessage("");
@@ -49,9 +65,10 @@ export default function Join({
       const result = await api<{ user: User }>("/api/session", "POST", {
         ...fields,
         action: mode,
-        role: invite?.kind === "wedding" ? "planner" : "organizer",
+        role: "user",
       });
       setUser(result.user);
+      if (result.user.email === invite?.email) await accept();
     } catch (e) {
       setMessage((e as Error).message);
     } finally {
@@ -68,6 +85,7 @@ export default function Join({
       );
       setEventId(result.eventId);
       setAccepted(true);
+      router.replace(`/editor/${encodeURIComponent(result.eventId)}`);
     } catch (e) {
       setMessage((e as Error).message);
     } finally {

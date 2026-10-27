@@ -36,7 +36,7 @@ test("event setup offers current canvas templates and keeps saved event editing 
       }),
     );
     assert.doesNotMatch(existing, /Un estilo que se sienta tuyo|Explorar los/);
-    assert.match(html, /Crear mi invitación/);
+    assert.match(html, /Continuar al pago/);
   }
 });
 test("template customization belongs to the editor and needs an applied template", () => {

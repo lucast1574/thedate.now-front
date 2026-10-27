@@ -1,3 +1,4 @@
+import DemoContinuation from "./demo-continuation";
 import ActionButton from "@/components/action-button";
 import Icon from "@/components/icon";
 import type { Dispatch, SetStateAction, FormEvent } from "react";
@@ -81,7 +82,12 @@ export default function EventForm({
         </div>
       </section>
       <EventMessageFields draft={draft} setDraft={setDraft} />
-      {!selected && <EventTemplateStart draft={draft} setDraft={setDraft} />}
+      {!selected &&
+        (draft.isDemo ? (
+          <DemoContinuation draft={draft} />
+        ) : (
+          <EventTemplateStart draft={draft} setDraft={setDraft} />
+        ))}
       <details className="event-form-options" open>
         <summary>
           <Icon name="layout" />
@@ -112,7 +118,7 @@ export default function EventForm({
             : "Crear y diseñar es gratis. Publicas cuando estés listo."}
         </p>
         <ActionButton className="office-button" disabled={busy}>
-          {selected ? "Guardar cambios" : "Crear mi invitación"}{" "}
+          {selected ? "Guardar cambios" : "Continuar al pago"}{" "}
           <Icon name="arrow" />
         </ActionButton>
       </div>

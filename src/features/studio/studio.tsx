@@ -6,6 +6,7 @@ import type { Kind } from "@/lib/events/types";
 import AuthPanel from "./auth-panel";
 import StudioHeader from "./studio-header";
 import WorkspaceSidebar from "./workspace-sidebar";
+import ProfessionalUpgrade from "./professional-upgrade";
 import EventGallery from "./event-gallery";
 import ProductAlternative from "./product-alternative";
 import EventWorkspace from "./event-workspace";
@@ -43,10 +44,27 @@ export default function Studio({
   async function save(e: FormEvent) {
     e.preventDefault();
     await feedback.run(
-      events.saveEvent,
+      async () => {
+        const created = await events.saveEvent();
+        if (!created) return;
+        if (created.paymentStatus === "paid") {
+          router.push(`/editor/${created.id}`);
+          return;
+        }
+        router.push(`/?event=${created.id}`);
+        if (paymentsEnabled) {
+          const result = await import("@/lib/api/client").then(({ api }) =>
+            api<{ url: string }>(
+              `/api/backend/events/${created.id}/checkout`,
+              "POST",
+            ),
+          );
+          window.location.href = result.url;
+        }
+      },
       events.selected
         ? "Cambios guardados."
-        : "Evento creado. Ya puedes diseñar tu invitación.",
+        : "Invitación guardada. Continúa con el pago para activarla.",
     );
   }
   if (!session.user)
@@ -96,6 +114,12 @@ export default function Studio({
           ) : (
             <>
               <Alert>{feedback.error}</Alert>
+              {session.user.role === "user" && (
+                <ProfessionalUpgrade
+                  wedding={wedding}
+                  onUpgrade={session.setUser}
+                />
+              )}
               <EventGallery
                 user={session.user}
                 portal={portal}

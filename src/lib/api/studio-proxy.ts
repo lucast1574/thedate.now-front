@@ -3,7 +3,7 @@ import { sessionToken } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
 import { readRequestText, RequestBodyTooLarge } from "./request-body";
 const allowedPath =
-  /^(?:profile|support\/tickets|events(?:\/[a-z0-9-]+(?:\/(?:wishlist(?:\/(?:metadata|reservations\/[a-zA-Z0-9-]+))?|guests(?:\/import)?|seating|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:support\/tickets(?:\/[a-z0-9-]+)?|overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
+  /^(?:profile(?:\/professional)?|support\/tickets|events(?:\/[a-z0-9-]+(?:\/(?:wishlist(?:\/(?:metadata|reservations\/[a-zA-Z0-9-]+))?|guests(?:\/import)?|seating|activate|checkout|publish|deployment|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:support\/tickets(?:\/[a-z0-9-]+)?|overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
 
 export async function proxyStudio(
   request: Request,

@@ -18,7 +18,13 @@ async function fetchAdmin() {
   ]);
   return { overview, users, events, payouts };
 }
-export default function AdminDashboard({ user }: { user: User }) {
+export default function AdminDashboard({
+  user,
+  wedding,
+}: {
+  user: User;
+  wedding: boolean;
+}) {
   const [data, setData] = useState<AdminData | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
@@ -66,7 +72,13 @@ export default function AdminDashboard({ user }: { user: User }) {
         <>
           <AdminRevenue overview={data.overview} />
           <AdminCourtesies events={data.events} busy={busy} run={run} />
-          <AdminUsers users={data.users} current={user} busy={busy} run={run} />
+          <AdminUsers
+            wedding={wedding}
+            users={data.users}
+            current={user}
+            busy={busy}
+            run={run}
+          />
           <AdminPayouts rows={data.payouts} busy={busy} run={run} />
         </>
       ) : (
