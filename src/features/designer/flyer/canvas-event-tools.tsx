@@ -65,7 +65,7 @@ export default function CanvasEventTools({
         >
           <Icon name="external" />
           <span>
-            Ubicación<small>Dirección de tu evento</small>
+            Ubicación<small>Nombre y dirección del lugar</small>
           </span>
           <Icon name="plus" />
         </button>

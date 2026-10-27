@@ -186,3 +186,46 @@ test("new restrictions preload saved text, icon and adults-only notice", () => {
   assert.equal(defaults.text, "Solo adultos.\n\nSin mascotas.");
   assert.equal(defaults.restrictionIcon, "lucide:paw-print");
 });
+
+test("fixed link markers cannot be persisted as duplicate user-authored links", () => {
+  const { eventPayload } = loadSource("src/lib/events/draft.ts");
+  const payload = eventPayload({
+    ...blankEvent("wedding"),
+    startAt: "2026-12-01T18:00",
+    invitationMessage: "Confirma aquí: {{link}} {{enlace}}",
+  });
+  assert.equal(payload.invitationMessage, "Confirma aquí:");
+});
+
+test("an intentionally empty WhatsApp message stays empty so only the fixed link is sent", () => {
+  const { eventPayload } = loadSource("src/lib/events/draft.ts");
+  assert.equal(
+    eventPayload({
+      ...blankEvent("general"),
+      startAt: "2026-12-01T18:00",
+      invitationMessage: "",
+    }).invitationMessage,
+    "",
+  );
+});
+test("every canvas template carries the venue name and address into its location element", () => {
+  for (const template of invitationTemplates.filter(
+    (item) => item.mode === "flyer",
+  )) {
+    const draft = {
+      ...blankEvent(template.kind),
+      templateId: template.id,
+      template: template.style,
+      accentColor: template.accent,
+      startAt: "2026-12-01T18:00",
+      location: "Villa Luis Adolfo II · Huanchaco, Trujillo, Perú",
+      mapUrl: "https://maps.app.goo.gl/example",
+    };
+    const payload = initialInvitation(draft);
+    const location = payload.initialDesign.sections
+      .flatMap((section) => section.canvas?.elements || [])
+      .find((item) => item.binding === "location");
+    assert.equal(location.address, draft.location);
+    assert.equal(location.link, draft.mapUrl);
+  }
+});

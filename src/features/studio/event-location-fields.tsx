@@ -107,7 +107,8 @@ export default function EventLocationFields({
               placeholder="https://maps.app.goo.gl/..."
             />
             <small>
-              Pega el enlace y buscaremos la dirección automáticamente.
+              Pega el enlace y buscaremos el nombre del lugar y su dirección
+              automáticamente.
             </small>
           </label>
           <EventResolvedLocation

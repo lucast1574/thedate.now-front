@@ -61,9 +61,9 @@ export function eventPayload(event: Event) {
     slug: event.slug,
     title: event.title,
     description: event.description,
-    invitationMessage:
-      event.invitationMessage?.replaceAll("{{enlace}}", "").trim() ||
-      defaultInvitationMessage,
+    invitationMessage: (event.invitationMessage ?? defaultInvitationMessage)
+      .replace(/\{\{(?:enlace|link)\}\}/g, "")
+      .trim(),
     startAt: new Date(event.startAt).toISOString(),
     timeZone: event.timeZone || browserTimeZone(),
     organizer: event.organizer,

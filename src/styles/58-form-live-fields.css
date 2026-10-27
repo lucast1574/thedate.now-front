@@ -83,3 +83,12 @@
   line-height: 1.6;
   color: var(--ui-muted);
 }
+
+.event-message-link-token {
+  justify-self: start;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--ui-surface);
+  color: var(--ui-accent);
+  font-size: 13px;
+}

@@ -9,9 +9,10 @@ export default function EventMessageFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
-  const message = (
-    draft.invitationMessage ?? defaultInvitationMessage
-  ).replaceAll("{{enlace}}", "");
+  const message = (draft.invitationMessage ?? defaultInvitationMessage).replace(
+    /\{\{(?:enlace|link)\}\}/g,
+    "",
+  );
   const link = `https://${invitationHost(draft.kind, draft.slug || "tucelebracion")}/rsvp/enlace-personal`;
   return (
     <section className="event-form-card event-message-card">
@@ -24,7 +25,10 @@ export default function EventMessageFields({
           onChange={(e) =>
             setDraft({
               ...draft,
-              invitationMessage: e.target.value.replaceAll("{{enlace}}", ""),
+              invitationMessage: e.target.value.replace(
+                /\{\{(?:enlace|link)\}\}/g,
+                "",
+              ),
             })
           }
           placeholder={defaultInvitationMessage}
@@ -32,10 +36,10 @@ export default function EventMessageFields({
       </label>
       <div className="event-message-fixed-link">
         <strong>Enlace personal incluido siempre</strong>
-        <span>{link}</span>
+        <code className="event-message-link-token">{"{{link}}"}</code>
         <small>
-          Se añade al final del mensaje y no se puede quitar. Cada invitado
-          recibirá su enlace único.
+          Este marcador no se puede quitar. Al enviar se reemplaza por el enlace
+          único de cada invitado.
         </small>
       </div>
       <div
@@ -44,8 +48,8 @@ export default function EventMessageFields({
       >
         <strong>Así lo verá tu invitado · ejemplo</strong>
         <p>
-          {message.trim() || defaultInvitationMessage}
-          {"\n\nConfirma tu asistencia aquí: "}
+          {message.trim()}
+          {message.trim() ? "\n\n" : ""}
           {link}
         </p>
         <small>
