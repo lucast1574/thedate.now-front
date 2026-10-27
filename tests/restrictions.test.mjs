@@ -6,6 +6,7 @@ import { loadSource } from "./support/load-source.cjs";
 const { FlyerContent } = loadSource("src/components/flyer-surface.tsx");
 const { validDressColors } = loadSource("src/lib/events/dress-code.ts");
 const { designPayload } = loadSource("src/features/designer/design-state.ts");
+const { sameDesign } = loadSource("src/features/designer/design-state.ts");
 test("dress code prints forbidden colors with names and crossed swatches in the shared canvas renderer", () => {
   const item = {
     type: "text",
@@ -95,4 +96,33 @@ test("design payload preserves color exclusions and each restriction's independe
   };
   const saved = JSON.parse(JSON.stringify(designPayload(draft)));
   assert.deepEqual(saved.sections[0].canvas.elements, elements);
+});
+test("removing the final forbidden color matches the API's omitted empty list", () => {
+  const base = {
+    id: "event",
+    kind: "wedding",
+    template: "classic",
+    designMode: "flyer",
+  };
+  const draft = {
+    ...base,
+    sections: [
+      {
+        id: "page",
+        canvas: {
+          elements: [
+            {
+              id: "dress",
+              type: "text",
+              binding: "dress_code",
+              dressExcludedColors: [],
+            },
+          ],
+        },
+      },
+    ],
+  };
+  const stored = JSON.parse(JSON.stringify(draft));
+  delete stored.sections[0].canvas.elements[0].dressExcludedColors;
+  assert.equal(sameDesign(draft, stored), true);
 });

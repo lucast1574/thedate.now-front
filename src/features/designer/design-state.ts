@@ -36,7 +36,14 @@ export function designPayload(draft: DesignEvent) {
               elements: section.canvas.elements.map((item) =>
                 item.binding === "guest_name"
                   ? { ...item, text: protectedGuestText(item.text || "") }
-                  : item,
+                  : item.binding === "dress_code"
+                    ? {
+                        ...item,
+                        dressExcludedColors: item.dressExcludedColors?.length
+                          ? item.dressExcludedColors
+                          : undefined,
+                      }
+                    : item,
               ),
             },
           }
