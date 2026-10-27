@@ -1,3 +1,5 @@
+import PublicationPanel from "@/features/studio/publication-panel";
+import { useEventActions } from "@/features/studio/use-event-actions";
 import GuestForm from "@/features/studio/guest-form";
 import GuestImport from "@/features/studio/guest-import";
 import GuestRoster from "./guest-roster";
@@ -13,6 +15,18 @@ export default function ManagerTools({
   tab: string;
 }) {
   const { event, guests, plan, user, busy, dirty, stale } = manager;
+  const actions = useEventActions(
+    event,
+    {
+      refreshGuests: async () => {
+        await manager.refresh();
+      },
+      reloadSelected: async () => {
+        await manager.refresh();
+      },
+    },
+    user?.role === "admin" || user?.id === event?.ownerId,
+  );
   if (!event) return null;
   const id = event.id,
     canSend = user?.role === "admin" || user?.id === event.ownerId;
@@ -25,6 +39,19 @@ export default function ManagerTools({
             <GuestImport eventId={id} onImported={() => manager.refresh()} />
           </div>
           {canSend && (
+            <PublicationPanel
+              selected={event}
+              deployment={actions.deployment}
+              publishing={actions.publishing}
+              busy={busy}
+              paymentsEnabled={false}
+              checkout={() => {}}
+              publish={() => {
+                void manager.run(actions.publish, "Publicación solicitada.");
+              }}
+            />
+          )}
+          {canSend && (
             <div className="manager-send">
               <button
                 className="office-button"
@@ -35,12 +62,12 @@ export default function ManagerTools({
                   void manager.send();
                 }}
               >
-                Enviar invitaciones por WhatsApp ↗
+                Enviar invitaciones
               </button>
               <p>
                 {event.publishedAt
                   ? "El enlace personal permite registrar acompañantes y confirmar asistencia."
-                  : "Publica la invitación desde el estudio para habilitar el envío."}
+                  : "Publica tu invitación aquí para habilitar el envío por WhatsApp."}
               </p>
             </div>
           )}

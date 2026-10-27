@@ -115,7 +115,7 @@ export default function EventForm({
         <p>
           {selected
             ? "Tus cambios se guardarán en este evento."
-            : "Crear y diseñar es gratis. Publicas cuando estés listo."}
+            : "Tu diseño se conserva al continuar. Activa tu evento con un único pago."}
         </p>
         <ActionButton className="office-button" disabled={busy}>
           {selected ? "Guardar cambios" : "Continuar al pago"}{" "}

@@ -34,8 +34,8 @@ export default function PublicationPanel({
           <p className="office-kicker">PUBLICACIÓN</p>
           <h2>Comparte tu invitación</h2>
           <p>
-            Diseña, guarda y previsualiza gratis. El pago habilita publicación,
-            invitados y WhatsApp.
+            Publica tu diseño para que tus invitados puedan abrir su enlace
+            personal.
           </p>
           {preparing && selected.paymentStatus === "paid" && (
             <div
@@ -66,7 +66,7 @@ export default function PublicationPanel({
               onClick={checkout}
             >
               {paymentsEnabled ? "Pagar" : "Pagos en preparación"} ·{" "}
-              {selected.kind === "wedding" ? "USD 25" : "USD 5"}
+              {selected.kind === "wedding" ? "USD 20" : "USD 5"}
             </ActionButton>
           ) : ready ? (
             <a

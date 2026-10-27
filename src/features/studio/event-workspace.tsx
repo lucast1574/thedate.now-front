@@ -1,10 +1,9 @@
-import { useEffect, type FormEvent } from "react";
+import { type FormEvent } from "react";
 import Link from "next/link";
 import Alert from "@/components/alert";
 
 import EventForm from "./event-form";
-import GuestPanel from "./guest-panel";
-import PublicationPanel from "./publication-panel";
+import PendingPayment from "./pending-payment";
 import type { User } from "@/lib/events/types";
 import type { useStudioEvents } from "./use-studio-events";
 import type { useEventActions } from "./use-event-actions";
@@ -25,16 +24,6 @@ export default function EventWorkspace({
   save: (e: FormEvent) => Promise<void>;
 }) {
   const { selected } = events;
-  useEffect(() => {
-    if (selected && window.location.hash === "#publicacion") {
-      const frame = requestAnimationFrame(() =>
-        document
-          .getElementById("publicacion")
-          ?.scrollIntoView({ block: "start" }),
-      );
-      return () => cancelAnimationFrame(frame);
-    }
-  }, [selected]);
   const wedding = events.draft.kind === "wedding";
   return (
     <section className="office-main workspace-event">
@@ -73,7 +62,7 @@ export default function EventWorkspace({
             onSubmit={save}
           />
         )}
-      {selected && (
+      {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
         <Link
           className="office-button editor-open"
           href={`/editor/${encodeURIComponent(selected.id)}`}
@@ -81,47 +70,21 @@ export default function EventWorkspace({
           Abrir editor de invitación ↗
         </Link>
       )}
-      {selected && (
+      {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
         <Link className="office-button" href={`/manager/${selected.id}`}>
           Invitados, mesas y regalos ↗
         </Link>
       )}
-      {selected &&
-        !selected.isDemo &&
-        (selected.ownerId === user.id || user.role === "admin") && (
-          <>
-            <PublicationPanel
-              deployment={actions.deployment}
-              publishing={actions.publishing}
-              selected={selected}
-              busy={feedback.busy}
-              paymentsEnabled={paymentsEnabled}
-              checkout={() => {
-                void feedback.run(actions.checkout);
-              }}
-              publish={() => {
-                void feedback.run(actions.publish, "Despliegue solicitado.");
-              }}
-            />
-            <GuestPanel
-              selected={selected}
-              guests={events.guests}
-              onImported={() => events.refreshGuests(selected)}
-              busy={feedback.busy}
-              onAdd={(fields) =>
-                feedback.run(
-                  () => actions.addGuest(fields),
-                  "Invitado agregado.",
-                )
-              }
-              sendInvitations={() => {
-                void feedback.run(async () => {
-                  feedback.setNotice(await actions.sendInvitations());
-                });
-              }}
-            />
-          </>
-        )}
+      {selected && !selected.isDemo && selected.paymentStatus !== "paid" && (
+        <PendingPayment
+          event={selected}
+          busy={feedback.busy}
+          enabled={paymentsEnabled}
+          onCheckout={() => {
+            void feedback.run(actions.checkout);
+          }}
+        />
+      )}
     </section>
   );
 }

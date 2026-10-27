@@ -39,6 +39,15 @@ export default function ManagerPage({ id }: { id: string }) {
         <Link href="/">Volver al estudio e iniciar sesión</Link>
       </main>
     );
+  if (!event.isDemo && event.paymentStatus !== "paid")
+    return (
+      <main className="editor-loading">
+        <h1>Tu evento está pendiente de pago</h1>
+        <Link href={`/?event=${encodeURIComponent(id)}`}>
+          Continuar con mi invitación
+        </Link>
+      </main>
+    );
   const allowed = event.paymentStatus === "paid" && !event.isDemo;
   const guard = () =>
     !dirty ||
@@ -88,7 +97,7 @@ export default function ManagerPage({ id }: { id: string }) {
                 if (!guard()) e.preventDefault();
               }}
             >
-              Datos y activación
+              Datos del evento
             </Link>
             <Link
               href={`/editor/${id}`}

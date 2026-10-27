@@ -18,7 +18,9 @@ export default function EventGallery({
   loading: boolean;
   onCreate: () => void;
 }) {
-  const items = galleryEvents(events, user, portal),
+  const all = galleryEvents(events, user, portal),
+    pending = all.filter((e) => !e.isDemo && e.paymentStatus !== "paid"),
+    items = all.filter((e) => e.isDemo || e.paymentStatus === "paid"),
     wedding = portal === "wedding";
   return (
     <section className="workspace-gallery">
@@ -55,6 +57,19 @@ export default function EventGallery({
           {wedding ? "Crear una boda" : "Crear un evento"}
         </button>
       </div>
+      {pending.length > 0 && (
+        <section className="demo-continuity-note">
+          <h2>Compras pendientes</h2>
+          <p>Conservamos tu diseño hasta que completes el pago.</p>
+          {pending.map((event) => (
+            <p key={event.id}>
+              <Link href={`/?event=${encodeURIComponent(event.id)}`}>
+                Continuar con {event.title}
+              </Link>
+            </p>
+          ))}
+        </section>
+      )}
       <div className="gallery-section-heading">
         <h2>Mis invitaciones</h2>
         <span>

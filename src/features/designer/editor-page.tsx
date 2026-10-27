@@ -69,6 +69,24 @@ export default function EditorPage({ id }: { id: string }) {
         Abriendo tu invitación…
       </main>
     );
+  if (!event.isDemo && event.paymentStatus !== "paid")
+    return (
+      <main className="editor-loading">
+        <h1>
+          {paymentReturn
+            ? "Confirmando tu pago…"
+            : "Tu invitación está guardada"}
+        </h1>
+        <p role="status">
+          {paymentReturn
+            ? "El editor se abrirá cuando recibamos la confirmación del pago."
+            : "Completa el pago para activar tu evento y continuar con tu diseño."}
+        </p>
+        <Link href={`/?event=${encodeURIComponent(event.id)}`}>
+          Volver a mi invitación
+        </Link>
+      </main>
+    );
   return (
     <ColorMemoryProvider userId={userId}>
       {paymentReturn && (
@@ -81,7 +99,7 @@ export default function EditorPage({ id }: { id: string }) {
       <InvitationDesigner
         finishHref={
           event.ownerId === userId || userRole === "admin"
-            ? `/?event=${encodeURIComponent(event.id)}#publicacion`
+            ? `/manager/${encodeURIComponent(event.id)}`
             : `/manager/${encodeURIComponent(event.id)}`
         }
         key={event.id}

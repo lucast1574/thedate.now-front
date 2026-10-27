@@ -99,7 +99,11 @@ export default function Studio({
         <WorkspaceSidebar
           wedding={wedding}
           user={session.user}
-          eventId={events.selected?.id}
+          eventId={
+            events.selected?.paymentStatus === "paid"
+              ? events.selected.id
+              : undefined
+          }
         />
         <div className="workspace-content">
           {events.selected || creating ? (
