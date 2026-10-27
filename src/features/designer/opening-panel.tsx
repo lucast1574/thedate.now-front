@@ -1,3 +1,5 @@
+import FlyerBackground from "@/components/flyer-background";
+import OpeningBackgroundEditor from "./opening-background-editor";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
@@ -39,6 +41,19 @@ export default function OpeningPanel({
           } as React.CSSProperties
         }
       >
+        {opening.backgroundImage && (
+          <FlyerBackground
+            slice={{
+              image: opening.backgroundImage,
+              offset: 0,
+              total: 1,
+              height: 1,
+            }}
+            photoURL={(key) =>
+              `/api/photos/${draft.id}/${encodeURIComponent(key)}`
+            }
+          />
+        )}
         <h3
           style={
             opening.font ? { fontFamily: flyerFonts[opening.font] } : undefined
@@ -151,6 +166,7 @@ export default function OpeningPanel({
               />
             </div>
           </section>
+          <OpeningBackgroundEditor editor={editor} />
           <details className="symbol-replace">
             <summary>Personalizar el sello</summary>
             <button onClick={() => patch({ sealIcon: "none" })}>

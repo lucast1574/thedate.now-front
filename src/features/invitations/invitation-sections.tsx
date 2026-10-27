@@ -1,3 +1,7 @@
+import {
+  sectionBackground,
+  type ImageBackground,
+} from "@/lib/events/background";
 import FlyerSurface from "@/components/flyer-surface";
 import Photo from "@/components/photo";
 import type { DesignSection } from "@/lib/events/types";
@@ -11,9 +15,11 @@ export default function InvitationSections({
   photoURL,
   guestName,
   giftURL,
+  backgroundImage,
 }: {
   guestName?: string;
   giftURL?: string;
+  backgroundImage?: ImageBackground | null;
   sections?: DesignSection[];
   kind: "wedding" | "general";
   slug: string;
@@ -27,12 +33,17 @@ export default function InvitationSections({
   if (!sections?.length) return null;
   return (
     <div className="invite-sections">
-      {sections.map((section) =>
+      {sections.map((section, index) =>
         flyer && section.canvas ? (
           <FlyerSurface
             key={section.id}
             guestName={guestName}
             giftURL={giftURL}
+            backgroundSlice={sectionBackground(
+              sections,
+              index,
+              backgroundImage,
+            )}
             canvas={section.canvas}
             photoURL={photo}
             label={section.heading || "Lienzo"}

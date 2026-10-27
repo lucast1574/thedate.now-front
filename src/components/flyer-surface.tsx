@@ -1,3 +1,5 @@
+import FlyerBackground from "./flyer-background";
+import type { BackgroundSlice } from "@/lib/events/background";
 import type { CSSProperties, ReactNode } from "react";
 import { templatePhotoURL } from "@/lib/events/template-photos";
 import FlyerGiftLink from "./flyer-gift-link";
@@ -85,11 +87,13 @@ export default function FlyerSurface({
   children,
   guestName,
   giftURL,
+  backgroundSlice,
   label = "Sección de la invitación",
 }: {
   canvas: FlyerCanvas;
   guestName?: string;
   giftURL?: string;
+  backgroundSlice?: BackgroundSlice;
   photoURL: (key: string) => string;
   children?: ReactNode;
   label?: string;
@@ -104,6 +108,20 @@ export default function FlyerSurface({
         background: canvas.background,
       }}
     >
+      {(backgroundSlice ||
+        (!canvas.backgroundOverride && canvas.backgroundImage)) && (
+        <FlyerBackground
+          slice={
+            backgroundSlice || {
+              image: canvas.backgroundImage!,
+              offset: 0,
+              total: 1,
+              height: 1,
+            }
+          }
+          photoURL={photoURL}
+        />
+      )}
       {children ??
         canvas.elements.map((item) => (
           <div

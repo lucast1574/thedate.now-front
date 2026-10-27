@@ -1,4 +1,6 @@
+import type { ImageBackground } from "./background";
 export type Opening = {
+  backgroundImage?: ImageBackground;
   title?: string;
   font?: "" | "serif" | "sans" | "script";
   sealIcon?: string;

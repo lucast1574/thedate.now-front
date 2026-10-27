@@ -10,6 +10,7 @@ export default function CanvasSectionControls({
   onSelect,
   onAdd,
   onChange,
+  onBackground,
 }: {
   sections: DesignSection[];
   activeId: string;
@@ -17,6 +18,7 @@ export default function CanvasSectionControls({
   onSelect: (id: string) => void;
   onAdd: () => void;
   onChange: (canvas: FlyerCanvas) => void;
+  onBackground: () => void;
 }) {
   const index = Math.max(
     0,
@@ -52,9 +54,20 @@ export default function CanvasSectionControls({
         <ColorPicker
           label={`Color de fondo de la sección ${index + 1}`}
           value={canvas.background}
-          onChange={(background) => onChange({ ...canvas, background })}
+          onChange={(background) =>
+            onChange({
+              ...canvas,
+              background,
+              backgroundOverride: true,
+              backgroundImage: undefined,
+            })
+          }
         />
       </div>
+      <button className="canvas-background-image-button" onClick={onBackground}>
+        <Icon name="image" />
+        Imagen de fondo
+      </button>
     </section>
   );
 }

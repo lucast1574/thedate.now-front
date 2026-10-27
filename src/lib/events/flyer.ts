@@ -1,3 +1,4 @@
+import type { ImageBackground } from "./background";
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
   dressStyle?:
@@ -39,6 +40,8 @@ export type FlyerElement = {
   align: "left" | "center" | "right";
 };
 export type FlyerCanvas = {
+  backgroundImage?: ImageBackground;
+  backgroundOverride?: boolean;
   width: number;
   height: number;
   background: string;

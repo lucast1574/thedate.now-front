@@ -1,3 +1,4 @@
+import type { BackgroundSlice } from "@/lib/events/background";
 import { useImageReplacement } from "./use-image-replacement";
 import CanvasContextMenu from "./canvas-context-menu";
 import { useCanvasMenu } from "./use-canvas-menu";
@@ -18,8 +19,10 @@ export default function CanvasEditor({
   onChange,
   photoURL,
   onReplace,
+  backgroundSlice,
 }: {
   canvas: FlyerCanvas;
+  backgroundSlice?: BackgroundSlice;
   selectedId: string;
   onSelect: (id: string) => void;
   onChange: (canvas: FlyerCanvas) => void;
@@ -69,7 +72,12 @@ export default function CanvasEditor({
   return (
     <div className="canvas-editor" onClick={() => onSelect("")}>
       {replacement.input}
-      <FlyerSurface canvas={canvas} photoURL={photoURL} label="Lienzo editable">
+      <FlyerSurface
+        canvas={canvas}
+        photoURL={photoURL}
+        backgroundSlice={backgroundSlice}
+        label="Lienzo editable"
+      >
         {moving && guides?.vertical && (
           <div className="canvas-guide is-vertical" aria-hidden="true" />
         )}

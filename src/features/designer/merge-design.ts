@@ -9,6 +9,7 @@ export function mergeDesign(
   for (const field of [
     "music",
     "opening",
+    "backgroundImage",
     "celebration",
     "title",
     "description",

@@ -3,6 +3,8 @@ import { resolveTemplateId } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
 export function designPayload(draft: DesignEvent) {
   return {
+    backgroundImage: draft.backgroundImage ?? null,
+    clearBackgroundImage: !draft.backgroundImage,
     opening: draft.opening ?? null,
     celebration: draft.celebration ?? null,
     music: draft.music ?? null,

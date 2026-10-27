@@ -51,6 +51,7 @@ export default function Invitation({
       {showOpening && event.opening?.enabled && (
         <InvitationOpening
           opening={event.opening}
+          photoURL={photo}
           title={event.title}
           wedding={event.kind === "wedding"}
         />
@@ -76,6 +77,7 @@ export default function Invitation({
         <InvitationSections
           guestName={guestName}
           giftURL={giftURL}
+          backgroundImage={event.backgroundImage}
           sections={event.sections}
           kind={event.kind}
           slug={event.slug}

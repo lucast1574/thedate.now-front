@@ -1,3 +1,4 @@
+import { sectionBackground } from "@/lib/events/background";
 import CanvasFormatting from "./canvas-formatting";
 import type { FlyerElement } from "@/lib/events/flyer";
 import Icon from "@/components/icon";
@@ -122,6 +123,11 @@ export default function CanvasPages({
                 </div>
               </header>
               <CanvasEditor
+                backgroundSlice={sectionBackground(
+                  sections,
+                  n,
+                  draft.backgroundImage,
+                )}
                 canvas={sectionCanvas(section, draft)}
                 selectedId={activeId === section.id ? selectedId : ""}
                 onSelect={(id) => {

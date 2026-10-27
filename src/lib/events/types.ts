@@ -1,3 +1,4 @@
+import type { ImageBackground } from "./background";
 import type { Opening, Celebration } from "./celebration";
 import type { InvitationMusic } from "./music";
 import type { Gender, Person } from "./seating";
@@ -13,6 +14,7 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  backgroundImage?: ImageBackground | null;
   opening?: Opening | null;
   celebration?: Celebration | null;
   wishlistEnabled?: boolean;
@@ -71,6 +73,7 @@ export type PublicEvent = Pick<
   | "sections"
   | "photoKeys"
   | "music"
+  | "backgroundImage"
   | "opening"
   | "celebration"
   | "wishlistEnabled"

@@ -1,8 +1,7 @@
 import { useCanvasPanel } from "./use-canvas-panel";
 import CanvasRail from "./canvas-rail";
 import CanvasPanelHeading from "./canvas-panel-heading";
-import OpeningPanel from "../opening-panel";
-import ExperiencePanel from "../experience-panel";
+import CanvasSettings from "./canvas-settings";
 import TemplatePanel from "../template-panel";
 import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
@@ -95,6 +94,7 @@ export default function CanvasWorkspace({
               canvas={canvas}
               onSelect={selectPage}
               onAdd={addPage}
+              onBackground={() => setTab("background")}
               onChange={change}
             />
           )}
@@ -134,8 +134,7 @@ export default function CanvasWorkspace({
           />
         )}
         {tab === "music" && <MusicPanel editor={editor} />}
-        {tab === "opening" && <OpeningPanel editor={editor} />}
-        {tab === "experience" && <ExperiencePanel editor={editor} />}
+        <CanvasSettings tool={tab} editor={editor} index={index} />
         {tab === "templates" && (
           <TemplatePanel
             editor={editor}

@@ -9,6 +9,7 @@ export default function CanvasPanelHeading({
     {
       elements: "Añadir elementos",
       photos: "Tus imágenes",
+      background: "Fondo de tu invitación",
       opening: "Sobre de apertura",
       experience: "Detalles de la celebración",
       pages: "Secciones",

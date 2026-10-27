@@ -1,4 +1,5 @@
 "use client";
+import FlyerBackground from "@/components/flyer-background";
 import { useEffect, useRef, useState } from "react";
 import OpeningArtwork from "./opening-artwork";
 import { flyerFonts } from "@/lib/events/flyer";
@@ -8,10 +9,12 @@ export default function InvitationOpening({
   opening,
   title,
   wedding,
+  photoURL,
 }: {
   opening: Opening;
   title: string;
   wedding: boolean;
+  photoURL: (key: string) => string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -62,6 +65,17 @@ export default function InvitationOpening({
         } as React.CSSProperties
       }
     >
+      {opening.backgroundImage && (
+        <FlyerBackground
+          slice={{
+            image: opening.backgroundImage,
+            offset: 0,
+            total: 1,
+            height: 1,
+          }}
+          photoURL={photoURL}
+        />
+      )}
       <div className="opening-intro">
         <span>{wedding ? "Con todo nuestro cariño" : "Estás invitado"}</span>
         <h1
