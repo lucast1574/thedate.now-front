@@ -1,5 +1,6 @@
 import Icon from "./icon";
 import Photo from "./photo";
+import DressExcludedColors from "./dress-excluded-colors";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { dressParts } from "@/lib/events/dress-code";
 import { templatePhotoURL } from "@/lib/events/template-photos";
@@ -16,7 +17,10 @@ export default function FlyerDressCode({
     <span
       className="dress-composition"
       data-align={item.align}
-      data-media-only={!parts.includes("text") || undefined}
+      data-media-only={
+        (!parts.includes("text") && !item.dressExcludedColors?.length) ||
+        undefined
+      }
     >
       {parts.includes("icon") && (
         <span className="dress-composition-icon">
@@ -37,6 +41,7 @@ export default function FlyerDressCode({
           {item.text || "Dress code"}
         </span>
       )}
+      <DressExcludedColors colors={item.dressExcludedColors} />
     </span>
   );
 }

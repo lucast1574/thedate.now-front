@@ -1,5 +1,6 @@
 import GiftLinkInspector from "./gift-link-inspector";
 import DressCodeInspector from "./dress-code-inspector";
+import RestrictionsInspector from "./restrictions-inspector";
 import { dressParts } from "@/lib/events/dress-code";
 import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
@@ -37,17 +38,19 @@ export default function ElementInspector({
       ? "Lista de regalos"
       : item.binding === "guest_name"
         ? "Nombre del invitado"
-        : item.binding === "dress_code"
-          ? "Dress code"
-          : item.binding === "adults_notice"
-            ? "Solo adultos"
-            : item.binding === "location"
-              ? "Ubicación"
-              : item.type === "image"
-                ? "Imagen"
-                : item.type === "icon"
-                  ? "Símbolo"
-                  : "Texto";
+        : item.binding === "restrictions"
+          ? "Restricciones"
+          : item.binding === "dress_code"
+            ? "Dress code"
+            : item.binding === "adults_notice"
+              ? "Solo adultos"
+              : item.binding === "location"
+                ? "Ubicación"
+                : item.type === "image"
+                  ? "Imagen"
+                  : item.type === "icon"
+                    ? "Símbolo"
+                    : "Texto";
   return (
     <section className="element-inspector">
       <header className="inspector-heading">
@@ -99,6 +102,8 @@ export default function ElementInspector({
           onReplace={onReplaceImage}
           photoURL={photoURL}
         />
+      ) : item.binding === "restrictions" ? (
+        <RestrictionsInspector item={item} onChange={onChange} kind={kind} />
       ) : item.binding === "location" ? (
         <LocationInspector key={item.id} item={item} onChange={onChange} />
       ) : (
@@ -160,6 +165,7 @@ export default function ElementInspector({
                 />
               </div>
               {item.type === "text" &&
+                item.restrictionStyle !== "icon" &&
                 item.locationStyle !== "icon" &&
                 (item.binding !== "dress_code" ||
                   dressParts(item.dressStyle).includes("text")) && (

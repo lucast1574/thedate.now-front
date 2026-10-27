@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { templatePhotoURL } from "@/lib/events/template-photos";
 import FlyerGiftLink from "./flyer-gift-link";
 import FlyerDressCode from "./flyer-dress-code";
+import FlyerRestrictions from "./flyer-restrictions";
 import Photo from "./photo";
 import FlyerLocation from "./flyer-location";
 import {
@@ -56,6 +57,7 @@ export function FlyerContent({
     return <FlyerGiftLink item={item} giftURL={giftURL} />;
   if (item.binding === "dress_code")
     return <FlyerDressCode item={item} photoURL={photoURL} />;
+  if (item.binding === "restrictions") return <FlyerRestrictions item={item} />;
   if (item.binding === "location") return <FlyerLocation item={item} />;
   return (
     <span

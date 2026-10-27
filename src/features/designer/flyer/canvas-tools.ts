@@ -62,12 +62,6 @@ export const canvasToolGroups = [
         label: "Música",
         description: "Elige la canción que acompaña la invitación",
       },
-      {
-        id: "experience",
-        icon: "lucide:sliders-horizontal",
-        label: "Detalles",
-        description: "Define la vestimenta y los avisos para tus invitados",
-      },
     ],
   },
 ] as const;

@@ -5,6 +5,7 @@ function layerLabel(item: FlyerElement) {
     guest_name: "Nombre del invitado",
     location: "Ubicación",
     dress_code: "Dress code",
+    restrictions: "Restricciones",
     adults_notice: "Aviso de adultos",
     gift_link: "Lista de regalos",
   };

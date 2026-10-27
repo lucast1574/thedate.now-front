@@ -11,7 +11,6 @@ export default function CanvasPanelHeading({
       photos: "Tus imágenes",
       background: "Fondo de tu invitación",
       opening: "Sobre de apertura",
-      experience: "Detalles de la celebración",
       pages: "Secciones",
       music: "Ponle música",
       layers: "Capas del lienzo",

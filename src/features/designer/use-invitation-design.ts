@@ -1,5 +1,6 @@
 "use client";
 import { validGiftLink } from "@/lib/events/gift-link";
+import { validDesignDressColors } from "@/lib/events/dress-code";
 import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
@@ -81,6 +82,10 @@ export function useInvitationDesign(
     setBusy(true);
     setMessage("");
     try {
+      if (!validDesignDressColors(sections))
+        throw new Error(
+          "Revisa los colores no permitidos del dress code: cada muestra necesita un nombre y un color válido (máximo 8).",
+        );
       if (
         sections.some((section) =>
           section.canvas?.elements.some(

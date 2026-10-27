@@ -1,6 +1,9 @@
 import type { ImageBackground } from "./background";
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
+  dressExcludedColors?: { name: string; color: string }[];
+  restrictionStyle?: "icon" | "text" | "icon-text";
+  restrictionIcon?: string;
   dressStyle?:
     | "text"
     | "icon"
@@ -12,7 +15,12 @@ export type FlyerElement = {
   dressIcon?: string;
   dressPhotoKey?: string;
   binding?:
-    "guest_name" | "location" | "dress_code" | "adults_notice" | "gift_link";
+    | "guest_name"
+    | "location"
+    | "dress_code"
+    | "adults_notice"
+    | "gift_link"
+    | "restrictions";
   locationStyle?:
     | "icon"
     | "label"

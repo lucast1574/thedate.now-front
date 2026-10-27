@@ -8,6 +8,7 @@ import {
 } from "@/lib/events/dress-code";
 import type { FlyerElement } from "@/lib/events/flyer";
 import SymbolLibrary from "./symbol-library";
+import DressColorRules from "./dress-color-rules";
 export default function DressCodeInspector({
   item,
   photos,
@@ -97,6 +98,7 @@ export default function DressCodeInspector({
           <SymbolLibrary onPick={(dressIcon) => onChange({ dressIcon })} />
         </details>
       )}
+      <DressColorRules item={item} onChange={onChange} />
       {parts.includes("image") && (
         <>
           <label>

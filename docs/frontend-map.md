@@ -217,11 +217,23 @@ La sidebar compartida muestra Invitados, Mesas y Lista de regalos en ambas marca
 
 `template-photos.ts` resuelve únicamente el marcador reservado `template-photo` al SVG local «Pon tu foto aquí». El clic o Enter/Espacio sobre una imagen abre el explorador; `replaceImage` actualiza solo el elemento de la sección original sin perder geometría ni sobrescribir cambios realizados durante la subida. Arrastrar no abre el explorador. Las muestras no consumen almacenamiento privado.
 
-`opening-panel.tsx` ofrece una pestaña Apertura y un acceso desde Secciones para añadir o quitar el sobre; comparte `OpeningArtwork` con la invitación real y permite editar plantilla, título, mensaje, botón, tipografía, colores y sello. `experience-panel.tsx` agrupa Vestimenta e Invitados con elecciones explícitas y avisos legibles. Las nuevas plantillas ofrecen sobre por defecto y respetan una desactivación explícita. Las miniaturas muestran el diseño; el visor permite recorrer la apertura real. `celebration` conserva dress code y el aviso opcional de adultos. Los valores sirven para añadir elementos/plantillas; los bloques ya colocados se editan en el lienzo. WhatsApp incluye el aviso solo cuando `adultsOnly` y `whatsappNotice` están activados; guardar no reenvía mensajes.
+`opening-panel.tsx` ofrece una pestaña Apertura y un acceso desde Secciones para añadir o quitar el sobre; comparte `OpeningArtwork` con la invitación real y permite editar plantilla, título, mensaje, botón, tipografía, colores y sello. El editor no duplica los detalles del evento: la vestimenta se edita seleccionando su elemento y el público se configura en el formulario del evento. Las nuevas plantillas ofrecen sobre por defecto y respetan una desactivación explícita. Las miniaturas muestran el diseño; el visor permite recorrer la apertura real. `celebration` conserva dress code y el aviso opcional de adultos. Los valores sirven para añadir elementos/plantillas; los bloques ya colocados se editan en el lienzo. WhatsApp incluye el aviso solo cuando `adultsOnly` y `whatsappNotice` están activados; guardar no reenvía mensajes.
 
 Desplegar primero la API que acepta `opening`, `celebration`, los bindings `dress_code`/`adults_notice` y el marcador reservado; después el frontend y los renderers de invitaciones. Los clientes antiguos no borran estas opciones al omitirlas.
 
 ## Barra de herramientas del editor
+
+`DressColorRules` permite añadir hasta ocho colores no permitidos, con nombre y
+muestra HEX editable. `dressExcludedColors` queda dentro del elemento Dress code;
+`FlyerDressCode` muestra nombres y muestras tachadas en el canvas y en la invitación.
+Las reglas se validan antes de guardar y en la API.
+
+El elemento `restrictions` se añade desde Elementos con icono y texto. Su inspector
+permite icono, texto o ambos, cambiar el símbolo y partir de ejemplos de adultos,
+mascotas, acompañantes o fotografías. Cada aviso tiene contenido independiente;
+no cambia el público ni los cupos del formulario del evento. `FlyerRestrictions`
+se comparte entre canvas y publicación. El menú Detalles se eliminó para evitar
+duplicar la vestimenta y la configuración de público del evento.
 
 La apertura ofrece seis escenas: Carta, Jardín, Ticket, Telón, Flor y Constelación.
 `opening-presets.ts` define los tiempos y resuelve la paleta desde el primer canvas
@@ -241,9 +253,9 @@ El editor recibe en Elementos. `canvas-section-controls.tsx` comparte la secció
 
 `canvas-rail.tsx` agrupa creación, organización y configuración con etiquetas cortas. Texto y foto tienen accesos directos; símbolos se despliega bajo demanda. `canvas-images.tsx` mantiene la subida y la inserción de fotos en una sola implementación. Los controles usan el selector personalizado del proyecto y el foco no añade contornos ni anillos.
 
-`CelebrationAudience` comparte la pregunta de todas las edades/solo adultos entre creación y Detalles; el formulario guarda el aviso y la opción de WhatsApp desde el alta. `DressCodeInspector` combina icono, imagen y texto sin permitir una composición vacía. `FlyerDressCode` comparte la presentación entre lienzo y publicación; `dressPhotoKey` permite reemplazar la imagen sin cambiar la geometría. Las plantillas reúnen vestimenta e indicaciones en el mismo elemento editable.
+`CelebrationAudience` comparte la pregunta de todas las edades/solo adultos en el formulario de creación y edición del evento; el formulario guarda el aviso y la opción de WhatsApp desde el alta. `DressCodeInspector` combina icono, imagen y texto sin permitir una composición vacía. `FlyerDressCode` comparte la presentación entre lienzo y publicación; `dressPhotoKey` permite reemplazar la imagen sin cambiar la geometría. Las plantillas reúnen vestimenta e indicaciones en el mismo elemento editable.
 
-`gift_link` es un elemento de texto con icono y enlace: apunta a `/regalos` (resuelto al enlace personal del invitado) o a una lista HTTPS externa. El inspector valida el destino antes de guardar; la invitación ya no impone un botón de regalos fuera del lienzo. El catálogo no ofrece Solo adultos: esa elección permanece en creación/Detalles y en plantillas. La acción de aplicar plantillas precede a sus muestras para estar accesible también en demos y móvil.
+`gift_link` es un elemento de texto con icono y enlace: apunta a `/regalos` (resuelto al enlace personal del invitado) o a una lista HTTPS externa. El inspector valida el destino antes de guardar; la invitación ya no impone un botón de regalos fuera del lienzo. El catálogo no ofrece Solo adultos: esa elección permanece en el formulario del evento y en plantillas. La acción de aplicar plantillas precede a sus muestras para estar accesible también en demos y móvil.
 
 ## Imágenes de fondo y referencia de uso
 
@@ -253,4 +265,4 @@ El acceso Imagen de fondo aparece junto al color de la sección y abre `canvas-b
 
 Referencia examinada: [invitación Canva](https://llinvit.my.canva.site/sander-y-angie-/page-2) y su página inicial. Su estructura observada incluye sobre con ornamentación floral, nombres/fecha, dedicatoria, familia y padrinos, música, calendario, recepción/mapa, dress code, regalos, cuenta regresiva, confirmación y cierre. Se usa para mapear necesidades, sin copiar fotografías, nombres, teléfonos ni datos bancarios. En The Date, la entrada no obliga a desplazarse para encontrar el sobre y cada bloque del diseño sigue siendo editable. Los textos familiares y dedicatorias se resuelven con secciones; los accesos de ubicación y regalos son elementos. La cuenta regresiva dinámica y la descarga de calendario requieren elementos propios si se incorporan más adelante; la referencia no los convierte en funciones ya implementadas.
 
-`canvas-tools.ts` define el orden de la navegación: Crear (Elementos, Imágenes, Plantillas), Organizar (Secciones, Fondos, Capas) y Experiencia (Apertura, Música, Detalles). Elementos es siempre la primera vista al abrir. Fondos tiene acceso propio y estado activo visible. Secciones ofrece añadir sin duplicar el selector de contexto. Capas conserva su lista al seleccionar, permite adelantar/enviar atrás y abre el inspector con Editar; su estado vacío conduce a Elementos. Seleccionar una capa no reinicia el scroll del panel. Al insertar desde Imágenes se abre el inspector en Elementos y volver a Imágenes recupera la biblioteca. `canvas-selection-inspector.tsx` concentra la conexión del elemento seleccionado con sus propiedades, separada de los paneles de herramientas.
+`canvas-tools.ts` define el orden de la navegación: Crear (Elementos, Imágenes, Plantillas), Organizar (Secciones, Fondos, Capas) y Experiencia (Apertura, Música). Elementos es siempre la primera vista al abrir. Fondos tiene acceso propio y estado activo visible. Secciones ofrece añadir sin duplicar el selector de contexto. Capas conserva su lista al seleccionar, permite adelantar/enviar atrás y abre el inspector con Editar; su estado vacío conduce a Elementos. Seleccionar una capa no reinicia el scroll del panel. Al insertar desde Imágenes se abre el inspector en Elementos y volver a Imágenes recupera la biblioteca. `canvas-selection-inspector.tsx` concentra la conexión del elemento seleccionado con sus propiedades, separada de los paneles de herramientas.

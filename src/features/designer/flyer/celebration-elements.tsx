@@ -59,6 +59,29 @@ export default function CelebrationElements({
         </span>
         <Icon name="plus" />
       </button>
+      <button
+        disabled={disabled}
+        onClick={() =>
+          onAdd(
+            element("text", {
+              binding: "restrictions",
+              restrictionStyle: "icon-text",
+              restrictionIcon: "lucide:shield-alert",
+              text: "Ten en cuenta estas indicaciones antes de asistir.",
+              font: draft.kind === "wedding" ? "serif" : "sans",
+              fontSize: 28,
+              color: draft.accentColor,
+              height: 220,
+            }),
+          )
+        }
+      >
+        <Icon name="lucide:shield-alert" />
+        <span>
+          Restricciones<small>Niños, mascotas y otras indicaciones</small>
+        </span>
+        <Icon name="plus" />
+      </button>
     </div>
   );
 }
