@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import type { Event, Guest } from "@/lib/events/types";
 import type { SeatingPlan, SeatingTable } from "@/lib/events/seating";
 import { attendees } from "@/lib/events/attendees";
@@ -20,6 +20,7 @@ type Props = {
   busy: boolean;
   dirty: boolean;
   stale: boolean;
+  exportAction: ReactNode;
   onChange: (plan: SeatingPlan) => void;
   onSave: () => void;
   onReload: () => void;
@@ -31,6 +32,7 @@ export default function SeatingEditor({
   busy,
   dirty,
   stale,
+  exportAction,
   onChange,
   onSave,
   onReload,
@@ -78,6 +80,7 @@ export default function SeatingEditor({
           </p>
         </div>
         <div className="action-row">
+          {exportAction}
           <button
             disabled={busy || !dirty || stale}
             className="office-button"

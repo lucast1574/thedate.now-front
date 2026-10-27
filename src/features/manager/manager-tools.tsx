@@ -2,7 +2,7 @@ import PublicationPanel from "@/features/studio/publication-panel";
 import { useEventActions } from "@/features/studio/use-event-actions";
 import GuestWorkspace from "./guest-workspace";
 import SeatingEditor from "./seating-editor";
-import DoorPanel from "./door-panel";
+import DoorExportButton from "./door-export-button";
 import WishlistPanel from "@/features/gifts/wishlist-panel";
 import type { useManager } from "./use-manager";
 export default function ManagerTools({
@@ -80,24 +80,25 @@ export default function ManagerTools({
           dirty={dirty}
           stale={stale}
           busy={busy}
+          exportAction={
+            <DoorExportButton
+              event={event}
+              guests={guests}
+              plan={plan}
+              blocked={busy || dirty || stale}
+              dirty={dirty}
+              stale={stale}
+              onExport={(task) => {
+                void manager.run(task, "Excel generado.");
+              }}
+            />
+          }
           onChange={manager.update}
           onSave={() => {
             void manager.save();
           }}
           onReload={() => {
             void manager.run(() => manager.refresh(true), "Plano recargado.");
-          }}
-        />
-      )}
-      {tab === "door" && (
-        <DoorPanel
-          event={event}
-          guests={guests}
-          plan={plan}
-          blocked={busy || dirty || stale}
-          dirty={dirty}
-          onExport={(task) => {
-            void manager.run(task, "Excel generado.");
           }}
         />
       )}

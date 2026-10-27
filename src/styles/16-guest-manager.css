@@ -113,25 +113,13 @@
   accent-color: var(--manager-accent);
   height: 6px;
 }
-.manager-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-.manager-tabs button[aria-current] {
-  color: var(--manager-accent);
-  background: var(--manager-tint);
-  border-color: var(--manager-accent);
-}
 .manager-additions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 .manual-guest,
-.manager-page .guest-import,
-.door-panel {
+.manager-page .guest-import {
   padding: 24px;
   border: 1px solid var(--ui-border);
   border-radius: 14px;

@@ -35,10 +35,6 @@
   font-family: Arial, sans-serif;
   letter-spacing: -0.035em;
 }
-.office-general .manager-tabs button[aria-current="page"] {
-  background: var(--ui-accent);
-  color: white;
-}
 
 .office-general .manager-general .product-heading-mark {
   background: #e4ecfb;

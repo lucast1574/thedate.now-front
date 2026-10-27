@@ -63,10 +63,6 @@
   box-shadow: 0 5px 18px #49317309;
   border-radius: 18px;
 }
-.manager-general .manager-tabs button[aria-current] {
-  background: #50328c;
-  color: white;
-}
 .manager-general .seating-board {
   background-color: #faf9ff;
 }

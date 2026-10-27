@@ -4,6 +4,37 @@
 .manager-page .manager-header h1 {
   font-size: clamp(24px, 2.4vw, 32px);
 }
+.manager-page .manager-event-context {
+  margin-top: 20px;
+  color: var(--ui-accent);
+  font-weight: 600;
+}
+.manager-page > .seating-editor,
+.manager-page > .wishlist-panel {
+  margin-top: var(--manager-section-gap);
+}
+.seating-top > .action-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-start;
+}
+.seating-export-action {
+  max-width: 240px;
+}
+.seating-export-action button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.seating-export-action small {
+  display: block;
+  margin-top: 8px;
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
 .manager-page .guest-metrics {
   margin-block: 28px 32px;
   gap: 0;
@@ -25,29 +56,6 @@
   font-size: 12px;
   letter-spacing: 0;
   text-transform: none;
-}
-.manager-page .manager-tabs {
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  gap: 24px;
-  padding-bottom: 0;
-  margin-bottom: var(--manager-section-gap);
-  border-bottom: 1px solid var(--ui-border);
-}
-.manager-page .manager-tabs button {
-  flex-shrink: 0;
-  min-height: 48px;
-  padding: 12px 0;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  border-radius: 0;
-  background: transparent;
-  color: var(--ui-muted);
-}
-.manager-page .manager-tabs button[aria-current="page"] {
-  border-bottom-color: var(--ui-accent);
-  color: var(--ui-ink);
-  background: transparent;
 }
 .guest-workspace-heading,
 .guest-workspace-actions,

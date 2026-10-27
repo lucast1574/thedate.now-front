@@ -1,7 +1,7 @@
 "use client";
 import ProductHeading from "@/components/product-heading";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
 import OrganizationPreview from "./organization-preview";
 import WishlistPanel from "@/features/gifts/wishlist-panel";
@@ -11,23 +11,30 @@ import { useManager } from "./use-manager";
 import GuestSummary from "./guest-summary";
 export default function ManagerPage({ id }: { id: string }) {
   const manager = useManager(id);
-  const router = useRouter(),
-    params = useSearchParams();
+  const params = useSearchParams();
   const requested = params.get("tab"),
     tab =
-      requested === "tables" || requested === "gifts" || requested === "door"
-        ? requested
-        : "guests";
-  const setTab = (next: string) => {
-    if (
-      manager.dirty &&
-      !window.confirm(
-        "Hay cambios del plano sin guardar. ¿Cambiar de herramienta?",
-      )
-    )
-      return;
-    router.replace(`/manager/${id}?tab=${next}`);
-  };
+      requested === "tables" || requested === "door"
+        ? "tables"
+        : requested === "gifts"
+          ? "gifts"
+          : "guests";
+  const section = {
+    guests: {
+      title: "Invitados y respuestas",
+      description: "Gestiona tu lista y sigue cada confirmación de asistencia.",
+    },
+    tables: {
+      title: "Mesas y distribución",
+      description:
+        "Organiza el salón, asigna los asientos y descarga tu lista de entrada.",
+    },
+    gifts: {
+      title: "Lista de regalos",
+      description:
+        "Prepara los regalos de tu celebración y consulta las elecciones de tus invitados.",
+    },
+  }[tab];
   const { event, guests, user, error, dirty, stale } = manager;
   if (!event)
     return (
@@ -60,9 +67,7 @@ export default function ManagerPage({ id }: { id: string }) {
         <WorkspaceSidebar
           wedding={event.kind === "wedding"}
           user={user}
-          active={
-            tab === "door" ? "guests" : (tab as "guests" | "tables" | "gifts")
-          }
+          active={tab}
           eventId={id}
           guard={guard}
         />
@@ -73,8 +78,9 @@ export default function ManagerPage({ id }: { id: string }) {
         <header className="manager-header">
           <div>
             <ProductHeading kind={event.kind} area="manager" />
-            <h1>{event.title}</h1>
-            <p>De la confirmación al asiento: cada persona cuenta.</p>
+            <p className="manager-event-context">{event.title}</p>
+            <h1>{section.title}</h1>
+            <p>{section.description}</p>
           </div>
           <div className="action-row">
             <Link
@@ -130,27 +136,8 @@ export default function ManagerPage({ id }: { id: string }) {
           </>
         ) : (
           <>
-            {tab !== "gifts" && <GuestSummary event={event} guests={guests} />}
-            <nav
-              className="manager-tabs"
-              aria-label="Herramientas de invitados"
-            >
-              {[
-                ["guests", "Invitados y respuestas"],
-                ["tables", "Plano de mesas"],
-                ["door", "Excel para entrada"],
-                ["gifts", "Lista de regalos"],
-              ].map(([key, label]) => (
-                <button
-                  key={key}
-                  aria-current={tab === key ? "page" : undefined}
-                  onClick={() => setTab(key)}
-                >
-                  {label}
-                </button>
-              ))}
-            </nav>
-            {stale && (
+            {tab === "guests" && <GuestSummary event={event} guests={guests} />}
+            {tab === "tables" && stale && (
               <p className="manager-warning" role="alert">
                 Hay respuestas o cambios nuevos. Conservamos tu borrador;
                 recarga el plano antes de guardarlo o exportar.

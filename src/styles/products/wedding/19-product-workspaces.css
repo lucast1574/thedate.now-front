@@ -65,11 +65,3 @@
 .manager-wedding .manager-header h1 {
   font-weight: 400;
 }
-.manager-wedding .manager-tabs {
-  border-bottom: 1px solid var(--ui-border);
-  padding-bottom: 18px;
-}
-.manager-wedding .manager-tabs button[aria-current] {
-  background: var(--ui-soft);
-  color: var(--ui-accent);
-}
