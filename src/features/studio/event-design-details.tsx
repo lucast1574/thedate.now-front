@@ -25,7 +25,8 @@ export default function EventDesignDetails({
   const creation = draft.creation || {};
   const dress = element("text", {
     binding: "dress_code",
-    dressExcludedColors: creation.dressExcludedColors,
+    dressExcludedColors:
+      celebration.dressExcludedColors || creation.dressExcludedColors,
   });
   function patchCreation(patch: Event["creation"]) {
     setDraft((current) => ({
@@ -43,7 +44,7 @@ export default function EventDesignDetails({
           opening.paletteMode === "design" ? templateOpening(template) : opening
         }
       />
-      <details className="event-form-options">
+      <details className="event-form-options" open>
         <summary>
           <Icon name="lucide:shirt" />
           <span>
@@ -83,7 +84,13 @@ export default function EventDesignDetails({
           <DressColorRules
             item={dress}
             onChange={(patch) =>
-              patchCreation({ dressExcludedColors: patch.dressExcludedColors })
+              setDraft((current) => ({
+                ...current,
+                celebration: {
+                  ...celebration,
+                  dressExcludedColors: patch.dressExcludedColors,
+                },
+              }))
             }
           />
           <label>

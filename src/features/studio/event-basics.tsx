@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import DatePicker from "@/components/date-picker";
 import TimePicker from "@/components/time-picker";
@@ -14,14 +14,14 @@ export default function EventBasics({
   setDraft: Dispatch<SetStateAction<Event>>;
   selected: boolean;
 }) {
-  const [customAddress, setCustomAddress] = useState(selected);
   const wedding = draft.kind === "wedding";
   const [date, time] = draft.startAt.split("T");
   return (
     <>
       <label>
         {wedding ? "¿Cómo se llaman los novios?" : "¿Cómo se llama tu evento?"}
-        <input
+        <textarea
+          rows={wedding ? 2 : 1}
           required
           maxLength={160}
           value={draft.title}
@@ -29,9 +29,7 @@ export default function EventBasics({
             setDraft({
               ...draft,
               title: e.target.value,
-              ...(!customAddress
-                ? { slug: suggestedAddress(e.target.value) }
-                : {}),
+              ...(!selected ? { slug: suggestedAddress(e.target.value) } : {}),
             })
           }
           placeholder={wedding ? "Sofía y Mateo" : "Cumpleaños de Lucas"}
@@ -68,7 +66,6 @@ export default function EventBasics({
         value={draft.slug}
         disabled={selected}
         onChange={(slug) => {
-          setCustomAddress(true);
           setDraft({ ...draft, slug });
         }}
       />

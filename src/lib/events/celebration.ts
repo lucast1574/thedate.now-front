@@ -13,6 +13,7 @@ export type Opening = {
   buttonLabel: string;
 };
 export type Celebration = {
+  dressExcludedColors?: { name: string; color: string }[];
   adultsOnly: boolean;
   adultsMessage: string;
   whatsappNotice: boolean;

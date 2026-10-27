@@ -22,6 +22,14 @@ export default function CelebrationElements({
           onAdd(
             element("text", {
               binding: "dress_code",
+              dressStyle: "icon-text",
+              dressIcon: "lucide:shirt",
+              dressExcludedColors:
+                details.dressExcludedColors ||
+                draft.sections
+                  ?.flatMap((section) => section.canvas?.elements || [])
+                  .find((item) => item.binding === "dress_code")
+                  ?.dressExcludedColors,
               text: `${details.dressCode}\n${details.dressNote}`,
               font: draft.kind === "wedding" ? "serif" : "sans",
               fontSize: 30,

@@ -106,3 +106,24 @@ test("changing templates carries editable restrictions, color exclusions and act
   );
   assert.equal(elements.filter((e) => e.binding === "gift_link").length, 1);
 });
+
+// Form defaults must survive even when a dress element is added later.
+test("event payload persists dress defaults and private WhatsApp copy independently", () => {
+  const { eventPayload, blankEvent } = loadSource("src/lib/events/draft.ts");
+  const draft = {
+    ...blankEvent("wedding"),
+    startAt: "2026-12-01T18:00",
+    description: "Visible on the design",
+    invitationMessage: "Confirma aquí: {{enlace}}",
+  };
+  draft.celebration.dressExcludedColors = [
+    { name: "Blanco", color: "#FFFFFF" },
+  ];
+  const payload = eventPayload(draft);
+  assert.deepEqual(
+    payload.celebration.dressExcludedColors,
+    draft.celebration.dressExcludedColors,
+  );
+  assert.equal(payload.invitationMessage, draft.invitationMessage);
+  assert.equal(payload.description, draft.description);
+});

@@ -67,17 +67,7 @@ export default function ColorPanel({
     );
   }
   return (
-    <div
-      id={id}
-      className="color-panel"
-      onKeyDown={(e) => {
-        if (e.key === "Escape") {
-          e.preventDefault();
-          onClose();
-          e.currentTarget.parentElement?.querySelector("button")?.focus();
-        }
-      }}
-    >
+    <div id={id} className="color-panel">
       <div className="color-panel-heading">
         <strong>Tu paleta</strong>
         <button

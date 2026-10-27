@@ -66,7 +66,9 @@ export function templateDress(
     dressStyle: "icon-text",
     dressIcon: previous?.dressIcon || "lucide:shirt",
     dressExcludedColors:
-      source?.creation?.dressExcludedColors || previous?.dressExcludedColors,
+      source?.celebration?.dressExcludedColors ||
+      source?.creation?.dressExcludedColors ||
+      previous?.dressExcludedColors,
   });
 }
 

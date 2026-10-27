@@ -16,7 +16,7 @@ export default function EventOpeningFields({
   palette: Opening;
 }) {
   return (
-    <details className="event-form-options">
+    <details className="event-form-options" open>
       <summary>
         <Icon name="mail" />
         <span>

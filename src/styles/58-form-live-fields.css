@@ -1,0 +1,61 @@
+.color-popout {
+  position: fixed;
+  z-index: 10000;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: 16px;
+  background: var(--ui-surface);
+  box-shadow: 0 16px 48px #231a182b;
+}
+.color-popout .color-panel {
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+.color-popout input:focus {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+}
+.color-popout button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  color: var(--ui-accent);
+  background: var(--ui-soft);
+}
+.event-message-card {
+  display: grid;
+  gap: 14px;
+}
+.event-message-help {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ui-muted);
+}
+.event-message-help code {
+  color: var(--ui-accent);
+}
+.event-message-preview {
+  min-width: 0;
+  padding: 18px;
+  border-radius: 12px;
+  background: var(--ui-soft);
+}
+.event-message-preview strong {
+  font-size: 12px;
+  color: var(--ui-accent);
+}
+.event-message-preview p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 12px 0;
+}
+.event-message-preview small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ui-muted);
+}

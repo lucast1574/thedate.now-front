@@ -7,6 +7,7 @@ import EventBasics from "./event-basics";
 import EventLocationFields from "./event-location-fields";
 import EventCapacity from "./event-capacity";
 import EventTemplateStart from "./event-template-start";
+import EventMessageFields from "./event-message-fields";
 import GuestHoldField from "./guest-hold-field";
 export default function EventForm({
   draft,
@@ -48,7 +49,11 @@ export default function EventForm({
             <p>Empecemos con el nombre y la fecha.</p>
           </div>
         </div>
-        <EventBasics draft={draft} setDraft={setDraft} selected={!!selected} />
+        <EventBasics
+          draft={draft}
+          setDraft={setDraft}
+          selected={!!selected?.publishedAt}
+        />
       </section>
       <section className="event-form-card">
         <div className="event-form-card-heading">
@@ -75,23 +80,9 @@ export default function EventForm({
           <EventAudience draft={draft} setDraft={setDraft} />
         </div>
       </section>
-      <section className="event-form-card event-message-card">
-        <label>
-          Un mensaje para tus invitados{" "}
-          <span className="form-optional">Opcional</span>
-          <textarea
-            rows={3}
-            maxLength={5000}
-            value={draft.description}
-            onChange={(e) =>
-              setDraft({ ...draft, description: e.target.value })
-            }
-            placeholder="Queremos celebrar este momento contigo…"
-          />
-        </label>
-      </section>
+      <EventMessageFields draft={draft} setDraft={setDraft} />
       {!selected && <EventTemplateStart draft={draft} setDraft={setDraft} />}
-      <details className="event-form-options">
+      <details className="event-form-options" open>
         <summary>
           <Icon name="layout" />
           <span>

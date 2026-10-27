@@ -27,7 +27,7 @@ export default function SubdomainField({
         <span>Podrás compartirlo cuando publiques tu invitación.</span>
       </div>
       {!disabled && (
-        <details className="address-edit">
+        <details className="address-edit" open>
           <summary>Personalizar enlace</summary>
           <div className="subdomain-field">
             <label htmlFor="invitation-subdomain">
@@ -57,7 +57,8 @@ export default function SubdomainField({
               {wedding
                 ? "Sus nombres juntos quedan bonitos: sofiaymateo."
                 : "Usa tu nombre o el de tu celebración: cumplelucas."}{" "}
-              Sin espacios ni tildes.
+              Sin espacios ni tildes. Si cambias el nombre del evento antes de
+              publicar, el enlace se actualizará también.
             </small>
           </div>
         </details>

@@ -59,6 +59,7 @@ export function eventPayload(event: Event) {
     slug: event.slug,
     title: event.title,
     description: event.description,
+    invitationMessage: event.invitationMessage || "",
     startAt: new Date(event.startAt).toISOString(),
     timeZone: event.timeZone || browserTimeZone(),
     organizer: event.organizer,

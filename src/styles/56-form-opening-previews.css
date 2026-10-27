@@ -206,21 +206,6 @@
     opacity: 1;
   }
 }
-.dress-color-editor-row:has(.color-trigger[aria-expanded="true"]) {
-  grid-template-columns: minmax(0, 1fr) 30px;
-  align-items: end;
-}
-.dress-color-editor-row:has(.color-trigger[aria-expanded="true"])
-  > .color-picker {
-  grid-column: 1 / -1;
-  width: 100%;
-  max-width: none;
-}
-.dress-color-editor-row .color-panel {
-  width: 100%;
-  max-width: 360px;
-  box-sizing: border-box;
-}
 .event-map-location {
   display: grid;
   gap: 14px;
