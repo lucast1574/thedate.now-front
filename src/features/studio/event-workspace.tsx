@@ -49,6 +49,21 @@ export default function EventWorkspace({
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
       <Alert>{feedback.error}</Alert>
+      <nav className="action-row" aria-label="Accesos de la invitación">
+        {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
+          <Link
+            className="workspace-back"
+            href={`/editor/${encodeURIComponent(selected.id)}`}
+          >
+            Abrir editor de invitación ↗
+          </Link>
+        )}
+        {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
+          <Link className="workspace-back" href={`/manager/${selected.id}`}>
+            Invitados, mesas y regalos ↗
+          </Link>
+        )}
+      </nav>
       {!selected?.isDemo &&
         (!selected ||
           selected.ownerId === user.id ||
@@ -62,19 +77,6 @@ export default function EventWorkspace({
             onSubmit={save}
           />
         )}
-      {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
-        <Link
-          className="office-button editor-open"
-          href={`/editor/${encodeURIComponent(selected.id)}`}
-        >
-          Abrir editor de invitación ↗
-        </Link>
-      )}
-      {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
-        <Link className="office-button" href={`/manager/${selected.id}`}>
-          Invitados, mesas y regalos ↗
-        </Link>
-      )}
       {selected && !selected.isDemo && selected.paymentStatus !== "paid" && (
         <PendingPayment
           event={selected}
