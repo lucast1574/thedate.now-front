@@ -1,3 +1,8 @@
+# Aplicación frontend
+
+Las landings y sus guías SEO viven ahora en [thedate.now-landing](https://github.com/lucast1574/thedate.now-landing).
+Este repositorio mantiene los estudios, cuentas, editor e invitaciones.
+
 # Mapa del frontend
 
 Lee este mapa antes de explorar todo `src/`. Después abre solo el módulo de la tarea.
@@ -9,7 +14,6 @@ src/
   app/           Rutas Next.js, layout y adaptadores HTTP
   components/    Widgets compartidos entre funcionalidades
   features/
-    marketing/   Landings general y de bodas, divididas en secciones
     studio/      Sesión, eventos, formularios y paneles de organización
     designer/    Editor, secciones, vista previa y guardado del diseño
     invitations/ Invitación pública y carga de datos en el servidor
@@ -29,8 +33,6 @@ tests/           Regresiones de contratos, eventos y widgets
 | Tarea                                      | Archivos iniciales                                                              |
 | ------------------------------------------ | ------------------------------------------------------------------------------- |
 | Selección de página según host             | `src/app/page.tsx`, `src/lib/events/domains.ts`                                 |
-| Landing general                            | `src/features/marketing/general/<sección>.tsx`                                  |
-| Landing de bodas                           | `src/features/marketing/wedding/<sección>.tsx`                                  |
 | Marca, botones, avisos o imágenes          | `src/components/`                                                               |
 | Detalles de evento en invitación y RSVP    | `src/components/event-details.tsx`                                              |
 | Composición del estudio                    | `src/features/studio/studio.tsx`                                                |

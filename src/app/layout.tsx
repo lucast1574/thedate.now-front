@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import { invitationTarget } from "@/lib/events/invitation-runtime";
 import {
   Bodoni_Moda,
   Cormorant_Garamond,
@@ -52,33 +51,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const host = ((await headers()).get("host") ?? "")
-    .toLowerCase()
-    .replace(/:\d+$/, "")
-    .replace(/\.$/, "");
-  const marketing =
-    !invitationTarget() &&
-    (host === "thedate.now" || host === "save.thedate.now");
-  const wedding = host === "save.thedate.now";
   return (
     <html
       lang="es"
       suppressHydrationWarning
       className={`${serif.variable} ${sans.variable} ${party.variable} ${weddingLogo.variable}`}
     >
-      <head>
-        {marketing && (
-          /* The synchronous head gate prevents a landing flash before hydration. */
-          /* eslint-disable-next-line @next/next/no-sync-scripts */
-          <script
-            src="/brand-arrival.js"
-            data-storage-key={
-              wedding ? "wedding-brand-entrance-v1" : "event-brand-entrance-v1"
-            }
-            data-brand={wedding ? "wedding" : "event"}
-          />
-        )}
-      </head>
       <body>{children}</body>
     </html>
   );

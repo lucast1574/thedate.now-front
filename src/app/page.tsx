@@ -1,26 +1,11 @@
 import { googleEnabled as googleEnabledFor } from "@/lib/auth/google";
-import { landingMetadata } from "@/features/marketing/metadata";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import Studio from "@/features/studio/studio";
-import GeneralLanding from "@/features/marketing/general/landing";
-import WeddingLanding from "@/features/marketing/wedding/landing";
 import Invitation from "@/features/invitations/invitation";
 import { findEvent } from "@/features/invitations/load-invitation";
 import { invitationFromHost } from "@/lib/events/domains";
 import { invitationTarget } from "@/lib/events/invitation-runtime";
-export async function generateMetadata() {
-  const host = ((await headers()).get("host") ?? "")
-    .toLowerCase()
-    .replace(/:\d+$/, "")
-    .replace(/\.$/, "");
-  if (
-    !invitationTarget() &&
-    (host === "save.thedate.now" || host === "thedate.now")
-  )
-    return landingMetadata(host === "save.thedate.now");
-  return {};
-}
 export default async function Home() {
   const pinned = invitationTarget();
   if (pinned) {
@@ -57,5 +42,12 @@ export default async function Home() {
     if (!event) notFound();
     return <Invitation event={event} />;
   }
-  return host === "save.thedate.now" ? <WeddingLanding /> : <GeneralLanding />;
+  if (host === "thedate.now" || host === "save.thedate.now") notFound();
+  return (
+    <Studio
+      portal="general"
+      googleEnabled={googleEnabled}
+      paymentsEnabled={paymentsEnabled}
+    />
+  );
 }

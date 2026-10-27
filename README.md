@@ -1,3 +1,8 @@
+# Aplicación frontend
+
+Las landings y sus guías SEO viven ahora en [thedate.now-landing](https://github.com/lucast1574/thedate.now-landing).
+Este repositorio mantiene los estudios, cuentas, editor e invitaciones.
+
 # Mapa del frontend
 
 ## Google por marca
@@ -20,7 +25,6 @@ src/
   app/           Rutas Next.js, layout y adaptadores HTTP
   components/    Widgets compartidos entre funcionalidades
   features/
-    marketing/   Landings general y de bodas, divididas en secciones
     studio/      Sesión, eventos, formularios y paneles de organización
     designer/    Editor, secciones, vista previa y guardado del diseño
     invitations/ Invitación pública y carga de datos en el servidor
@@ -39,8 +43,6 @@ tests/           Regresiones de contratos, eventos y widgets
 | Tarea                                      | Archivos iniciales                                                              |
 | ------------------------------------------ | ------------------------------------------------------------------------------- |
 | Selección de página según host             | `src/app/page.tsx`, `src/lib/events/domains.ts`                                 |
-| Landing general                            | `src/features/marketing/general/<sección>.tsx`                                  |
-| Landing de bodas                           | `src/features/marketing/wedding/<sección>.tsx`                                  |
 | Marca, botones, avisos o imágenes          | `src/components/`                                                               |
 | Detalles de evento en invitación y RSVP    | `src/components/event-details.tsx`                                              |
 | Composición del estudio                    | `src/features/studio/studio.tsx`                                                |
@@ -85,25 +87,3 @@ tests/           Regresiones de contratos, eventos y widgets
 - RSVP restaura elección/motivo persistidos, y los cupos Maybe respetan su vencimiento.
 
 La configuración operativa, migración de reservas y límites de escala están documentados en el backend (`docs/rollout.md`).
-
-## Landings y SEO
-
-Las identidades de Save the Date y The Date están documentadas en `brand/`.
-Las nuevas secciones se mantienen en `src/features/marketing/`, con estilos
-limitados a `.wedding-atlas` y `.festival-site`. El estudio y las invitaciones
-conservan sus componentes existentes.
-
-Cada dominio público tiene título, descripción, canonical, Open Graph, imagen
-social PNG (con SVG editable), Twitter Card y JSON-LD WebSite/WebPage propios.
-`public-origin.ts` permite sitemap y robots únicamente en `thedate.now` y
-`save.thedate.now`; estudios, rutas privadas e invitaciones no heredan el canonical
-de una landing. Las FAQ tienen contenido visible, sin promesas de rich results.
-
-Validación: `npm run check`; `tests/marketing-seo.test.mjs` cubre aislamiento por
-host, contenedores de invitaciones, sitemap y metadatos de las dos marcas.
-
-Las landings incorporan animaciones de papel/sello para bodas y de ticket/cinta
-para eventos. Cada una tiene control de pausa y respeta movimiento reducido.
-Las guías públicas `/invitaciones-digitales-de-boda` y
-`/invitaciones-digitales-para-eventos` se sirven únicamente en su dominio de
-producto; robots y sitemap mantienen aisladas las rutas privadas.
