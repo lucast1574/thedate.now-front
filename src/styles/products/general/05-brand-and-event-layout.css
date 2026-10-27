@@ -1,0 +1,7 @@
+.brand-general .brand-mark {
+  color: var(--party-purple);
+}
+.brand-general .brand-mark circle {
+  fill: var(--party-pink);
+  stroke: var(--party-pink);
+}

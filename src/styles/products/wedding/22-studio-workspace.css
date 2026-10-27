@@ -1,0 +1,13 @@
+.workspace-brand .wedding-mark {
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
+}
+.workspace-brand .brand-wedding-title {
+  font-size: 15px;
+  letter-spacing: 0.06em;
+}
+.workspace-brand .brand-wedding-subtitle {
+  font-size: 6px;
+  letter-spacing: 0.2em;
+}

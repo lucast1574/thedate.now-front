@@ -1,11 +1,8 @@
 import { notFound } from "next/navigation";
 import { scopedWishlist } from "@/lib/api/gift-scope";
 import GuestWishlist from "@/features/gifts/guest-wishlist";
-export const metadata = {
-  title: "Tu lista de regalos • The Date",
-  robots: { index: false, follow: false },
-  referrer: "no-referrer",
-};
+import { giftMetadata } from "@/lib/products/metadata";
+export const generateMetadata = () => giftMetadata(true);
 export default async function Page({
   params,
 }: {

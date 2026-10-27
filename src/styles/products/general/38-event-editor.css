@@ -1,0 +1,150 @@
+.canvas-studio.editor-general {
+  --editor-accent: var(--ui-accent);
+  --editor-ground: var(--ui-background);
+  --editor-ink: var(--ui-ink);
+  --editor-soft: #f0f3f8;
+  color: var(--editor-ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.editor-general .canvas-desk {
+  background: #e9ecf1;
+}
+.editor-general .canvas-context {
+  background: #e9ecf1;
+}
+.editor-general .canvas-panel h2 {
+  font:
+    650 23px/1.2 Arial,
+    Helvetica,
+    sans-serif;
+  letter-spacing: -0.035em;
+  color: var(--ui-ink);
+}
+.editor-general .canvas-panel > header > span {
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #79818d;
+}
+.editor-general .canvas-rail-brand {
+  font:
+    750 18px/1 Arial,
+    Helvetica,
+    sans-serif;
+  letter-spacing: -0.06em;
+  color: var(--ui-ink);
+  text-align: left;
+  padding: 20px 8px;
+}
+.editor-general .canvas-rail button {
+  color: #687181;
+  border-radius: 8px;
+}
+.editor-general .canvas-rail button[aria-pressed="true"] {
+  background: #e2eafa;
+  color: #245cc5;
+}
+.editor-general .canvas-rail button:hover,
+.editor-general .canvas-rail button:focus-visible {
+  background: #e9edf4;
+  color: #245cc5;
+}
+.editor-general .canvas-text-presets button {
+  background: #f0f3f8;
+  color: var(--ui-ink);
+  border-radius: 8px;
+}
+.editor-general .canvas-text-presets button:first-child {
+  font:
+    650 22px/1.2 Arial,
+    Helvetica,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.editor-general .canvas-text-presets button:last-child {
+  font:
+    400 13px Arial,
+    Helvetica,
+    sans-serif;
+}
+.editor-general .canvas-panel-description {
+  color: #78808b;
+}
+.editor-general .canvas-panel h3,
+.editor-general .canvas-panel h4 {
+  color: #303641;
+}
+.editor-general .canvas-special-tools button:hover,
+.editor-general .canvas-special-tools button:focus-visible {
+  background: #eef3fb;
+}
+.editor-general .canvas-page-name {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #647080;
+}
+.editor-general .canvas-add-page {
+  background: #f7f8fa;
+  border: 0;
+  border-radius: 8px;
+  color: #536277;
+}
+.editor-general .canvas-stack-note {
+  color: #7c8592;
+}
+.editor-general .canvas-panel .symbol-search,
+.editor-general .symbol-library-grid button {
+  background: #f0f3f8;
+}
+.editor-general .template-card,
+.editor-general .template-detail h3 {
+  font-family: Arial, Helvetica, sans-serif;
+}
+.editor-general .canvas-panel .location-mini-preview {
+  background: #f5f7fa;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.editor-general .canvas-panel .location-part-options > button {
+  background: #f3f5f9;
+}
+.editor-general
+  .canvas-panel
+  .location-part-options
+  > button[aria-pressed="true"] {
+  background: #e2ebfc;
+  color: #245cc5;
+}
+.editor-general .editor-toolbar button,
+.editor-general .canvas-panel button {
+  border-radius: 7px;
+}
+.editor-general .editor-toolbar .editor-save {
+  background: var(--ui-accent);
+  color: white;
+}
+
+.editor-general .canvas-rail-brand {
+  white-space: nowrap;
+  font-size: 16px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.editor-general .color-picker {
+  --picker-accent: var(--ui-accent);
+}
+.editor-general button.custom-listbox {
+  border-color: #e0e5ed;
+}
+.listbox-editor-general {
+  border-color: #e0e5ed;
+}
+.listbox-editor-general .listbox-option.active {
+  background: var(--ui-soft);
+}
+.listbox-editor-general .listbox-option[aria-selected="true"] {
+  color: var(--ui-accent);
+}
+.canvas-context-menu.is-general button:hover,
+.canvas-context-menu.is-general button:focus-visible {
+  background: var(--ui-soft);
+}

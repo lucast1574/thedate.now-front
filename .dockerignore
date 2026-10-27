@@ -3,3 +3,6 @@ node_modules
 .git
 .env*
 *.tsbuildinfo
+
+apps/*/.next
+apps/*/public

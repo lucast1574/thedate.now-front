@@ -79,7 +79,7 @@
   padding: 8px 10px;
   border-radius: 20px;
   background: #fffdf6e8;
-  color: #302720;
+  color: var(--ui-ink);
   font:
     500 11px Arial,
     sans-serif;

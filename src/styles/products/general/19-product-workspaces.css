@@ -1,0 +1,83 @@
+.product-heading-general {
+  background: #29213f;
+  color: #f6f1ff;
+}
+.product-heading-general strong {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 800;
+}
+.product-heading-general .product-heading-mark {
+  color: #bba0ff;
+  background: #ffffff12;
+  border-radius: 14px;
+}
+.product-heading-general .ui-icon {
+  width: 28px;
+  height: 28px;
+}
+.editor-general {
+  background: var(--ui-soft);
+}
+.editor-general .editor-heading h1,
+.editor-general .section-workspace h2,
+.editor-general .designer-section h3 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 800;
+}
+.editor-general .editor-mode-bar {
+  background: #ece8f6;
+}
+.editor-general .section-editor,
+.editor-general .flyer-workspace {
+  border-radius: 16px;
+}
+.template-general {
+  background: #f4f1fa;
+  color: #392652;
+}
+.template-general h2,
+.template-general h3 {
+  font-family: var(--font-party), sans-serif;
+}
+.manager-general {
+  background: linear-gradient(145deg, #f3effd, #f7f9fd);
+  color: #302440;
+}
+.manager-general .manager-header h1,
+.manager-general h2,
+.manager-general .guest-metrics strong {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}
+.manager-general .manager-header {
+  border-color: #dcd2ed;
+}
+.manager-general .product-heading {
+  color: #50328c;
+}
+.manager-general .product-heading-mark {
+  background: #e7ddfa;
+}
+.manager-general .guest-metrics > div {
+  border: 0;
+  box-shadow: 0 5px 18px #49317309;
+  border-radius: 18px;
+}
+.manager-general .manager-tabs button[aria-current] {
+  background: #50328c;
+  color: white;
+}
+.manager-general .seating-board {
+  background-color: #faf9ff;
+}
+.manager-general .table-shape {
+  background: #eae1fb;
+  border-color: #bba5df;
+  color: #50328c;
+  box-shadow: 0 3px 0 #d7c6ee;
+}
+.invitation[data-product="general"] h1,
+.invitation[data-product="general"] .invite-section h2 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}

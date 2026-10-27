@@ -1,14 +1,8 @@
 .template-start,
 .guest-hold-field {
-  --office-accent: #ad7254;
-  --office-soft: #f6efe7;
-  --office-border: #e6ddd1;
-}
-.office-general .template-start,
-.office-general .guest-hold-field {
-  --office-accent: #7451ac;
-  --office-soft: #f1ebfa;
-  --office-border: #e5daf2;
+  --office-accent: var(--ui-accent);
+  --office-soft: var(--ui-soft);
+  --office-border: var(--ui-border);
 }
 .template-start {
   display: grid;

@@ -1,0 +1,6 @@
+.preview-modal[data-product="general"] {
+  --preview-accent: #2860cf;
+  --preview-ground: #e9edf4;
+  --preview-ink: #252a34;
+  --preview-surface: #fff;
+}

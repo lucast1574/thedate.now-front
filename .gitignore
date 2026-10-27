@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/apps/*/.next/
+/apps/*/public/
+
+/apps/*/CLAUDE.md

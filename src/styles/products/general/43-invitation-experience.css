@@ -1,0 +1,10 @@
+.invitation[data-product="general"] {
+  --invite-ink: #252a34;
+}
+.invite-footer .brand-general .brand-wordmark {
+  font-size: 11px;
+  color: inherit;
+}
+.invitation[data-product="general"] [data-reveal] {
+  transition-duration: 500ms;
+}

@@ -1,39 +1,14 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
-import {
-  Bodoni_Moda,
-  Cormorant_Garamond,
-  DM_Sans,
-  Nunito,
-} from "next/font/google";
 import "./globals.css";
-const serif = Cormorant_Garamond({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  display: "swap",
-});
-const sans = DM_Sans({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
-const party = Nunito({
-  variable: "--font-party",
-  subsets: ["latin"],
-  display: "swap",
-});
-const weddingLogo = Bodoni_Moda({
-  variable: "--font-wedding-logo",
-  subsets: ["latin"],
-  display: "swap",
-});
+import ApplicationDocument from "@/components/application-document";
+import { applicationProduct } from "@/lib/products/application";
 export async function generateMetadata(): Promise<Metadata> {
   const host = ((await headers()).get("host") ?? "")
     .toLowerCase()
     .replace(/:\d+$/, "")
     .replace(/\.$/, "");
-  const wedding =
-    host === "save.thedate.now" || host.endsWith(".save.thedate.now");
+  const wedding = applicationProduct(host) === "wedding";
   return {
     title:
       host === "studio.save.thedate.now"
@@ -51,13 +26,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const host = ((await headers()).get("host") || "").split(":")[0];
   return (
-    <html
-      lang="es"
-      suppressHydrationWarning
-      className={`${serif.variable} ${sans.variable} ${party.variable} ${weddingLogo.variable}`}
-    >
-      <body>{children}</body>
-    </html>
+    <ApplicationDocument product={applicationProduct(host)}>
+      {children}
+    </ApplicationDocument>
   );
 }

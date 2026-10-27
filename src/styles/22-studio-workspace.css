@@ -6,13 +6,7 @@
   display: grid;
   grid-template-columns: 242px minmax(0, 1fr);
   min-height: 100dvh;
-  background: #f8f5ef;
-}
-.workspace.office-general {
-  --workspace-accent: #7952c8;
-  --workspace-tint: #eee7fa;
-  --workspace-ink: #292336;
-  background: #faf8ff;
+  background: var(--ui-surface);
 }
 .workspace-sidebar {
   position: sticky;
@@ -22,12 +16,8 @@
   display: flex;
   flex-direction: column;
   padding: 38px 22px 24px;
-  border-right: 1px solid #ddd5ca;
-  background: #f1ece4;
-}
-.office-general .workspace-sidebar {
-  background: #f1ecf9;
-  border-color: #e5def0;
+  border-right: 1px solid var(--ui-border);
+  background: var(--ui-soft);
 }
 .workspace-brand {
   display: block;
@@ -36,7 +26,7 @@
 .workspace-label {
   font-size: 9px;
   letter-spacing: 0.2em;
-  color: #938375;
+  color: var(--ui-muted);
   margin: 0 14px 18px;
   font-weight: 700;
 }
@@ -50,7 +40,7 @@
   align-items: center;
   padding: 13px 14px;
   font-size: 13px;
-  color: #776b61;
+  color: var(--ui-muted);
   border-radius: 7px;
 }
 .workspace-sidebar nav .ui-icon {
@@ -59,23 +49,20 @@
 }
 .workspace-sidebar nav a:hover,
 .workspace-sidebar nav a[aria-current="page"] {
-  background: #fffdf9;
+  background: var(--ui-surface);
   color: var(--workspace-ink);
   box-shadow: 0 3px 14px #58433105;
-}
-.office-general .workspace-sidebar nav a {
-  border-radius: 12px;
 }
 .workspace-sidebar-bottom {
   margin-top: auto;
   padding-top: 32px;
 }
 .workspace-alternative {
-  border-bottom: 1px solid #dfd5c8;
+  border-bottom: 1px solid var(--ui-border);
   padding: 18px 12px 24px;
   margin-bottom: 24px;
   font-size: 10px;
-  color: #938375;
+  color: var(--ui-muted);
   line-height: 1.6;
 }
 .workspace-alternative span {
@@ -86,7 +73,7 @@
   align-items: center;
   gap: 4px;
   margin-top: 4px;
-  color: #76665b;
+  color: var(--ui-muted);
 }
 .workspace-alternative .ui-icon {
   width: 12px;
@@ -114,7 +101,7 @@
   display: block;
   margin-top: 4px;
   font-size: 10px;
-  color: #938375;
+  color: var(--ui-muted);
 }
 .user-avatar {
   flex-shrink: 0;
@@ -129,10 +116,6 @@
   font-size: 12px;
   font-weight: 700;
   overflow: hidden;
-}
-.office-general .user-avatar {
-  background: #e1d4f5;
-  color: #7046a4;
 }
 .user-avatar img {
   width: 100%;
@@ -157,7 +140,7 @@
 }
 .workspace a:focus-visible,
 .workspace button:focus-visible {
-  outline: 2px solid var(--workspace-accent);
+  outline: none;
   outline-offset: 4px;
 }
 .profile-page {
@@ -167,24 +150,19 @@
 }
 .profile-page h1 {
   font:
-    400 46px/1.1 var(--font-serif),
+    var(--ui-heading-weight) 46px/1.1 var(--ui-heading-font),
     serif;
   margin: 16px 0;
 }
-.office-general .profile-page h1 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 650;
-  font-size: 38px;
-}
 .profile-page > p {
-  color: #84796f;
+  color: var(--ui-muted);
   font-size: 13px;
   line-height: 1.7;
 }
 .profile-panel {
   padding: 32px;
-  background: #fffdf9;
-  border: 1px solid #e3dcd2;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   border-radius: 12px;
   margin-top: 32px;
 }
@@ -193,7 +171,7 @@
   align-items: center;
   gap: 26px;
   padding-bottom: 32px;
-  border-bottom: 1px solid #e7dfd5;
+  border-bottom: 1px solid var(--ui-border);
   margin-bottom: 28px;
 }
 .profile-photo .user-avatar {
@@ -207,7 +185,7 @@
 }
 .profile-photo p,
 .profile-photo small {
-  color: #84796f;
+  color: var(--ui-muted);
   font-size: 11px;
   line-height: 1.6;
 }
@@ -220,7 +198,7 @@
   display: inline-flex;
   width: auto;
   padding: 10px 16px;
-  border: 1px solid #d5c5b6;
+  border: 1px solid var(--ui-border);
   border-radius: 6px;
   margin-top: 10px;
   position: relative;
@@ -255,7 +233,7 @@
     height: auto;
     padding: 20px;
     border-right: 0;
-    border-bottom: 1px solid #dfd5c8;
+    border-bottom: 1px solid var(--ui-border);
     display: grid;
     grid-template-columns: 1fr auto;
     gap: 18px;
@@ -334,19 +312,6 @@
   max-width: 100%;
   gap: 9px;
 }
-.workspace-brand .wedding-mark {
-  width: 25px;
-  height: 25px;
-  flex-shrink: 0;
-}
-.workspace-brand .brand-wedding-title {
-  font-size: 15px;
-  letter-spacing: 0.06em;
-}
-.workspace-brand .brand-wedding-subtitle {
-  font-size: 6px;
-  letter-spacing: 0.2em;
-}
 .workspace-brand .brand-wordmark {
   font-size: 28px;
 }
@@ -365,7 +330,7 @@
   .workspace-mobile-alternative {
     display: block;
     margin: 0 20px 30px;
-    border-top: 1px solid #e4dad0;
+    border-top: 1px solid var(--ui-border);
     padding: 22px 0 0;
     font-size: 11px;
   }
@@ -374,21 +339,18 @@
 .profile-session {
   margin-top: 28px;
   padding-top: 20px;
-  border-top: 1px solid #e3dcd2;
+  border-top: 1px solid var(--ui-border);
 }
 .profile-signout {
   min-height: 44px;
   padding: 10px 0;
   border: 0;
   background: transparent;
-  color: #8f5743;
+  color: var(--ui-accent);
   font:
     600 12px var(--font-sans),
     sans-serif;
   cursor: pointer;
-}
-.office-general .profile-signout {
-  color: #7850bb;
 }
 .profile-signout:disabled {
   opacity: 0.55;

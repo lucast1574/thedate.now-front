@@ -45,6 +45,8 @@ export function templateCanvas(
       ...value.split(/\s/).map((word) => word.length),
       1,
     );
+    const capitals =
+      value === value.toLocaleUpperCase("es") && /[A-ZÁÉÍÓÚÑ]/.test(value);
     const fontSize = Math.max(
       14,
       Math.min(
@@ -52,7 +54,7 @@ export function templateCanvas(
         Math.floor(
           Math.sqrt((width * height) / (Math.max(value.length, 1) * 0.7)),
         ),
-        Math.floor(width / (longest * (patch.bold ? 0.74 : 0.62))),
+        Math.floor(width / (longest * (patch.bold || capitals ? 0.78 : 0.62))),
       ),
     );
     elements.push(
@@ -114,18 +116,26 @@ export function templateCanvas(
   text("title", heading, layout.title, {
     bold: template.layout === "poster" || template.layout === "celebration",
   });
-  const photo = content.photoKey && template.layout === "editorial";
+  const photo =
+    layout.photo ||
+    (content.photoKey && template.layout === "editorial"
+      ? [65, 490, 590, 300]
+      : null);
   if (photo)
     elements.push(
       element("image", {
         id: "photo",
-        photoKey: content.photoKey,
-        x: 65,
-        y: 490,
-        width: 590,
-        height: 300,
+        photoKey: content.photoKey || "template-photo",
+        x: photo[0],
+        y: photo[1],
+        width: photo[2],
+        height: photo[3],
       }),
     );
-  text("body", body, photo ? [65, 815, 590, 120, 22, "left"] : layout.body);
+  text(
+    "body",
+    body,
+    photo && !layout.photo ? [65, 815, 590, 120, 22, "left"] : layout.body,
+  );
   return { width: 720, height: 960, background: template.background, elements };
 }

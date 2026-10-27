@@ -198,43 +198,6 @@
   font-size: 11px;
   color: #998d80;
 }
-.office-general .gallery-heading h1 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 700;
-  font-size: clamp(36px, 4vw, 58px);
-  letter-spacing: -0.05em;
-}
-.office-general .gallery-heading h1 em {
-  font-style: normal;
-  font-weight: 700;
-  color: #8b55db;
-}
-.office-general .gallery-create {
-  background: #7850bb;
-  border-radius: 30px;
-  box-shadow: 0 8px 20px #7952c820;
-}
-.office-general .invitation-card-preview {
-  border-radius: 20px;
-  border-color: #e6d9f4;
-  background: #ebe0fb;
-}
-.office-general .invitation-card h3 {
-  font:
-    600 18px/1.3 var(--font-sans),
-    sans-serif;
-}
-.office-general .invitation-new-card {
-  border-radius: 20px;
-  border-color: #cdb6eb;
-  color: #9871c1;
-  background: linear-gradient(135deg, #f4edfd, #faf8ff);
-}
-.office-general .invitation-new-card strong {
-  font:
-    600 18px var(--font-sans),
-    sans-serif;
-}
 @media (max-width: 1050px) {
   .gallery-heading {
     align-items: start;

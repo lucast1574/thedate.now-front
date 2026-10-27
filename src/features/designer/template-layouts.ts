@@ -1,4 +1,5 @@
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
+import { extendedLayouts } from "./template-layouts-extended";
 export type Box = [
   number,
   number,
@@ -8,7 +9,8 @@ export type Box = [
   ("left" | "center" | "right")?,
 ];
 type Motif = [string, number, number, number, number, number?];
-type Layout = {
+export type Layout = {
+  photo?: [number, number, number, number];
   title: Box;
   kicker: Box;
   body: Box;
@@ -21,6 +23,7 @@ export const templateLayouts: Record<
   NonNullable<InvitationTemplate["layout"]>,
   Layout
 > = {
+  ...extendedLayouts,
   floral: {
     title: [110, 270, 500, 310, 76],
     kicker: [110, 170, 500, 50, 18],

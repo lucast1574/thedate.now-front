@@ -1,0 +1,27 @@
+:where(.office-general)
+  :where(.wishlist-panel, .organization-page, .organization-preview),
+.gift-page.gifts-general {
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
+}
+.office-general .wishlist-heading h2 {
+  font:
+    650 27px/1.2 Arial,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.gift-page.gifts-general {
+  background: #f3f6fb;
+}
+.gifts-general .gift-page-heading h1 {
+  font:
+    650 38px/1.15 Arial,
+    sans-serif;
+  letter-spacing: -0.045em;
+}
+@media (max-width: 640px) {
+  .gifts-general .gift-page-heading h1 {
+    font-size: 31px;
+  }
+}

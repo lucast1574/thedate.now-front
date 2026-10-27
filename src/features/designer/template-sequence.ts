@@ -5,6 +5,7 @@ import { formatEventDate } from "@/lib/events/date";
 import { element } from "./flyer/canvas-model";
 import { templateCanvas } from "./template-canvas";
 import { templatePage, templateText, templateIcon } from "./template-pages";
+import { templateLayoutPages } from "./template-layout-pages";
 import {
   templateDress,
   templateExtraPages,
@@ -35,7 +36,7 @@ export function templateSequence(
     body: source?.description,
   });
   const sample = "template-photo";
-  const photo = source?.photoKeys[0] || sample;
+  const photo = sample;
   const personal = templateText(
     template,
     "guest",
@@ -156,6 +157,7 @@ export function templateSequence(
       ]),
     );
   pages.push(...templateExtraPages(template, source));
+  pages.push(...templateLayoutPages(template));
   pages.push(
     page(wedding ? "Con todo nuestro cariño" : "Te esperamos", 560, [
       templateIcon(template, wedding ? "flower" : "sparkle", 70),
@@ -184,7 +186,10 @@ export function applyCompleteTemplate(
     templateId: template.id,
     designMode: "flyer",
     accentColor: template.accent,
-    opening: draft.opening || templateOpening(template),
+    backgroundImage: null,
+    opening: draft.opening
+      ? { ...draft.opening, backgroundImage: undefined }
+      : templateOpening(template),
     celebration:
       draft.celebration || defaultCelebration(draft.kind === "wedding"),
     sections: templateSequence(template, draft),

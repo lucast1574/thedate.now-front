@@ -7,10 +7,10 @@ button.custom-listbox {
   min-width: 0;
   min-height: 44px;
   padding: 11px 14px;
-  border: 1px solid #dacfc4;
+  border: 1px solid var(--ui-border);
   border-radius: 8px;
-  background: #fffcf8;
-  color: #302b26;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
   font: inherit;
   font-size: 13px;
   text-align: left;
@@ -32,7 +32,7 @@ button.custom-listbox[aria-expanded="true"] .ui-icon {
 }
 button.custom-listbox:focus-visible,
 button.custom-listbox[aria-expanded="true"] {
-  outline: 2px solid #bd9174;
+  outline: none;
   outline-offset: 2px;
 }
 button.custom-listbox:disabled {
@@ -45,10 +45,10 @@ button.custom-listbox:disabled {
   overflow-y: auto;
   overscroll-behavior: contain;
   padding: 5px;
-  border: 1px solid #ded5cc;
+  border: 1px solid var(--ui-border);
   border-radius: 10px;
-  background: #fffcf8;
-  color: #302b26;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
   box-shadow: 0 12px 36px #302b2624;
   font:
     13px/1.5 Arial,
@@ -64,10 +64,10 @@ button.custom-listbox:disabled {
   cursor: pointer;
 }
 .listbox-option.active {
-  background: #f1e8df;
+  background: var(--ui-soft);
 }
 .listbox-option[aria-selected="true"] {
-  color: #925d3e;
+  color: var(--ui-accent);
   font-weight: 600;
 }
 .listbox-option[aria-disabled="true"] {
@@ -89,24 +89,4 @@ input.listbox-validation {
   height: 1px;
   opacity: 0;
   pointer-events: none;
-}
-:is(.office-general, .editor-general, .manager-general) button.custom-listbox {
-  border-color: #ddd7ed;
-  background: #fff;
-}
-:is(.office-general, .editor-general, .manager-general)
-  button.custom-listbox:focus-visible,
-:is(.office-general, .editor-general, .manager-general)
-  button.custom-listbox[aria-expanded="true"] {
-  outline-color: #a17de0;
-}
-.listbox-general {
-  background: #fff;
-  border-color: #ddd7ed;
-}
-.listbox-general .listbox-option.active {
-  background: #f0eafb;
-}
-.listbox-general .listbox-option[aria-selected="true"] {
-  color: #7850b6;
 }

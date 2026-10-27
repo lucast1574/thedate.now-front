@@ -32,7 +32,7 @@
 }
 .editor-shell {
   min-height: 100vh;
-  background: #f4f2ed;
+  background: var(--ui-background);
   color: #28242c;
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -48,7 +48,7 @@
 .editor-upload,
 .preview-modal button,
 .template-gallery header button {
-  border: 1px solid #d7d2cc;
+  border: 1px solid var(--ui-border);
   border-radius: 8px;
   background: #fff;
   color: #463950;
@@ -62,7 +62,7 @@
 .editor-shell button[aria-pressed="true"],
 .preview-modal button[aria-pressed="true"] {
   background: #ece5f5;
-  border-color: #7451ac;
+  border-color: var(--ui-accent);
   color: #5b3988;
 }
 .editor-toolbar {
@@ -72,7 +72,7 @@
   gap: 18px;
   padding: 16px 24px;
   background: #fff;
-  border-bottom: 1px solid #dedad4;
+  border-bottom: 1px solid var(--ui-border);
   position: sticky;
   top: 0;
   z-index: 5;
@@ -117,9 +117,9 @@
   display: none;
 }
 .editor-shell .editor-save {
-  background: #7451ac;
+  background: var(--ui-accent);
   color: #fff;
-  border-color: #7451ac;
+  border-color: var(--ui-accent);
 }
 .editor-feedback {
   padding: 10px 24px;
@@ -132,7 +132,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  border-bottom: 1px solid #dedad4;
+  border-bottom: 1px solid var(--ui-border);
 }
 .editor-mode-bar span {
   margin-left: auto;
@@ -150,7 +150,7 @@
   display: flex;
   gap: 12px;
   justify-content: space-between;
-  background: #faf9f6;
+  background: var(--ui-surface);
 }
 .editor-section-tabs > div {
   display: flex;
@@ -166,7 +166,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  border-bottom: 1px solid #dedad4;
+  border-bottom: 1px solid var(--ui-border);
   flex-wrap: wrap;
   font-size: 13px;
 }
@@ -178,6 +178,6 @@
 }
 .editor-section-actions input {
   padding: 7px;
-  border: 1px solid #d7d2cc;
+  border: 1px solid var(--ui-border);
   border-radius: 6px;
 }

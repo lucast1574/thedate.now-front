@@ -1,0 +1,25 @@
+.workspace.office-general {
+  --workspace-accent: #7952c8;
+  --workspace-tint: #eee7fa;
+  --workspace-ink: #292336;
+  background: #faf8ff;
+}
+.office-general .workspace-sidebar {
+  background: #f1ecf9;
+  border-color: #e5def0;
+}
+.office-general .workspace-sidebar nav a {
+  border-radius: 12px;
+}
+.office-general .user-avatar {
+  background: #e1d4f5;
+  color: #7046a4;
+}
+.office-general .profile-page h1 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 650;
+  font-size: 38px;
+}
+.office-general .profile-signout {
+  color: #7850bb;
+}

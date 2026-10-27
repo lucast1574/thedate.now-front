@@ -9,7 +9,7 @@
   min-height: 44px;
   padding: 0 12px;
   margin: 20px 0 16px;
-  background: #f4f2ee;
+  background: var(--ui-surface);
   border-radius: 6px;
 }
 .template-search .ui-icon {
@@ -37,7 +37,7 @@
 }
 .canvas-studio .template-filters button {
   border-color: transparent;
-  background: #f5f3ef;
+  background: var(--ui-surface);
   padding: 8px 10px;
   font-size: 11px;
   min-height: 34px;
@@ -51,7 +51,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 12px 0;
-  color: #8b837a;
+  color: var(--ui-muted);
   font-size: 10px;
 }
 .template-panel-grid {
@@ -77,7 +77,7 @@
   overflow: hidden;
   border-radius: 5px;
   aspect-ratio: 3 / 4;
-  background: #f4f1eb;
+  background: var(--ui-soft);
   border: 1px solid #302c2912;
 }
 .template-panel-art .flyer-surface {
@@ -92,7 +92,7 @@
   color: var(--editor-ink);
 }
 .template-panel-card > span {
-  color: #8b837a;
+  color: var(--ui-muted);
   font-size: 10px;
 }
 .template-panel-card:hover > strong,
@@ -105,7 +105,7 @@
   padding: 20px 0;
   font-size: 13px;
   line-height: 1.6;
-  color: #817970;
+  color: var(--ui-muted);
 }
 .canvas-studio .template-back {
   display: flex;
@@ -137,9 +137,7 @@
   letter-spacing: 0.08em;
 }
 .canvas-studio .template-detail-caption h3 {
-  font:
-    500 24px Georgia,
-    serif;
+  font: var(--ui-heading-weight) 24px var(--ui-heading-font);
   margin: 8px 0;
 }
 .template-detail-caption > p {

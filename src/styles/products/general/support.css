@@ -1,0 +1,5 @@
+.office-general .support-page > h1,
+.office-general :is(.support-composer, .support-inbox) h2 {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 750;
+}

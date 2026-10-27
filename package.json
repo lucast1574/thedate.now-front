@@ -9,10 +9,14 @@
     "lint": "eslint --max-warnings=0",
     "typecheck": "next typegen && tsc --noEmit",
     "test": "node --test tests/*.test.mjs",
-    "format": "prettier --write src tests docs README.md AGENTS.md *.json *.mjs *.ts",
-    "format:check": "prettier --check src tests docs README.md AGENTS.md *.json *.mjs *.ts",
-    "check": "npm run format:check && npm run lint && npm run typecheck && npm test && npm run build",
-    "symbols:sync": "node scripts/sync-symbols.mjs"
+    "format": "prettier --write --ignore-path .gitignore src apps scripts tests docs README.md AGENTS.md *.json *.mjs *.ts",
+    "format:check": "prettier --check --ignore-path .gitignore src apps scripts tests docs README.md AGENTS.md *.json *.mjs *.ts",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run typecheck:apps && npm test && npm run build && npm run build:apps",
+    "symbols:sync": "node scripts/sync-symbols.mjs",
+    "dev:the-date": "npm run dev --workspace=@thedate/the-date --",
+    "dev:save-the-date": "npm run dev --workspace=@thedate/save-the-date --",
+    "build:apps": "npm run build --workspaces",
+    "typecheck:apps": "npm run typecheck --workspaces"
   },
   "dependencies": {
     "exceljs": "^4.4.0",
@@ -36,5 +40,8 @@
     "exceljs": {
       "uuid": "11.1.1"
     }
-  }
+  },
+  "workspaces": [
+    "apps/*"
+  ]
 }

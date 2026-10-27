@@ -1,3 +1,4 @@
+import { applicationProduct } from "@/lib/products/application";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { googleEnabled } from "@/lib/auth/google";
@@ -17,7 +18,7 @@ export default async function Page() {
     notFound();
   return (
     <OrganizationPage
-      wedding={host === "studio.save.thedate.now"}
+      wedding={applicationProduct(host) === "wedding"}
       googleEnabled={googleEnabled(host)}
     />
   );

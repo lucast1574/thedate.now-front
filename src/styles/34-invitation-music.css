@@ -38,9 +38,7 @@
   font-size: 13px;
 }
 .canvas-studio .canvas-text-presets button:first-child {
-  font:
-    500 25px Georgia,
-    serif;
+  font: var(--ui-heading-weight) 25px var(--ui-heading-font);
 }
 .canvas-special-tools button {
   gap: 16px;

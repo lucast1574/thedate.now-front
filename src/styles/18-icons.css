@@ -54,9 +54,6 @@
   width: 24px;
   height: 24px;
 }
-.wedding-hero-art:after {
-  content: none;
-}
 .editor-toolbar-actions button,
 .editor-upload {
   display: inline-flex;

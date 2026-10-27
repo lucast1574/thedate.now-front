@@ -37,11 +37,9 @@
   display: flex;
   justify-content: center;
 }
-.canvas-rail-brand .brand-wedding-type,
 .canvas-rail-brand .brand-wordmark {
   display: none;
 }
-.canvas-rail-brand .wedding-mark,
 .canvas-rail-brand .brand-mark {
   width: 22px;
   height: 22px;

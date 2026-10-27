@@ -148,29 +148,6 @@
 .office-brand span {
   margin-left: -9px;
 }
-.office-general {
-  background: #fff8f2;
-}
-.office-general .office-header {
-  background: #fffcf7;
-}
-.office-general .office-kicker,
-.office-general .plain-button {
-  color: #bf4d75;
-}
-.office-general .office-button {
-  background: #604b9b;
-}
-.office-general .office-button:hover {
-  background: #df527d;
-}
-.office-general .auth-panel {
-  border-radius: 20px;
-  box-shadow: 0 23px 60px #65467715;
-}
-.office-wedding .auth-panel {
-  border-radius: 4px;
-}
 .portal-switch {
   font-size: 12px !important;
   color: #7b7180;
@@ -191,43 +168,4 @@
   display: inline;
   white-space: nowrap;
   letter-spacing: -0.045em;
-}
-.brand-wedding .brand-wordmark {
-  font-family: var(--font-serif), serif;
-  font-weight: 500;
-}
-.brand-wedding .brand-save {
-  color: #a76d55;
-  font: inherit;
-  letter-spacing: inherit;
-}
-.brand-wedding .brand-mark {
-  color: #ab785b;
-  stroke-width: 1.45;
-}
-.brand-wedding .brand-mark .wedding-envelope {
-  fill: none;
-  stroke: currentColor;
-}
-.brand-wedding .brand-mark .wedding-fold {
-  fill: none;
-  stroke: currentColor;
-}
-.brand-wedding .brand-mark .wedding-ring {
-  fill: #f8f4ed;
-  stroke: #9c6c52;
-  stroke-width: 1.7;
-}
-.brand-wedding .brand-mark .wedding-spark {
-  fill: none;
-  stroke: #bc906f;
-  stroke-width: 1.2;
-}
-.brand-general .brand-wordmark {
-  font-family: var(--font-party), sans-serif;
-  font-weight: 850;
-  letter-spacing: -0.075em;
-}
-.brand-general .brand-mark {
-  stroke-width: 1.5;
 }

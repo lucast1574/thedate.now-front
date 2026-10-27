@@ -1,0 +1,34 @@
+.brand-general .brand-mark .party-cone {
+  fill: #7451ac;
+  stroke: #463466;
+  stroke-width: 1.6;
+}
+.brand-general .brand-mark .party-stripe {
+  fill: none;
+  stroke: #fff9ed;
+  stroke-width: 3;
+}
+.brand-general .brand-mark .party-burst {
+  fill: none;
+  stroke: #e45c87;
+  stroke-width: 2;
+}
+.brand-general .brand-mark .party-dot-pink {
+  fill: #ed5d8a;
+  stroke: none;
+}
+.brand-general .brand-mark .party-dot-gold {
+  fill: #f4b93c;
+  stroke: none;
+}
+.brand-general .brand-mark .party-dot-purple {
+  fill: #7150aa;
+  stroke: none;
+}
+.office-general .office-brand .brand {
+  color: #352848;
+}
+.office-general .auth-panel h1,
+.office-general .office-kicker {
+  font-family: var(--font-party), sans-serif;
+}

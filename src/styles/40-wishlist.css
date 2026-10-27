@@ -6,18 +6,11 @@
   .organization-page,
   .organization-preview
 ) {
-  --gift-accent: #89664b;
-  --gift-soft: #f3ede5;
-  --gift-ink: #332d28;
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
   color: var(--gift-ink);
   font-family: Arial, Helvetica, sans-serif;
-}
-:where(.office-general)
-  :where(.wishlist-panel, .organization-page, .organization-preview),
-.gift-page.gifts-general {
-  --gift-accent: #2860cf;
-  --gift-soft: #edf2fb;
-  --gift-ink: #252d3b;
 }
 .gift-primary,
 .gift-secondary,
@@ -38,12 +31,12 @@
   line-height: 1.4;
 }
 .gift-primary {
-  background: var(--gift-accent, #89664b);
+  background: var(--gift-accent, var(--ui-accent));
   color: white;
 }
 .gift-secondary {
-  background: var(--gift-soft, #f3ede5);
-  color: var(--gift-accent, #89664b);
+  background: var(--gift-soft, var(--ui-soft));
+  color: var(--gift-accent, var(--ui-accent));
 }
 .gift-danger {
   background: #f7e9e6;
@@ -61,7 +54,11 @@
 }
 .gift-secondary:hover,
 .gift-secondary:focus-visible {
-  background: color-mix(in srgb, var(--gift-accent, #89664b) 15%, white);
+  background: color-mix(
+    in srgb,
+    var(--gift-accent, var(--ui-accent)) 15%,
+    white
+  );
   outline: none;
 }
 :where(.gift-primary, .gift-secondary, .gift-danger):disabled {
@@ -82,24 +79,16 @@
   gap: 24px;
 }
 .wishlist-heading h2 {
-  font:
-    500 28px/1.2 Georgia,
-    serif;
+  font: var(--ui-heading-weight) 28px/1.2 var(--ui-heading-font);
   margin: 0 0 8px;
   letter-spacing: -0.02em;
-}
-.office-general .wishlist-heading h2 {
-  font:
-    650 27px/1.2 Arial,
-    sans-serif;
-  letter-spacing: -0.035em;
 }
 .wishlist-heading p,
 .wishlist-explainer {
   font:
     13px/1.6 Arial,
     sans-serif;
-  color: #84786c;
+  color: var(--ui-muted);
   margin: 0;
 }
 .wishlist-explainer {
@@ -127,7 +116,7 @@
 .wishlist-switch > span {
   width: 34px;
   height: 20px;
-  background: #cbc5bc;
+  background: var(--ui-border);
   border-radius: 20px;
   padding: 3px;
 }
@@ -175,12 +164,12 @@
 }
 .wishlist-summary span {
   padding: 16px;
-  background: #f8f7f4;
+  background: var(--ui-surface);
   border-radius: 8px;
   font:
     11px Arial,
     sans-serif;
-  color: #82786d;
+  color: var(--ui-muted);
 }
 .wishlist-summary strong {
   display: block;
@@ -251,13 +240,13 @@
   width: 15px;
   height: 15px;
   margin-left: 5px;
-  color: #95897c;
+  color: var(--ui-muted);
 }
 .gift-card-content p {
   font:
     12px/1.6 Arial,
     sans-serif;
-  color: #8a7e71;
+  color: var(--ui-muted);
   margin: 0;
   overflow-wrap: anywhere;
 }
@@ -265,7 +254,7 @@
   font:
     600 10px Arial,
     sans-serif;
-  color: #85786c;
+  color: var(--ui-muted);
 }
 .gift-status.is-mine {
   color: #4c7550;
@@ -286,7 +275,7 @@
   background: transparent;
   width: 36px;
   height: 36px;
-  color: #927b6a;
+  color: var(--ui-muted);
   cursor: pointer;
   border-radius: 6px;
 }
@@ -317,7 +306,7 @@
   font:
     10px Arial,
     sans-serif;
-  color: #938474;
+  color: var(--ui-muted);
   margin-bottom: 4px;
 }
 .gift-assignment strong {
@@ -330,7 +319,7 @@
   font:
     11px Arial,
     sans-serif;
-  color: #938474;
+  color: var(--ui-muted);
 }
 .gift-assignment summary {
   cursor: pointer;
@@ -393,7 +382,7 @@
   font:
     500 12px Arial,
     sans-serif;
-  color: #71695f;
+  color: var(--ui-muted);
 }
 .gift-form input,
 .gift-form textarea,
@@ -405,17 +394,17 @@
   min-width: 0;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid #e2ddd5;
+  border: 1px solid var(--ui-border);
   border-radius: 6px;
   background: white;
-  color: #332d28;
+  color: var(--ui-ink);
 }
 .gift-form input:focus,
 .gift-form textarea:focus,
 .gift-code-page input:focus {
   outline: none;
-  background: #fffdfa;
-  border-color: #b1a18d;
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
 }
 .gift-form details {
   font:
@@ -433,7 +422,7 @@
   font:
     12px/1.6 Arial,
     sans-serif;
-  color: #7c7164;
+  color: var(--ui-muted);
   margin: 0;
 }
 .gift-form-actions {
@@ -445,7 +434,7 @@
 .gift-empty {
   text-align: center;
   padding: 48px 24px;
-  background: #faf9f6;
+  background: var(--ui-surface);
   border-radius: 10px;
   margin-top: 24px;
 }
@@ -466,17 +455,14 @@
   font:
     13px/1.7 Arial,
     sans-serif;
-  color: #8a7e71;
+  color: var(--ui-muted);
   max-width: 470px;
   margin: 0 auto;
 }
 .gift-page {
   min-height: 100vh;
-  background: #f7f3ed;
+  background: var(--ui-surface);
   padding: 30px max(24px, calc((100vw - 1200px) / 2)) 50px;
-}
-.gift-page.gifts-general {
-  background: #f3f6fb;
 }
 .gift-page > nav {
   display: flex;
@@ -486,7 +472,7 @@
   font:
     12px Arial,
     sans-serif;
-  color: #918374;
+  color: var(--ui-muted);
 }
 .gift-page > nav a {
   display: flex;
@@ -506,23 +492,15 @@
   color: var(--gift-accent);
 }
 .gift-page-heading h1 {
-  font:
-    500 43px/1.15 Georgia,
-    serif;
+  font: var(--ui-heading-weight) 43px/1.15 var(--ui-heading-font);
   letter-spacing: -0.03em;
   margin: 16px 0;
-}
-.gifts-general .gift-page-heading h1 {
-  font:
-    650 38px/1.15 Arial,
-    sans-serif;
-  letter-spacing: -0.045em;
 }
 .gift-page-heading p {
   font:
     14px/1.7 Arial,
     sans-serif;
-  color: #8c7e6e;
+  color: var(--ui-muted);
   margin: 0;
 }
 .gift-page-note {
@@ -546,7 +524,7 @@
   font:
     12px/1.5 Arial,
     sans-serif;
-  color: #918374;
+  color: var(--ui-muted);
   margin-top: 5px;
 }
 .gift-page > footer {
@@ -554,7 +532,7 @@
   font:
     12px/1.7 Arial,
     sans-serif;
-  color: #968777;
+  color: var(--ui-muted);
   margin-top: 40px;
 }
 .gift-code-page {
@@ -569,9 +547,7 @@
   color: var(--gift-accent);
 }
 .gift-code-page h1 {
-  font:
-    500 35px/1.2 Georgia,
-    serif;
+  font: var(--ui-heading-weight) 35px/1.2 var(--ui-heading-font);
   letter-spacing: -0.03em;
   margin: 22px 0 18px;
 }
@@ -579,7 +555,7 @@
   font:
     14px/1.7 Arial,
     sans-serif;
-  color: #8c7e6e;
+  color: var(--ui-muted);
 }
 .gift-code-page form {
   display: grid;
@@ -651,8 +627,7 @@
   .gift-page-heading {
     margin: 38px auto 28px;
   }
-  .gift-page-heading h1,
-  .gifts-general .gift-page-heading h1 {
+  .gift-page-heading h1 {
     font-size: 31px;
   }
   .wishlist-summary {
@@ -729,7 +704,7 @@
   )
   .gift-primary {
   border: 0;
-  background: var(--gift-accent, #89664b);
+  background: var(--gift-accent, var(--ui-accent));
   color: white;
 }
 :is(
@@ -741,8 +716,8 @@
   )
   .gift-secondary {
   border: 0;
-  background: var(--gift-soft, #f3ede5);
-  color: var(--gift-accent, #89664b);
+  background: var(--gift-soft, var(--ui-soft));
+  color: var(--gift-accent, var(--ui-accent));
 }
 .wishlist-panel .gift-danger {
   border: 0;
@@ -752,7 +727,7 @@
 .wishlist-panel .gift-icon-button {
   border: 0;
   background: transparent;
-  color: #927b6a;
+  color: var(--ui-muted);
 }
 .manager-page .wishlist-panel :focus-visible,
 .organization-page :focus-visible {
@@ -777,5 +752,5 @@
 .manager-page .wishlist-panel .gift-icon-button {
   border: 0;
   background: transparent;
-  color: #927b6a;
+  color: var(--ui-muted);
 }

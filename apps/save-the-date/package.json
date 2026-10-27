@@ -1,0 +1,18 @@
+{
+  "name": "@thedate/save-the-date",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "predev": "node ../../scripts/prepare-app-assets.mjs save-the-date",
+    "dev": "next dev",
+    "prebuild": "node ../../scripts/prepare-app-assets.mjs save-the-date",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.6",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  }
+}

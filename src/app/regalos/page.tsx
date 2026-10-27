@@ -1,8 +1,6 @@
 import GiftCodeEntry from "@/features/gifts/gift-code-entry";
-export const metadata = {
-  title: "Lista de regalos • The Date",
-  robots: { index: false, follow: false },
-};
+import { giftMetadata } from "@/lib/products/metadata";
+export const generateMetadata = () => giftMetadata();
 export default function Page() {
   return <GiftCodeEntry />;
 }

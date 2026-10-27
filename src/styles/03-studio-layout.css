@@ -8,7 +8,7 @@
 .plain-button {
   border: 0;
   background: none;
-  color: #a56950;
+  color: var(--ui-accent);
   cursor: pointer;
   font:
     600 13px var(--font-sans),
@@ -17,8 +17,8 @@
 .auth-panel {
   width: min(450px, calc(100% - 40px));
   margin: 90px auto;
-  background: #fffdf9;
-  border: 1px solid #dfd7cb;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
   padding: 45px;
   box-shadow: 0 20px 60px #4936200b;
 }
@@ -26,12 +26,12 @@
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.22em;
-  color: #a46e55;
+  color: var(--ui-accent);
 }
 .auth-panel h1,
 .office-main h1 {
   font:
-    400 55px/0.95 var(--font-serif),
+    var(--ui-heading-weight) 55px/0.95 var(--ui-heading-font),
     serif;
   margin: 18px 0;
 }
@@ -39,7 +39,7 @@
 .office-lead {
   font-size: 14px;
   line-height: 1.6;
-  color: #726d64;
+  color: var(--ui-muted);
   margin-bottom: 25px;
 }
 .auth-panel form,
@@ -54,39 +54,39 @@
   gap: 7px;
   font-size: 12px;
   font-weight: 700;
-  color: #5e574f;
+  color: var(--ui-muted);
 }
 .office input,
 .office select,
 .office textarea {
   width: 100%;
-  border: 1px solid #d5ccbe;
-  background: #fffefb;
+  border: 1px solid var(--ui-border);
+  background: var(--ui-surface);
   border-radius: 4px;
   padding: 13px 14px;
   font:
     14px var(--font-sans),
     sans-serif;
-  color: #25221e;
+  color: var(--ui-ink);
   outline: none;
 }
 .office input:focus,
 .office select:focus,
 .office textarea:focus {
-  border-color: #a66c54;
-  box-shadow: 0 0 0 3px #a66c5420;
+  border-color: var(--ui-accent);
+  box-shadow: none;
 }
 .office input:disabled {
-  color: #8e8377;
-  background: #f3eee6;
+  color: var(--ui-muted);
+  background: var(--ui-soft);
 }
 .office label small {
   font-size: 11px;
-  color: #a46e55;
+  color: var(--ui-accent);
   font-weight: 500;
 }
 .office-button {
-  background: #29251f;
+  background: var(--ui-ink);
   color: white;
   border: 0;
   border-radius: 4px;
@@ -101,7 +101,7 @@
   white-space: nowrap;
 }
 .office-button:hover {
-  background: #a66c54;
+  background: var(--ui-accent);
 }
 .office-button:disabled {
   opacity: 0.55;
@@ -136,7 +136,7 @@
   min-height: calc(100vh - 82px);
 }
 .office-sidebar {
-  border-right: 1px solid #d7d0c4;
+  border-right: 1px solid var(--ui-border);
   padding: 34px 20px;
 }
 .new-event {
@@ -203,7 +203,7 @@
 }
 .office-divider {
   height: 1px;
-  background: #d7d0c4;
+  background: var(--ui-border);
   margin: 46px 0 30px;
 }
 .action-row {
@@ -214,7 +214,7 @@
 }
 .action-row h2 {
   font:
-    400 35px var(--font-serif),
+    var(--ui-heading-weight) 35px var(--ui-heading-font),
     serif;
   margin: 6px 0;
 }

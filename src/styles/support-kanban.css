@@ -14,8 +14,8 @@
   padding: 16px;
   background: color-mix(
     in srgb,
-    var(--office-accent, #98664f) 5%,
-    var(--office-surface, #f7f5f0)
+    var(--office-accent, var(--ui-accent)) 5%,
+    var(--office-surface, var(--ui-surface))
   );
   border: 1px solid transparent;
   transition:
@@ -78,7 +78,7 @@
   display: grid;
   gap: 14px;
   padding: 18px 16px;
-  border: 1px solid var(--support-line, #e3dfd9);
+  border: 1px solid var(--support-line, var(--ui-border));
   background: white;
   color: inherit;
   border-radius: 12px;
@@ -100,7 +100,7 @@
   outline: none;
   box-shadow: none;
   border-color: var(--lane);
-  background: #fcfbf9;
+  background: var(--ui-surface);
 }
 .support-kanban-card > strong {
   font-size: 14px;
@@ -188,7 +188,7 @@
   padding: 0;
   width: min(720px, calc(100vw - 32px));
   max-height: calc(100dvh - 48px);
-  border: 1px solid #e3dfd9;
+  border: 1px solid var(--ui-border);
   border-radius: 18px;
   color: inherit;
   background: white;
@@ -216,7 +216,7 @@
   place-items: center;
   width: 32px;
   height: 32px;
-  background: #f4f2ee;
+  background: var(--ui-surface);
   border: 0;
   border-radius: 50%;
   cursor: pointer;
@@ -230,7 +230,7 @@
 .support-kanban-pagination button:focus-visible {
   outline: none;
   box-shadow: none;
-  background: #e6e1d9;
+  background: var(--ui-soft);
 }
 @media (max-width: 640px) {
   .support-ticket-dialog-content {

@@ -12,14 +12,14 @@ const { applyTemplate } = loadSource("src/features/designer/templates.ts", {
 const { designPayload } = loadSource("src/features/designer/design-state.ts");
 const Icon = loadSource("src/components/icon.tsx").default;
 test("catalog and saved designs keep concrete product-specific template IDs", () => {
-  assert.equal(invitationTemplates.length, 30);
-  assert.equal(new Set(invitationTemplates.map((t) => t.id)).size, 30);
+  assert.equal(invitationTemplates.length, 54);
+  assert.equal(new Set(invitationTemplates.map((t) => t.id)).size, 54);
   for (const kind of ["general", "wedding"])
     for (const mode of ["sections", "flyer"])
       assert.equal(
         invitationTemplates.filter((t) => t.kind === kind && t.mode === mode)
           .length,
-        mode === "flyer" ? 12 : 3,
+        mode === "flyer" ? 24 : 3,
       );
   const draft = {
     kind: "wedding",

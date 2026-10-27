@@ -28,7 +28,7 @@
 .editor-shell .designer-controls textarea,
 .editor-shell .designer-controls select {
   width: 100%;
-  border: 1px solid #d7d2cc;
+  border: 1px solid var(--ui-border);
   border-radius: 6px;
   padding: 8px;
   background: #fff;
@@ -72,7 +72,7 @@
   justify-content: center;
   align-items: start;
   padding: 42px;
-  background-color: #e6e3de;
+  background-color: var(--ui-soft);
   background-image: radial-gradient(#c8c4be 0.7px, transparent 0.7px);
   background-size: 12px 12px;
   overflow: auto;
@@ -92,7 +92,7 @@
   z-index: 2;
 }
 .canvas-item:focus-visible {
-  outline: 3px solid #392554;
+  outline: none;
 }
 .editor-shell .canvas-handle {
   position: absolute;
@@ -100,9 +100,9 @@
   width: 28px;
   height: 28px;
   font: 18px Arial;
-  border: 2px solid #7451ac;
+  border: 2px solid var(--ui-accent);
   border-radius: 50%;
-  color: #7451ac;
+  color: var(--ui-accent);
   z-index: 3;
   touch-action: none;
   background: #fff;

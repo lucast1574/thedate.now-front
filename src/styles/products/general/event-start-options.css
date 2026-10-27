@@ -1,0 +1,6 @@
+.office-general .template-start,
+.office-general .guest-hold-field {
+  --office-accent: var(--ui-accent);
+  --office-soft: #f1ebfa;
+  --office-border: #e5daf2;
+}

@@ -80,22 +80,22 @@
   padding: 12px 8px;
   border: 1px solid #76604426;
   border-radius: 10px;
-  background: #f6f3ed;
-  color: #4f4439;
+  background: var(--ui-surface);
+  color: var(--ui-muted);
   font:
     500 12px var(--font-sans),
     sans-serif;
   cursor: pointer;
 }
 .audience-options button[aria-pressed="true"] {
-  background: #ede2d3;
-  color: #624b31;
-  border-color: #917154;
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+  border-color: var(--ui-border);
 }
 .audience-options button:focus-visible {
   outline: none;
   box-shadow: none;
-  background: #e9ddcd;
+  background: var(--ui-soft);
 }
 .audience-options .ui-icon {
   width: 18px;
@@ -117,14 +117,6 @@
   font-size: 11px;
   line-height: 1.5;
   color: #746b62;
-}
-.office-general .audience-options button[aria-pressed="true"] {
-  background: #ece5fb;
-  border-color: #7959ad;
-  color: #5d3e91;
-}
-.office-general .audience-options button:focus-visible {
-  background: #e8ddfa;
 }
 .flyer-gift-link {
   display: flex;

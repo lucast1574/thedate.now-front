@@ -71,7 +71,7 @@
 }
 .designer > p:not(.office-kicker) {
   font-size: 14px;
-  color: #756c62;
+  color: var(--ui-muted);
   line-height: 1.6;
 }
 .designer-layout {

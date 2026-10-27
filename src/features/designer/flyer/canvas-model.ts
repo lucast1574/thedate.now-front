@@ -83,7 +83,6 @@ export function flyerSections(draft: DesignEvent) {
           icon: "heart",
           heading: draft.title,
           body: draft.description,
-          photoKey: draft.photoKeys[0],
         },
       ];
   return sections.map((section) => ({

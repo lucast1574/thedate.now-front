@@ -1,0 +1,61 @@
+.workspace.office-general {
+  --workspace-accent: var(--ui-accent);
+  --workspace-tint: var(--ui-soft);
+  --workspace-ink: var(--ui-ink);
+  background: var(--ui-background);
+}
+.office-general .workspace-sidebar {
+  background: #eef2f8;
+  border-color: #e0e6ef;
+}
+.office-general .workspace-sidebar nav a small {
+  color: #7d8797;
+}
+.office-general .workspace-sidebar nav a:hover,
+.office-general .workspace-sidebar nav a[aria-current="page"] {
+  background: white;
+  box-shadow: none;
+}
+.office-general .organization-heading h1 {
+  font:
+    650 34px/1.15 Arial,
+    sans-serif;
+  letter-spacing: -0.04em;
+}
+.office-general .organization-preview > header h2 {
+  font:
+    650 25px/1.2 Arial,
+    sans-serif;
+  letter-spacing: -0.035em;
+}
+.office-general .manager-page {
+  background: var(--ui-background);
+}
+.office-general .manager-header h1 {
+  font-family: Arial, sans-serif;
+  letter-spacing: -0.035em;
+}
+.office-general .manager-tabs button[aria-current="page"] {
+  background: var(--ui-accent);
+  color: white;
+}
+
+.office-general .manager-general .product-heading-mark {
+  background: #e4ecfb;
+  color: var(--ui-accent);
+}
+.office-general .manager-general .product-heading strong {
+  color: var(--ui-accent);
+}
+.office-general .manager-general .table-shape {
+  background: #e4ecfb;
+  border-color: #adc3ee;
+  color: var(--ui-accent);
+  box-shadow: none;
+}
+.office-general .manager-general .seating-board {
+  background-color: #fbfdff;
+}
+.office-general .manager-general .seating-scroll {
+  background: #e9eef6;
+}

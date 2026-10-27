@@ -1,0 +1,27 @@
+.office-general .color-picker,
+.editor-general .color-picker {
+  --picker-accent: var(--ui-accent);
+}
+.office-general .style-option input:checked + .style-option-body,
+.editor-general .style-option input:checked + .style-option-body {
+  border-color: var(--ui-accent);
+  box-shadow: 0 0 0 1px var(--ui-accent);
+}
+.office-general .style-check,
+.editor-general .style-check {
+  background: var(--ui-accent);
+}
+.office-general .color-trigger,
+.editor-general .color-trigger,
+.office-general .color-panel,
+.editor-general .color-panel {
+  background: var(--ui-surface);
+  border-color: #e3d9ee;
+}
+.editor-general .template-customization {
+  background: var(--ui-surface);
+  border-color: #e3d9ee;
+}
+.editor-general .template-customization summary {
+  color: var(--ui-accent);
+}

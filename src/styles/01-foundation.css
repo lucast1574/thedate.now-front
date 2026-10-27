@@ -32,9 +32,6 @@ a {
     #f7f3ec 100%
   );
 }
-.site.general {
-  --accent: #946ca0;
-}
 .topbar {
   height: 104px;
   display: flex;

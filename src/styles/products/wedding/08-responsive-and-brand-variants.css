@@ -1,0 +1,34 @@
+.office-wedding .auth-panel {
+  border-radius: 4px;
+}
+.brand-wedding .brand-wordmark {
+  font-family: var(--font-serif), serif;
+  font-weight: 500;
+}
+.brand-wedding .brand-save {
+  color: #a76d55;
+  font: inherit;
+  letter-spacing: inherit;
+}
+.brand-wedding .brand-mark {
+  color: #ab785b;
+  stroke-width: 1.45;
+}
+.brand-wedding .brand-mark .wedding-envelope {
+  fill: none;
+  stroke: currentColor;
+}
+.brand-wedding .brand-mark .wedding-fold {
+  fill: none;
+  stroke: currentColor;
+}
+.brand-wedding .brand-mark .wedding-ring {
+  fill: #f8f4ed;
+  stroke: #9c6c52;
+  stroke-width: 1.7;
+}
+.brand-wedding .brand-mark .wedding-spark {
+  fill: none;
+  stroke: #bc906f;
+  stroke-width: 1.2;
+}

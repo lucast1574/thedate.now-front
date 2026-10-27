@@ -1,0 +1,35 @@
+.office-general .date-time-trigger,
+.editor-general .date-time-trigger {
+  background: var(--ui-surface);
+  border-color: #e0d5ee;
+}
+.office-general .date-time-trigger svg,
+.editor-general .date-time-trigger svg {
+  color: var(--ui-accent);
+}
+.office-general .date-time-trigger:hover,
+.office-general .date-time-trigger[aria-expanded="true"] {
+  border-color: var(--ui-accent);
+  box-shadow: 0 0 0 2px #8150c715;
+}
+.picker-general {
+  background: linear-gradient(160deg, #fffaff, #f7f1ff);
+  border-color: #ded0ef;
+  --picker-tone: #8150c7;
+  --picker-soft: #ede2fb;
+}
+.picker-general .calendar-navigation > div > button:first-child {
+  font-family: var(--font-sans), sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+.picker-general .calendar-days button {
+  border-radius: 10px;
+  color: #574b65;
+}
+.picker-general .calendar-days button[aria-pressed="true"] {
+  color: white;
+}
+.picker-general .calendar-navigation button {
+  color: #6e508f;
+}

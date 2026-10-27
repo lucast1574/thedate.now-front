@@ -1,3 +1,4 @@
+import { applicationHost, configuredProduct } from "@/lib/products/application";
 import { NextResponse, type NextRequest } from "next/server";
 import { safeReferral } from "@/lib/auth/continuation";
 import { invitationHost } from "@/lib/events/domains";
@@ -6,12 +7,27 @@ import {
   invitationTarget,
 } from "@/lib/events/invitation-runtime";
 export function proxy(request: NextRequest) {
+  const product = configuredProduct();
+  if (product) {
+    const host = (request.headers.get("host") || "")
+      .toLowerCase()
+      .split(":")[0];
+    const allowed = [
+      applicationHost(product),
+      "localhost",
+      "127.0.0.1",
+      ...(product === "general" ? ["backoffice.thedate.now"] : []),
+    ];
+    if (!allowed.includes(host))
+      return new NextResponse("Not found", { status: 404 });
+  }
   const target = invitationTarget();
   const personal = /^\/(?:rsvp|join|regalos|api\/(?:rsvp|join|gifts))\//.test(
     request.nextUrl.pathname,
   );
   const next = () => {
     const response = NextResponse.next();
+    if (product) response.headers.set("X-Application-Product", product);
     const ref = safeReferral(request.nextUrl.searchParams.get("ref"));
     if (!target && ref && !request.cookies.get("thedate_referral"))
       response.cookies.set("thedate_referral", ref, {

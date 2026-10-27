@@ -8,7 +8,6 @@ export default function EventLocationFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
-  const wedding = draft.kind === "wedding";
   const mapInput = useRef<HTMLInputElement>(null);
   const { mapStatus, setMapStatus, resolvingMap, retry } = useMapAddress(
     draft,
@@ -23,45 +22,43 @@ export default function EventLocationFields({
   }, [draft.isVirtual, draft.mapUrl, draft.location]);
   return (
     <>
-      {!wedding && (
-        <fieldset className="event-mode">
-          <legend>¿Cómo se van a reunir?</legend>
-          <label>
-            <input
-              type="radio"
-              name="event-mode"
-              checked={!draft.isVirtual}
-              onChange={() => {
-                setDraft({
-                  ...draft,
-                  isVirtual: false,
-                  virtualUrl: "",
-                  location: "",
-                });
-                setMapStatus("");
-              }}
-            />{" "}
-            En un lugar
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="event-mode"
-              checked={draft.isVirtual}
-              onChange={() => {
-                setDraft({
-                  ...draft,
-                  isVirtual: true,
-                  mapUrl: "",
-                  location: "",
-                });
-                setMapStatus("");
-              }}
-            />{" "}
-            Por internet
-          </label>
-        </fieldset>
-      )}
+      <fieldset className="event-mode">
+        <legend>¿Cómo se van a reunir?</legend>
+        <label>
+          <input
+            type="radio"
+            name="event-mode"
+            checked={!draft.isVirtual}
+            onChange={() => {
+              setDraft({
+                ...draft,
+                isVirtual: false,
+                virtualUrl: "",
+                location: "",
+              });
+              setMapStatus("");
+            }}
+          />{" "}
+          En un lugar
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="event-mode"
+            checked={draft.isVirtual}
+            onChange={() => {
+              setDraft({
+                ...draft,
+                isVirtual: true,
+                mapUrl: "",
+                location: "",
+              });
+              setMapStatus("");
+            }}
+          />{" "}
+          Por internet
+        </label>
+      </fieldset>
       {draft.isVirtual ? (
         <label>
           Enlace para unirse

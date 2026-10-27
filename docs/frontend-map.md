@@ -1,7 +1,7 @@
 # Aplicación frontend
 
 Las landings y sus guías SEO viven ahora en [thedate.now-landing](https://github.com/lucast1574/thedate.now-landing).
-Este repositorio mantiene los estudios, cuentas, editor e invitaciones.
+Este repositorio contiene dos aplicaciones independientes con un único núcleo compartido: `apps/the-date` y `apps/save-the-date`. La diferencia es de identidad, diseño y catálogo; las funciones se mantienen en `src`. El build raíz es el renderizador de invitaciones.
 
 # Mapa del frontend
 
@@ -10,8 +10,11 @@ Lee este mapa antes de explorar todo `src/`. Después abre solo el módulo de la
 ## Estructura
 
 ```text
+apps/
+  the-date/      App, estilos, configuración y Dockerfile de The Date
+  save-the-date/ App, estilos, configuración y Dockerfile de Save the Date
 src/
-  app/           Rutas Next.js, layout y adaptadores HTTP
+  app/           Implementaciones de rutas compartidas y entrada del renderizador
   components/    Widgets compartidos entre funcionalidades
   features/
     studio/      Sesión, eventos, formularios y paneles de organización
@@ -24,7 +27,7 @@ src/
     events/      Tipos, fechas, borradores, dominios e iconos compartidos
     api/         Cliente JSON, transporte servidor y proxy del estudio
     auth/        Cookie de sesión y callback de Google
-  styles/        CSS legible; el orden de imports conserva la cascada
+  styles/        Tokens y CSS comunes; products/general y products/wedding contienen temas aislados
 tests/           Regresiones de contratos, eventos y widgets
 ```
 
@@ -270,3 +273,13 @@ Referencia examinada: [invitación Canva](https://llinvit.my.canva.site/sander-y
 La creación usa el catálogo de lienzos en `event-template-start.tsx` y `initial-invitation.ts`: la misma secuencia alimenta el preview y el diseño inicial enviado al crear. `template-extras.ts` adapta la apertura a la temática e incorpora colores de vestimenta, restricciones y el enlace de regalos cuando la lista está activa. Los espacios móviles del salón viven en `venue-areas.tsx`; el editor permite añadirlos y guardarlos en `SeatingPlan.areas`. El demo usa seis mesas, bocaditos, bar y pista, sin escenario.
 
 El formulario pide solo el enlace de Maps y presenta la ubicación resuelta como texto; al cambiar el enlace descarta la dirección anterior y espera la nueva resolución. Los presets de apertura reutilizan `OpeningArtwork` con loops CSS y respetan `prefers-reduced-motion`.
+
+## Builds y fronteras de producto
+
+`npm run dev:the-date -- --port 3111` y `npm run dev:save-the-date -- --port 3112` ejecutan cada app (para pasar argumentos directos usa `npm run dev --workspace=@thedate/the-date -- --port 3111`). `npm run build:apps` compila ambas; `npm run build` mantiene la imagen del renderizador. Cada Dockerfile de app usa el contexto raíz del repositorio.
+
+`APP_PRODUCT` se fija en cada `next.config.ts`: el servidor emite `data-product` y `data-application` desde el primer HTML, usa el endpoint de API del producto y rechaza el host de la otra app. Las rutas comparten handlers: una corrección de funciones se implementa una sola vez. Las vistas de iframe esperan su CSS y copian la identidad antes de montar contenido.
+
+Hay 24 plantillas de lienzo por producto, más los diseños antiguos por secciones conservados por compatibilidad. `template-layouts-extended.ts` y `template-layout-pages.ts` aportan portadas, álbumes y programas. Todos los espacios iniciales usan `template-photo`: las fotos de la biblioteca solo se colocan mediante una acción explícita del usuario.
+
+El Dockerfile de The Date empaqueta el build raíz como artefacto `/app/renderer`. `scripts/renderer-image.Dockerfile` permite publicarlo como imagen de invitación sin mantener un servicio frontend antiguo activo. El servicio de bodas sigue compilándose y ejecutándose de forma independiente.

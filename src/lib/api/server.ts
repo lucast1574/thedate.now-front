@@ -1,8 +1,11 @@
 import "server-only";
+import { configuredProduct } from "@/lib/products/application";
 import { backendURL } from "./config";
 import { headers } from "next/headers";
 import { invitationFromHost } from "@/lib/events/domains";
 async function requestProduct() {
+  const fixed = configuredProduct();
+  if (fixed) return fixed;
   if (process.env.INVITATION_KIND) return process.env.INVITATION_KIND;
   const host = ((await headers()).get("host") ?? "")
     .toLowerCase()

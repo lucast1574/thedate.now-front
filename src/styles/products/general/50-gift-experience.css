@@ -1,0 +1,21 @@
+.office-general .gift-experience-preview,
+.gifts-general,
+.gift-preview-canvas.gifts-general {
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
+}
+.gift-preview-canvas.gifts-general {
+  background: #f3f6fb;
+}
+.gift-preview-canvas.gifts-general .gift-page-heading h2 {
+  font-family: var(--font-sans), Arial, sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+}
+.office-general .gift-confirmation,
+.gifts-general .gift-confirmation {
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
+}

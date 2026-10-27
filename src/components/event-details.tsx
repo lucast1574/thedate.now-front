@@ -15,7 +15,7 @@ export default function EventDetails({
   event: Details;
   variant?: "invitation" | "rsvp";
 }) {
-  const virtual = event.kind === "general" && event.isVirtual;
+  const virtual = event.isVirtual;
   const fields = {
     when: {
       label: "CUÁNDO",

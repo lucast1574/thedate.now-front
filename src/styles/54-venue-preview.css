@@ -14,10 +14,10 @@
   touch-action: none;
   user-select: none;
   cursor: grab;
-  border: 1px solid #d2c7b3;
+  border: 1px solid var(--ui-border);
   border-radius: 7px;
-  background: #f0e9da;
-  color: #726146;
+  background: var(--ui-soft);
+  color: var(--ui-muted);
   padding: 8px;
   overflow: hidden;
 }
@@ -41,14 +41,14 @@
 .venue-area:focus-visible {
   outline: none;
   box-shadow: none;
-  background: #e5d8be;
-  color: #493b2a;
-  border-color: #9b7b50;
+  background: var(--ui-border);
+  color: var(--ui-ink);
+  border-color: var(--ui-accent);
 }
 .venue-area-stage {
   border-radius: 10px 10px 3px 3px;
-  background: #e6e2db;
-  color: #665e53;
+  background: var(--ui-soft);
+  color: var(--ui-muted);
 }
 .venue-area-bar {
   background: #e6ece6;
@@ -56,13 +56,13 @@
   border-color: #c3cec2;
 }
 .venue-area-dance {
-  background: #faf7ef;
-  border: 2px dashed #c8b997;
+  background: var(--ui-surface);
+  border: 2px dashed var(--ui-border);
 }
 .venue-area-dance > .ui-icon,
 .venue-area-dance > strong {
   z-index: 1;
-  background: #faf7ef;
+  background: var(--ui-surface);
   padding: 3px 8px;
   box-sizing: content-box;
 }
@@ -96,16 +96,16 @@
   align-items: center;
   gap: 7px;
   padding: 12px 16px;
-  border: 1px solid #cdbda9;
+  border: 1px solid var(--ui-border);
   border-radius: 8px;
-  background: #f1eadf;
-  color: #66513b;
+  background: var(--ui-soft);
+  color: var(--ui-accent);
 }
 .venue-area-tools > small {
   width: 100%;
   font-size: 11px;
   line-height: 1.6;
-  color: #8e8072;
+  color: var(--ui-muted);
 }
 .venue-area-tools svg {
   width: 16px;
@@ -115,7 +115,7 @@
   width: 100%;
   min-height: 24px;
   padding: 0;
-  accent-color: #996345;
+  accent-color: var(--ui-accent);
 }
 .venue-area-inspector p {
   font-size: 12px;
@@ -125,5 +125,5 @@
 .venue-area-inspector input:focus {
   outline: none;
   box-shadow: none;
-  border-color: #996345;
+  border-color: var(--ui-accent);
 }

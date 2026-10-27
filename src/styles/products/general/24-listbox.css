@@ -1,0 +1,20 @@
+:is(.office-general, .editor-general, .manager-general) button.custom-listbox {
+  border-color: #ddd7ed;
+  background: #fff;
+}
+:is(.office-general, .editor-general, .manager-general)
+  button.custom-listbox:focus-visible,
+:is(.office-general, .editor-general, .manager-general)
+  button.custom-listbox[aria-expanded="true"] {
+  outline-color: #a17de0;
+}
+.listbox-general {
+  background: #fff;
+  border-color: #ddd7ed;
+}
+.listbox-general .listbox-option.active {
+  background: #f0eafb;
+}
+.listbox-general .listbox-option[aria-selected="true"] {
+  color: #7850b6;
+}

@@ -6,6 +6,7 @@ import FlyerGiftLink from "./flyer-gift-link";
 import FlyerDressCode from "./flyer-dress-code";
 import FlyerRestrictions from "./flyer-restrictions";
 import Photo from "./photo";
+import TemplatePhotoPlaceholder from "./template-photo-placeholder";
 import FlyerLocation from "./flyer-location";
 import {
   flyerFonts,
@@ -42,6 +43,8 @@ export function FlyerContent({
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
+  if (item.type === "image" && item.photoKey === "template-photo")
+    return <TemplatePhotoPlaceholder />;
   if (item.type === "image")
     return (
       <Photo

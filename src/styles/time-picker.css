@@ -79,16 +79,3 @@
   font-size: 12px;
   color: #726456;
 }
-.picker-general .time-options button {
-  border-color: #e2d8ef;
-  color: #574b65;
-}
-.picker-general .time-options button[aria-pressed="true"] {
-  color: white;
-}
-.picker-general .time-period button,
-.picker-general .time-hint,
-.picker-general .time-current {
-  flex-shrink: 0;
-  color: #6e508f;
-}

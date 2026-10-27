@@ -52,7 +52,7 @@ test("virtual and physical event payloads do not mix location links", () => {
   assert.equal(virtual.location, "En línea");
   assert.equal(virtual.virtualUrl, event.virtualUrl);
   assert.equal(eventPayload({ ...event, isVirtual: false }).virtualUrl, "");
-  assert.equal(eventPayload({ ...event, kind: "wedding" }).isVirtual, false);
+  assert.equal(eventPayload({ ...event, kind: "wedding" }).isVirtual, true);
 });
 
 test("date widgets handle invalid dates and format in the event timezone", () => {

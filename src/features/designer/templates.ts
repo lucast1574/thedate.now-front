@@ -10,7 +10,6 @@ function starterSections(draft: DesignEvent): DesignSection[] {
       icon: wedding ? "flower" : "star",
       heading: draft.title,
       body: draft.description,
-      photoKey: draft.photoKeys[0],
     },
     {
       id: crypto.randomUUID(),
@@ -52,7 +51,7 @@ export function applyTemplate(
         canvas: templateCanvas(template, {
           title: draft.title,
           body: draft.description,
-          photoKey: draft.photoKeys[0],
+          photoKey: "template-photo",
         }),
       };
     // Keep existing content, photos and layers; only change the visual theme.

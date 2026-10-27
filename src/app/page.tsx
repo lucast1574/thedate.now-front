@@ -1,3 +1,4 @@
+import { configuredProduct } from "@/lib/products/application";
 import { googleEnabled as googleEnabledFor } from "@/lib/auth/google";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
@@ -19,6 +20,15 @@ export default async function Home() {
     .replace(/\.$/, "");
   if (host === "backoffice.thedate.now") redirect("https://crea.thedate.now");
   const googleEnabled = googleEnabledFor(host);
+  const product = configuredProduct();
+  if (product)
+    return (
+      <Studio
+        portal={product}
+        googleEnabled={googleEnabled}
+        paymentsEnabled={process.env.PAYMENTS_ENABLED === "true"}
+      />
+    );
   const paymentsEnabled = process.env.PAYMENTS_ENABLED === "true";
   if (host === "crea.thedate.now")
     return (

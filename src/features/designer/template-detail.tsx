@@ -43,8 +43,8 @@ export default function TemplateDetail({
           <div className="template-replace-confirm" role="alert">
             <p>
               Esto reemplazará tus {draft.sections?.length} secciones por la
-              invitación completa. Tus fotos y música se conservan. Puedes
-              deshacer.
+              invitación completa. Tus archivos siguen en la biblioteca; las
+              fotos de la plantilla quedan vacías. Puedes deshacer.
             </p>
             <button className="template-apply" onClick={onApply}>
               Reemplazar mis secciones

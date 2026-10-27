@@ -28,6 +28,18 @@ export function templateOpening(template: InvitationTemplate): Opening {
     poster: "curtain",
     celebration: "curtain",
     sunburst: "orbit",
+    gallery: "classic",
+    split: "curtain",
+    ribbon: "classic",
+    typographic: "ticket",
+    polaroid: "classic",
+    landscape: "arch",
+    cinematic: "orbit",
+    mosaic: "bloom",
+    seal: "classic",
+    waves: "arch",
+    confetti: "bloom",
+    grid: "ticket",
   };
   return {
     ...defaultOpening(

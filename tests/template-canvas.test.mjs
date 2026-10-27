@@ -14,9 +14,9 @@ const { applyTemplateToSection } = loadSource(
 );
 const { sectionIcons } = loadSource("src/lib/events/section-icons.ts");
 
-test("all 24 canvas designs have valid, editable and distinct compositions", () => {
+test("all 48 canvas designs have valid, editable and distinct compositions", () => {
   const designs = invitationTemplates.filter((item) => item.mode === "flyer");
-  assert.equal(designs.length, 24);
+  assert.equal(designs.length, 48);
   const signatures = new Set();
   for (const template of designs) {
     const canvas = templateCanvas(template);
@@ -41,7 +41,7 @@ test("all 24 canvas designs have valid, editable and distinct compositions", () 
     }
     signatures.add(JSON.stringify(canvas));
   }
-  assert.equal(signatures.size, 24);
+  assert.equal(signatures.size, 48);
 });
 
 test("a template fills an empty page and preserves other pages, music and photos", () => {
@@ -88,7 +88,7 @@ test("a template fills an empty page and preserves other pages, music and photos
   );
   assert.ok(
     result.sections[0].canvas.elements.some(
-      (item) => item.photoKey === "ours.jpg",
+      (item) => item.photoKey === "template-photo",
     ),
   );
   assert.equal(result.sections[1], other);

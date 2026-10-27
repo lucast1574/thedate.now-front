@@ -1,0 +1,4 @@
+.canvas-studio.editor-general {
+  --editor-accent: var(--ui-accent);
+  --editor-ground: #f1eff5;
+}

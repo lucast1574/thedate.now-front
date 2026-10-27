@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Invitation from "@/features/invitations/invitation";
 import type { Event } from "@/lib/events/types";
+import { preparePreviewDocument } from "./prepare-preview-document";
 export default function PreviewViewport({
   draft,
   device,
@@ -13,6 +14,7 @@ export default function PreviewViewport({
 }) {
   const stage = useRef<HTMLDivElement>(null);
   const [body, setBody] = useState<HTMLElement | null>(null);
+  const [error, setError] = useState("");
   const [size, setSize] = useState({ width: 402, height: 600 });
   useEffect(() => {
     const element = stage.current;
@@ -29,6 +31,7 @@ export default function PreviewViewport({
   const height = Math.max(1, size.height / scale - 12);
   return (
     <div className="preview-stage" ref={stage}>
+      {error && <p role="alert">{error}</p>}
       <div
         className="preview-viewport"
         style={{ width: (width + 12) * scale, height: size.height }}
@@ -48,16 +51,20 @@ export default function PreviewViewport({
             srcDoc={
               '<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vista previa</title></head><body></body></html>'
             }
-            onLoad={(e) => {
-              const doc = e.currentTarget.contentDocument;
+            onLoad={async (e) => {
+              const frame = e.currentTarget;
+              const doc = frame.contentDocument;
               if (!doc) return;
-              doc.documentElement.className =
-                document.documentElement.className;
-              for (const node of document.querySelectorAll(
-                'link[rel="stylesheet"], style',
-              ))
-                doc.head.appendChild(node.cloneNode(true));
-              setBody(doc.body);
+              try {
+                const ready = await preparePreviewDocument(
+                  doc,
+                  document,
+                  draft.kind,
+                );
+                if (frame.isConnected) setBody(ready);
+              } catch (err) {
+                if (frame.isConnected) setError((err as Error).message);
+              }
             }}
           />
           {body &&

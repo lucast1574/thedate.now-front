@@ -1,3 +1,4 @@
+import { applicationProduct } from "@/lib/products/application";
 import { googleEnabled } from "@/lib/auth/google";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
@@ -11,7 +12,7 @@ export default async function Page() {
     notFound();
   return (
     <AffiliatePage
-      wedding={host === "studio.save.thedate.now"}
+      wedding={applicationProduct(host) === "wedding"}
       googleEnabled={googleEnabled(host)}
     />
   );

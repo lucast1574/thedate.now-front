@@ -194,9 +194,6 @@
   color: #744f39;
   opacity: 0.16;
 }
-.preview-watermark[data-product="general"] {
-  color: #65429f;
-}
 .preview-watermark > span {
   transform: rotate(-24deg);
   text-align: center;

@@ -17,7 +17,7 @@
 .account-stats article,
 .account-card {
   padding: 28px;
-  border: 1px solid #e0dbd5;
+  border: 1px solid var(--ui-border);
   border-radius: 20px;
   background: #fff;
 }
@@ -41,7 +41,7 @@
 .account-card p,
 .account-note {
   line-height: 1.7;
-  color: #665e59;
+  color: var(--ui-muted);
 }
 .account-card label,
 .copy-link {
@@ -58,7 +58,7 @@
 .account-card textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #d8d4cd;
+  border: 1px solid var(--ui-border);
   border-radius: 9px;
   background: transparent;
   color: inherit;
@@ -69,8 +69,8 @@
 }
 .account-note {
   padding: 18px 22px;
-  border-left: 3px solid #9c7960;
-  background: #f7f1e9;
+  border-left: 3px solid var(--ui-border);
+  background: var(--ui-surface);
   border-radius: 8px;
 }
 .revenue-products {
@@ -256,9 +256,9 @@
 .subdomain-input {
   display: flex;
   align-items: center;
-  border: 1px solid #d8d0c3;
+  border: 1px solid var(--ui-border);
   border-radius: 7px;
-  background: #fffdf9;
+  background: var(--ui-surface);
   overflow: hidden;
   min-width: 0;
 }
@@ -274,31 +274,28 @@
   font-size: 0.8rem;
   white-space: nowrap;
   padding-right: 12px;
-  color: #74665e;
+  color: var(--ui-muted);
 }
 .subdomain-field small {
   font-size: 0.75rem;
   line-height: 1.6;
-  color: #75695f;
+  color: var(--ui-muted);
   overflow-wrap: anywhere;
 }
 .subdomain-help summary {
   font-size: 0.75rem;
   text-decoration: underline;
   cursor: pointer;
-  color: #775b4d;
+  color: var(--ui-muted);
   list-style: none;
 }
 .subdomain-help p {
   margin: 8px 0;
   padding: 12px;
-  background: #f2ece2;
+  background: var(--ui-soft);
   border-radius: 8px;
   font-size: 0.8rem;
   line-height: 1.6;
-}
-.office-general .subdomain-help summary {
-  color: #7146ba;
 }
 .publication-loading {
   display: flex;
@@ -318,9 +315,6 @@
   border-top-color: #96735c;
   border-radius: 50%;
   animation: publication-spin 1s linear infinite;
-}
-.office-general .publication-spinner {
-  border-top-color: #7146ba;
 }
 .publication-address {
   overflow-wrap: anywhere;

@@ -1,0 +1,84 @@
+@import "./tokens.css";
+@import "./account.css";
+/* Ordered imports preserve the existing cascade. See docs/frontend-map.md. */
+@import "tailwindcss";
+@import "./01-foundation.css";
+@import "./02-invitation-layout.css";
+@import "./03-studio-layout.css";
+@import "./04-guests-and-rsvp.css";
+@import "./05-brand-and-general-layout.css";
+@import "./06-general-artwork.css";
+@import "./07-general-sections.css";
+@import "./08-responsive-and-brand-variants.css";
+@import "./09-wedding-layout.css";
+@import "./10-wedding-art-and-event-fields.css";
+@import "./11-rsvp-and-designer.css";
+@import "./12-designer-and-invitation-sections.css";
+
+@import "./13-editor.css";
+@import "./14-editor-canvas.css";
+@import "./15-editor-modals.css";
+@import "./16-guest-manager.css";
+@import "./17-seating.css";
+@import "./18-icons.css";
+@import "./19-product-workspaces.css";
+
+@import "./21-personal-invitations.css";
+
+@import "./22-studio-workspace.css";
+@import "./23-studio-gallery.css";
+
+@import "./24-listbox.css";
+
+@import "./25-demo-covers.css";
+
+@import "./26-design-pickers.css";
+@import "./color-picker-controls.css";
+@import "./color-picker-details.css";
+
+@import "./27-simple-event-form.css";
+@import "./event-form-options.css";
+
+@import "./28-date-time-pickers.css";
+@import "./calendar-picker.css";
+@import "./time-picker.css";
+
+@import "./event-start-options.css";
+
+@import "./support.css";
+@import "./support-kanban.css";
+@import "./33-canvas-studio.css";
+@import "./34-invitation-music.css";
+@import "./35-template-sidebar.css";
+
+@import "./36-canvas-interactions.css";
+
+@import "./37-inspector-panels.css";
+
+@import "./38-general-editor.css";
+
+@import "./39-organization.css";
+@import "./40-wishlist.css";
+
+@import "./41-editor-sections.css";
+
+@import "./42-invitation-preview.css";
+@import "./43-invitation-experience.css";
+
+@import "./44-invitation-starters.css";
+
+@import "./45-editor-sidebar.css";
+
+@import "./46-dress-code-and-audience.css";
+
+@import "./47-opening-editor.css";
+@import "./48-invitation-backgrounds.css";
+@import "./49-editor-tool-navigation.css";
+@import "./50-gift-experience.css";
+@import "./51-opening-scenes.css";
+@import "./52-opening-animation.css";
+@import "./53-invitation-restrictions.css";
+@import "./54-venue-preview.css";
+@import "./55-event-creation.css";
+@import "./56-form-opening-previews.css";
+@import "./57-template-photo-placeholder.css";

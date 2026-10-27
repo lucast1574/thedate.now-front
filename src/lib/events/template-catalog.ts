@@ -1,3 +1,5 @@
+import { weddingExtendedTemplates } from "./wedding-extended-templates";
+import { generalExtendedTemplates } from "./general-extended-templates";
 import type { Kind } from "@/lib/events/types";
 import type { DesignMode } from "@/lib/events/flyer";
 export type InvitationTemplate = {
@@ -22,12 +24,29 @@ export type InvitationTemplate = {
     | "poster"
     | "arch"
     | "celebration"
-    | "sunburst";
+    | "sunburst"
+    | "gallery"
+    | "split"
+    | "ribbon"
+    | "typographic"
+    | "polaroid"
+    | "landscape"
+    | "cinematic"
+    | "mosaic"
+    | "seal"
+    | "waves"
+    | "confetti"
+    | "grid";
   category?: string;
 };
 import { weddingTemplates } from "./wedding-templates";
 import { generalTemplates } from "./general-templates";
-export const invitationTemplates = [...weddingTemplates, ...generalTemplates];
+export const invitationTemplates = [
+  ...weddingTemplates,
+  ...generalTemplates,
+  ...weddingExtendedTemplates,
+  ...generalExtendedTemplates,
+];
 export function resolveTemplateId(
   kind: Kind,
   style: string,

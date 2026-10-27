@@ -1,9 +1,25 @@
-# Aplicación frontend
+# The Date y Save the Date
 
-Las landings y sus guías SEO viven ahora en [thedate.now-landing](https://github.com/lucast1574/thedate.now-landing).
-Este repositorio mantiene los estudios, cuentas, editor e invitaciones.
+Dos aplicaciones independientes, un núcleo compartido y un renderizador separado de invitaciones. Las landings viven en [thedate.now-landing](https://github.com/lucast1574/thedate.now-landing).
 
-# Mapa del frontend
+| Aplicación    | Carpeta              | Dominio                   | Dockerfile                      |
+| ------------- | -------------------- | ------------------------- | ------------------------------- |
+| The Date      | `apps/the-date`      | `crea.thedate.now`        | `apps/the-date/Dockerfile`      |
+| Save the Date | `apps/save-the-date` | `studio.save.thedate.now` | `apps/save-the-date/Dockerfile` |
+| Renderizador  | `src/app`            | Dominios de invitaciones  | `Dockerfile`                    |
+
+Los Dockerfiles se construyen con el repositorio como contexto. Cada app tiene configuración, CSS y despliegue propios; las rutas y funcionalidades se comparten en `src/app`, `src/features`, `src/components` y `src/lib`.
+
+```sh
+npm ci
+npm run dev --workspace=@thedate/the-date -- --port 3111
+npm run dev --workspace=@thedate/save-the-date -- --port 3112
+npm run check
+```
+
+Cada catálogo incluye 24 plantillas de lienzo. Las fotos iniciales son espacios vacíos y la biblioteca del usuario se conserva sin aplicar imágenes automáticamente. La marca se entrega en el primer HTML del servidor y los temas CSS no se mezclan entre las dos aplicaciones.
+
+Consulta [docs/frontend-map.md](docs/frontend-map.md) para modificar funciones y [AGENTS.md](AGENTS.md) para las reglas del repositorio.
 
 ## Google por marca
 

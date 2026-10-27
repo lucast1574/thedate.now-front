@@ -19,7 +19,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  border: 1px solid var(--editor-accent, #766044);
+  border: 1px solid var(--editor-accent, var(--ui-accent));
   pointer-events: none;
 }
 .canvas-studio .canvas-handle.canvas-resize {
@@ -64,7 +64,7 @@
   position: absolute;
   z-index: 100;
   pointer-events: none;
-  background: var(--editor-accent, #766044);
+  background: var(--editor-accent, var(--ui-accent));
 }
 .canvas-guide.is-vertical {
   top: 0;
@@ -88,7 +88,7 @@
   max-height: none;
   padding: 5px 9px;
   color: white;
-  background: var(--editor-accent, #766044);
+  background: var(--editor-accent, var(--ui-accent));
   font:
     12px Arial,
     sans-serif;
@@ -104,7 +104,7 @@
   align-items: center;
   gap: 8px;
   padding: 4px 10px;
-  background: var(--editor-soft, #f4f2ed);
+  background: var(--editor-soft, var(--ui-background));
   border-radius: 7px;
 }
 .canvas-studio .symbol-search input {
@@ -140,7 +140,7 @@
   display: grid;
   place-items: center;
   padding: 12px;
-  background: var(--editor-soft, #f4f2ed);
+  background: var(--editor-soft, var(--ui-background));
   border: 0;
 }
 .canvas-studio .symbol-library-grid .ui-icon {
@@ -168,7 +168,7 @@
   align-items: center;
   justify-content: center;
   padding: 14px 12px;
-  background: var(--editor-soft, #f4f2ed);
+  background: var(--editor-soft, var(--ui-background));
   border-radius: 6px;
   font-size: 13px;
   font-weight: 600;
@@ -220,17 +220,13 @@
   z-index: 10000;
   width: 240px;
   padding: 6px;
-  background: #fffefa;
-  color: #322b25;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
   border-radius: 10px;
   box-shadow: 0 10px 40px #2d271b26;
   font:
     13px Arial,
     sans-serif;
-}
-.canvas-context-menu.is-general {
-  background: white;
-  color: #32283e;
 }
 .canvas-context-menu button {
   display: flex;
@@ -257,11 +253,7 @@
 }
 .canvas-context-menu button:hover,
 .canvas-context-menu button:focus-visible {
-  background: #eee9e1;
-}
-.canvas-context-menu.is-general button:hover,
-.canvas-context-menu.is-general button:focus-visible {
-  background: #f0eafa;
+  background: var(--ui-soft);
 }
 .canvas-context-menu button.is-destructive {
   color: #a43d3d;

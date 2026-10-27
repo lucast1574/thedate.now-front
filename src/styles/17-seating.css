@@ -13,7 +13,7 @@
 .seating-tools {
   justify-content: start;
   background: white;
-  border: 1px solid #e5e1d8;
+  border: 1px solid var(--ui-border);
   border-radius: 12px;
   padding: 16px;
   margin: 20px 0 12px;
@@ -35,10 +35,10 @@
 }
 .seating-scroll {
   overflow: auto;
-  border: 1px solid #dfdbd2;
+  border: 1px solid var(--ui-border);
   border-radius: 14px;
   align-self: start;
-  background: #eee9df;
+  background: var(--ui-soft);
   padding: 16px;
 }
 .seating-board {
@@ -46,7 +46,7 @@
   width: 100%;
   min-width: 800px;
   aspect-ratio: 1.6;
-  background-color: #fcfbf8;
+  background-color: var(--ui-surface);
   background-image: radial-gradient(#ddd8cb 1px, transparent 1px);
   background-size: 20px 20px;
   border-radius: 8px;
@@ -56,7 +56,7 @@
   left: 20px;
   top: 16px;
   font-size: 9px;
-  color: #8a887f;
+  color: var(--ui-muted);
   letter-spacing: 1px;
 }
 .seating-table {
@@ -73,7 +73,7 @@
   border: 2px solid transparent;
   border-radius: 12px;
   background: transparent;
-  color: #5e5545;
+  color: var(--ui-muted);
   user-select: none;
 }
 .seating-table:active {
@@ -129,12 +129,12 @@
   top: 45%;
   width: 100%;
   text-align: center;
-  color: #8a887f;
+  color: var(--ui-muted);
 }
 .table-inspector,
 .seating-instructions {
   padding: 20px;
-  border: 1px solid #e5e1d8;
+  border: 1px solid var(--ui-border);
   border-radius: 14px;
   background: white;
   align-self: start;
@@ -210,7 +210,7 @@
   cursor: pointer;
 }
 .auto-proposal .office-button {
-  background: #786546;
+  background: var(--ui-accent);
   color: white;
 }
 .proposal-tables {

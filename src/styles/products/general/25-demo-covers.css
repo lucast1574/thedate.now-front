@@ -1,0 +1,41 @@
+.demo-cover-general {
+  color: #eae0ff;
+  background: linear-gradient(135deg, #5739a3, #8852cc 65%, #a668d2);
+}
+.demo-cover-general::before,
+.demo-cover-general::after {
+  content: "";
+  position: absolute;
+  width: 42%;
+  aspect-ratio: 1;
+  border: 1px solid #ffffff30;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.demo-cover-general::before {
+  top: -20%;
+  right: -12%;
+  box-shadow: 0 0 0 12px #ffffff0a;
+}
+.demo-cover-general::after {
+  bottom: -25%;
+  left: -15%;
+  box-shadow: 0 0 0 18px #ffffff08;
+}
+.demo-cover-general strong {
+  color: #fff;
+  font-family: var(--font-party), var(--font-sans), sans-serif;
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+.demo-cover-general p {
+  color: #efe6ff;
+  font-family: var(--font-sans), sans-serif;
+  font-style: normal;
+}
+.demo-cover-general .ui-icon {
+  color: #ffdb85;
+}
+.demo-cover-general .demo-cover-rule {
+  color: #ffdb85;
+}

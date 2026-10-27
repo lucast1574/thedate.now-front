@@ -26,7 +26,7 @@ export default function RSVPForm({ token }: { token: string }) {
     busy,
     submit,
   } = rsvp;
-  const virtual = details?.kind === "general" && details.isVirtual;
+  const virtual = details?.isVirtual;
   const placeLink = safeHTTPSLink(
     virtual ? details?.virtualUrl || "" : details?.mapUrl || "",
   );

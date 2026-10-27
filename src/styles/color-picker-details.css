@@ -3,7 +3,7 @@
   align-items: center;
   gap: 10px;
   padding-top: 12px;
-  border-top: 1px solid #ece4db;
+  border-top: 1px solid var(--ui-border);
 }
 .color-hex-row > span {
   width: 30px;
@@ -18,17 +18,17 @@
   display: grid;
   gap: 4px;
   font-size: 9px;
-  color: #8c7c6d;
+  color: var(--ui-muted);
 }
 .color-picker .color-hex-row input {
   font-size: 12px;
   padding: 7px 8px;
   width: 100%;
   min-width: 0;
-  border: 1px solid #dfd4c7;
+  border: 1px solid var(--ui-border);
   border-radius: 7px;
   background: white;
-  color: #332d26;
+  color: var(--ui-ink);
 }
 .color-hex-row button {
   background: var(--picker-accent);
@@ -41,33 +41,13 @@
 .color-memory-note {
   display: block;
   font-size: 10px;
-  color: #91857a;
+  color: var(--ui-muted);
   line-height: 1.5;
   margin: 10px 0 0;
 }
 .color-error {
   color: #ad3333;
   font-size: 11px;
-}
-.office-general .color-picker,
-.editor-general .color-picker {
-  --picker-accent: #8150c7;
-}
-.office-general .style-option input:checked + .style-option-body,
-.editor-general .style-option input:checked + .style-option-body {
-  border-color: #8150c7;
-  box-shadow: 0 0 0 1px #8150c7;
-}
-.office-general .style-check,
-.editor-general .style-check {
-  background: #8150c7;
-}
-.office-general .color-trigger,
-.editor-general .color-trigger,
-.office-general .color-panel,
-.editor-general .color-panel {
-  background: #fdfbff;
-  border-color: #e3d9ee;
 }
 @media (max-width: 400px) {
   .color-panel {
@@ -92,11 +72,4 @@
 }
 .template-customization .style-fields {
   margin-top: 16px;
-}
-.editor-general .template-customization {
-  background: #fdfbff;
-  border-color: #e3d9ee;
-}
-.editor-general .template-customization summary {
-  color: #8150c7;
 }

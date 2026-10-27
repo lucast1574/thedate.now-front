@@ -1,0 +1,28 @@
+.office-general {
+  background: var(--ui-surface);
+}
+.office-general .office-header {
+  background: var(--ui-surface);
+}
+.office-general .office-kicker,
+.office-general .plain-button {
+  color: #bf4d75;
+}
+.office-general .office-button {
+  background: #604b9b;
+}
+.office-general .office-button:hover {
+  background: #df527d;
+}
+.office-general .auth-panel {
+  border-radius: 20px;
+  box-shadow: 0 23px 60px #65467715;
+}
+.brand-general .brand-wordmark {
+  font-family: var(--font-party), sans-serif;
+  font-weight: 850;
+  letter-spacing: -0.075em;
+}
+.brand-general .brand-mark {
+  stroke-width: 1.5;
+}

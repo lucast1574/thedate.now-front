@@ -1,0 +1,8 @@
+.canvas-context-menu.is-general {
+  background: white;
+  color: #32283e;
+}
+.canvas-context-menu.is-general button:hover,
+.canvas-context-menu.is-general button:focus-visible {
+  background: #f0eafa;
+}

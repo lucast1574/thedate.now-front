@@ -32,7 +32,7 @@ test("every canvas template is a complete editable invitation with bounded geome
     (t) => t.mode === "flyer",
   )) {
     const pages = templateSequence(template, { ...base, kind: template.kind });
-    assert.equal(pages.length, 6, template.id);
+    assert.ok(pages.length >= 6 && pages.length <= 8, template.id);
     assert.equal(new Set(pages.map((s) => s.id)).size, pages.length);
     const elements = pages.flatMap((s) => s.canvas.elements);
     assert.ok(
@@ -77,7 +77,7 @@ test("applying a complete template replaces pages, respects an explicit opening 
   assert.equal(applied.opening.enabled, true);
   assert.ok(
     applied.sections.some((s) =>
-      s.canvas.elements.some((e) => e.photoKey === "mine.jpg"),
+      s.canvas.elements.some((e) => e.photoKey === "template-photo"),
     ),
   );
   assert.equal(draft.sections.length, 0);

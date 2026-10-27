@@ -1,0 +1,10 @@
+.office-general .workspace-event {
+  --form-accent: var(--ui-accent);
+  --form-tint: var(--ui-soft);
+  --form-line: var(--ui-border);
+}
+.office-general .event-template-heading h2 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+}

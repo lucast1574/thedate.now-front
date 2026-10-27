@@ -1,8 +1,8 @@
 .color-panel {
   padding: 16px;
-  border: 1px solid #e4dbd0;
+  border: 1px solid var(--ui-border);
   border-radius: 16px;
-  background: #fffdfa;
+  background: var(--ui-surface);
   box-shadow: 0 12px 35px #38271812;
   margin-top: 10px;
   min-width: 0;
@@ -16,8 +16,8 @@
 }
 .color-panel-heading button {
   border: 0;
-  background: #f2ece6;
-  color: #6e6155;
+  background: var(--ui-soft);
+  color: var(--ui-muted);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -33,7 +33,7 @@
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: #897c70;
+  color: var(--ui-muted);
 }
 .color-swatches {
   display: grid;
@@ -87,7 +87,7 @@
   display: grid;
   gap: 7px;
   font-size: 10px;
-  color: #85776b;
+  color: var(--ui-muted);
 }
 .color-picker input[type="range"] {
   min-height: 0;

@@ -1,7 +1,7 @@
 .event-form-options {
-  border: 1px solid #e6ddd1;
+  border: 1px solid var(--ui-border);
   border-radius: 14px;
-  background: #fffcf8;
+  background: var(--ui-surface);
 }
 .event-form-options > summary {
   list-style: none;
@@ -14,7 +14,7 @@
 .event-form-options > summary > svg {
   width: 18px;
   height: 18px;
-  color: #ad7254;
+  color: var(--ui-accent);
   flex-shrink: 0;
 }
 .event-form-options > summary > svg:last-child {
@@ -33,7 +33,7 @@
 }
 .event-form-options summary small {
   font-size: 11px;
-  color: #8e8072;
+  color: var(--ui-muted);
   font-weight: 400;
 }
 .event-form-options > div {
@@ -54,7 +54,7 @@
 }
 .event-form-submit p {
   font-size: 11px;
-  color: #8e8072;
+  color: var(--ui-muted);
   max-width: 260px;
   line-height: 1.6;
 }
@@ -63,29 +63,6 @@
   gap: 10px;
   align-items: center;
   border-radius: 12px;
-}
-.office-general .event-form-card,
-.office-general .event-form-options {
-  background: #fdfbff;
-  border-color: #e6ddef;
-}
-.office-general .event-form-card-heading > span,
-.office-general .invitation-address-card {
-  background: #eee6f9;
-  color: #8150c7;
-}
-.office-general .address-edit summary,
-.office-general .event-form-options > summary > svg {
-  color: #8150c7;
-}
-.office-general .capacity-options label:has(input:checked),
-.office-general .event-mode label:has(input:checked) {
-  background: #eee6f9;
-  border-color: #8150c7;
-}
-.office-general .capacity-options input,
-.office-general .event-mode input {
-  accent-color: #8150c7;
 }
 @media (max-width: 600px) {
   .event-form-card {
@@ -111,14 +88,6 @@
   .simple-event-form .event-date-row {
     grid-template-columns: 1fr 1fr;
   }
-}
-
-.office-general .workspace-event > h1 {
-  font-family: var(--font-sans), sans-serif;
-  font-weight: 800;
-  font-size: clamp(30px, 4vw, 48px);
-  line-height: 1.08;
-  letter-spacing: -1.4px;
 }
 .simple-event-form .event-date-row input {
   min-width: 0;

@@ -1,0 +1,31 @@
+.office-general .event-form-card,
+.office-general .event-form-options {
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
+}
+.office-general .event-form-card-heading > span,
+.office-general .invitation-address-card {
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.office-general .address-edit summary,
+.office-general .event-form-options > summary > svg {
+  color: var(--ui-accent);
+}
+.office-general .capacity-options label:has(input:checked),
+.office-general .event-mode label:has(input:checked) {
+  background: var(--ui-soft);
+  border-color: var(--ui-accent);
+}
+.office-general .capacity-options input,
+.office-general .event-mode input {
+  accent-color: var(--ui-accent);
+}
+
+.office-general .workspace-event > h1 {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 800;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -1.4px;
+}

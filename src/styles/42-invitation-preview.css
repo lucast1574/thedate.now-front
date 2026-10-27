@@ -21,12 +21,6 @@
   flex-direction: column;
   animation: preview-arrive 280ms ease-out;
 }
-.preview-modal[data-product="general"] {
-  --preview-accent: #2860cf;
-  --preview-ground: #e9edf4;
-  --preview-ink: #252a34;
-  --preview-surface: #fff;
-}
 .preview-modal::backdrop {
   background: #17141cba;
   backdrop-filter: blur(10px);

@@ -1,0 +1,11 @@
+:root {
+  --ui-accent: #2860cf;
+  --ui-soft: #edf2fb;
+  --ui-surface: #ffffff;
+  --ui-background: #f5f6f8;
+  --ui-border: #dce2eb;
+  --ui-ink: #252d3b;
+  --ui-muted: #758092;
+  --ui-heading-font: var(--font-sans), Arial, sans-serif;
+  --ui-heading-weight: 700;
+}

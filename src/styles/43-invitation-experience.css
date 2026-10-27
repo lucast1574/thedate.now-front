@@ -3,9 +3,6 @@
   --invite-ink: #302720;
   color: var(--invite-ink);
 }
-.invitation[data-product="general"] {
-  --invite-ink: #252a34;
-}
 .invitation[data-design="flyer"] {
   display: flex;
   flex-direction: column;
@@ -43,22 +40,9 @@
   line-height: 1;
   color: inherit;
 }
-.invite-footer .brand-wedding-title {
-  font-size: 10px;
-  letter-spacing: 0.035em;
-  color: inherit;
-}
-.invite-footer .brand-wedding-subtitle {
-  display: none;
-}
-.invite-footer .wedding-mark,
 .invite-footer .brand-mark {
   width: 14px;
   height: 14px;
-  color: inherit;
-}
-.invite-footer .brand-general .brand-wordmark {
-  font-size: 11px;
   color: inherit;
 }
 .invite-footer a:hover,
@@ -82,9 +66,6 @@
 .invitation [data-reveal="visible"] {
   opacity: 1;
   translate: 0 0;
-}
-.invitation[data-product="general"] [data-reveal] {
-  transition-duration: 500ms;
 }
 .preview-caption .preview-watermark {
   position: static;

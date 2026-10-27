@@ -52,7 +52,7 @@ export function normalizeEvent(event: Event): Event {
   };
 }
 export function eventPayload(event: Event) {
-  const virtual = event.kind === "general" && event.isVirtual;
+  const virtual = event.isVirtual;
   return {
     kind: event.kind,
     celebration: event.celebration || undefined,

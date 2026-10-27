@@ -1,0 +1,75 @@
+.product-heading-wedding {
+  color: var(--ui-accent);
+  border-bottom: 1px solid var(--ui-border);
+  background: var(--ui-surface);
+}
+.product-heading-wedding strong {
+  font:
+    var(--ui-heading-weight) 29px var(--ui-heading-font),
+    var(--ui-heading-font);
+}
+.editor-wedding {
+  background: var(--ui-background);
+}
+.editor-wedding .editor-toolbar {
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
+}
+.editor-wedding .editor-heading h1 {
+  font:
+    var(--ui-heading-weight) 23px var(--ui-heading-font),
+    var(--ui-heading-font);
+}
+.editor-wedding button,
+.editor-wedding input,
+.editor-wedding .editor-upload {
+  border-radius: 4px;
+  color: var(--ui-muted);
+}
+.editor-wedding .editor-save {
+  background: var(--ui-accent);
+  border-color: var(--ui-border);
+  color: white;
+}
+.editor-wedding button[aria-pressed="true"] {
+  border-color: var(--ui-border);
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.editor-wedding .editor-mode-bar {
+  border-color: var(--ui-border);
+  background: var(--ui-surface);
+}
+.editor-wedding .editor-feedback {
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.template-wedding {
+  background: #faf6ee;
+  color: #69513a;
+}
+.template-wedding h2,
+.template-wedding h3 {
+  font-family: var(--font-serif), Georgia, serif;
+}
+.manager-wedding {
+  background: var(--ui-surface);
+}
+.manager-wedding .guest-metrics > div,
+.manager-wedding .manual-guest,
+.manager-wedding .guest-import,
+.manager-wedding .table-inspector {
+  border-radius: 5px;
+  border-color: var(--ui-border);
+}
+.manager-wedding .manager-header h1 {
+  font-weight: 400;
+}
+.manager-wedding .manager-tabs {
+  border-bottom: 1px solid var(--ui-border);
+  padding-bottom: 18px;
+}
+.manager-wedding .manager-tabs button[aria-current] {
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}

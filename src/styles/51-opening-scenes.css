@@ -474,7 +474,7 @@
   min-width: 0;
   background: #fff;
   text-align: center;
-  border: 1px solid var(--editor-border, #e3ddd4);
+  border: 1px solid var(--editor-border, var(--ui-border));
   border-radius: 9px;
 }
 .canvas-studio .opening-preset-grid > button[aria-pressed="true"] {

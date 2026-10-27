@@ -1,14 +1,4 @@
 /* Event-scoped navigation is discoverable before purchase. */
-.workspace.office-general {
-  --workspace-accent: #2860cf;
-  --workspace-tint: #e7eefb;
-  --workspace-ink: #252d3b;
-  background: #f7f9fc;
-}
-.office-general .workspace-sidebar {
-  background: #eef2f8;
-  border-color: #e0e6ef;
-}
 .workspace-sidebar {
   overflow-y: auto;
   padding-top: 26px;
@@ -38,7 +28,7 @@
   display: block;
   font-size: 11px;
   line-height: 1.5;
-  color: #928679;
+  color: var(--ui-muted);
   margin-top: 4px;
   font-weight: 400;
 }
@@ -52,14 +42,6 @@
   padding: 12px 10px 16px;
   margin-bottom: 16px;
 }
-.office-general .workspace-sidebar nav a small {
-  color: #7d8797;
-}
-.office-general .workspace-sidebar nav a:hover,
-.office-general .workspace-sidebar nav a[aria-current="page"] {
-  background: white;
-  box-shadow: none;
-}
 .organization-page {
   max-width: 1200px;
   margin: 0 auto;
@@ -67,23 +49,15 @@
   color: var(--workspace-ink);
 }
 .organization-heading h1 {
-  font:
-    500 38px/1.15 Georgia,
-    serif;
+  font: var(--ui-heading-weight) 38px/1.15 var(--ui-heading-font);
   letter-spacing: -0.025em;
   margin: 0 0 12px;
-}
-.office-general .organization-heading h1 {
-  font:
-    650 34px/1.15 Arial,
-    sans-serif;
-  letter-spacing: -0.04em;
 }
 .organization-heading p {
   font:
     14px/1.6 Arial,
     sans-serif;
-  color: #81786d;
+  color: var(--ui-muted);
   margin: 0;
   max-width: 600px;
 }
@@ -124,24 +98,16 @@
   border-radius: 5px;
 }
 .organization-preview > header h2 {
-  font:
-    500 28px/1.2 Georgia,
-    serif;
+  font: var(--ui-heading-weight) 28px/1.2 var(--ui-heading-font);
   margin: 0 0 12px;
   letter-spacing: -0.02em;
-}
-.office-general .organization-preview > header h2 {
-  font:
-    650 25px/1.2 Arial,
-    sans-serif;
-  letter-spacing: -0.035em;
 }
 .organization-preview > header p {
   font:
     13px/1.6 Arial,
     sans-serif;
   max-width: 620px;
-  color: #82776c;
+  color: var(--ui-muted);
   margin: 0 0 26px;
 }
 .preview-roster {
@@ -205,7 +171,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  background: #f7f4ef;
+  background: var(--ui-surface);
   padding: 20px;
   border-radius: 8px;
 }
@@ -215,7 +181,7 @@
     sans-serif;
   margin: 0;
   max-width: 460px;
-  color: #7b7166;
+  color: var(--ui-muted);
 }
 .organization-preview .preview-seating .seating-scroll {
   border: 0;
@@ -236,17 +202,6 @@
 }
 .workspace .manager-header .action-row {
   flex-wrap: wrap;
-}
-.office-general .manager-page {
-  background: #f7f9fc;
-}
-.office-general .manager-header h1 {
-  font-family: Arial, sans-serif;
-  letter-spacing: -0.035em;
-}
-.office-general .manager-tabs button[aria-current="page"] {
-  background: #2860cf;
-  color: white;
 }
 /* Three stable columns keep the special tools optically centered. */
 .canvas-studio .canvas-special-tools button {
@@ -340,24 +295,4 @@
     max-width: 100%;
     overflow: auto;
   }
-}
-
-.office-general .manager-general .product-heading-mark {
-  background: #e4ecfb;
-  color: #2860cf;
-}
-.office-general .manager-general .product-heading strong {
-  color: #2860cf;
-}
-.office-general .manager-general .table-shape {
-  background: #e4ecfb;
-  border-color: #adc3ee;
-  color: #2860cf;
-  box-shadow: none;
-}
-.office-general .manager-general .seating-board {
-  background-color: #fbfdff;
-}
-.office-general .manager-general .seating-scroll {
-  background: #e9eef6;
 }

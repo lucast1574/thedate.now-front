@@ -1,0 +1,34 @@
+:root[data-product="wedding"] {
+  --ui-accent: #89664b;
+  --ui-soft: #f3ede5;
+  --ui-surface: #fffdfa;
+  --ui-background: #f6f2e9;
+  --ui-border: #e3d9cd;
+  --ui-ink: #332d28;
+  --ui-muted: #8e8072;
+  --ui-heading-font: var(--font-serif), Georgia, serif;
+  --ui-heading-weight: 500;
+  --ink: var(--ui-ink);
+  --cream: var(--ui-background);
+  --accent: var(--ui-accent);
+}
+
+html[data-product="wedding"] body {
+  background: var(--ui-background);
+  color: var(--ui-ink);
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+html[data-product="wedding"] .gift-code-page {
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
+}
+html[data-product="wedding"] .gift-code-page :is(h1, h2) {
+  font-family: var(--ui-heading-font);
+  font-weight: var(--ui-heading-weight);
+}
+html[data-product="wedding"] .editor-loading {
+  background: var(--ui-background);
+  color: var(--ui-ink);
+  font-family: var(--font-sans), Arial, sans-serif;
+}

@@ -79,7 +79,7 @@
   text-align: center;
   overflow-wrap: anywhere;
   font:
-    400 22px/1.2 var(--font-serif),
+    var(--ui-heading-weight) 22px/1.2 var(--ui-heading-font),
     serif;
 }
 .opening-editor-preview[data-style="ticket"] h3 {

@@ -1,0 +1,34 @@
+:root[data-product="general"] {
+  --ui-accent: #2860cf;
+  --ui-soft: #edf2fb;
+  --ui-surface: #ffffff;
+  --ui-background: #f5f6f8;
+  --ui-border: #dce2eb;
+  --ui-ink: #252d3b;
+  --ui-muted: #758092;
+  --ui-heading-font: var(--font-sans), Arial, sans-serif;
+  --ui-heading-weight: 700;
+  --ink: var(--ui-ink);
+  --cream: var(--ui-background);
+  --accent: var(--ui-accent);
+}
+
+html[data-product="general"] body {
+  background: var(--ui-background);
+  color: var(--ui-ink);
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+html[data-product="general"] .gift-code-page {
+  --gift-accent: var(--ui-accent);
+  --gift-soft: var(--ui-soft);
+  --gift-ink: var(--ui-ink);
+}
+html[data-product="general"] .gift-code-page :is(h1, h2) {
+  font-family: var(--ui-heading-font);
+  font-weight: var(--ui-heading-weight);
+}
+html[data-product="general"] .editor-loading {
+  background: var(--ui-background);
+  color: var(--ui-ink);
+  font-family: var(--font-sans), Arial, sans-serif;
+}

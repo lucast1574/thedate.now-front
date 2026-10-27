@@ -277,5 +277,5 @@
   outline: none;
   box-shadow: none;
   border-color: var(--form-accent);
-  background-color: #fffdfa;
+  background-color: var(--ui-surface);
 }
