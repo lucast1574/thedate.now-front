@@ -284,3 +284,21 @@
   border-color: var(--ui-accent);
   color: var(--ui-accent);
 }
+
+.publication-panel {
+  scroll-margin-top: 28px;
+}
+
+@media (max-width: 700px) {
+  .canvas-studio .editor-toolbar-actions:has(.editor-finish) {
+    flex-wrap: wrap;
+  }
+  .canvas-studio .editor-finish {
+    width: 100%;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}

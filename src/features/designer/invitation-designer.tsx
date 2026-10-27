@@ -8,9 +8,11 @@ import CanvasWorkspace from "./flyer/canvas-workspace";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
 export default function InvitationDesigner({
+  finishHref,
   event,
   onSaved,
 }: {
+  finishHref: string;
   event: Event;
   onSaved: () => Promise<void>;
 }) {
@@ -46,6 +48,7 @@ export default function InvitationDesigner({
       className={`editor-shell canvas-studio ${event.kind === "wedding" ? "editor-wedding" : "editor-general"}`}
     >
       <EditorToolbar
+        finishHref={finishHref}
         editor={editor}
         preview={preview}
         onPreview={() => setPreview(!preview)}

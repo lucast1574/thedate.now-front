@@ -1,4 +1,4 @@
-import type { FormEvent } from "react";
+import { useEffect, type FormEvent } from "react";
 import Link from "next/link";
 import Alert from "@/components/alert";
 
@@ -25,6 +25,16 @@ export default function EventWorkspace({
   save: (e: FormEvent) => Promise<void>;
 }) {
   const { selected } = events;
+  useEffect(() => {
+    if (selected && window.location.hash === "#publicacion") {
+      const frame = requestAnimationFrame(() =>
+        document
+          .getElementById("publicacion")
+          ?.scrollIntoView({ block: "start" }),
+      );
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [selected]);
   const wedding = events.draft.kind === "wedding";
   return (
     <section className="office-main workspace-event">

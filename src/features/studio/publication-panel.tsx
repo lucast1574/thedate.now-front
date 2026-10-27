@@ -27,7 +27,7 @@ export default function PublicationPanel({
     publishing ||
     Boolean(deployment && !["error", "ready"].includes(deployment.phase));
   return (
-    <>
+    <section id="publicacion" className="publication-panel">
       <div className="office-divider" />
       <div className="action-row">
         <div>
@@ -92,6 +92,6 @@ export default function PublicationPanel({
           )}
         </div>
       </div>
-    </>
+    </section>
   );
 }

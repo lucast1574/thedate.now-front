@@ -10,6 +10,7 @@ export default function EditorPage({ id }: { id: string }) {
   const paymentReturn = useSearchParams().get("payment") === "success";
   const [event, setEvent] = useState<Event | null>(null);
   const [userId, setUserId] = useState("");
+  const [userRole, setUserRole] = useState<User["role"]>("user");
   const [error, setError] = useState("");
   const reload = useCallback(async () => {
     const list = await api<Event[]>("/api/backend/events");
@@ -26,6 +27,7 @@ export default function EditorPage({ id }: { id: string }) {
       .then(([list, user]) => {
         if (!active) return;
         setUserId(user.id);
+        setUserRole(user.role);
         const current = list.find((item) => item.id === id);
         if (!current) setError("No tienes acceso a esta invitación.");
         else setEvent(current);
@@ -76,7 +78,16 @@ export default function EditorPage({ id }: { id: string }) {
             : "Confirmando tu pago. Tu diseño y tus fotos están guardados."}
         </p>
       )}
-      <InvitationDesigner key={event.id} event={event} onSaved={reload} />
+      <InvitationDesigner
+        finishHref={
+          event.ownerId === userId || userRole === "admin"
+            ? `/?event=${encodeURIComponent(event.id)}#publicacion`
+            : `/manager/${encodeURIComponent(event.id)}`
+        }
+        key={event.id}
+        event={event}
+        onSaved={reload}
+      />
     </ColorMemoryProvider>
   );
 }

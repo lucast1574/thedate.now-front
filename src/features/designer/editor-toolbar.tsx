@@ -4,11 +4,13 @@ import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
+  finishHref,
   editor,
   preview,
   onPreview,
   onTemplates,
 }: {
+  finishHref: string;
   editor: Editor;
   preview: boolean;
   onPreview: () => void;
@@ -108,12 +110,24 @@ export default function EditorToolbar({
         </button>
         <button
           type="button"
-          className="editor-save"
+          className={editor.draft.isDemo ? "editor-save" : undefined}
           disabled={editor.busy}
           onClick={editor.save}
         >
           <Icon name="save" /> Guardar diseño
         </button>
+        {!editor.draft.isDemo && (
+          <button
+            type="button"
+            className="editor-save editor-finish"
+            disabled={editor.busy}
+            onClick={async () => {
+              if (await editor.save()) router.push(finishHref);
+            }}
+          >
+            Terminar y continuar <Icon name="arrow" />
+          </button>
+        )}
       </div>
     </header>
   );
