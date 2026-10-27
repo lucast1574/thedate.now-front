@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { Event, Guest, GuestFields, User } from "@/lib/events/types";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
+import { useLiveResponses } from "./use-live-responses";
 export function useManager(id: string) {
   const [event, setEvent] = useState<Event | null>(null),
     [user, setUser] = useState<User | null>(null);
@@ -56,13 +57,11 @@ export function useManager(id: string) {
       active = false;
     };
   }, [id, refresh]);
-  useEffect(() => {
-    if (!event || event.isDemo || event.paymentStatus !== "paid") return;
-    const timer = setInterval(() => {
-      void refresh().catch((e) => setError(e.message));
-    }, 15000);
-    return () => clearInterval(timer);
-  }, [event, refresh]);
+  useLiveResponses(
+    Boolean(event && !event.isDemo && event.paymentStatus === "paid"),
+    refresh,
+    setError,
+  );
   useEffect(() => {
     if (!dirty) return;
     const warn = (e: BeforeUnloadEvent) => {

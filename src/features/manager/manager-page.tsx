@@ -28,7 +28,7 @@ export default function ManagerPage({ id }: { id: string }) {
       return;
     router.replace(`/manager/${id}?tab=${next}`);
   };
-  const { event, guests, user, busy, error, dirty, stale } = manager;
+  const { event, guests, user, error, dirty, stale } = manager;
   if (!event)
     return (
       <main className="editor-loading">
@@ -149,17 +149,6 @@ export default function ManagerPage({ id }: { id: string }) {
                   {label}
                 </button>
               ))}
-              <button
-                disabled={busy}
-                onClick={() => {
-                  void manager.run(
-                    () => manager.refresh(),
-                    "Respuestas actualizadas.",
-                  );
-                }}
-              >
-                Actualizar respuestas ↻
-              </button>
             </nav>
             {stale && (
               <p className="manager-warning" role="alert">

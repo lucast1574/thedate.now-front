@@ -39,18 +39,25 @@ export default function GuestImport({
     <section className="guest-import">
       <h3>Importar lista de invitados</h3>
       <p className="guest-hint">
-        Excel (.xlsx, primera hoja, 2 MB) o CSV (200 KB), hasta 500 filas.
-        Nombre y teléfono son obligatorios; usa +código de país y formato de
-        texto para teléfono. Cupos incluye al titular y sus acompañantes (1–20).
+        Sube un Excel o CSV con hasta 500 invitados. Descarga una plantilla para
+        empezar.
       </p>
-      <p className="guest-hint">
-        Apellido y familia permiten agrupar mesas. Género: hombre, mujer o sin
-        especificar. Separa varios nombres, apellidos y géneros de acompañantes
-        con |, en el mismo orden. Deja esos campos vacíos si el invitado los
-        registrará. Las filas no confirman asistencia. Los teléfonos existentes
-        se omiten.
-      </p>
-      <div className="action-row">
+      <details className="guest-import-guide">
+        <summary>Formato y requisitos del archivo</summary>
+        <p className="guest-hint">
+          Excel (.xlsx, primera hoja, 2 MB) o CSV (200 KB). Nombre y teléfono
+          son obligatorios; usa +código de país y formato de texto para
+          teléfono. Cupos incluye al titular y sus acompañantes (1–20).
+        </p>
+        <p className="guest-hint">
+          Apellido y familia permiten agrupar mesas. Género: hombre, mujer o sin
+          especificar. Separa varios nombres, apellidos y géneros de
+          acompañantes con |, en el mismo orden. Deja esos campos vacíos si el
+          invitado los registrará. Las filas no confirman asistencia. Los
+          teléfonos existentes se omiten.
+        </p>
+      </details>
+      <div className="guest-template-actions">
         <button
           type="button"
           onClick={() => {

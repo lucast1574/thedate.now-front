@@ -1,0 +1,43 @@
+@media (max-width: 1100px) {
+  .guest-workspace-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 900px) {
+  .manager-page .guest-metrics > div:nth-child(3) {
+    border-left: 0;
+  }
+  .manager-page .guest-metrics > div:nth-child(n + 3) {
+    border-top: 1px solid var(--ui-border);
+  }
+}
+@media (max-width: 600px) {
+  .workspace .manager-header .action-row {
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+  .manager-header .action-row a {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+  .manager-page .guest-metrics > div {
+    padding: 16px;
+  }
+  .guest-workspace-actions {
+    flex-wrap: wrap;
+  }
+  .guest-entry-panel .manager-fields {
+    grid-template-columns: 1fr;
+  }
+  .guest-entry-panel:not([hidden]),
+  .manager-page .roster-controls,
+  .manager-delivery:has(.publication-panel) {
+    padding: 16px;
+  }
+  .manager-delivery .publication-panel .action-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
