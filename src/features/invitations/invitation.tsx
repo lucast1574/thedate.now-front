@@ -1,4 +1,5 @@
 import InvitationOpening from "./invitation-opening";
+import { resolvedOpening } from "@/lib/events/opening-presets";
 import InvitationMotion from "./invitation-motion";
 import InvitationMusic from "./invitation-music";
 import { invitationPaper } from "@/lib/events/invitation-paper";
@@ -50,7 +51,7 @@ export default function Invitation({
       <InvitationMotion />
       {showOpening && event.opening?.enabled && (
         <InvitationOpening
-          opening={event.opening}
+          opening={resolvedOpening(event)!}
           photoURL={photo}
           title={event.title}
           wedding={event.kind === "wedding"}

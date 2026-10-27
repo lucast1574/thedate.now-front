@@ -4,8 +4,9 @@ export type Opening = {
   title?: string;
   font?: "" | "serif" | "sans" | "script";
   sealIcon?: string;
+  paletteMode?: "design" | "custom";
   enabled: boolean;
-  style: "classic" | "arch" | "ticket";
+  style: "classic" | "arch" | "ticket" | "curtain" | "bloom" | "orbit";
   color: string;
   ink: string;
   message: string;
@@ -32,6 +33,7 @@ export const defaultOpening = (
   ink?: string,
 ): Opening => ({
   enabled: true,
+  paletteMode: "design",
   style: wedding ? "classic" : "ticket",
   color: color || (wedding ? "#F4EBDF" : "#EDE6FA"),
   ink: ink || (wedding ? "#766044" : "#463466"),

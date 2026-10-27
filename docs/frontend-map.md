@@ -223,6 +223,20 @@ Desplegar primero la API que acepta `opening`, `celebration`, los bindings `dres
 
 ## Barra de herramientas del editor
 
+La apertura ofrece seis escenas: Carta, Jardín, Ticket, Telón, Flor y Constelación.
+`opening-presets.ts` define los tiempos y resuelve la paleta desde el primer canvas
+y el acento del diseño con contraste legible. `paletteMode: design` sigue la
+plantilla; `custom` conserva los colores elegidos. Aperturas anteriores sin ese
+campo conservan su apariencia. Cada estilo aporta un icono y permite sustituirlo.
+
+`opening-scene.tsx` y `use-opening-animation.ts` son compartidos por la invitación
+y `opening-live-preview.tsx`: el preview es interactivo, revela el primer canvas
+real y se puede repetir. `opening-customization.tsx` agrupa colores, icono y textos;
+el fondo permanece opcional. `51-opening-scenes.css` y `52-opening-animation.css`
+separan composición y movimiento. Cada animación termina antes de retirar la
+apertura, y reduced-motion abre inmediatamente sin animaciones. No cambia las
+secciones ni el canvas del diseño.
+
 El editor recibe en Elementos. `canvas-section-controls.tsx` comparte la sección activa, añadir sección y el color de fondo entre Elementos, Imágenes, Capas y Secciones, antes de las herramientas. Elegir una página conserva la herramienta actual; crear una sección o pulsar el fondo del lienzo vuelve a Elementos. Seleccionar un objeto abre su inspector.
 
 `canvas-rail.tsx` agrupa creación, organización y configuración con etiquetas cortas. Texto y foto tienen accesos directos; símbolos se despliega bajo demanda. `canvas-images.tsx` mantiene la subida y la inserción de fotos en una sola implementación. Los controles usan el selector personalizado del proyecto y el foco no añade contornos ni anillos.

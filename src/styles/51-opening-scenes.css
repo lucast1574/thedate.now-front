@@ -1,0 +1,648 @@
+.invitation-opening[open] {
+  display: block;
+  padding: 0;
+}
+.opening-scene {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  min-height: 100%;
+  padding: 40px 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: var(--envelope-paper);
+  color: var(--envelope-ink);
+  text-align: center;
+}
+.opening-scene > :not(.flyer-background) {
+  z-index: 1;
+}
+.opening-scene .opening-intro {
+  position: relative;
+  width: 100%;
+}
+.opening-scene .opening-intro :is(h1, h3) {
+  margin: 15px 0;
+  font:
+    400 clamp(32px, 5vw, 58px)/1.08 var(--font-serif),
+    Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+}
+.opening-scene .opening-intro p {
+  max-width: 370px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.opening-scene .opening-envelope {
+  display: block;
+  width: min(360px, 90%);
+  height: auto;
+  aspect-ratio: 1.55;
+  flex-shrink: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  perspective: 1000px;
+  border-radius: 0;
+  color: inherit;
+}
+.opening-scene .opening-envelope:focus-visible {
+  background: transparent;
+  filter: brightness(0.92);
+}
+.opening-scene .opening-envelope:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.opening-scene .opening-action:disabled {
+  opacity: 0.75;
+}
+.opening-scene .opening-action {
+  position: relative;
+  min-height: 44px;
+  border-radius: 6px;
+  background: var(--envelope-ink);
+  color: var(--envelope-paper);
+  border: 0;
+}
+.opening-scene .opening-action:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
+.opening-artwork {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: var(--envelope-ink);
+  perspective: 1000px;
+}
+.opening-artwork .opening-letter {
+  inset: 8% 7%;
+  gap: 12px;
+  font-size: clamp(16px, 2vw, 26px);
+  box-shadow: 0 10px 30px #00000012;
+  border: 1px solid color-mix(in srgb, var(--envelope-ink) 14%, transparent);
+  border-radius: 4px;
+  transition: none;
+}
+.opening-artwork .opening-letter > span {
+  max-width: 90%;
+  line-height: 1.1;
+}
+.opening-artwork .opening-letter .ui-icon {
+  width: 30px;
+  height: 30px;
+}
+.opening-artwork .opening-seal {
+  top: 50%;
+  width: 58px;
+  height: 58px;
+  transition: none;
+  box-shadow: 0 7px 20px #00000022;
+  z-index: 5;
+}
+.opening-artwork .opening-seal .ui-icon {
+  width: 24px;
+  height: 24px;
+}
+.opening-pocket {
+  position: absolute;
+  inset: 0;
+  background: color-mix(
+    in srgb,
+    var(--envelope-paper) 83%,
+    var(--envelope-ink)
+  );
+  clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%);
+  border-radius: 5px;
+  z-index: 2;
+}
+.opening-artwork .opening-fold {
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 57%);
+  background: color-mix(in srgb, var(--envelope-paper) 88%, white);
+  transform-origin: 50% 0;
+  z-index: 3;
+  filter: drop-shadow(0 1px 0 #00000020);
+}
+.opening-artwork[data-style="classic"] {
+  background: color-mix(
+    in srgb,
+    var(--envelope-paper) 85%,
+    var(--envelope-ink)
+  );
+  border-radius: 5px;
+  box-shadow: 0 20px 38px #00000018;
+}
+.opening-artwork[data-style="arch"] {
+  border-radius: 50% 50% 5px 5px;
+  background: color-mix(in srgb, var(--envelope-ink) 8%, var(--envelope-paper));
+  outline: 1px solid color-mix(in srgb, var(--envelope-ink) 25%, transparent);
+  outline-offset: 10px;
+}
+.opening-artwork[data-style="arch"] .opening-letter {
+  border-radius: 50% 50% 4px 4px;
+  padding-top: 16%;
+}
+.opening-door {
+  position: absolute;
+  inset: 0 50% 0 0;
+  border: 1px solid color-mix(in srgb, var(--envelope-ink) 25%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--envelope-paper) 84%,
+    var(--envelope-ink)
+  );
+  border-radius: 100% 0 0 4px;
+  transform-origin: left center;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+.opening-door .ui-icon {
+  width: 68%;
+  height: 62%;
+  opacity: 0.65;
+  stroke-width: 0.6;
+}
+.door-right {
+  inset: 0 0 0 50%;
+  border-radius: 0 100% 4px 0;
+  transform-origin: right center;
+}
+.door-right .ui-icon {
+  transform: scaleX(-1);
+}
+.opening-artwork[data-style="arch"] .opening-seal {
+  top: 65%;
+}
+.opening-artwork[data-style="ticket"] {
+  box-shadow: 0 18px 36px #00000018;
+}
+.opening-artwork[data-style="ticket"] .opening-seal {
+  left: 78%;
+  width: 42px;
+  height: 42px;
+}
+.opening-ticket-main {
+  position: absolute;
+  inset: 0 22% 0 0;
+  background: var(--envelope-ink);
+  color: var(--envelope-paper);
+  border-radius: 8px 0 0 8px;
+  padding: 8%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.opening-ticket-main small {
+  font:
+    500 8px/1.4 var(--font-sans),
+    sans-serif;
+  letter-spacing: 0.12em;
+}
+.opening-ticket-main strong {
+  font:
+    800 clamp(18px, 3vw, 32px)/0.98 var(--font-sans),
+    sans-serif;
+  letter-spacing: -0.05em;
+}
+.opening-barcode {
+  height: 18px;
+  width: 65%;
+  background: repeating-linear-gradient(
+    90deg,
+    currentColor 0 2px,
+    transparent 2px 5px,
+    currentColor 5px 6px,
+    transparent 6px 9px
+  );
+  opacity: 0.65;
+}
+.opening-ticket-stub {
+  position: absolute;
+  inset: 0 0 0 78%;
+  background: color-mix(in srgb, var(--envelope-paper) 88%, white);
+  border-left: 2px dashed var(--envelope-ink);
+  border-radius: 0 8px 8px 0;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  padding-bottom: 10%;
+}
+.opening-ticket-stub small {
+  writing-mode: vertical-rl;
+  font-size: 8px;
+  letter-spacing: 0.2em;
+}
+.opening-artwork[data-style="curtain"] {
+  background: color-mix(in srgb, var(--envelope-paper) 94%, white);
+  border-radius: 50% 50% 4px 4px;
+  box-shadow: 0 18px 35px #00000020;
+  overflow: hidden;
+}
+.opening-artwork[data-style="curtain"] .opening-letter {
+  opacity: 0;
+  border: 0;
+  box-shadow: none;
+  top: 26%;
+}
+.opening-curtain {
+  position: absolute;
+  inset: 0 50% 0 0;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--envelope-ink) 0%,
+    color-mix(in srgb, var(--envelope-ink) 72%, var(--envelope-paper)) 13%,
+    var(--envelope-ink) 24%
+  );
+  border-radius: 0 0 45% 0;
+  z-index: 2;
+  transform-origin: top left;
+}
+.curtain-right {
+  inset: 0 0 0 50%;
+  border-radius: 0 0 0 45%;
+  transform-origin: top right;
+}
+.opening-valance {
+  position: absolute;
+  inset: 0 0 78%;
+  border-radius: 0 0 50% 50%;
+  background: var(--envelope-ink);
+  z-index: 3;
+}
+.opening-artwork[data-style="curtain"] .opening-seal {
+  top: 42%;
+  color: var(--envelope-ink);
+  background: var(--envelope-paper);
+}
+.opening-artwork[data-style="bloom"] .opening-letter {
+  opacity: 0;
+  inset: 12% 18%;
+  border-radius: 50%;
+  font-size: 17px;
+}
+.opening-petals {
+  position: absolute;
+  inset: 0;
+}
+.opening-petals > span {
+  position: absolute;
+  left: 37%;
+  top: 8%;
+  width: 26%;
+  height: 54%;
+  border: 1px solid color-mix(in srgb, var(--envelope-ink) 20%, transparent);
+  background: color-mix(
+    in srgb,
+    var(--envelope-paper) 84%,
+    var(--envelope-ink)
+  );
+  border-radius: 65% 65% 25% 25%;
+  transform-origin: 50% 78%;
+  transform: rotate(calc(var(--petal) * 45deg));
+  box-shadow: 0 8px 18px #00000008;
+}
+.opening-artwork[data-style="bloom"] .opening-seal {
+  width: 52px;
+  height: 52px;
+  top: 49%;
+}
+.opening-artwork[data-style="orbit"] .opening-letter {
+  opacity: 0;
+  inset: 15% 18%;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--envelope-ink) 8%, var(--envelope-paper));
+  box-shadow: none;
+  font-size: 20px;
+}
+.opening-orbit {
+  position: absolute;
+  inset: 5% 12%;
+  border: 1px solid color-mix(in srgb, var(--envelope-ink) 38%, transparent);
+  border-radius: 50%;
+  transform: rotate(-25deg);
+}
+.orbit-two {
+  inset: 15% 3%;
+  transform: rotate(28deg);
+}
+.orbit-three {
+  inset: 1% 25%;
+  transform: rotate(35deg);
+  border-width: 2px;
+  opacity: 0.5;
+}
+.opening-stars {
+  position: absolute;
+  inset: 0;
+}
+.opening-stars > span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  transform: rotate(calc(var(--petal) * 45deg)) translateX(125px);
+}
+.opening-stars .ui-icon {
+  width: 100%;
+  height: 100%;
+}
+.opening-artwork[data-style="orbit"] .opening-seal {
+  width: 70px;
+  height: 70px;
+  box-shadow: 0 0 0 12px color-mix(in srgb, var(--envelope-ink) 8%, transparent);
+}
+.opening-artwork[data-style="orbit"] .opening-seal .ui-icon {
+  width: 36px;
+  height: 36px;
+}
+.opening-scene[data-style="ticket"] .opening-intro :is(h1, h3),
+.opening-scene[data-style="orbit"] .opening-intro :is(h1, h3) {
+  font-family: var(--font-sans), sans-serif;
+  font-weight: 650;
+}
+.opening-live-preview {
+  min-width: 0;
+  border: 1px solid var(--editor-border, #e3ddd4);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.opening-preview-screen {
+  min-height: 345px;
+  position: relative;
+  overflow: hidden;
+}
+.opening-preview-screen .opening-scene {
+  min-height: 345px;
+  padding: 26px 18px;
+  gap: 24px;
+}
+.opening-preview-screen .opening-intro > span {
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+.opening-preview-screen .opening-intro h3 {
+  font-size: 27px;
+}
+.opening-preview-screen .opening-intro p {
+  font-size: 11px;
+}
+.opening-preview-screen .opening-envelope {
+  width: 82%;
+}
+.opening-preview-screen .opening-action {
+  font-size: 10px;
+  min-height: 38px;
+  padding: 9px 14px;
+}
+.opening-preview-screen .opening-stars > span {
+  transform: rotate(calc(var(--petal) * 45deg)) translateX(85px);
+}
+.opening-preview-caption {
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: white;
+  font-size: 10px;
+  color: var(--editor-ink);
+}
+.opening-preview-caption button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 0;
+  padding: 5px;
+  background: transparent;
+  color: var(--editor-accent);
+}
+.opening-preview-caption .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+.opening-preview-revealed {
+  min-height: 345px;
+  max-height: 430px;
+  overflow: auto;
+}
+.opening-preview-revealed > div:not(.flyer-surface) {
+  display: grid;
+  justify-items: center;
+  place-content: center;
+  min-height: 345px;
+  gap: 18px;
+  background: var(--editor-ground);
+}
+.opening-preview-revealed .flyer-surface {
+  pointer-events: none;
+  width: 100%;
+}
+.opening-preset-picker > p {
+  margin: 6px 0 14px;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--editor-ink);
+}
+.opening-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.canvas-studio .opening-preset-grid > button {
+  display: grid;
+  padding: 8px;
+  gap: 9px;
+  min-width: 0;
+  background: #fff;
+  text-align: center;
+  border: 1px solid var(--editor-border, #e3ddd4);
+  border-radius: 9px;
+}
+.canvas-studio .opening-preset-grid > button[aria-pressed="true"] {
+  border-color: var(--editor-accent);
+  background: var(--editor-ground);
+}
+.opening-preset-art {
+  display: block;
+  position: relative;
+  aspect-ratio: 1.6;
+  padding: 8px;
+  overflow: hidden;
+}
+.opening-preset-art .opening-artwork {
+  inset: 8px 10px;
+  pointer-events: none;
+}
+.opening-preset-art .opening-letter {
+  font-size: 0 !important;
+  gap: 0;
+}
+.opening-preset-art .opening-letter .ui-icon {
+  display: none;
+}
+.opening-preset-art .opening-seal {
+  width: 23px !important;
+  height: 23px !important;
+  box-shadow: none !important;
+}
+.opening-preset-art .opening-seal .ui-icon {
+  width: 12px !important;
+  height: 12px !important;
+}
+.opening-preset-art .opening-ticket-main {
+  padding: 9px;
+}
+.opening-preset-art .opening-ticket-main small,
+.opening-preset-art .opening-ticket-stub small {
+  display: none;
+}
+.opening-preset-art .opening-ticket-main strong {
+  font-size: 10px;
+}
+.opening-preset-art .opening-barcode {
+  height: 7px;
+}
+.opening-preset-art .opening-stars > span {
+  transform: rotate(calc(var(--petal) * 45deg)) translateX(32px);
+  width: 6px;
+  height: 6px;
+}
+.opening-preset-grid strong {
+  font-size: 11px;
+  font-weight: 550;
+}
+.opening-palette-settings {
+  padding-block: 14px;
+  border-block: 1px solid var(--editor-border, #e3ddd4);
+}
+.opening-palette-settings > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.opening-palette-settings > header strong {
+  font-size: 12px;
+}
+.opening-palette-settings > header span {
+  font-size: 10px;
+  color: var(--editor-ink);
+}
+.opening-palette-mode {
+  display: flex;
+  gap: 6px;
+}
+.opening-palette-mode button {
+  flex: 1;
+  padding: 9px;
+  font-size: 11px;
+}
+.opening-palette-swatches {
+  display: flex;
+  gap: 7px;
+  margin-top: 12px;
+  align-items: center;
+}
+.opening-palette-swatches > span {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid #00000018;
+  flex-shrink: 0;
+}
+.opening-palette-swatches small {
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--editor-ink);
+}
+.opening-custom-colors {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.opening-custom-section > summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 12px;
+  list-style: none;
+}
+.opening-custom-section > summary small {
+  display: block;
+  margin-top: 5px;
+  font-size: 10px;
+  color: var(--editor-ink);
+}
+.opening-custom-section > summary::after {
+  content: "+";
+  font-size: 16px;
+}
+.opening-custom-section[open] > summary::after {
+  content: "−";
+}
+.opening-custom-section > summary .ui-icon {
+  margin-left: auto;
+  margin-right: 14px;
+}
+.opening-custom-section > button {
+  margin: 0 6px 12px 0;
+  font-size: 11px;
+  padding: 8px;
+}
+.opening-custom-section .opening-editor-fields {
+  margin-top: 12px;
+}
+.opening-editor-simple :focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+.opening-editor-simple summary:focus-visible,
+.opening-preview-caption button:focus-visible {
+  background: var(--editor-ground);
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .opening-scene {
+    padding: 30px 22px;
+    gap: 26px;
+  }
+  .opening-scene .opening-envelope {
+    max-width: 300px;
+  }
+  .opening-stars > span {
+    transform: rotate(calc(var(--petal) * 45deg)) translateX(105px);
+  }
+}
+@media (max-height: 650px) {
+  .invitation-opening .opening-scene {
+    padding: 20px;
+    gap: 16px;
+  }
+  .invitation-opening .opening-scene .opening-envelope {
+    width: min(245px, 70%);
+  }
+  .invitation-opening .opening-intro :is(h1, h3) {
+    font-size: 32px;
+    margin: 10px 0;
+  }
+  .invitation-opening .opening-intro p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+}

@@ -1,9 +1,7 @@
 "use client";
-import FlyerBackground from "@/components/flyer-background";
-import { useEffect, useRef, useState } from "react";
-import OpeningArtwork from "./opening-artwork";
-import { flyerFonts } from "@/lib/events/flyer";
-import Icon from "@/components/icon";
+import { useEffect, useRef } from "react";
+import OpeningScene from "./opening-scene";
+import { useOpeningAnimation } from "./use-opening-animation";
 import type { Opening } from "@/lib/events/celebration";
 export default function InvitationOpening({
   opening,
@@ -17,12 +15,11 @@ export default function InvitationOpening({
   photoURL: (key: string) => string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
+  const { phase, open } = useOpeningAnimation(opening.style);
   const done = phase === "done";
   useEffect(() => {
-    const node = dialog.current;
-    const doc = node?.ownerDocument;
+    const node = dialog.current,
+      doc = node?.ownerDocument;
     if (!node || !doc || done) return;
     const overflow = doc.body.style.overflow;
     doc.body.style.overflow = "hidden";
@@ -32,78 +29,25 @@ export default function InvitationOpening({
       doc.body.style.overflow = overflow;
     };
   }, [done]);
-  useEffect(
-    () => () => {
-      if (timer.current) clearTimeout(timer.current);
-    },
-    [],
-  );
-  function open() {
-    if (phase !== "closed") return;
-    setPhase("opening");
-    const reduced = dialog.current?.ownerDocument.defaultView?.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    timer.current = setTimeout(() => setPhase("done"), reduced ? 0 : 650);
-  }
-  if (phase === "done") return null;
+  if (done) return null;
   return (
     <dialog
       ref={dialog}
       className="invitation-opening"
-      data-style={opening.style}
-      data-phase={phase}
       aria-labelledby="opening-title"
       onCancel={(e) => {
         e.preventDefault();
-        open();
+        open(dialog.current);
       }}
-      style={
-        {
-          "--envelope-paper": opening.color,
-          "--envelope-ink": opening.ink,
-        } as React.CSSProperties
-      }
     >
-      {opening.backgroundImage && (
-        <FlyerBackground
-          slice={{
-            image: opening.backgroundImage,
-            offset: 0,
-            total: 1,
-            height: 1,
-          }}
-          photoURL={photoURL}
-        />
-      )}
-      <div className="opening-intro">
-        <span>{wedding ? "Con todo nuestro cariño" : "Estás invitado"}</span>
-        <h1
-          id="opening-title"
-          style={
-            opening.font ? { fontFamily: flyerFonts[opening.font] } : undefined
-          }
-        >
-          {opening.title || title}
-        </h1>
-        <p>{opening.message}</p>
-      </div>
-      <button
-        className="opening-envelope"
-        onClick={open}
-        aria-label={opening.buttonLabel || "Abrir invitación"}
-        disabled={phase === "opening"}
-      >
-        <OpeningArtwork opening={opening} title={title} wedding={wedding} />
-      </button>
-      <button
-        className="opening-action"
-        onClick={open}
-        disabled={phase === "opening"}
-      >
-        {opening.buttonLabel || "Abrir invitación"}
-        <Icon name="arrow" />
-      </button>
+      <OpeningScene
+        opening={opening}
+        title={title}
+        wedding={wedding}
+        photoURL={photoURL}
+        phase={phase}
+        onOpen={() => open(dialog.current)}
+      />
     </dialog>
   );
 }

@@ -1,0 +1,208 @@
+/* The shared timeline finishes only after each themed artwork has revealed its letter. */
+.opening-scene[data-phase="opening"] {
+  animation: opening-scene-exit var(--opening-duration) both;
+}
+.opening-scene[data-phase="opening"] .opening-seal {
+  animation: opening-seal-release 500ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.opening-scene[data-phase="opening"] .opening-action {
+  opacity: 0.5;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="classic"]
+  .opening-fold {
+  animation: opening-flap 700ms cubic-bezier(0.3, 0.1, 0.2, 1) both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="classic"]
+  .opening-letter {
+  animation: opening-letter-rise 1100ms 300ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="arch"]
+  .door-left {
+  animation: opening-garden-left 1400ms 150ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="arch"]
+  .door-right {
+  animation: opening-garden-right 1400ms 150ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="arch"]
+  .opening-letter {
+  animation: opening-letter-bloom 1400ms 250ms both;
+}
+.opening-scene[data-phase="opening"] .opening-ticket-main {
+  animation: opening-ticket-left 1200ms 100ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"] .opening-ticket-stub {
+  animation: opening-ticket-right 1200ms 100ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"] .curtain-left {
+  animation: opening-curtain-left 1600ms 100ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"] .curtain-right {
+  animation: opening-curtain-right 1600ms 100ms cubic-bezier(0.2, 0.8, 0.2, 1)
+    both;
+}
+.opening-scene[data-phase="opening"] .opening-valance {
+  animation: opening-valance-rise 1600ms 100ms both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="curtain"]
+  .opening-letter {
+  animation: opening-letter-bloom 1600ms both;
+}
+.opening-scene[data-phase="opening"] .opening-petals > span {
+  animation: opening-petal-unfold 1500ms calc(var(--petal) * 35ms)
+    cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="bloom"]
+  .opening-letter {
+  animation: opening-letter-bloom 1500ms both;
+}
+.opening-scene[data-phase="opening"] .opening-orbit {
+  animation: opening-orbit-expand 1500ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.opening-scene[data-phase="opening"] .opening-stars > span {
+  animation: opening-star-scatter 1600ms calc(var(--petal) * 20ms) both;
+}
+.opening-scene[data-phase="opening"]
+  .opening-artwork[data-style="orbit"]
+  .opening-letter {
+  animation: opening-letter-bloom 1600ms both;
+}
+@keyframes opening-scene-exit {
+  0%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes opening-seal-release {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4) rotate(20deg);
+  }
+}
+@keyframes opening-flap {
+  to {
+    transform: rotateX(180deg);
+    z-index: 0;
+  }
+}
+@keyframes opening-letter-rise {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+  65%,
+  100% {
+    transform: translateY(-45%) scale(1.06);
+  }
+}
+@keyframes opening-garden-left {
+  to {
+    transform: perspective(700px) rotateY(-110deg);
+    opacity: 0.2;
+  }
+}
+@keyframes opening-garden-right {
+  to {
+    transform: perspective(700px) rotateY(110deg);
+    opacity: 0.2;
+  }
+}
+@keyframes opening-letter-bloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  75%,
+  100% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+@keyframes opening-ticket-left {
+  20% {
+    transform: translateX(-3%) rotate(-2deg);
+  }
+  100% {
+    transform: translateX(-95%) rotate(-14deg);
+    opacity: 0;
+  }
+}
+@keyframes opening-ticket-right {
+  20% {
+    transform: translateX(8%) rotate(5deg);
+  }
+  100% {
+    transform: translateX(160%) rotate(30deg);
+    opacity: 0;
+  }
+}
+@keyframes opening-curtain-left {
+  to {
+    transform: translateX(-85%) skewY(-8deg) scaleX(0.4);
+  }
+}
+@keyframes opening-curtain-right {
+  to {
+    transform: translateX(85%) skewY(8deg) scaleX(0.4);
+  }
+}
+@keyframes opening-valance-rise {
+  to {
+    transform: translateY(-70%);
+  }
+}
+@keyframes opening-petal-unfold {
+  0% {
+    transform: rotate(calc(var(--petal) * 45deg));
+  }
+  100% {
+    transform: rotate(calc(var(--petal) * 45deg + 25deg)) translateY(-90%)
+      scale(0.72);
+    opacity: 0.1;
+  }
+}
+@keyframes opening-orbit-expand {
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(150deg) scale(2);
+    opacity: 0;
+  }
+}
+@keyframes opening-star-scatter {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(calc(var(--petal) * 45deg + 40deg)) translateX(210px)
+      scale(0.2);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .opening-scene,
+  .opening-scene * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
