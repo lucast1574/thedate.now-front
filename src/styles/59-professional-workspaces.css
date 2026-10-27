@@ -278,3 +278,9 @@
     margin: 20px;
   }
 }
+
+.form-rule-suggestions button[aria-pressed="true"] {
+  background: var(--ui-soft);
+  border-color: var(--ui-accent);
+  color: var(--ui-accent);
+}

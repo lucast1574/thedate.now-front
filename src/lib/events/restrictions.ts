@@ -44,3 +44,15 @@ export function restrictionDefaults(draft: DesignEvent, includeAdults = true) {
       "lucide:shield-alert",
   };
 }
+
+export function toggleRestrictionSuggestion(
+  current: string,
+  suggestion: string,
+) {
+  return current.includes(suggestion)
+    ? current
+        .replace(suggestion, "")
+        .replace(/\n[ \t]*\n(?:[ \t]*\n)+/g, "\n\n")
+        .trim()
+    : [current.trim(), suggestion].filter(Boolean).join("\n\n");
+}

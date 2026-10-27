@@ -6,7 +6,10 @@ import { element } from "@/features/designer/flyer/canvas-model";
 import { templateOpening } from "@/features/designer/template-extras";
 import { defaultCelebration } from "@/lib/events/celebration";
 import EventOpeningFields from "./event-opening-fields";
-import { restrictionExamples } from "@/lib/events/restrictions";
+import {
+  restrictionExamples,
+  toggleRestrictionSuggestion,
+} from "@/lib/events/restrictions";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { Event } from "@/lib/events/types";
 
@@ -118,12 +121,32 @@ export default function EventDesignDetails({
                 <button
                   type="button"
                   key={example.label}
-                  onClick={() =>
-                    patchCreation({
-                      restrictionText: example.text,
-                      restrictionIcon: example.icon,
-                    })
+                  aria-pressed={(creation.restrictionText || "").includes(
+                    example.text,
+                  )}
+                  disabled={
+                    !(creation.restrictionText || "").includes(example.text) &&
+                    toggleRestrictionSuggestion(
+                      creation.restrictionText || "",
+                      example.text,
+                    ).length > 1000
                   }
+                  onClick={() => {
+                    const restrictionText = toggleRestrictionSuggestion(
+                      creation.restrictionText || "",
+                      example.text,
+                    );
+                    const selected = restrictionExamples.filter((item) =>
+                      restrictionText.includes(item.text),
+                    );
+                    patchCreation({
+                      restrictionText,
+                      restrictionIcon:
+                        selected.length === 1
+                          ? selected[0].icon
+                          : "lucide:shield-alert",
+                    });
+                  }}
                 >
                   <Icon name={example.icon} />
                   {example.label}
