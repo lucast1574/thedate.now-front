@@ -27,7 +27,7 @@ export default function SubdomainField({
         <span>Podrás compartirlo cuando publiques tu invitación.</span>
       </div>
       {!disabled && (
-        <details className="address-edit" open>
+        <details className="address-edit">
           <summary>Personalizar enlace</summary>
           <div className="subdomain-field">
             <label htmlFor="invitation-subdomain">
