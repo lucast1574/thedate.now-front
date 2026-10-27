@@ -1,5 +1,6 @@
-import type { Dispatch, SetStateAction } from "react";
+import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import Icon from "@/components/icon";
+import OpeningArtwork from "@/features/invitations/opening-artwork";
 import { openingPresets } from "@/lib/events/opening-presets";
 import type { Opening } from "@/lib/events/celebration";
 import type { Event } from "@/lib/events/types";
@@ -7,10 +8,12 @@ export default function EventOpeningFields({
   draft,
   setDraft,
   opening,
+  palette,
 }: {
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
   opening: Opening;
+  palette: Opening;
 }) {
   return (
     <details className="event-form-options">
@@ -69,7 +72,26 @@ export default function EventOpeningFields({
                   })
                 }
               >
-                <Icon name={preset.icon} />
+                <span
+                  className="opening-preset-art opening-mini-loop"
+                  aria-hidden="true"
+                  style={
+                    {
+                      "--envelope-paper": palette.color,
+                      "--envelope-ink": palette.ink,
+                    } as CSSProperties
+                  }
+                >
+                  <OpeningArtwork
+                    opening={{
+                      ...palette,
+                      style: preset.id,
+                      sealIcon: undefined,
+                    }}
+                    title=""
+                    wedding={draft.kind === "wedding"}
+                  />
+                </span>
                 <strong>{preset.name}</strong>
                 <small>{preset.description}</small>
               </button>

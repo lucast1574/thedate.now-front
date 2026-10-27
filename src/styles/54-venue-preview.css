@@ -79,3 +79,51 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.venue-area-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 12px;
+  padding: 15px 0;
+}
+.venue-area-tools > label {
+  min-width: 210px;
+  flex: 1;
+  max-width: 340px;
+}
+.venue-area-tools > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  border: 1px solid #cdbda9;
+  border-radius: 8px;
+  background: #f1eadf;
+  color: #66513b;
+}
+.venue-area-tools > small {
+  width: 100%;
+  font-size: 11px;
+  line-height: 1.6;
+  color: #8e8072;
+}
+.venue-area-tools svg {
+  width: 16px;
+  height: 16px;
+}
+.venue-area-inspector input[type="range"] {
+  width: 100%;
+  min-height: 24px;
+  padding: 0;
+  accent-color: #996345;
+}
+.venue-area-inspector p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.venue-area-inspector input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #996345;
+}

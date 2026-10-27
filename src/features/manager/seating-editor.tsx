@@ -11,6 +11,8 @@ import SeatingTools from "./seating-tools";
 import SeatingCanvas from "./seating-canvas";
 import TableInspector from "./table-inspector";
 import AutoProposal from "./auto-proposal";
+import VenueAreaTools from "./venue-area-tools";
+import VenueAreaInspector from "./venue-area-inspector";
 type Props = {
   event: Event;
   guests: Guest[];
@@ -44,6 +46,7 @@ export default function SeatingEditor({
     guests.filter((g) => g.response !== "not_going"),
   ).sort(surnameOrder);
   const table = plan.tables.find((t) => t.id === selected);
+  const area = plan.areas?.find((item) => item.id === selected);
   const count = people.filter((p) => plan.assignments[p.id]).length;
   function add() {
     const next = newTable(
@@ -103,6 +106,7 @@ export default function SeatingEditor({
           )
         }
       />
+      <VenueAreaTools plan={plan} onChange={onChange} onSelect={setSelected} />
       <p className="guest-hint">
         Arrastra las mesas en el lienzo. También puedes moverlas con las flechas
         del teclado o editar su posición. Elige una mesa para asignar personas.
@@ -112,13 +116,24 @@ export default function SeatingEditor({
           ? "Hay cambios sin guardar."
           : `Plano guardado · v${plan.version}`}
       </p>
-      <div className={`seating-workspace ${table ? "with-inspector" : ""}`}>
+      <div
+        className={`seating-workspace ${table || area ? "with-inspector" : ""}`}
+      >
         <SeatingCanvas
           plan={plan}
           people={people}
           selected={selected}
           onSelect={setSelected}
           onMove={move}
+          areas={plan.areas}
+          onMoveArea={(id, x, y) =>
+            onChange({
+              ...plan,
+              areas: plan.areas?.map((item) =>
+                item.id === id ? { ...item, x, y } : item,
+              ),
+            })
+          }
         />
         {table ? (
           <TableInspector
@@ -142,6 +157,13 @@ export default function SeatingEditor({
               });
               setSelected("");
             }}
+          />
+        ) : area ? (
+          <VenueAreaInspector
+            area={area}
+            plan={plan}
+            onChange={onChange}
+            onDelete={() => setSelected("")}
           />
         ) : (
           <aside className="seating-instructions">

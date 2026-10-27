@@ -58,11 +58,7 @@ export default function EventForm({
             <p>Una dirección clara para que todos puedan llegar.</p>
           </div>
         </div>
-        <EventLocationFields
-          draft={draft}
-          setDraft={setDraft}
-          savedMapURL={selected?.mapUrl}
-        />
+        <EventLocationFields draft={draft} setDraft={setDraft} />
       </section>
       <section className="event-form-card event-guests-card">
         <div className="event-form-card-heading">

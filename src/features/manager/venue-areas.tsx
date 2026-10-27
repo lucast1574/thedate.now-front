@@ -7,6 +7,9 @@ const icons = {
   bar: "lucide:martini",
   stage: "lucide:mic-vocal",
   dance: "music",
+  lounge: "lucide:sofa",
+  photo: "lucide:camera",
+  entrance: "lucide:door-open",
 };
 export default function VenueAreas({
   areas,

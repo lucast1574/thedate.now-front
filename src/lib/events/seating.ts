@@ -1,3 +1,4 @@
+import type { VenueArea } from "./venue-areas";
 export type Gender = "man" | "woman" | "unspecified";
 export type Person = { name: string; lastName: string; gender: Gender };
 export type Attendee = Person & {
@@ -18,6 +19,7 @@ export type SeatingTable = {
   rotation: number;
 };
 export type SeatingPlan = {
+  areas?: VenueArea[];
   version: number;
   width: number;
   height: number;

@@ -1,21 +1,26 @@
-import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useRef, type Dispatch, type SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import { useMapAddress } from "./use-map-address";
 export default function EventLocationFields({
   draft,
   setDraft,
-  savedMapURL,
 }: {
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
-  savedMapURL?: string;
 }) {
   const wedding = draft.kind === "wedding";
-  const { mapStatus, setMapStatus, resolvingMap } = useMapAddress(
+  const mapInput = useRef<HTMLInputElement>(null);
+  const { mapStatus, setMapStatus, resolvingMap, retry } = useMapAddress(
     draft,
     setDraft,
-    savedMapURL,
   );
+  useEffect(() => {
+    mapInput.current?.setCustomValidity(
+      !draft.isVirtual && draft.mapUrl.trim() && !draft.location.trim()
+        ? "Espera a que encontremos la ubicación. Si no se resuelve, reintenta o pega otro enlace de Google Maps."
+        : "",
+    );
+  }, [draft.isVirtual, draft.mapUrl, draft.location]);
   return (
     <>
       {!wedding && (
@@ -70,15 +75,17 @@ export default function EventLocationFields({
           <small>Los invitados verán este enlace en su invitación.</small>
         </label>
       ) : (
-        <div className="form-grid">
+        <div className="event-map-location">
           <label>
             Enlace de Google Maps
             <input
               required
               type="url"
+              ref={mapInput}
+              maxLength={2048}
               value={draft.mapUrl}
               onChange={(e) => {
-                setDraft({ ...draft, mapUrl: e.target.value });
+                setDraft({ ...draft, mapUrl: e.target.value, location: "" });
                 setMapStatus("");
               }}
               placeholder="https://maps.app.goo.gl/..."
@@ -87,20 +94,24 @@ export default function EventLocationFields({
               Pega el enlace y buscaremos la dirección automáticamente.
             </small>
           </label>
-          <label>
-            Nombre o dirección del lugar
-            <input
-              required
-              value={draft.location}
-              onChange={(e) => setDraft({ ...draft, location: e.target.value })}
-              placeholder="Ej. Hacienda Los Olivos, Lima"
-            />
-            <small>También podemos completarlo con el enlace de Maps.</small>
-          </label>
+          {draft.location && (
+            <div className="map-detected-place" role="status">
+              <strong>Ubicación detectada</strong>
+              <p>{draft.location}</p>
+            </div>
+          )}
+          {mapStatus && !resolvingMap && !draft.location && (
+            <button className="map-retry" type="button" onClick={retry}>
+              Volver a buscar la ubicación
+            </button>
+          )}
         </div>
       )}
       {!draft.isVirtual && mapStatus && (
-        <p className={`map-status ${resolvingMap ? "loading" : ""}`}>
+        <p
+          role="status"
+          className={`map-status ${resolvingMap ? "loading" : ""}`}
+        >
           {mapStatus.includes("OpenStreetMap") ? (
             <>
               {mapStatus.replace(" © OpenStreetMap contributors", "")}{" "}

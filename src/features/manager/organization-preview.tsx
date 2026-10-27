@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon";
 import SeatingCanvas from "./seating-canvas";
-import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
+import { exampleSeatingPlan } from "@/lib/events/venue-examples";
 import GiftExperiencePreview from "@/features/gifts/gift-experience-preview";
 import { exampleVenueAreas } from "@/lib/events/venue-areas";
 const examples = [
@@ -34,38 +34,7 @@ export default function OrganizationPreview({
 }) {
   const [selected, setSelected] = useState("");
   const [areas, setAreas] = useState(exampleVenueAreas);
-  const [plan, setPlan] = useState<SeatingPlan>({
-    ...emptyPlan(),
-    tables: [
-      {
-        id: "a",
-        name: "Familia",
-        shape: "round",
-        capacity: 8,
-        x: 130,
-        y: 360,
-        rotation: 0,
-      },
-      {
-        id: "b",
-        name: "Amigos",
-        shape: "round",
-        capacity: 6,
-        x: 1230,
-        y: 360,
-        rotation: 0,
-      },
-      {
-        id: "c",
-        name: "Mesa principal",
-        shape: "rectangle",
-        capacity: 8,
-        x: 680,
-        y: 740,
-        rotation: 0,
-      },
-    ],
-  });
+  const [plan, setPlan] = useState(exampleSeatingPlan);
   return (
     <section className="organization-preview">
       <header>
@@ -79,7 +48,7 @@ export default function OrganizationPreview({
         </h2>
         <p>
           {tool === "tables"
-            ? "Mueve mesas, bocaditos, bar, escenario y pista de baile para distribuir el espacio de tu evento."
+            ? "Mueve mesas, bocaditos, bar y pista de baile para distribuir el espacio de tu evento."
             : tool === "gifts"
               ? "Comparte ideas de tus tiendas favoritas y conoce quién se compromete con cada regalo."
               : "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento."}

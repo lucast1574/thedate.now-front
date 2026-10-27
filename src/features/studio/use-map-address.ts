@@ -6,13 +6,13 @@ import type { Event } from "@/lib/events/types";
 export function useMapAddress(
   draft: Event,
   setDraft: Dispatch<SetStateAction<Event>>,
-  savedMapURL?: string,
 ) {
+  const [attempt, setAttempt] = useState(0);
   const [resolvingMap, setResolvingMap] = useState(false);
   const [mapStatus, setMapStatus] = useState("");
   useEffect(() => {
     const url = draft.mapUrl.trim();
-    if (draft.isVirtual || !url || url === savedMapURL) return;
+    if (draft.isVirtual || !url || draft.location.trim()) return;
     let active = true;
     const timer = window.setTimeout(async () => {
       setResolvingMap(true);
@@ -32,11 +32,15 @@ export function useMapAddress(
               : current,
           );
           setMapStatus(
-            "Dirección encontrada. Revísala antes de guardar. © OpenStreetMap contributors",
+            "Ubicación encontrada automáticamente. © OpenStreetMap contributors",
           );
         }
       } catch (err) {
-        if (active) setMapStatus((err as Error).message);
+        if (active)
+          setMapStatus(
+            "No pudimos obtener la ubicación. Reintenta o pega otro enlace de Google Maps. " +
+              (err as Error).message.replace(/Escríbela manualmente.*$/, ""),
+          );
       } finally {
         if (active) setResolvingMap(false);
       }
@@ -45,6 +49,11 @@ export function useMapAddress(
       active = false;
       window.clearTimeout(timer);
     };
-  }, [draft.mapUrl, draft.isVirtual, savedMapURL, setDraft]);
-  return { resolvingMap, mapStatus, setMapStatus };
+  }, [draft.mapUrl, draft.isVirtual, draft.location, attempt, setDraft]);
+  return {
+    resolvingMap: resolvingMap && !draft.location,
+    mapStatus,
+    setMapStatus,
+    retry: () => setAttempt((n) => n + 1),
+  };
 }

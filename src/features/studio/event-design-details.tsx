@@ -35,7 +35,14 @@ export default function EventDesignDetails({
   }
   return (
     <div className="event-design-details">
-      <EventOpeningFields draft={draft} setDraft={setDraft} opening={opening} />
+      <EventOpeningFields
+        draft={draft}
+        setDraft={setDraft}
+        opening={opening}
+        palette={
+          opening.paletteMode === "design" ? templateOpening(template) : opening
+        }
+      />
       <details className="event-form-options">
         <summary>
           <Icon name="lucide:shirt" />
