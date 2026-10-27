@@ -18,6 +18,8 @@ export default function EditorToolbar({
       <div className="editor-heading">
         <Link
           href="/"
+          className="editor-back-link"
+          aria-label="Volver al estudio"
           onClick={(e) => {
             if (
               editor.dirty &&
@@ -26,7 +28,8 @@ export default function EditorToolbar({
               e.preventDefault();
           }}
         >
-          ← Estudio
+          <Icon name="arrow" />
+          <span>Estudio</span>
         </Link>
         <h1>
           <input

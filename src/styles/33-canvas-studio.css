@@ -34,6 +34,48 @@
   grid-row: span 2;
   font-size: 12px;
 }
+.editor-toolbar .editor-heading .editor-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--editor-accent, #766044);
+  font:
+    500 12px/1.2 Arial,
+    sans-serif;
+  text-decoration: none;
+  outline: none;
+  box-shadow: none;
+  white-space: nowrap;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+.editor-heading .editor-back-link .ui-icon {
+  width: 16px;
+  height: 16px;
+  transform: rotate(180deg);
+}
+.editor-toolbar .editor-heading .editor-back-link:hover,
+.editor-toolbar .editor-heading .editor-back-link:focus {
+  background: color-mix(
+    in srgb,
+    var(--editor-accent, #766044) 10%,
+    transparent
+  );
+  color: var(--editor-ink, #302c29);
+  outline: none;
+  box-shadow: none;
+}
+.editor-heading .editor-back-link:focus-visible span {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .canvas-studio .editor-heading h1 {
   font:
     600 15px Arial,
