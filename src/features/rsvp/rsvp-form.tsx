@@ -1,5 +1,5 @@
 "use client";
-import CompanionFields from "@/components/companion-fields";
+import RSVPCompanions from "./rsvp-companions";
 import Alert from "@/components/alert";
 import ActionButton from "@/components/action-button";
 import EventDetails from "@/components/event-details";
@@ -45,8 +45,10 @@ export default function RSVPForm({ token }: { token: string }) {
           <>
             <p>
               Te invitaron a <strong>{details.eventTitle}</strong>. Tu
-              invitación incluye {details.seats}{" "}
-              {details.seats === 1 ? "cupo" : "cupos"}.
+              invitación{" "}
+              {details.seats === 1
+                ? "es solo para ti."
+                : `te permite llevar hasta ${details.seats - 1} ${details.seats === 2 ? "acompañante" : "acompañantes"}.`}
             </p>
             <EventDetails event={details} variant="rsvp" />
             {placeLink && (
@@ -79,7 +81,7 @@ export default function RSVPForm({ token }: { token: string }) {
                 onReason={setReason}
               />
               {details.seats > 1 && response !== "not_going" && (
-                <CompanionFields
+                <RSVPCompanions
                   people={rsvp.companions}
                   max={details.seats - 1}
                   onChange={rsvp.setCompanions}
@@ -87,8 +89,14 @@ export default function RSVPForm({ token }: { token: string }) {
               )}
               {response !== "not_going" && (
                 <p>
-                  Confirmarás {1 + rsvp.companions.length} personas, contándote
+                  {response === "going"
+                    ? "Confirmarás"
+                    : "Reservarás temporalmente"}{" "}
+                  {1 + rsvp.companions.length}{" "}
+                  {rsvp.companions.length ? "personas" : "persona"}, contándote
                   a ti.
+                  {details.seats > 1 &&
+                    " Si vienes sin acompañantes, sus lugares quedarán disponibles. Añadirlos después dependerá del aforo."}
                 </p>
               )}
               <ActionButton className="office-button" disabled={busy}>

@@ -69,11 +69,24 @@ test("Excel template and door export create valid workbooks with no formula cell
       setTimeout: (fn) => fn(),
     },
   });
-  await workbookSource.downloadGuestTemplate("xlsx");
+  await workbookSource.downloadGuestTemplate();
   const book = new ExcelJS.Workbook();
   await book.xlsx.load(await blob.arrayBuffer());
   assert.equal(book.worksheets[0].getCell("C2").value, "+51987654321");
   assert.equal(book.worksheets[0].getCell("C2").numFmt, "@");
+  assert.equal(
+    book.worksheets[0].getCell("D1").value,
+    "acompanantes_permitidos",
+  );
+  assert.equal(book.worksheets[0].getCell("D2").value, "1");
+  const templateBytes = new Uint8Array(await blob.arrayBuffer());
+  const imported = await readGuestFile({
+    name: "template.xlsx",
+    size: templateBytes.length,
+    arrayBuffer: async () => templateBytes.buffer,
+  });
+  assert.equal(imported[0].seats, 2);
+  assert.equal(imported[0].companions.length, 0);
   assert.ok(book.getWorksheet("Cómo llenar la lista"));
   assert.match(
     book.getWorksheet("Cómo llenar la lista").getCell("A3").value,

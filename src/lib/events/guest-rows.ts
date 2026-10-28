@@ -4,7 +4,7 @@ export const guestHeaders = [
   "nombre",
   "apellido",
   "telefono",
-  "cupos",
+  "acompanantes_permitidos",
   "genero",
   "familia",
   "acompanantes",
@@ -28,7 +28,7 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
     index(["telefono", "teléfono", "phone"]) < 0
   )
     throw new Error(
-      "Usa la plantilla con nombre,telefono,cupos y teléfonos +código de país.",
+      "Usa la plantilla con nombre, telefono y acompanantes_permitidos. El teléfono debe incluir +código de país.",
     );
   const data = rows.slice(1).filter((row) => row.some((cell) => cell.trim()));
   if (!data.length || data.length > 500)
@@ -47,13 +47,30 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         genders = parts("generos_acompanantes");
       if (surnames.length > names.length || genders.length > names.length)
         throw new Error("Faltan nombres de acompañantes.");
+      const allowance = index([
+        "acompanantes_permitidos",
+        "acompañantes permitidos",
+        "acompañantes_permitidos",
+      ]);
+      const seats =
+        allowance >= 0
+          ? 1 + Number((cells[allowance] || "").trim() || 0)
+          : Number(field("cupos", "seats") || 1);
+      if (
+        allowance >= 0 &&
+        field("cupos", "seats") &&
+        Number(field("cupos", "seats")) !== seats
+      )
+        throw new Error(
+          "Los cupos no coinciden con los acompañantes permitidos.",
+        );
       const guest: GuestFields = {
         name: field("nombre", "name"),
         lastName: field("apellido"),
         phone: field("telefono", "teléfono", "phone"),
-        seats: Number(field("cupos", "seats") || 1),
+        seats,
         gender: gender(field("genero")),
-        family: field("familia"),
+        family: field("familia", "grupo"),
         companions: names.map((name, i) => ({
           name,
           lastName: surnames[i] || "",
@@ -68,7 +85,7 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         !/^\+[1-9][0-9]{6,14}$/.test(guest.phone) ||
         !Number.isInteger(guest.seats) ||
         guest.seats < 1 ||
-        guest.seats > 20 ||
+        guest.seats > 2 ||
         names.length > guest.seats - 1 ||
         guest.companions?.some(
           (p) =>

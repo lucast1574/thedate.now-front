@@ -1,10 +1,9 @@
-import { parseGuestCSV } from "./guest-csv";
 import { parseGuestRows, guestHeaders } from "./guest-rows";
 import { validateWorkbookZip } from "./xlsx-guard";
 export async function readGuestFile(file: File) {
   if (file.size > 2_000_000) throw new Error("El archivo supera 2 MB.");
-  if (/\.csv$/i.test(file.name)) return parseGuestCSV(await file.text());
-  if (!/\.xlsx$/i.test(file.name)) throw new Error("Selecciona .xlsx o .csv.");
+  if (!/\.xlsx$/i.test(file.name))
+    throw new Error("Selecciona un archivo Excel (.xlsx).");
   const bytes = await file.arrayBuffer();
   validateWorkbookZip(bytes);
   const { Workbook } = await import("exceljs");
@@ -42,26 +41,18 @@ export function downloadFile(data: BlobPart, name: string, type: string) {
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-export async function downloadGuestTemplate(format: "xlsx" | "csv") {
+export async function downloadGuestTemplate() {
   const sample = [
     "Ana",
     "Rojas",
     "+51987654321",
-    "2",
+    "1",
     "mujer",
     "Familia Rojas",
-    "Luis",
-    "Rojas",
-    "hombre",
+    "",
+    "",
+    "",
   ];
-  if (format === "csv") {
-    downloadFile(
-      "\uFEFF" + [guestHeaders.join(","), sample.join(",")].join("\r\n"),
-      "plantilla-invitados.csv",
-      "text/csv;charset=utf-8",
-    );
-    return;
-  }
   const { Workbook } = await import("exceljs");
   const book = new Workbook(),
     sheet = book.addWorksheet("Invitados");
@@ -78,11 +69,12 @@ export async function downloadGuestTemplate(format: "xlsx" | "csv") {
   guide.getColumn(1).width = 100;
   for (const line of [
     "Reemplaza la fila de ejemplo con tus invitados. Usa la hoja Invitados.",
-    "Una fila por invitación. Nombre, telefono y cupos son obligatorios.",
+    "Una fila por persona titular. Nombre y telefono son obligatorios.",
     "El orden de las filas será el orden de invitación. Las altas manuales van al final.",
     "Telefono: código de país, por ejemplo +51987654321. Conservar como texto.",
-    "Cupos incluye al titular: 2 significa titular y un acompañante.",
-    "Puedes dejar los acompañantes vacíos para que el invitado complete sus nombres.",
+    "acompanantes_permitidos: 0 para ir solo o 1 para un plus one. Cada titular puede llevar como máximo un acompañante; se cuenta aparte.",
+    "Deja los nombres de acompañantes vacíos para que el titular los registre al confirmar, o complétalos si ya los sabes.",
+    "familia es una etiqueta opcional para organizar mesas. No añade personas ni cupos.",
     "Puedes añadir más personas que el aforo. Se invita por orden cuando hay cupo para todo el grupo.",
     "Los mensajes empiezan al pulsar Enviar invitaciones, después de preparar la web.",
     "Una negativa, menos acompañantes o el vencimiento de una reserva libera cupos para la siguiente invitación.",

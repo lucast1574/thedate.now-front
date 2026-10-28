@@ -95,6 +95,8 @@ La configuración operativa, migración de reservas y límites de escala están 
 
 ## Invitados, aforo y mesas
 
+Las altas nuevas son una persona titular con cero o un acompañante. El formulario y Excel expresan `acompanantes_permitidos` (0/1); el transporte conserva `seats` como total (1/2). La plantilla descargable y la carga usan únicamente `.xlsx`. `familia` sigue siendo una etiqueta para mesas. RSVP permite elegir ir solo o acompañado, registrar el nombre y advierte que recuperar un lugar liberado depende del aforo. El parser conserva lectura de columnas antiguas `cupos`, validando el nuevo máximo al importar.
+
 El gestor presenta descarga de plantillas y carga por archivo/arrastre en `studio/guest-import.tsx` y `guest-file-dropzone.tsx`, además del alta manual visible en `manager/guest-workspace.tsx`. La tabla empieza en orden de invitación y la consulta por apellido no cambia la prioridad del servidor. Excel incorpora una hoja de instrucciones; los pendientes de envío no muestran enlaces personales.
 
 `manager/invitation-delivery.tsx` y `use-invitation-delivery.ts` sustituyen los botones separados de publicar/enviar con una sola intención persistida mediante `/events/{id}/delivery`. Muestran preparación de la web, comprobación y envíos, o espera por aforo. El navegador solo consulta el progreso: la API verifica la web y ejecuta la cola incluso después de salir. Los fallos y resultados desconocidos se muestran sin repetir mensajes automáticamente. Los estilos de este recorrido viven en `styles/62-guest-journey.css`.

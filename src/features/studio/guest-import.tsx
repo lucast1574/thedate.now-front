@@ -69,9 +69,9 @@ export default function GuestImport({
       setBusy(false);
     }
   }
-  async function template(format: "xlsx" | "csv") {
+  async function template() {
     try {
-      await downloadGuestTemplate(format);
+      await downloadGuestTemplate();
     } catch (error) {
       setFailed(true);
       setNotice((error as Error).message);
@@ -87,27 +87,14 @@ export default function GuestImport({
         <div>
           <h3 id={`import-title-${eventId}`}>Sube tu lista de invitados</h3>
           <p>
-            Empieza con nuestra plantilla. Una fila por invitación, en el orden
-            en que quieres invitar.
+            Una fila por persona titular, en el orden en que quieres invitar.
           </p>
         </div>
       </div>
       <div className="guest-template-actions">
-        <button
-          type="button"
-          disabled={locked}
-          onClick={() => void template("xlsx")}
-        >
+        <button type="button" disabled={locked} onClick={() => void template()}>
           <Icon name="down" />
           Descargar plantilla Excel
-        </button>
-        <button
-          type="button"
-          disabled={locked}
-          onClick={() => void template("csv")}
-        >
-          <Icon name="down" />
-          Plantilla CSV
         </button>
       </div>
       <GuestFileDropzone
@@ -121,9 +108,8 @@ export default function GuestImport({
         }}
       />
       <p className="guest-file-tip">
-        <strong>Lo esencial:</strong> nombre, WhatsApp con código de país y
-        cupos, contando al titular. Los demás datos son opcionales. Reemplaza la
-        fila de ejemplo con tus invitados.
+        Indica los acompañantes permitidos: 0 para ir solo, 1 para un +1. El
+        titular se cuenta aparte. Puede registrar sus acompañantes al confirmar.
       </p>
       {rows.length > 0 && (
         <div className="guest-import-review">

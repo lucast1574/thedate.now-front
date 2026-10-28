@@ -51,7 +51,7 @@ test("import offers visible templates and a file-picker alternative to dragging"
     React.createElement(Import, { eventId: "e", onImported: async () => {} }),
   );
   assert.match(html, /Descargar plantilla Excel/);
-  assert.match(html, /Plantilla CSV/);
+  assert.doesNotMatch(html, /CSV/);
   assert.match(html, /Elegir archivo/);
   assert.match(html, /type="file"/);
   assert.match(html, /\.xlsx/);

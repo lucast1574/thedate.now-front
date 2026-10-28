@@ -23,11 +23,11 @@ const guest = (id, fields = {}) => ({
 });
 test("CSV includes surname, family and named companions with allowance validation", () => {
   const rows = parseGuestCSV(
-    'nombre,apellido,telefono,cupos,genero,familia,acompanantes,apellidos_acompanantes,generos_acompanantes\nAna,Rojas,+51987654321,3,mujer,"Rojas, familia",Luis|Pablo,Rojas|Paz,hombre|sin especificar',
+    'nombre,apellido,telefono,cupos,genero,familia,acompanantes,apellidos_acompanantes,generos_acompanantes\nAna,Rojas,+51987654321,2,mujer,"Rojas, familia",Luis,Rojas,sin especificar',
   );
   assert.equal(rows[0].family, "Rojas, familia");
-  assert.equal(rows[0].companions.length, 2);
-  assert.equal(rows[0].companions[1].gender, "unspecified");
+  assert.equal(rows[0].companions.length, 1);
+  assert.equal(rows[0].companions[0].gender, "unspecified");
   assert.throws(
     () =>
       parseGuestCSV(

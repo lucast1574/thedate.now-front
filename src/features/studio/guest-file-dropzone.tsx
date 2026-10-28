@@ -30,7 +30,7 @@ export default function GuestFileDropzone({
         e.preventDefault();
         setDragging(false);
         if (e.dataTransfer.files.length !== 1) {
-          onError("Selecciona un solo archivo Excel o CSV.");
+          onError("Selecciona un solo archivo Excel.");
           return;
         }
         void onRead(e.dataTransfer.files[0]);
@@ -40,7 +40,7 @@ export default function GuestFileDropzone({
       <strong>
         {busy
           ? "Estamos revisando tu lista…"
-          : fileName || "Arrastra aquí tu Excel o CSV"}
+          : fileName || "Arrastra aquí tu Excel"}
       </strong>
       <span>También puedes buscarlo en tus archivos.</span>
       <button
@@ -50,13 +50,13 @@ export default function GuestFileDropzone({
       >
         Elegir archivo
       </button>
-      <small>Excel (.xlsx) o CSV · Hasta 500 invitados por archivo</small>
+      <small>Excel (.xlsx) · Hasta 500 invitados por archivo</small>
       <input
         ref={fileInput}
         className="guest-file-input"
-        aria-label="Seleccionar Excel o CSV de invitados"
+        aria-label="Seleccionar Excel de invitados"
         type="file"
-        accept=".csv,.xlsx,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         disabled={locked}
         onChange={(e) => {
           const file = e.target.files?.[0];

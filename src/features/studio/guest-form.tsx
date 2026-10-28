@@ -60,25 +60,24 @@ export default function GuestForm({
           />
         </label>
         <label>
-          Cupos máximos (incluye titular)
-          <input
-            required
-            type="number"
-            min={1}
-            max={20}
-            value={guest.seats}
-            onChange={(e) => {
-              const seats = Number(e.target.value);
+          Acompañantes permitidos
+          <Listbox
+            value={String(guest.seats - 1)}
+            onValueChange={(value) => {
+              const seats = Number(value) + 1;
               setGuest({
                 ...guest,
                 seats,
                 companions: guest.companions?.slice(0, Math.max(0, seats - 1)),
               });
             }}
-          />
+          >
+            <option value="0">Sin acompañante</option>
+            <option value="1">Con un acompañante (+1)</option>
+          </Listbox>
         </label>
         <label>
-          Familia / grupo (opcional)
+          Grupo para mesas (opcional)
           <input
             placeholder="Familia Rojas"
             maxLength={80}
@@ -104,17 +103,23 @@ export default function GuestForm({
         </label>
       </div>
       <p className="guest-hint">
-        Una invitación con +1 lleva 2 cupos. Los cupos máximos no son
-        confirmaciones. Puedes dejar los acompañantes pendientes para que el
-        titular registre sus nombres desde su enlace de WhatsApp.
+        Esta invitación permite hasta {guest.seats}{" "}
+        {guest.seats === 1
+          ? "persona: solo el titular."
+          : "personas, contando al titular."}{" "}
+        El invitado registrará a sus acompañantes al confirmar. El grupo solo
+        sirve para organizar las mesas.
       </p>
       {guest.seats > 1 && (
-        <CompanionFields
-          people={guest.companions || []}
-          max={guest.seats - 1}
-          description="Añade los nombres si ya los conoces. La asistencia se confirma por separado."
-          onChange={(companions) => setGuest({ ...guest, companions })}
-        />
+        <details>
+          <summary>Registrar sus nombres ahora (opcional)</summary>
+          <CompanionFields
+            people={guest.companions || []}
+            max={guest.seats - 1}
+            description="Añade los nombres si ya los conoces. La asistencia se confirma por separado."
+            onChange={(companions) => setGuest({ ...guest, companions })}
+          />
+        </details>
       )}
       <ActionButton className="office-button" disabled={busy}>
         Añadir invitado
