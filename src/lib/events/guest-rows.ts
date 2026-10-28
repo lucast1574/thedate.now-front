@@ -21,20 +21,32 @@ const gender = (value: string): Gender => {
   throw new Error("Usa hombre, mujer o sin especificar en género.");
 };
 export function parseGuestRows(rows: string[][]): GuestFields[] {
-  const headers = rows[0]?.map((c) => c.trim().toLowerCase()) || [];
+  const headerRow = rows.slice(0, 20).findIndex((row) => {
+    const labels = row.map((cell) => cell.trim().toLowerCase());
+    return (
+      labels.some((label) => ["nombre", "name"].includes(label)) &&
+      labels.some((label) =>
+        ["telefono", "teléfono", "phone", "whatsapp"].includes(label),
+      )
+    );
+  });
+  const headers = rows[headerRow]?.map((c) => c.trim().toLowerCase()) || [];
   const index = (names: string[]) =>
     headers.findIndex((c) => names.includes(c));
   if (
     index(["nombre", "name"]) < 0 ||
-    index(["telefono", "teléfono", "phone"]) < 0
+    index(["telefono", "teléfono", "phone", "whatsapp"]) < 0
   )
     throw new Error(
       "Usa la plantilla con nombre, telefono y acompanantes_permitidos. El teléfono debe incluir +código de país.",
     );
-  const data = rows.slice(1).filter((row) => row.some((cell) => cell.trim()));
+  const data = rows
+    .map((cells, rowIndex) => ({ cells, rowIndex }))
+    .slice(headerRow + 1)
+    .filter(({ cells }) => cells.some((cell) => cell.trim()));
   if (!data.length || data.length > 500)
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
-  return data.map((cells, n) => {
+  return data.map(({ cells, rowIndex }) => {
     const field = (...names: string[]) => (cells[index(names)] || "").trim();
     const parts = (name: string) =>
       field(name)
@@ -53,10 +65,23 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         "acompañantes permitidos",
         "acompañantes_permitidos",
       ]);
+      const plusOne = index([
+        "¿puede llevar +1?",
+        "puede llevar +1",
+        "plus one",
+      ]);
+      const choice =
+        plusOne >= 0 ? (cells[plusOne] || "").trim().toLowerCase() : "";
+      if (plusOne >= 0 && !["", "sí", "si", "no", "0", "1"].includes(choice))
+        throw new Error("En +1 elige Sí o No.");
       const seats =
-        allowance >= 0
-          ? 1 + Number((cells[allowance] || "").trim() || 0)
-          : Number(field("cupos", "seats") || 1);
+        plusOne >= 0
+          ? ["sí", "si", "1"].includes(choice)
+            ? 2
+            : 1
+          : allowance >= 0
+            ? 1 + Number((cells[allowance] || "").trim() || 0)
+            : Number(field("cupos", "seats") || 1);
       if (
         allowance >= 0 &&
         field("cupos", "seats") &&
@@ -68,7 +93,7 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
       const guest: GuestFields = {
         name: field("nombre", "name"),
         lastName: field("apellido"),
-        phone: field("telefono", "teléfono", "phone"),
+        phone: field("telefono", "teléfono", "phone", "whatsapp"),
         seats,
         gender: gender(field("genero")),
         family: guestCategory(
@@ -98,7 +123,9 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         throw new Error("Revisa nombres, teléfono, cupos y acompañantes.");
       return guest;
     } catch (error) {
-      throw new Error(`Revisa la fila ${n + 2}: ${(error as Error).message}`);
+      throw new Error(
+        `Revisa la fila ${rowIndex + 1}: ${(error as Error).message}`,
+      );
     }
   });
 }

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import ExcelJS from "exceljs";
 import { loadSource } from "./support/load-source.cjs";
 // The source loader runs in a VM realm; ExcelJS checks instanceof Array in addRow.
@@ -62,49 +63,54 @@ test("real Excel round trip preserves international phone strings and companions
 });
 test("Excel template and door export create valid workbooks with no formula cells", async () => {
   let blob;
-  const workbookSource = loadSource("src/lib/events/guest-spreadsheet.ts", {
-    mocks: { exceljs: excelMock },
-    globals: {
-      Blob,
-      URL: {
-        createObjectURL: (b) => {
-          blob = b;
-          return "blob:test";
-        },
-        revokeObjectURL: () => {},
-      },
-      document: { createElement: () => ({ click() {} }) },
-      setTimeout: (fn) => fn(),
-    },
-  });
-  await workbookSource.downloadGuestTemplate();
   const book = new ExcelJS.Workbook();
-  await book.xlsx.load(await blob.arrayBuffer());
-  assert.equal(book.worksheets[0].getCell("C2").value, "+51987654321");
-  assert.equal(book.worksheets[0].getCell("C2").numFmt, "@");
-  assert.equal(
-    book.worksheets[0].getCell("D1").value,
-    "acompanantes_permitidos",
+  await book.xlsx.load(
+    await readFile("public/templates/plantilla-invitados.xlsx"),
   );
-  assert.equal(book.worksheets[0].getCell("D2").value, "1");
-  const templateBytes = new Uint8Array(await blob.arrayBuffer());
+  const sheet = book.worksheets[0];
+  assert.equal(sheet.getCell("C8").value, "WhatsApp");
+  assert.equal(sheet.getCell("C9").numFmt, "@");
+  assert.equal(sheet.getCell("D9").dataValidation.type, "list");
+  assert.equal(sheet.getCell("E508").dataValidation.type, "list");
+  assert.equal(sheet.getCell("A9").value, null);
+  assert.equal(sheet.views[0].showGridLines, false);
+  assert.equal(sheet.views[0].ySplit, 8);
+  sheet.getCell("A9").value = "Ana";
+  sheet.getCell("B9").value = "Rojas";
+  sheet.getCell("C9").value = "+51987654321";
+  sheet.getCell("D9").value = "Si";
+  sheet.getCell("E9").value = "Familia de la novia";
+  const templateBytes = new Uint8Array(await book.xlsx.writeBuffer());
   const imported = await readGuestFile({
     name: "template.xlsx",
     size: templateBytes.length,
     arrayBuffer: async () => templateBytes.buffer,
   });
+  assert.equal(imported.length, 1);
   assert.equal(imported[0].seats, 2);
+  assert.equal(imported[0].family, sheet.getCell("E9").value);
   assert.equal(imported[0].companions.length, 0);
-  assert.equal(imported[0].family, "Familia de la novia");
-  assert.equal(book.worksheets[0].getCell("F2").dataValidation.type, "list");
-  assert.equal(
-    book.worksheets[0].getCell("F501").dataValidation.errorStyle,
-    "stop",
-  );
-  assert.ok(book.getWorksheet("Cómo llenar la lista"));
-  assert.match(
-    book.getWorksheet("Cómo llenar la lista").getCell("A3").value,
-    /orden de invitación/,
+  sheet.getCell("A508").value = "Luis";
+  sheet.getCell("C508").value = "+51987654322";
+  sheet.getCell("D508").value = "No";
+  const lastBytes = new Uint8Array(await book.xlsx.writeBuffer());
+  const lastRow = await readGuestFile({
+    name: "last.xlsx",
+    size: lastBytes.length,
+    arrayBuffer: async () => lastBytes.buffer,
+  });
+  assert.equal(lastRow.length, 2);
+  assert.equal(lastRow[1].seats, 1);
+  sheet.getCell("D508").value = "Tal vez";
+  const invalidBytes = new Uint8Array(await book.xlsx.writeBuffer());
+  await assert.rejects(
+    () =>
+      readGuestFile({
+        name: "invalid.xlsx",
+        size: invalidBytes.length,
+        arrayBuffer: async () => invalidBytes.buffer,
+      }),
+    /fila 508/,
   );
   const exported = loadSource("src/lib/events/door-export.ts", {
     mocks: {

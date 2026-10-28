@@ -95,6 +95,8 @@ La configuración operativa, migración de reservas y límites de escala están 
 
 ## Invitados, aforo y mesas
 
+La plantilla diseñada vive en `public/templates/plantilla-invitados.xlsx`: una hoja, cinco columnas visibles y 500 filas vacías, con cabecera en la fila 8, paneles fijos y desplegables de Sí/No y categorías. Se descarga como archivo estático en ambas apps. El importador detecta la cabecera dentro de las primeras 20 filas, admite los rótulos humanos y conserva la lectura de plantillas anteriores. Los mensajes de error indican la fila real de Excel. Las pruebas cargan el archivo distribuido y verifican importación, primera/última fila y validaciones.
+
 `lib/events/guest-categories.ts` define las categorías cerradas para la entrada manual y la columna `categoria` de Excel. La plantilla usa un desplegable con rango nombrado en una hoja oculta; importación normaliza tildes, mayúsculas y espacios y rechaza categorías desconocidas. El transporte conserva `family` para que el acompañante herede categoría y la propuesta existente agrupe esos invitados. Las etiquetas antiguas guardadas no se migran sin una asignación explícita.
 
 Las altas nuevas son una persona titular con cero o un acompañante. El formulario y Excel expresan `acompanantes_permitidos` (0/1); el transporte conserva `seats` como total (1/2). La plantilla descargable y la carga usan únicamente `.xlsx`. `familia` sigue siendo una etiqueta para mesas. RSVP permite elegir ir solo o acompañado, registrar el nombre y advierte que recuperar un lugar liberado depende del aforo. El parser conserva lectura de columnas antiguas `cupos`, validando el nuevo máximo al importar.
