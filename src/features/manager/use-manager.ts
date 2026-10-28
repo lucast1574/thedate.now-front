@@ -7,6 +7,7 @@ import { useLiveResponses } from "./use-live-responses";
 export function useManager(id: string) {
   const [event, setEvent] = useState<Event | null>(null),
     [user, setUser] = useState<User | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
   const [guests, setGuests] = useState<Guest[]>([]),
     [plan, setPlan] = useState(emptyPlan);
   const [error, setError] = useState(""),
@@ -46,6 +47,7 @@ export function useManager(id: string) {
         if (!active) return;
         const found = list.find((e) => e.id === id);
         if (!found) throw new Error("No tienes acceso a este evento.");
+        setEvents(list);
         setEvent(found);
         setUser(current);
         if (!found.isDemo && found.paymentStatus === "paid") await refresh();
@@ -125,6 +127,7 @@ export function useManager(id: string) {
     }, "Invitaciones enviadas por WhatsApp.");
   return {
     event,
+    events,
     user,
     guests,
     plan,

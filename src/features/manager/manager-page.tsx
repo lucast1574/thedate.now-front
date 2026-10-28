@@ -8,8 +8,12 @@ import WishlistPanel from "@/features/gifts/wishlist-panel";
 import ManagerTools from "./manager-tools";
 import Alert from "@/components/alert";
 import { useManager } from "./use-manager";
+import ManagerEventPicker from "./manager-event-picker";
 import GuestSummary from "./guest-summary";
 export default function ManagerPage({ id }: { id: string }) {
+  return <ManagerWorkspace key={id} id={id} />;
+}
+function ManagerWorkspace({ id }: { id: string }) {
   const manager = useManager(id);
   const params = useSearchParams();
   const requested = params.get("tab"),
@@ -35,7 +39,7 @@ export default function ManagerPage({ id }: { id: string }) {
         "Prepara los regalos de tu celebración y consulta las elecciones de tus invitados.",
     },
   }[tab];
-  const { event, guests, user, error, dirty, stale } = manager;
+  const { event, events, guests, user, error, dirty, stale } = manager;
   if (!event)
     return (
       <main className="editor-loading">
@@ -78,7 +82,6 @@ export default function ManagerPage({ id }: { id: string }) {
         <header className="manager-header">
           <div>
             <ProductHeading kind={event.kind} area="manager" />
-            <p className="manager-event-context">{event.title}</p>
             <h1>{section.title}</h1>
             <p>{section.description}</p>
           </div>
@@ -121,6 +124,14 @@ export default function ManagerPage({ id }: { id: string }) {
             </Link>
           </div>
         </header>
+        {!event.isDemo && (
+          <ManagerEventPicker
+            events={events}
+            event={event}
+            tab={tab}
+            guard={guard}
+          />
+        )}
         <Alert>{error}</Alert>
         <Alert variant="success">{manager.notice}</Alert>
         {!allowed ? (

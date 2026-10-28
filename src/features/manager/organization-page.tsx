@@ -7,6 +7,10 @@ import Listbox from "@/components/listbox";
 import Icon from "@/components/icon";
 import { api } from "@/lib/api/client";
 import type { Event } from "@/lib/events/types";
+import {
+  organizationEvents,
+  organizationEventLabel,
+} from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
 function OrganizationTools({
   wedding,
@@ -25,9 +29,7 @@ function OrganizationTools({
     api<Event[]>("/api/backend/events")
       .then((list) => {
         if (active)
-          setEvents(
-            list.filter((e) => e.kind === (wedding ? "wedding" : "general")),
-          );
+          setEvents(organizationEvents(list, wedding ? "wedding" : "general"));
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoaded(true));
@@ -36,10 +38,11 @@ function OrganizationTools({
     };
   }, [wedding]);
   const selected =
-    events.find((e) => e.id === params.get("event")) ||
-    events.find((e) => !e.isDemo && e.paymentStatus === "paid") ||
-    events.find((e) => !e.isDemo) ||
-    events[0];
+    events.find((e) => e.id === params.get("event")) || events[0];
+  useEffect(() => {
+    if (selected?.paymentStatus === "paid")
+      router.replace(`/manager/${encodeURIComponent(selected.id)}?tab=${tool}`);
+  }, [selected?.id, selected?.paymentStatus, tool, router]);
   const hasPaidEvent = events.some(
     (event) => !event.isDemo && event.paymentStatus === "paid",
   );
@@ -72,12 +75,7 @@ function OrganizationTools({
             >
               {events.map((e) => (
                 <option key={e.id} value={e.id}>
-                  {e.title}
-                  {e.isDemo
-                    ? " · Muestra"
-                    : e.paymentStatus === "paid"
-                      ? " · Activo"
-                      : " · Borrador"}
+                  {organizationEventLabel(e)}
                 </option>
               ))}
             </Listbox>

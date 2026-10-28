@@ -177,3 +177,16 @@
   background-color: var(--ui-soft);
   color: var(--ui-ink);
 }
+
+.manager-event-picker {
+  margin-block: 24px;
+}
+.manager-event-picker label {
+  min-width: 0;
+  width: min(100%, 640px);
+}
+.manager-event-picker .manager-event-context {
+  display: block;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+}
