@@ -124,9 +124,10 @@ function ManagerWorkspace({ id }: { id: string }) {
             </Link>
           </div>
         </header>
-        {!event.isDemo && (
+        {!event.isDemo && user && (
           <ManagerEventPicker
             events={events}
+            user={user}
             event={event}
             tab={tab}
             guard={guard}

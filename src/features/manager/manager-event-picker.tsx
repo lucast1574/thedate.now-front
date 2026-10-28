@@ -1,53 +1,57 @@
 import { useRouter } from "next/navigation";
-import Listbox from "@/components/listbox";
+import InvitationThumbnail from "@/features/studio/invitation-thumbnail";
+import Icon from "@/components/icon";
 import {
   organizationEvents,
-  organizationEventLabel,
+  organizationEventDate,
 } from "@/lib/events/organization-events";
-import type { Event } from "@/lib/events/types";
+import type { Event, User } from "@/lib/events/types";
 
 export default function ManagerEventPicker({
   events,
   event,
+  user,
   tab,
   guard,
 }: {
   events: Event[];
   event: Event;
+  user: User;
   tab: string;
   guard: () => boolean;
 }) {
   const router = useRouter();
-  const items = organizationEvents(events, event.kind);
+  const items = organizationEvents(events, event.kind, user);
+  if (items.length < 2)
+    return <p className="manager-event-context">{event.title}</p>;
   return (
-    <div className="organization-event-picker manager-event-picker">
-      <label>
-        {event.kind === "wedding" ? "Boda" : "Evento"}
-        {items.length > 1 ? (
-          <Listbox
-            value={event.id}
-            onValueChange={(id) => {
-              if (!guard()) return;
-              const next = items.find((item) => item.id === id);
-              router.push(
-                next?.paymentStatus === "paid"
-                  ? `/manager/${encodeURIComponent(id)}?tab=${tab}`
-                  : `/organizar?tool=${tab}&event=${encodeURIComponent(id)}`,
-              );
-            }}
-          >
-            {items.map((item) => (
-              <option key={item.id} value={item.id}>
-                {organizationEventLabel(item)}
-              </option>
-            ))}
-          </Listbox>
-        ) : (
-          <span className="manager-event-context">
-            {organizationEventLabel(event)}
+    <section
+      className="organization-event-cards"
+      aria-label={
+        event.kind === "wedding" ? "Seleccionar boda" : "Seleccionar evento"
+      }
+    >
+      {items.map((item) => (
+        <button
+          type="button"
+          key={item.id}
+          className="organization-event-card"
+          aria-pressed={item.id === event.id}
+          onClick={() => {
+            if (item.id !== event.id && guard())
+              router.push(`/manager/${encodeURIComponent(item.id)}?tab=${tab}`);
+          }}
+        >
+          <span className="organization-event-thumbnail">
+            <InvitationThumbnail event={item} />
           </span>
-        )}
-      </label>
-    </div>
+          <span className="organization-event-info">
+            <strong>{item.title}</strong>
+            <small>{organizationEventDate(item)}</small>
+          </span>
+          {item.id === event.id && <Icon name="check" />}
+        </button>
+      ))}
+    </section>
   );
 }

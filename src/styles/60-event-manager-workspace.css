@@ -178,15 +178,62 @@
   color: var(--ui-ink);
 }
 
-.manager-event-picker {
-  margin-block: 24px;
+.manager-page .organization-event-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 16px;
+  margin-block: 24px 32px;
+  max-width: 880px;
 }
-.manager-event-picker label {
+.manager-page .organization-event-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
-  width: min(100%, 640px);
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  text-align: left;
+  cursor: pointer;
 }
-.manager-event-picker .manager-event-context {
+.manager-page .organization-event-card:hover,
+.manager-page .organization-event-card:focus-visible,
+.manager-page .organization-event-card[aria-pressed="true"] {
+  outline: none;
+  background: var(--ui-soft);
+  border-color: var(--ui-accent);
+}
+.organization-event-thumbnail {
+  position: relative;
   display: block;
-  margin-top: 8px;
+  width: 100%;
+  height: 136px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.organization-event-thumbnail .invitation-thumbnail {
+  height: 100%;
+  aspect-ratio: auto;
+}
+.organization-event-info {
+  display: grid;
+  gap: 6px;
+  padding: 16px 40px 16px 16px;
   overflow-wrap: anywhere;
+}
+.organization-event-info strong {
+  font-size: 14px;
+}
+.organization-event-info small {
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+.manager-page .organization-event-card > .ui-icon {
+  position: absolute;
+  right: 16px;
+  bottom: 24px;
+  color: var(--ui-accent);
 }

@@ -39,7 +39,10 @@ export async function proxyStudio(
   }
   const query = joined.includes("support/tickets")
     ? new URL(request.url).search
-    : "";
+    : joined === "events" &&
+        new URL(request.url).searchParams.get("scope") === "organization"
+      ? "?scope=organization"
+      : "";
   const result = await backendFetch(joined + query, {
     method,
     headers: {

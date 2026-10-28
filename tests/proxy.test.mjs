@@ -25,6 +25,22 @@ function request(method = "GET", origin = "https://crea.thedate.now") {
   });
 }
 
+test("organization scope reaches the backend without forwarding arbitrary query options", async () => {
+  let target;
+  const proxy = proxyFixture("local-test-session", (url) => {
+    target = url;
+    return Response.json([]);
+  });
+  await proxy(
+    new Request(
+      "https://crea.thedate.now/api/backend/events?scope=organization&ownerId=other",
+    ),
+    ["events"],
+    "GET",
+  );
+  assert.equal(target, "https://api.thedate.now/events?scope=organization");
+});
+
 test("studio proxy rejects missing sessions, unsafe paths and foreign origins before forwarding", async () => {
   assert.equal(
     (await proxyFixture()(request(), ["events"], "GET")).status,

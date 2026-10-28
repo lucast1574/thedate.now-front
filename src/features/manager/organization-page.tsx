@@ -1,23 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import AccountShell from "@/features/account/account-shell";
-import Listbox from "@/components/listbox";
-import Icon from "@/components/icon";
 import { api } from "@/lib/api/client";
-import type { Event } from "@/lib/events/types";
-import {
-  organizationEvents,
-  organizationEventLabel,
-} from "@/lib/events/organization-events";
+import type { Event, User } from "@/lib/events/types";
+import { organizationEvents } from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
 function OrganizationTools({
   wedding,
   tool,
+  user,
 }: {
   wedding: boolean;
   tool: string;
+  user: User;
 }) {
   const [events, setEvents] = useState<Event[]>([]),
     [error, setError] = useState(""),
@@ -26,17 +22,19 @@ function OrganizationTools({
     router = useRouter();
   useEffect(() => {
     let active = true;
-    api<Event[]>("/api/backend/events")
+    api<Event[]>("/api/backend/events?scope=organization")
       .then((list) => {
         if (active)
-          setEvents(organizationEvents(list, wedding ? "wedding" : "general"));
+          setEvents(
+            organizationEvents(list, wedding ? "wedding" : "general", user),
+          );
       })
       .catch((e) => setError(e.message))
       .finally(() => setLoaded(true));
     return () => {
       active = false;
     };
-  }, [wedding]);
+  }, [wedding, user]);
   const selected =
     events.find((e) => e.id === params.get("event")) || events[0];
   useEffect(() => {
@@ -63,42 +61,13 @@ function OrganizationTools({
         </div>
       </header>
       {error && <p role="alert">{error}</p>}
-      {selected ? (
-        <div className="organization-event-picker">
-          <label>
-            Evento
-            <Listbox
-              value={selected.id}
-              onValueChange={(id) =>
-                router.replace(`/organizar?tool=${tool}&event=${id}`)
-              }
-            >
-              {events.map((e) => (
-                <option key={e.id} value={e.id}>
-                  {organizationEventLabel(e)}
-                </option>
-              ))}
-            </Listbox>
-          </label>
-          <Link
-            className="gift-primary"
-            href={`/manager/${selected.id}?tab=${tool}`}
-          >
-            {tool === "gifts"
-              ? "Preparar lista"
-              : selected.paymentStatus === "paid" && !selected.isDemo
-                ? "Abrir organización"
-                : "Explorar este evento"}
-            <Icon name="arrow" />
-          </Link>
-        </div>
-      ) : (
-        <p role="status">
-          {loaded
-            ? "Crea un evento para tener tu propio espacio de organización."
+      <p role="status">
+        {selected
+          ? "Abriendo tu evento…"
+          : loaded
+            ? "Tus herramientas estarán disponibles cuando actives tu evento."
             : "Cargando tus eventos…"}
-        </p>
-      )}
+      </p>
       {loaded && !error && !hasPaidEvent && (
         <OrganizationPreview
           wedding={wedding}
@@ -127,7 +96,9 @@ export default function OrganizationPage({
       eventId={params.get("event") || undefined}
       next="/organizar"
     >
-      {() => <OrganizationTools wedding={wedding} tool={tool} />}
+      {(user) => (
+        <OrganizationTools wedding={wedding} tool={tool} user={user} />
+      )}
     </AccountShell>
   );
 }
