@@ -125,25 +125,6 @@ export default function GuestImport({
         cupos, contando al titular. Los demás datos son opcionales. Reemplaza la
         fila de ejemplo con tus invitados.
       </p>
-      <details className="guest-import-guide">
-        <summary>Cómo llenar la plantilla</summary>
-        <p>
-          Usa una fila por familia o invitación. Por ejemplo: Ana Rojas,
-          +51987654321 y 2 cupos para Ana y su acompañante. Guarda el teléfono
-          como texto.
-        </p>
-        <p>
-          Puedes dejar los nombres de acompañantes vacíos para que el titular
-          los complete. Si ya los sabes, separa varios nombres con | y conserva
-          el mismo orden en apellidos y géneros. Género admite hombre, mujer o
-          sin especificar.
-        </p>
-        <p>
-          Excel: primera hoja, máximo 2 MB. CSV: máximo 200 KB. No uses
-          fórmulas. Los teléfonos repetidos se omiten, sin duplicar
-          invitaciones.
-        </p>
-      </details>
       {rows.length > 0 && (
         <div className="guest-import-review">
           <h4>{rows.length} invitaciones listas para añadir</h4>

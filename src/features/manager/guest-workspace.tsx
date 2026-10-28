@@ -1,4 +1,3 @@
-import { useState } from "react";
 import GuestForm from "@/features/studio/guest-form";
 import GuestImport from "@/features/studio/guest-import";
 import Icon from "@/components/icon";
@@ -10,7 +9,6 @@ export default function GuestWorkspace({
 }: {
   manager: ReturnType<typeof useManager>;
 }) {
-  const [adding, setAdding] = useState(false);
   if (!manager.event) return null;
   return (
     <section
@@ -41,29 +39,10 @@ export default function GuestWorkspace({
               <p>No necesitas una hoja de cálculo.</p>
             </div>
           </div>
-          <p>
-            Escribe su nombre, WhatsApp y cuántas personas pueden asistir con
-            esa invitación.
-          </p>
-          <button
-            type="button"
-            className="office-button"
-            aria-expanded={adding}
-            aria-controls="manual-guest-entry"
-            onClick={() => setAdding(!adding)}
-          >
-            <Icon name={adding ? "close" : "plus"} />
-            {adding ? "Cerrar formulario" : "Añadir invitado"}
-          </button>
           <p className="guest-hint">
-            Cada persona nueva se añade al final de tu lista. Si aún está vacía,
-            será la primera.
+            Los nuevos invitados se añaden al final de tu lista.
           </p>
-          {adding && (
-            <div id="manual-guest-entry">
-              <GuestForm busy={manager.busy} onAdd={manager.add} />
-            </div>
-          )}
+          <GuestForm busy={manager.busy} onAdd={manager.add} />
         </section>
       </div>
       <aside className="guest-queue-guide">
