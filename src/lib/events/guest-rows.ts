@@ -1,12 +1,13 @@
 import type { GuestFields } from "./types";
 import type { Gender } from "./seating";
+import { guestCategory } from "./guest-categories";
 export const guestHeaders = [
   "nombre",
   "apellido",
   "telefono",
   "acompanantes_permitidos",
   "genero",
-  "familia",
+  "categoria",
   "acompanantes",
   "apellidos_acompanantes",
   "generos_acompanantes",
@@ -70,7 +71,9 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         phone: field("telefono", "teléfono", "phone"),
         seats,
         gender: gender(field("genero")),
-        family: field("familia", "grupo"),
+        family: guestCategory(
+          field("categoria", "categoría", "familia", "grupo"),
+        ),
         companions: names.map((name, i) => ({
           name,
           lastName: surnames[i] || "",

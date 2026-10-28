@@ -28,7 +28,15 @@ test("real Excel round trip preserves international phone strings and companions
     "acompanantes",
     "apellidos_acompanantes",
   ]);
-  sheet.addRow(["Ana", "Rojas", "+51987654321", 2, "Rojas", "Luis", "Rojas"]);
+  sheet.addRow([
+    "Ana",
+    "Rojas",
+    "+51987654321",
+    2,
+    "Familia de la novia",
+    "Luis",
+    "Rojas",
+  ]);
   const bytes = new Uint8Array(await book.xlsx.writeBuffer());
   const rows = await readGuestFile({
     name: "lista.xlsx",
@@ -87,6 +95,12 @@ test("Excel template and door export create valid workbooks with no formula cell
   });
   assert.equal(imported[0].seats, 2);
   assert.equal(imported[0].companions.length, 0);
+  assert.equal(imported[0].family, "Familia de la novia");
+  assert.equal(book.worksheets[0].getCell("F2").dataValidation.type, "list");
+  assert.equal(
+    book.worksheets[0].getCell("F501").dataValidation.errorStyle,
+    "stop",
+  );
   assert.ok(book.getWorksheet("Cómo llenar la lista"));
   assert.match(
     book.getWorksheet("Cómo llenar la lista").getCell("A3").value,

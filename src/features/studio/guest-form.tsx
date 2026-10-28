@@ -4,6 +4,7 @@ import ActionButton from "@/components/action-button";
 import CompanionFields from "@/components/companion-fields";
 import { useState, type FormEvent } from "react";
 import type { GuestFields } from "@/lib/events/types";
+import { guestCategories } from "@/lib/events/guest-categories";
 const blank = (): GuestFields => ({
   name: "",
   lastName: "",
@@ -77,13 +78,18 @@ export default function GuestForm({
           </Listbox>
         </label>
         <label>
-          Grupo para mesas (opcional)
-          <input
-            placeholder="Familia Rojas"
-            maxLength={80}
+          Categoría para mesas (opcional)
+          <Listbox
             value={guest.family}
-            onChange={(e) => setGuest({ ...guest, family: e.target.value })}
-          />
+            onValueChange={(family) => setGuest({ ...guest, family })}
+          >
+            <option value="">Sin categoría</option>
+            {guestCategories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </Listbox>
         </label>
         <label>
           Género (opcional)

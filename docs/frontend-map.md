@@ -95,6 +95,8 @@ La configuración operativa, migración de reservas y límites de escala están 
 
 ## Invitados, aforo y mesas
 
+`lib/events/guest-categories.ts` define las categorías cerradas para la entrada manual y la columna `categoria` de Excel. La plantilla usa un desplegable con rango nombrado en una hoja oculta; importación normaliza tildes, mayúsculas y espacios y rechaza categorías desconocidas. El transporte conserva `family` para que el acompañante herede categoría y la propuesta existente agrupe esos invitados. Las etiquetas antiguas guardadas no se migran sin una asignación explícita.
+
 Las altas nuevas son una persona titular con cero o un acompañante. El formulario y Excel expresan `acompanantes_permitidos` (0/1); el transporte conserva `seats` como total (1/2). La plantilla descargable y la carga usan únicamente `.xlsx`. `familia` sigue siendo una etiqueta para mesas. RSVP permite elegir ir solo o acompañado, registrar el nombre y advierte que recuperar un lugar liberado depende del aforo. El parser conserva lectura de columnas antiguas `cupos`, validando el nuevo máximo al importar.
 
 El gestor presenta descarga de plantillas y carga por archivo/arrastre en `studio/guest-import.tsx` y `guest-file-dropzone.tsx`, además del alta manual visible en `manager/guest-workspace.tsx`. La tabla empieza en orden de invitación y la consulta por apellido no cambia la prioridad del servidor. Excel incorpora una hoja de instrucciones; los pendientes de envío no muestran enlaces personales.
