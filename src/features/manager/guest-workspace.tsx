@@ -1,6 +1,7 @@
 import { useState } from "react";
 import GuestForm from "@/features/studio/guest-form";
 import GuestImport from "@/features/studio/guest-import";
+import Icon from "@/components/icon";
 import GuestRoster from "./guest-roster";
 import type { useManager } from "./use-manager";
 
@@ -9,7 +10,7 @@ export default function GuestWorkspace({
 }: {
   manager: ReturnType<typeof useManager>;
 }) {
-  const [tool, setTool] = useState<"add" | "import" | null>(null);
+  const [adding, setAdding] = useState(false);
   if (!manager.event) return null;
   return (
     <section
@@ -18,53 +19,74 @@ export default function GuestWorkspace({
     >
       <header className="guest-workspace-heading">
         <div>
-          <h2 id="guest-workspace-title">Tu lista de invitados</h2>
+          <p className="journey-eyebrow">TU LISTA, A TU MANERA</p>
+          <h2 id="guest-workspace-title">¿A quiénes quieres invitar?</h2>
           <p>
-            Organiza a tus invitados y consulta sus respuestas. Se actualizan
-            automáticamente.
+            Sube tu lista o añade personas una a una. Aquí puedes hacer ambas
+            cosas.
           </p>
         </div>
-        <div className="guest-workspace-actions">
-          <button
-            type="button"
-            aria-expanded={tool === "import"}
-            aria-controls="guest-entry-panel"
-            onClick={() => setTool(tool === "import" ? null : "import")}
-          >
-            Importar lista
-          </button>
+      </header>
+      <div className="guest-entry-methods">
+        <GuestImport
+          eventId={manager.event.id}
+          disabled={manager.busy}
+          onImported={() => manager.refresh()}
+        />
+        <section className="guest-manual-card">
+          <div className="guest-method-heading">
+            <Icon name="users" />
+            <div>
+              <h3>Añade personas a mano</h3>
+              <p>No necesitas una hoja de cálculo.</p>
+            </div>
+          </div>
+          <p>
+            Escribe su nombre, WhatsApp y cuántas personas pueden asistir con
+            esa invitación.
+          </p>
           <button
             type="button"
             className="office-button"
-            aria-expanded={tool === "add"}
-            aria-controls="guest-entry-panel"
-            onClick={() => setTool(tool === "add" ? null : "add")}
+            aria-expanded={adding}
+            aria-controls="manual-guest-entry"
+            onClick={() => setAdding(!adding)}
           >
-            Añadir invitado
+            <Icon name={adding ? "close" : "plus"} />
+            {adding ? "Cerrar formulario" : "Añadir invitado"}
           </button>
-        </div>
-      </header>
-      <div id="guest-entry-panel" hidden={!tool} className="guest-entry-panel">
-        {tool && (
-          <button
-            type="button"
-            className="guest-entry-close"
-            onClick={() => setTool(null)}
-          >
-            Cerrar formulario
-          </button>
-        )}
-        {tool === "add" && (
-          <GuestForm busy={manager.busy} onAdd={manager.add} />
-        )}
-        {tool === "import" && (
-          <GuestImport
-            eventId={manager.event.id}
-            onImported={() => manager.refresh()}
-          />
-        )}
+          <p className="guest-hint">
+            Cada persona nueva se añade al final de tu lista. Si aún está vacía,
+            será la primera.
+          </p>
+          {adding && (
+            <div id="manual-guest-entry">
+              <GuestForm busy={manager.busy} onAdd={manager.add} />
+            </div>
+          )}
+        </section>
       </div>
-      <GuestRoster guests={manager.guests} plan={manager.plan} />
+      <aside className="guest-queue-guide">
+        <Icon name="users" />
+        <div>
+          <h3>El orden de tu lista importa</h3>
+          <p>
+            Puedes añadir más personas que el aforo disponible. Invitaremos por
+            orden, respetando los cupos de cada familia.
+          </p>
+          <p>
+            Cuando alguien diga que no, confirme menos personas o venza su
+            reserva temporal, la siguiente invitación se enviará automáticamente
+            si hay espacio para todo su grupo. Nadie recibe un mensaje antes de
+            pulsar «Enviar invitaciones».
+          </p>
+        </div>
+      </aside>
+      <GuestRoster
+        guests={manager.guests}
+        plan={manager.plan}
+        enabled={manager.event.invitationsEnabled}
+      />
     </section>
   );
 }

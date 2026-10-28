@@ -1,5 +1,4 @@
 "use client";
-import ProductHeading from "@/components/product-heading";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
@@ -81,47 +80,8 @@ function ManagerWorkspace({ id }: { id: string }) {
       >
         <header className="manager-header">
           <div>
-            <ProductHeading kind={event.kind} area="manager" />
             <h1>{section.title}</h1>
             <p>{section.description}</p>
-          </div>
-          <div className="action-row">
-            <Link
-              href="/"
-              onClick={(e) => {
-                if (
-                  dirty &&
-                  !window.confirm(
-                    "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
-                  )
-                )
-                  e.preventDefault();
-              }}
-            >
-              Estudio
-            </Link>
-            <Link
-              href={`/?event=${id}`}
-              onClick={(e) => {
-                if (!guard()) e.preventDefault();
-              }}
-            >
-              Datos del evento
-            </Link>
-            <Link
-              href={`/editor/${id}`}
-              onClick={(e) => {
-                if (
-                  dirty &&
-                  !window.confirm(
-                    "Hay cambios del plano sin guardar. ¿Salir y descartarlos?",
-                  )
-                )
-                  e.preventDefault();
-              }}
-            >
-              Editar invitación ↗
-            </Link>
           </div>
         </header>
         {!event.isDemo && user && (

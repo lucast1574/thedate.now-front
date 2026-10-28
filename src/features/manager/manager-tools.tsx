@@ -1,5 +1,4 @@
-import PublicationPanel from "@/features/studio/publication-panel";
-import { useEventActions } from "@/features/studio/use-event-actions";
+import InvitationDelivery from "./invitation-delivery";
 import GuestWorkspace from "./guest-workspace";
 import SeatingEditor from "./seating-editor";
 import DoorExportButton from "./door-export-button";
@@ -13,18 +12,6 @@ export default function ManagerTools({
   tab: string;
 }) {
   const { event, guests, plan, user, busy, dirty, stale } = manager;
-  const actions = useEventActions(
-    event,
-    {
-      refreshGuests: async () => {
-        await manager.refresh();
-      },
-      reloadSelected: async () => {
-        await manager.refresh();
-      },
-    },
-    user?.role === "admin" || user?.id === event?.ownerId,
-  );
   if (!event) return null;
   const canSend = user?.role === "admin" || user?.id === event.ownerId;
   return (
@@ -32,44 +19,13 @@ export default function ManagerTools({
       {tab === "guests" && (
         <>
           <GuestWorkspace manager={manager} />
-          <section
-            className="manager-delivery"
-            aria-label="Publicación y envío de invitaciones"
-          >
-            {canSend && (
-              <PublicationPanel
-                selected={event}
-                deployment={actions.deployment}
-                publishing={actions.publishing}
-                busy={busy}
-                paymentsEnabled={false}
-                checkout={() => {}}
-                publish={() => {
-                  void manager.run(actions.publish, "Publicación solicitada.");
-                }}
-              />
-            )}
-            {canSend && (
-              <div className="manager-send">
-                <button
-                  className="office-button"
-                  disabled={
-                    busy || !event.publishedAt || !guests.some((g) => !g.sentAt)
-                  }
-                  onClick={() => {
-                    void manager.send();
-                  }}
-                >
-                  Enviar invitaciones
-                </button>
-                <p>
-                  {event.publishedAt
-                    ? "El enlace personal permite registrar acompañantes y confirmar asistencia."
-                    : "Publica tu invitación aquí para habilitar el envío por WhatsApp."}
-                </p>
-              </div>
-            )}
-          </section>
+          {canSend && (
+            <InvitationDelivery
+              eventId={event.id}
+              guestCount={guests.length}
+              onUpdate={manager.refresh}
+            />
+          )}
         </>
       )}
       {tab === "tables" && (

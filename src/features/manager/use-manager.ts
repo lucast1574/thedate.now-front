@@ -111,20 +111,7 @@ export function useManager(id: string) {
       await api(`/api/backend/events/${id}/guests`, "POST", fields);
       await refresh();
     }, "Invitado añadido.");
-  const send = () =>
-    run(async () => {
-      const result = await api<{
-        sent: number;
-        failed: number;
-        uncertain: number;
-        remaining: number;
-      }>(`/api/backend/events/${id}/send-invitations`, "POST");
-      await refresh();
-      if (result.failed || result.uncertain || result.remaining)
-        throw new Error(
-          `${result.sent} enviadas; ${result.failed} fallidas; ${result.uncertain} entregas por revisar; ${result.remaining} pendientes.`,
-        );
-    }, "Invitaciones enviadas por WhatsApp.");
+
   return {
     event,
     events,
@@ -139,7 +126,6 @@ export function useManager(id: string) {
     update,
     save,
     add,
-    send,
     refresh,
     run,
   };

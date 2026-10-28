@@ -9,16 +9,17 @@ export default function GuestSummary({
   guests: Guest[];
 }) {
   const stats = guestStats(guests, useClock());
-  const used = stats.confirmed + stats.held;
+  const awaiting = guests
+    .filter((g) => g.invitationHeld)
+    .reduce((sum, g) => sum + g.seats, 0);
+  const used = stats.confirmed + stats.held + awaiting;
   return (
     <section className="guest-metrics" aria-label="Aforo y confirmaciones">
       <div>
-        <small>Aforo reservado</small>
+        <small>Personas que puedes recibir</small>
         <strong>
-          {used}{" "}
-          <span>
-            / {event.capacityUnlimited ? "ilimitado" : event.capacity}
-          </span>
+          {event.capacityUnlimited ? "Sin límite" : event.capacity}{" "}
+          <span>{event.capacityUnlimited ? "" : "personas"}</span>
         </strong>
         <p>
           {event.capacityUnlimited
@@ -35,16 +36,24 @@ export default function GuestSummary({
         <p>Personas, incluidos acompañantes</p>
       </div>
       <div>
-        <small>Pidieron tiempo</small>
-        <strong>{stats.held}</strong>
-        <p>Personas con reserva temporal</p>
+        <small>Esperando respuesta</small>
+        <strong>{awaiting + stats.held}</strong>
+        <p>
+          {awaiting} cupos invitados · {stats.held} con reserva temporal
+        </p>
       </div>
       <div>
-        <small>No asistirán / sin respuesta</small>
+        <small>Por invitar</small>
         <strong>
-          {stats.declined} / {stats.pending}
+          {
+            guests.filter(
+              (g) => !g.sentAt && !g.invitationHeld && g.response === "pending",
+            ).length
+          }
         </strong>
-        <p>Invitaciones · {stats.invited} cupos máximos invitados</p>
+        <p>
+          {stats.declined} no asistirán · Se avisa al siguiente cuando hay cupo
+        </p>
       </div>
     </section>
   );

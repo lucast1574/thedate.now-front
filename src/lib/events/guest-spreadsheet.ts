@@ -74,6 +74,20 @@ export async function downloadGuestTemplate(format: "xlsx" | "csv") {
   });
   sheet.getRow(1).font = { bold: true };
   sheet.views = [{ state: "frozen", ySplit: 1 }];
+  const guide = book.addWorksheet("Cómo llenar la lista");
+  guide.getColumn(1).width = 100;
+  for (const line of [
+    "Reemplaza la fila de ejemplo con tus invitados. Usa la hoja Invitados.",
+    "Una fila por invitación. Nombre, telefono y cupos son obligatorios.",
+    "El orden de las filas será el orden de invitación. Las altas manuales van al final.",
+    "Telefono: código de país, por ejemplo +51987654321. Conservar como texto.",
+    "Cupos incluye al titular: 2 significa titular y un acompañante.",
+    "Puedes dejar los acompañantes vacíos para que el invitado complete sus nombres.",
+    "Puedes añadir más personas que el aforo. Se invita por orden cuando hay cupo para todo el grupo.",
+    "Los mensajes empiezan al pulsar Enviar invitaciones, después de preparar la web.",
+    "Una negativa, menos acompañantes o el vencimiento de una reserva libera cupos para la siguiente invitación.",
+  ])
+    guide.addRow([line]);
   downloadFile(
     new Uint8Array(await book.xlsx.writeBuffer()),
     "plantilla-invitados.xlsx",

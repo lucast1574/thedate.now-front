@@ -14,13 +14,15 @@ import { useClock } from "@/components/use-clock";
 export default function GuestRoster({
   guests,
   plan,
+  enabled,
 }: {
   guests: Guest[];
   plan: SeatingPlan;
+  enabled?: boolean;
 }) {
   const [search, setSearch] = useState(""),
     [filter, setFilter] = useState("all"),
-    [sorted, setSorted] = useState(true);
+    [sorted, setSorted] = useState(false);
   const now = useClock();
   const list = guests.filter(
     (g) =>
@@ -30,8 +32,32 @@ export default function GuestRoster({
         .includes(search.toLocaleLowerCase("es")),
   );
   if (sorted) list.sort(surnameOrder);
+  else
+    list.sort(
+      (a, b) =>
+        (a.queuePosition || 0) - (b.queuePosition || 0) ||
+        (Date.parse(a.createdAt || "") || 0) -
+          (Date.parse(b.createdAt || "") || 0),
+    );
+  if (!guests.length)
+    return (
+      <div className="guest-roster-empty">
+        <h3>Tu lista empieza aquí</h3>
+        <p>
+          Sube tu archivo o añade el primer invitado. Después verás aquí el
+          orden, los envíos y cada respuesta.
+        </p>
+      </div>
+    );
   return (
     <section className="roster">
+      <header className="roster-heading">
+        <h3>Tu lista de invitados</h3>
+        <p>
+          El orden de invitación se conserva aunque consultes la lista por
+          apellido.
+        </p>
+      </header>
       <div className="roster-controls">
         <label>
           Buscar invitado o familia
@@ -52,12 +78,12 @@ export default function GuestRoster({
           </Listbox>
         </label>
         <button onClick={() => setSorted(!sorted)}>
-          {sorted ? "Orden: apellido ✓" : "Ordenar por apellido"}
+          {sorted ? "Ver orden de invitación" : "Ver por apellido"}
         </button>
       </div>
       <p>
-        {list.length} invitaciones. Cada acompañante aparece por separado y
-        ocupa un asiento.
+        {list.length} {list.length === 1 ? "invitación" : "invitaciones"}. Cada
+        acompañante aparece por separado y ocupa un asiento.
       </p>
       <div className="roster-table">
         <table>
@@ -72,9 +98,12 @@ export default function GuestRoster({
             </tr>
           </thead>
           <tbody>
-            {list.map((g) => (
+            {list.map((g, index) => (
               <tr key={g.id}>
                 <td>
+                  {!sorted && !search && filter === "all" && (
+                    <span className="guest-queue-position">{index + 1}</span>
+                  )}
                   <strong>{fullName(g)}</strong>
                   {g.family && <small>{g.family}</small>}
                   <ul className="party-names">
@@ -132,14 +161,28 @@ export default function GuestRoster({
                 <td>
                   {g.phone}
                   <br />
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={g.invitationUrl}
-                  >
-                    Enlace personal ↗
-                  </a>
-                  <small>{g.sentAt ? "WhatsApp enviado" : "Sin enviar"}</small>
+                  {g.sentAt && (
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={g.invitationUrl}
+                    >
+                      Enlace personal ↗
+                    </a>
+                  )}
+                  <small>
+                    {g.sentAt
+                      ? "WhatsApp enviado"
+                      : g.sendState === "sending"
+                        ? "Enviando…"
+                        : g.sendState === "unknown"
+                          ? "Envío por verificar"
+                          : g.sendState === "failed"
+                            ? "No se pudo enviar"
+                            : enabled
+                              ? "Esperando su turno"
+                              : "Por enviar"}
+                  </small>
                 </td>
               </tr>
             ))}

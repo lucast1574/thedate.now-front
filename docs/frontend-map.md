@@ -95,6 +95,10 @@ La configuración operativa, migración de reservas y límites de escala están 
 
 ## Invitados, aforo y mesas
 
+El gestor presenta descarga de plantillas y carga por archivo/arrastre en `studio/guest-import.tsx` y `guest-file-dropzone.tsx`, además del alta manual visible en `manager/guest-workspace.tsx`. La tabla empieza en orden de invitación y la consulta por apellido no cambia la prioridad del servidor. Excel incorpora una hoja de instrucciones; los pendientes de envío no muestran enlaces personales.
+
+`manager/invitation-delivery.tsx` y `use-invitation-delivery.ts` sustituyen los botones separados de publicar/enviar con una sola intención persistida mediante `/events/{id}/delivery`. Muestran preparación de la web, comprobación y envíos, o espera por aforo. El navegador solo consulta el progreso: la API verifica la web y ejecuta la cola incluso después de salir. Los fallos y resultados desconocidos se muestran sin repetir mensajes automáticamente. Los estilos de este recorrido viven en `styles/62-guest-journey.css`.
+
 Ruta privada `/manager/[id]` para ambos productos; el estudio enlaza el gestor. `features/manager` separa carga/polling (`use-manager`), métricas, lista, lienzo, inspector de mesa y propuesta automática. Propietario/admin y parejas asignadas pueden gestionar invitados y mesas de eventos pagados; solo propietario/admin envía WhatsApp. Diseño, guardado y preview permanecen gratis.
 
 - `lib/events/guest-rows.ts`, `guest-csv.ts`, `guest-spreadsheet.ts`: formato, parser CSV y Excel cargado bajo demanda. Plantillas descargables; primera hoja .xlsx, hasta 500 filas, 2 MB (CSV 200 KB). Se rechazan fórmulas, enlaces, macros, y metadatos ZIP que superen límites. Teléfonos se guardan como texto.

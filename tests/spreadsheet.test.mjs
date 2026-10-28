@@ -74,6 +74,11 @@ test("Excel template and door export create valid workbooks with no formula cell
   await book.xlsx.load(await blob.arrayBuffer());
   assert.equal(book.worksheets[0].getCell("C2").value, "+51987654321");
   assert.equal(book.worksheets[0].getCell("C2").numFmt, "@");
+  assert.ok(book.getWorksheet("Cómo llenar la lista"));
+  assert.match(
+    book.getWorksheet("Cómo llenar la lista").getCell("A3").value,
+    /orden de invitación/,
+  );
   const exported = loadSource("src/lib/events/door-export.ts", {
     mocks: {
       exceljs: excelMock,

@@ -40,7 +40,7 @@ export default function GuestForm({
           />
         </label>
         <label>
-          Apellido
+          Apellido (opcional)
           <input
             maxLength={80}
             value={guest.lastName}
@@ -51,6 +51,8 @@ export default function GuestForm({
           WhatsApp
           <input
             required
+            type="tel"
+            autoComplete="tel"
             placeholder="+51987654321"
             pattern="\+[1-9][0-9]{6,14}"
             value={guest.phone}
@@ -76,7 +78,7 @@ export default function GuestForm({
           />
         </label>
         <label>
-          Familia / grupo
+          Familia / grupo (opcional)
           <input
             placeholder="Familia Rojas"
             maxLength={80}
@@ -85,7 +87,7 @@ export default function GuestForm({
           />
         </label>
         <label>
-          Icono
+          Género (opcional)
           <Listbox
             value={guest.gender}
             onValueChange={(value) =>

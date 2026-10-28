@@ -34,6 +34,7 @@ export type DesignEvent = {
   isDemo?: boolean;
 };
 export type Event = DesignEvent & {
+  invitationsEnabled?: boolean;
   invitationMessage?: string;
   creation?: {
     dressExcludedColors?: FlyerElement["dressExcludedColors"];
@@ -85,6 +86,10 @@ export type PublicEvent = Pick<
   | "wishlistEnabled"
 >;
 export type Guest = {
+  queuePosition?: number;
+  createdAt?: string;
+  sendState?: string;
+  invitationHeld?: boolean;
   gift?: { id: string; title: string; delivered: boolean };
   lastName?: string;
   family?: string;
