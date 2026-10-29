@@ -34,6 +34,7 @@ export default function Invitation({
     ? event.accentColor
     : "#ad7254";
   const paper = invitationPaper(event);
+  const opening = resolvedOpening(event);
   return (
     <main
       className={`invitation ${event.template === "modern" ? "invitation-modern" : ""}`}
@@ -51,8 +52,12 @@ export default function Invitation({
       <InvitationMotion />
       {showOpening && event.opening?.enabled && (
         <InvitationOpening
-          opening={resolvedOpening(event)!}
-          photoURL={photo}
+          opening={opening!}
+          backgroundPhotoURL={
+            opening?.backgroundImage
+              ? photo(opening.backgroundImage.photoKey)
+              : undefined
+          }
           title={event.title}
           wedding={event.kind === "wedding"}
         />

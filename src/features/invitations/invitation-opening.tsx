@@ -7,12 +7,12 @@ export default function InvitationOpening({
   opening,
   title,
   wedding,
-  photoURL,
+  backgroundPhotoURL,
 }: {
   opening: Opening;
   title: string;
   wedding: boolean;
-  photoURL: (key: string) => string;
+  backgroundPhotoURL?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const { phase, open } = useOpeningAnimation(opening.style);
@@ -44,7 +44,7 @@ export default function InvitationOpening({
         opening={opening}
         title={title}
         wedding={wedding}
-        photoURL={photoURL}
+        photoURL={() => backgroundPhotoURL ?? ""}
         phase={phase}
         onOpen={() => open(dialog.current)}
       />
