@@ -4,12 +4,16 @@ export default function GuestFileDropzone({
   locked,
   busy,
   fileName,
+  complete = false,
+  uploaded = false,
   onRead,
   onError,
 }: {
   locked: boolean;
   busy: boolean;
   fileName: string;
+  complete?: boolean;
+  uploaded?: boolean;
   onRead: (file?: File) => Promise<void>;
   onError: (message: string) => void;
 }) {
@@ -17,7 +21,8 @@ export default function GuestFileDropzone({
   const [dragging, setDragging] = useState(false);
   return (
     <div
-      className={`guest-dropzone ${dragging ? "is-dragging" : ""}`}
+      className={`guest-dropzone ${dragging ? "is-dragging" : ""} ${complete ? "is-complete" : ""}`}
+      aria-busy={busy}
       onDragOver={(e) => {
         e.preventDefault();
         if (!locked) setDragging(true);
@@ -29,6 +34,7 @@ export default function GuestFileDropzone({
       onDrop={(e) => {
         e.preventDefault();
         setDragging(false);
+        if (locked) return;
         if (e.dataTransfer.files.length !== 1) {
           onError("Selecciona un solo archivo Excel.");
           return;
@@ -36,19 +42,28 @@ export default function GuestFileDropzone({
         void onRead(e.dataTransfer.files[0]);
       }}
     >
-      <Icon name="table" />
+      <Icon name={complete ? "check" : "table"} />
       <strong>
         {busy
           ? "Revisando y añadiendo invitados…"
-          : fileName || "Arrastra aquí tu Excel"}
+          : complete
+            ? "Listo, tu lista está al día"
+            : fileName ||
+              (uploaded
+                ? "Arrastra otro Excel cuando quieras"
+                : "Arrastra aquí tu Excel")}
       </strong>
-      <span>También puedes buscarlo en tus archivos.</span>
+      <span>
+        {complete
+          ? "Ya puedes ver a tus invitados en la lista de abajo."
+          : "También puedes buscarlo en tus archivos."}
+      </span>
       <button
         type="button"
         disabled={locked}
         onClick={() => fileInput.current?.click()}
       >
-        Elegir archivo
+        {uploaded ? "Subir otro Excel" : "Elegir archivo"}
       </button>
       <small>Excel (.xlsx) · Hasta 500 invitados por archivo</small>
       <input

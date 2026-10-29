@@ -1,13 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
-import {
-  readGuestFileReport,
-  downloadGuestTemplate,
-} from "@/lib/events/guest-spreadsheet";
-import type { GuestRowIssue } from "@/lib/events/guest-rows";
-import { api } from "@/lib/api/client";
 import Icon from "@/components/icon";
 import GuestFileDropzone from "./guest-file-dropzone";
+import GuestImportReceipt from "./guest-import-receipt";
+import { useGuestImport } from "./use-guest-import";
 
 export default function GuestImport({
   eventId,
@@ -18,58 +13,19 @@ export default function GuestImport({
   onImported: () => Promise<void>;
   disabled?: boolean;
 }) {
-  const reading = useRef(false);
-  const [notice, setNotice] = useState("");
-  const [issues, setIssues] = useState<GuestRowIssue[]>([]);
-  const [failed, setFailed] = useState(false);
-  const [busy, setBusy] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const locked = busy || disabled;
-  async function read(file?: File) {
-    if (!file || locked || reading.current) return;
-    reading.current = true;
-    setBusy(true);
-    setNotice("");
-    setIssues([]);
-    setFailed(false);
-    setFileName(file.name);
-    try {
-      const report = await readGuestFileReport(file);
-      setIssues(report.issues);
-      if (!report.guests.length) {
-        setFailed(true);
-        setNotice(
-          report.issues.length
-            ? "No añadimos invitados. Corrige las filas indicadas y vuelve a subir el archivo."
-            : "El archivo no tiene invitados. Completa la plantilla y vuelve a subirla.",
-        );
-        return;
-      }
-      const result = await api<{ added: number; skipped: number }>(
-        `/api/backend/events/${eventId}/guests/import`,
-        "POST",
-        { guests: report.guests },
-      );
-      setNotice(
-        `${result.added} ${result.added === 1 ? "invitado añadido" : "invitados añadidos"} en el orden del archivo.${result.skipped ? ` ${result.skipped} ${result.skipped === 1 ? "teléfono ya estaba" : "teléfonos ya estaban"} en tu lista.` : ""}${report.issues.length ? " Corrige las filas indicadas y vuelve a subir el archivo; no se duplicarán los invitados." : ""}`,
-      );
-      await onImported();
-    } catch (error) {
-      setFailed(true);
-      setNotice((error as Error).message);
-    } finally {
-      reading.current = false;
-      setBusy(false);
-    }
-  }
-  async function template() {
-    try {
-      await downloadGuestTemplate();
-    } catch (error) {
-      setFailed(true);
-      setNotice((error as Error).message);
-    }
-  }
+  const {
+    busy,
+    locked,
+    notice,
+    issues,
+    receipt,
+    complete,
+    failed,
+    fileName,
+    read,
+    template,
+    reportError,
+  } = useGuestImport(eventId, disabled, onImported);
   return (
     <section
       className="guest-import guest-file-card"
@@ -95,11 +51,11 @@ export default function GuestImport({
         busy={busy}
         fileName={fileName}
         onRead={read}
-        onError={(message) => {
-          setFailed(true);
-          setNotice(message);
-        }}
+        complete={complete}
+        uploaded={!!receipt}
+        onError={reportError}
       />
+      {receipt && <GuestImportReceipt result={receipt} />}
       {notice && (
         <p
           className={`guest-import-notice ${failed ? "is-error" : ""}`}

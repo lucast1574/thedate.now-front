@@ -41,7 +41,7 @@ export default function GuestRoster({
     );
   if (!guests.length)
     return (
-      <div className="guest-roster-empty">
+      <div id="guest-list" tabIndex={-1} className="guest-roster-empty">
         <h3>Tu lista empieza aquí</h3>
         <p>
           Sube tu archivo o añade el primer invitado. Después verás aquí el
@@ -50,7 +50,7 @@ export default function GuestRoster({
       </div>
     );
   return (
-    <section className="roster">
+    <section id="guest-list" tabIndex={-1} className="roster">
       <header className="roster-heading">
         <h3>Tu lista de invitados</h3>
         <p>
