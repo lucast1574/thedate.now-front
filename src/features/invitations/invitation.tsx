@@ -76,6 +76,7 @@ export default function Invitation({
           </>
         )}
         <InvitationSections
+          event={event}
           guestName={guestName}
           giftURL={giftURL}
           backgroundImage={event.backgroundImage}

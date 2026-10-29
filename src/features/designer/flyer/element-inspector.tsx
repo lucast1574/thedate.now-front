@@ -1,4 +1,9 @@
 import GiftLinkInspector from "./gift-link-inspector";
+import { elementLabel } from "@/lib/events/element-label";
+import ActionHintInspector from "./action-hint-inspector";
+import MapInspector from "./map-inspector";
+import EventBindingInspector from "./event-binding-inspector";
+import EventTextInspector from "./event-text-inspector";
 import DressCodeInspector from "./dress-code-inspector";
 import RestrictionsInspector from "./restrictions-inspector";
 import { dressParts } from "@/lib/events/dress-code";
@@ -33,24 +38,7 @@ export default function ElementInspector({
   photoURL?: (key: string) => string;
   onLayer?: (direction: number) => void;
 }) {
-  const title =
-    item.binding === "gift_link"
-      ? "Lista de regalos"
-      : item.binding === "guest_name"
-        ? "Nombre del invitado"
-        : item.binding === "restrictions"
-          ? "Restricciones"
-          : item.binding === "dress_code"
-            ? "Dress code"
-            : item.binding === "adults_notice"
-              ? "Solo adultos"
-              : item.binding === "location"
-                ? "Ubicación"
-                : item.type === "image"
-                  ? "Imagen"
-                  : item.type === "icon"
-                    ? "Símbolo"
-                    : "Texto";
+  const title = elementLabel(item);
   return (
     <section className="element-inspector">
       <header className="inspector-heading">
@@ -87,7 +75,14 @@ export default function ElementInspector({
           </button>
         </div>
       </header>
-      {item.binding === "guest_name" ? (
+      <EventBindingInspector item={item} onChange={onChange} />
+      {["couple_names", "event_title", "event_date"].includes(
+        item.binding || "",
+      ) ? (
+        <EventTextInspector item={item} onChange={onChange} />
+      ) : item.binding === "map" ? (
+        <MapInspector key={item.id} item={item} onChange={onChange} />
+      ) : item.binding === "guest_name" ? (
         <GuestBindingField
           text={item.text || ""}
           onChange={(text) => onChange({ text })}
@@ -118,6 +113,9 @@ export default function ElementInspector({
             />
           </label>
         )
+      )}
+      {["location", "gift_link", "map"].includes(item.binding || "") && (
+        <ActionHintInspector item={item} onChange={onChange} />
       )}
       {item.type === "image" ? (
         <>

@@ -177,7 +177,6 @@ export default function FlyerWorkspace({
             onLayer={layer}
           />
         )}
-        <h3>Capas · {canvas.elements.length}/60</h3>
         <div className="editor-layers">
           <CanvasLayers
             elements={canvas.elements}
@@ -188,6 +187,7 @@ export default function FlyerWorkspace({
       </aside>
       <div className="canvas-stage">
         <CanvasEditor
+          event={draft}
           canvas={canvas}
           selectedId={selectedId}
           onSelect={setSelectedId}

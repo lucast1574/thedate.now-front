@@ -86,12 +86,17 @@ export function templateSequence(
         100,
         52,
       ),
-      text(
+      templateText(
+        template,
         "date",
         formatEventDate(source?.startAt || "", source?.timeZone),
         350,
         160,
         34,
+        {
+          binding: "event_date",
+          eventBound: true,
+        },
       ),
     ]),
     page("Ubicación", 720, [
@@ -112,6 +117,8 @@ export function templateSequence(
         32,
         {
           binding: "location",
+          eventBound: true,
+          actionHint: true,
           locationStyle: "all",
           address: source?.isVirtual
             ? "Celebremos en línea"
@@ -120,15 +127,6 @@ export function templateSequence(
             ? source.virtualUrl || ""
             : source?.mapUrl || "",
         },
-      ),
-      text(
-        "place-note",
-        source?.isVirtual
-          ? "Pulsa para entrar a la celebración."
-          : "Pulsa la ubicación para ver cómo llegar.",
-        560,
-        90,
-        24,
       ),
     ]),
     page("Dress code", 700, [

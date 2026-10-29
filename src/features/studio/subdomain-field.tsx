@@ -1,5 +1,6 @@
 import type { Kind } from "@/lib/events/types";
-import { invitationHost } from "@/lib/events/domains";
+import { invitationHost, validInvitationSlug } from "@/lib/events/domains";
+import { useEffect, useRef } from "react";
 import Icon from "@/components/icon";
 export default function SubdomainField({
   kind,
@@ -14,6 +15,15 @@ export default function SubdomainField({
 }) {
   const wedding = kind === "wedding",
     example = wedding ? "sofiaymateo" : "cumplelucas";
+  const input = useRef<HTMLInputElement>(null);
+  const invalid = !!value && !validInvitationSlug(value);
+  useEffect(() => {
+    input.current?.setCustomValidity(
+      invalid
+        ? "Ese nombre está reservado o no es válido. Elige otro enlace."
+        : "",
+    );
+  }, [invalid, disabled]);
   return (
     <div className="invitation-address-card">
       <Icon name="external" />
@@ -22,7 +32,9 @@ export default function SubdomainField({
           {disabled ? "Tu enlace reservado" : "Así se verá tu enlace"}
         </small>
         <strong id="subdomain-address">
-          {invitationHost(kind, value || example)}
+          {invalid
+            ? "Elige otro nombre para tu enlace"
+            : invitationHost(kind, value || example)}
         </strong>
         <span>Podrás compartirlo cuando publiques tu invitación.</span>
       </div>
@@ -35,6 +47,8 @@ export default function SubdomainField({
             </label>
             <div className="subdomain-input">
               <input
+                ref={input}
+                aria-invalid={invalid}
                 id="invitation-subdomain"
                 required
                 autoCapitalize="none"
@@ -53,6 +67,12 @@ export default function SubdomainField({
               />
               <span>{wedding ? ".save.thedate.now" : ".thedate.now"}</span>
             </div>
+            {invalid && (
+              <small role="alert">
+                Ese nombre está reservado o no es válido. Elige otro; «save»
+                pertenece a Save the Date.
+              </small>
+            )}
             <small id="subdomain-hint">
               {wedding
                 ? "Sus nombres juntos quedan bonitos: sofiaymateo."

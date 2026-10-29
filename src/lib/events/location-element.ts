@@ -18,6 +18,15 @@ export function validMapLink(raw: string) {
   }
 }
 export function locationHref(item: FlyerElement) {
+  if (item.eventBound && item.link) {
+    try {
+      const url = new URL(item.link);
+      if (url.protocol === "https:" && !url.username && !url.password)
+        return item.link;
+    } catch {
+      /* Fall back to the address. */
+    }
+  }
   if (item.link && validMapLink(item.link)) return item.link;
   return item.address?.trim()
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.address.trim())}`

@@ -91,6 +91,7 @@ export function useInvitationDesign(
           section.canvas?.elements.some(
             (item) =>
               item.binding === "location" &&
+              !item.eventBound &&
               item.link &&
               !validMapLink(item.link),
           ),

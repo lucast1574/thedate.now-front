@@ -99,6 +99,13 @@ export function templateCanvas(
       .slice(0, 2)
       .join(" & ");
     text("initials", initials || title[0], [80, 160, 560, 290, 150], {
+      ...(template.kind === "wedding"
+        ? {
+            binding: "couple_names" as const,
+            eventBound: true,
+            nameFormat: "initials" as const,
+          }
+        : {}),
       color: tint(template.accent, template.background),
     });
   }
@@ -114,6 +121,16 @@ export function templateCanvas(
       ? title.toLocaleUpperCase("es")
       : title;
   text("title", heading, layout.title, {
+    binding: template.kind === "wedding" ? "couple_names" : "event_title",
+    nameFormat:
+      template.kind === "wedding"
+        ? layout.stacked
+          ? "stacked"
+          : layout.uppercase
+            ? "uppercase"
+            : "names"
+        : undefined,
+    eventBound: true,
     bold: template.layout === "poster" || template.layout === "celebration",
   });
   const photo =

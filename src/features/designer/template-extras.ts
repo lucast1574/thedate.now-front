@@ -3,6 +3,7 @@ import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { Opening } from "@/lib/events/celebration";
 import { defaultOpening } from "@/lib/events/celebration";
 import { templatePage, templateText } from "./template-pages";
+import { mapCoordinates } from "@/lib/events/map-element";
 
 export type TemplateSource = DesignEvent &
   Partial<
@@ -63,6 +64,7 @@ export function templateDress(
     .find((e) => e.binding === "dress_code");
   return templateText(template, "dress", text, 270, 340, 32, {
     binding: "dress_code",
+    eventBound: true,
     dressStyle: "icon-text",
     dressIcon: previous?.dressIcon || "lucide:shirt",
     dressExcludedColors:
@@ -92,7 +94,14 @@ export function templateExtraPages(
           restrictionIcon,
         },
       ]
-    : previous;
+    : previous.length
+      ? previous
+      : [
+          {
+            text: "Tus indicaciones aparecerán aquí",
+            restrictionIcon: undefined,
+          },
+        ];
   for (const [index, rule] of rules.entries()) {
     pages.push(
       templatePage(template, "Para disfrutar juntos", 600, [
@@ -106,6 +115,7 @@ export function templateExtraPages(
           28,
           {
             binding: "restrictions",
+            eventBound: true,
             restrictionStyle: "icon-text",
             restrictionIcon: rule.restrictionIcon || "lucide:shield-alert",
           },
@@ -113,35 +123,71 @@ export function templateExtraPages(
       ]),
     );
   }
-  if (source?.wishlistEnabled)
+  for (const page of pages) page.when = "restrictions";
+  pages.push(
+    templatePage(template, "Lista de regalos", 560, [
+      templateText(
+        template,
+        "gifts-title",
+        "Un detalle con cariño",
+        80,
+        100,
+        44,
+      ),
+      templateText(
+        template,
+        "gifts-note",
+        "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás algunas ideas.",
+        220,
+        130,
+        28,
+      ),
+      templateText(
+        template,
+        "gifts-link",
+        "Ver lista de regalos",
+        410,
+        80,
+        30,
+        {
+          binding: "gift_link",
+          link: "/regalos",
+          actionHint: true,
+          hintText: "Ver regalos",
+        },
+      ),
+    ]),
+  );
+  pages[pages.length - 1].when = "gifts";
+  if (
+    !source?.isVirtual &&
+    ["botanical", "minimal", "landscape", "editorial"].includes(
+      template.layout || "",
+    )
+  ) {
     pages.push(
-      templatePage(template, "Lista de regalos", 560, [
+      templatePage(template, "El lugar en el mapa", 680, [
         templateText(
           template,
-          "gifts-title",
-          "Un detalle con cariño",
-          80,
+          "map-title",
+          "Aquí nos encontramos",
+          50,
           100,
-          44,
+          42,
         ),
-        templateText(
-          template,
-          "gifts-note",
-          "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás algunas ideas.",
-          220,
-          130,
-          28,
-        ),
-        templateText(
-          template,
-          "gifts-link",
-          "Ver lista de regalos",
-          410,
-          80,
-          30,
-          { binding: "gift_link" },
-        ),
+        templateText(template, "map", "", 190, 390, 24, {
+          binding: "map",
+          eventBound: true,
+          mapStyle: template.kind === "wedding" ? "warm" : "natural",
+          mapRadius: 20,
+          mapSoftness: 8,
+          mapZoom: 14,
+          actionHint: true,
+          ...mapCoordinates(source?.mapUrl),
+          link: source?.mapUrl || "",
+        }),
       ]),
     );
+  }
   return pages;
 }

@@ -10,6 +10,7 @@ import { templateCanvas } from "./template-canvas";
 import { applyTemplate } from "./templates";
 import { applyCompleteTemplate, templateSequence } from "./template-sequence";
 import TemplateDetail from "./template-detail";
+import { addMissingTemplateElements } from "./missing-template-elements";
 import { useTemplateNavigation } from "./use-template-navigation";
 const searchable = (text: string) =>
   text
@@ -69,6 +70,24 @@ export default function TemplatePanel({
   }
   return (
     <div ref={panel} className="template-panel">
+      {draft.sections?.length ? (
+        <button
+          className="template-style-only"
+          onClick={() => {
+            const template =
+              catalog.find((t) => t.id === draft.templateId) || catalog[0];
+            const next = addMissingTemplateElements(draft, template);
+            setDraft(next);
+            setMessage(
+              next.sections!.length > draft.sections!.length
+                ? "Elementos añadidos en nuevas secciones. Tu diseño se conserva; puedes deshacer."
+                : "Ya tienes los elementos o llegaste al máximo de secciones.",
+            );
+          }}
+        >
+          Añadir elementos que faltan
+        </button>
+      ) : null}
       {message && (
         <p className="template-panel-feedback" role="status">
           <Icon name="check" />

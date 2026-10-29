@@ -6,6 +6,7 @@ import FlyerSurface from "@/components/flyer-surface";
 import Photo from "@/components/photo";
 import type { DesignSection } from "@/lib/events/types";
 import Icon from "@/components/icon";
+import { visibleInvitationSection } from "@/lib/events/section-visibility";
 
 export default function InvitationSections({
   sections,
@@ -16,7 +17,9 @@ export default function InvitationSections({
   guestName,
   giftURL,
   backgroundImage,
+  event,
 }: {
+  event?: import("@/lib/events/types").PublicEvent;
   guestName?: string;
   giftURL?: string;
   backgroundImage?: ImageBackground | null;
@@ -31,19 +34,19 @@ export default function InvitationSections({
     ((key: string) =>
       `/api/public-photos/${kind}/${slug}/${encodeURIComponent(key)}`);
   if (!sections?.length) return null;
+  const visible = sections.filter((section) =>
+    visibleInvitationSection(section, event),
+  );
   return (
     <div className="invite-sections">
-      {sections.map((section, index) =>
+      {visible.map((section, index) =>
         flyer && section.canvas ? (
           <FlyerSurface
             key={section.id}
             guestName={guestName}
             giftURL={giftURL}
-            backgroundSlice={sectionBackground(
-              sections,
-              index,
-              backgroundImage,
-            )}
+            event={event}
+            backgroundSlice={sectionBackground(visible, index, backgroundImage)}
             canvas={section.canvas}
             photoURL={photo}
             label={section.heading || "Lienzo"}

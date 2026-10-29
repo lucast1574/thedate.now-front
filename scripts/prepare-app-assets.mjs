@@ -1,4 +1,5 @@
 import { cp, mkdir } from "node:fs/promises";
+import "./prepare-map-assets.mjs";
 const name = process.argv[2];
 if (!["the-date", "save-the-date"].includes(name))
   throw new Error("Unknown application");

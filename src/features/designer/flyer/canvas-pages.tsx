@@ -123,6 +123,7 @@ export default function CanvasPages({
                 </div>
               </header>
               <CanvasEditor
+                event={draft}
                 backgroundSlice={sectionBackground(
                   sections,
                   n,

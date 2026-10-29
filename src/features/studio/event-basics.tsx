@@ -1,6 +1,9 @@
 import { type Dispatch, type SetStateAction } from "react";
+import { useEffect, useRef } from "react";
 import type { Event } from "@/lib/events/types";
 import DatePicker from "@/components/date-picker";
+import EventNames from "./event-names";
+import { weddingContent } from "@/lib/events/product-content";
 import TimePicker from "@/components/time-picker";
 import SubdomainField from "./subdomain-field";
 import { browserTimeZone } from "@/lib/events/draft";
@@ -15,12 +18,21 @@ export default function EventBasics({
   selected: boolean;
 }) {
   const wedding = draft.kind === "wedding";
+  const titleInput = useRef<HTMLTextAreaElement>(null);
+  const wrongProduct = !wedding && weddingContent(draft.title);
+  useEffect(() => {
+    titleInput.current?.setCustomValidity(
+      wrongProduct ? "Para crear una boda utiliza Save the Date." : "",
+    );
+  }, [wrongProduct]);
   const [date, time] = draft.startAt.split("T");
   return (
     <>
+      <EventNames draft={draft} setDraft={setDraft} />
       <label>
-        {wedding ? "¿Cómo se llaman los novios?" : "¿Cómo se llama tu evento?"}
+        {wedding ? "Nombre de la boda" : "¿Cómo se llama tu evento?"}
         <textarea
+          ref={titleInput}
           rows={wedding ? 2 : 1}
           required
           maxLength={160}
@@ -35,6 +47,12 @@ export default function EventBasics({
           placeholder={wedding ? "Sofía y Mateo" : "Cumpleaños de Lucas"}
         />
       </label>
+      {!wedding && weddingContent(draft.title) && (
+        <p role="alert">
+          Para una boda, crea tu invitación en{" "}
+          <a href="https://studio.save.thedate.now">Save the Date</a>.
+        </p>
+      )}
       <div className="form-grid event-date-row">
         <DatePicker
           label="¿Qué día?"
@@ -69,6 +87,11 @@ export default function EventBasics({
           setDraft({ ...draft, slug });
         }}
       />
+      {selected && (
+        <small>
+          Tu enlace ya está publicado y se conserva para tus invitados.
+        </small>
+      )}
     </>
   );
 }

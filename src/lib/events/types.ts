@@ -5,6 +5,7 @@ import type { Gender, Person } from "./seating";
 import type { DesignMode, FlyerCanvas, FlyerElement } from "./flyer";
 export type Kind = "wedding" | "general";
 export type DesignSection = {
+  when?: "gifts" | "restrictions";
   guestText?: FlyerElement;
   canvas?: FlyerCanvas;
   id: string;

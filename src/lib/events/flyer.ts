@@ -1,6 +1,18 @@
 import type { ImageBackground } from "./background";
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
+  eventBound?: boolean;
+  nameFormat?: "names" | "initials" | "stacked" | "uppercase";
+  actionHint?: boolean;
+  hintText?: string;
+  hintIcon?: string;
+  hintStyle?: "text" | "icon" | "icon-text";
+  mapLatitude?: number;
+  mapLongitude?: number;
+  mapZoom?: number;
+  mapStyle?: "natural" | "warm" | "ink";
+  mapRadius?: number;
+  mapSoftness?: number;
   dressExcludedColors?: { name: string; color: string }[];
   restrictionStyle?: "icon" | "text" | "icon-text";
   restrictionIcon?: string;
@@ -16,6 +28,10 @@ export type FlyerElement = {
   dressPhotoKey?: string;
   binding?:
     | "guest_name"
+    | "couple_names"
+    | "event_title"
+    | "event_date"
+    | "map"
     | "location"
     | "dress_code"
     | "adults_notice"

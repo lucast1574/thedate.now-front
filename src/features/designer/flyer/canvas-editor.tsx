@@ -20,7 +20,9 @@ export default function CanvasEditor({
   photoURL,
   onReplace,
   backgroundSlice,
+  event,
 }: {
+  event?: Partial<import("@/lib/events/types").PublicEvent>;
   canvas: FlyerCanvas;
   backgroundSlice?: BackgroundSlice;
   selectedId: string;
@@ -101,7 +103,7 @@ export default function CanvasEditor({
               role="button"
               tabIndex={0}
               aria-pressed={selected}
-              aria-label={`${item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
+              aria-label={`${item.binding === "map" ? "Mapa" : item.binding === "couple_names" ? "Nombres de los novios" : item.binding === "event_title" ? "Nombre del evento" : item.binding === "event_date" ? "Fecha y hora" : item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
               data-photo={item.type === "image" || undefined}
               onClick={(e) => {
                 e.stopPropagation();
@@ -139,7 +141,7 @@ export default function CanvasEditor({
               onPointerUp={gesture.end}
               onPointerCancel={(e) => gesture.end(e, true)}
             >
-              <FlyerContent item={item} photoURL={photoURL} />
+              <FlyerContent item={item} event={event} photoURL={photoURL} />
               {item.type === "image" && (
                 <span className="canvas-photo-hint">
                   <Icon name="image" /> Pulsa para cambiar foto

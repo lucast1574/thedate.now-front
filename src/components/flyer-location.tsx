@@ -1,4 +1,5 @@
 import Icon from "./icon";
+import ElementActionHint from "./element-action-hint";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { locationHref, locationParts } from "@/lib/events/location-element";
 export function LocationContent({ item }: { item: FlyerElement }) {
@@ -49,6 +50,7 @@ export default function FlyerLocation({ item }: { item: FlyerElement }) {
       aria-label={label}
     >
       <LocationContent item={item} />
+      <ElementActionHint item={item} label="Cómo llegar" />
     </a>
   ) : (
     <span className="flyer-location">

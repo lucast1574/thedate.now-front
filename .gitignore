@@ -44,3 +44,5 @@ next-env.d.ts
 /apps/*/public/
 
 /apps/*/CLAUDE.md
+# Generated from the pinned maplibre-gl package before each build.
+/public/vendor/maplibre/

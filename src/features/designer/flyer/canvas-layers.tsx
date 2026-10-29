@@ -1,16 +1,9 @@
 import Icon from "@/components/icon";
+import { elementLabel } from "@/lib/events/element-label";
 import type { FlyerElement } from "@/lib/events/flyer";
 function layerLabel(item: FlyerElement) {
-  const bindings = {
-    guest_name: "Nombre del invitado",
-    location: "Ubicación",
-    dress_code: "Dress code",
-    restrictions: "Restricciones",
-    adults_notice: "Aviso de adultos",
-    gift_link: "Lista de regalos",
-  };
   return (
-    (item.binding && bindings[item.binding]) ||
+    (item.binding && elementLabel(item)) ||
     (item.type === "text"
       ? item.text?.slice(0, 45) || "Texto"
       : item.type === "image"

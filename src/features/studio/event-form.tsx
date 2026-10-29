@@ -9,6 +9,7 @@ import EventLocationFields from "./event-location-fields";
 import EventCapacity from "./event-capacity";
 import EventTemplateStart from "./event-template-start";
 import EventMessageFields from "./event-message-fields";
+import EventDressFields from "./event-dress-fields";
 import GuestHoldField from "./guest-hold-field";
 export default function EventForm({
   draft,
@@ -53,7 +54,7 @@ export default function EventForm({
         <EventBasics
           draft={draft}
           setDraft={setDraft}
-          selected={!!selected?.publishedAt}
+          selected={!!selected?.publishedAt || !!selected?.invitationsEnabled}
         />
       </section>
       <section className="event-form-card">
@@ -81,6 +82,7 @@ export default function EventForm({
           <EventAudience draft={draft} setDraft={setDraft} />
         </div>
       </section>
+      <EventDressFields draft={draft} setDraft={setDraft} />
       <EventMessageFields draft={draft} setDraft={setDraft} />
       {!selected &&
         (draft.isDemo ? (

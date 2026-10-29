@@ -13,6 +13,10 @@ export type Opening = {
   buttonLabel: string;
 };
 export type Celebration = {
+  partnerOne?: string;
+  partnerTwo?: string;
+  mapLatitude?: number;
+  mapLongitude?: number;
   restrictionText?: string;
   restrictionIcon?: string;
   dressExcludedColors?: { name: string; color: string }[];

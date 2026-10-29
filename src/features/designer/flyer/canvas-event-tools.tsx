@@ -4,24 +4,29 @@ import { guestNameElement } from "@/lib/events/guest-name";
 import type { DesignEvent, Event } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import { element } from "./canvas-model";
+import LinkedEventElements from "./linked-event-elements";
 export default function CanvasEventTools({
   event,
   draft,
   canvas,
   disabled,
   onAdd,
-  text,
 }: {
   event: Event;
   draft: DesignEvent;
   canvas: FlyerCanvas;
   disabled: boolean;
   onAdd: (item: FlyerElement) => void;
-  text: (value: string, size?: number) => void;
 }) {
   return (
     <>
       <h3>Elementos de tu invitación</h3>
+      <LinkedEventElements
+        event={event}
+        draft={draft}
+        disabled={disabled}
+        onAdd={onAdd}
+      />
       <div className="canvas-special-tools">
         <button
           disabled={disabled}
@@ -49,6 +54,8 @@ export default function CanvasEventTools({
               element("text", {
                 font: event.kind === "general" ? "sans" : "serif",
                 binding: "location",
+                eventBound: true,
+                actionHint: true,
                 locationStyle: "address",
                 address: event.location || "",
                 link: event.mapUrl || "",
@@ -72,15 +79,14 @@ export default function CanvasEventTools({
         <button
           disabled={disabled}
           onClick={() =>
-            text(
-              event.startAt
-                ? new Intl.DateTimeFormat("es", {
-                    dateStyle: "long",
-                    timeStyle: "short",
-                    timeZone: event.timeZone || "America/Bogota",
-                  }).format(new Date(event.startAt))
-                : "Fecha y hora",
-              30,
+            onAdd(
+              element("text", {
+                binding: "event_date",
+                eventBound: true,
+                text: "{{fecha_hora}}",
+                color: draft.accentColor,
+                fontSize: 30,
+              }),
             )
           }
         >

@@ -98,7 +98,6 @@ export default function CanvasToolbox({
             canvas={canvas}
             disabled={disabled}
             onAdd={onAdd}
-            text={text}
           />
           <details className="canvas-symbol-disclosure">
             <summary>

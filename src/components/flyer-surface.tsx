@@ -1,4 +1,7 @@
 import FlyerBackground from "./flyer-background";
+import InvitationMap from "./invitation-map";
+import { elementValue } from "@/lib/events/element-values";
+import type { PublicEvent } from "@/lib/events/types";
 import type { BackgroundSlice } from "@/lib/events/background";
 import type { CSSProperties, ReactNode } from "react";
 import { templatePhotoURL } from "@/lib/events/template-photos";
@@ -37,12 +40,16 @@ export function FlyerContent({
   photoURL,
   guestName,
   giftURL,
+  event,
 }: {
+  event?: Partial<PublicEvent>;
   giftURL?: string;
   guestName?: string;
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
+  item = elementValue(item, event);
+  if (item.binding === "map") return <InvitationMap item={item} />;
   if (item.type === "image" && item.photoKey === "template-photo")
     return <TemplatePhotoPlaceholder />;
   if (item.type === "image")
@@ -92,9 +99,11 @@ export default function FlyerSurface({
   children,
   guestName,
   giftURL,
+  event,
   backgroundSlice,
   label = "Sección de la invitación",
 }: {
+  event?: Partial<PublicEvent>;
   canvas: FlyerCanvas;
   guestName?: string;
   giftURL?: string;
@@ -139,6 +148,7 @@ export default function FlyerSurface({
               photoURL={photoURL}
               guestName={guestName}
               giftURL={giftURL}
+              event={event}
             />
           </div>
         ))}

@@ -32,7 +32,7 @@ test("every canvas template is a complete editable invitation with bounded geome
     (t) => t.mode === "flyer",
   )) {
     const pages = templateSequence(template, { ...base, kind: template.kind });
-    assert.ok(pages.length >= 6 && pages.length <= 8, template.id);
+    assert.ok(pages.length >= 8 && pages.length <= 20, template.id);
     assert.equal(new Set(pages.map((s) => s.id)).size, pages.length);
     const elements = pages.flatMap((s) => s.canvas.elements);
     assert.ok(
@@ -71,7 +71,8 @@ test("applying a complete template replaces pages, respects an explicit opening 
     music: { source: "mp3", value: "mine.mp3" },
   };
   const applied = applyCompleteTemplate(draft, template);
-  assert.equal(applied.sections.length, 6);
+  assert.ok(applied.sections.some((s) => s.when === "gifts"));
+  assert.ok(applied.sections.some((s) => s.when === "restrictions"));
   assert.equal(applied.music, draft.music);
   assert.equal(applied.photoKeys, draft.photoKeys);
   assert.equal(applied.opening.enabled, true);
@@ -107,7 +108,12 @@ test("adults-only is optional and its editable section appears only when selecte
     },
   };
   const applied = applyCompleteTemplate(draft, template);
-  assert.equal(applied.sections.length, 7);
+  assert.equal(
+    applied.sections
+      .flatMap((s) => s.canvas.elements)
+      .filter((e) => e.binding === "adults_notice").length,
+    1,
+  );
   assert.ok(
     applied.sections.some((s) =>
       s.canvas.elements.some((e) => e.text === draft.celebration.adultsMessage),

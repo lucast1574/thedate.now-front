@@ -13,6 +13,13 @@ const reserved = new Set([
   "assets",
   "support",
 ]);
+export function validInvitationSlug(value: string) {
+  return (
+    /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(value) &&
+    !value.includes("--") &&
+    !reserved.has(value)
+  );
+}
 export function invitationFromHost(
   raw: string,
 ): { kind: Kind; slug: string } | null {
@@ -20,7 +27,7 @@ export function invitationFromHost(
   const match = host.match(
     /^([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)\.(save\.)?thedate\.now$/,
   );
-  if (!match || reserved.has(match[1]) || match[1].includes("--")) return null;
+  if (!match || !validInvitationSlug(match[1])) return null;
   return { kind: match[2] ? "wedding" : "general", slug: match[1] };
 }
 export function invitationHost(kind: Kind, slug: string) {

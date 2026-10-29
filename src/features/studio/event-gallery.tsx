@@ -85,6 +85,17 @@ export default function EventGallery({
         <div className="invitation-grid">
           {items.map((event) => (
             <article className="invitation-card" key={event.id}>
+              {!event.isDemo &&
+                (event.ownerId === user.id || user.role === "admin") && (
+                  <Link
+                    className="invitation-quick-edit"
+                    href={`/?event=${encodeURIComponent(event.id)}`}
+                    aria-label={`Editar datos de ${event.title}`}
+                    title="Editar datos"
+                  >
+                    <Icon name="lucide:pencil" />
+                  </Link>
+                )}
               <Link
                 className="invitation-card-preview"
                 href={`/editor/${encodeURIComponent(event.id)}`}

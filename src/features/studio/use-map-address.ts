@@ -19,17 +19,27 @@ export function useMapAddress(
       setResolvingMap(true);
       setMapStatus("Buscando la dirección del enlace…");
       try {
-        const result = await api<{ address: string }>(
-          "/api/backend/maps/resolve",
-          "POST",
-          { url },
-        );
+        const result = await api<{
+          address: string;
+          latitude?: number;
+          longitude?: number;
+        }>("/api/backend/maps/resolve", "POST", { url });
         if (active) {
           setDraft((current) =>
             current.mapUrl.trim() === url &&
             !current.isVirtual &&
             !current.location.trim()
-              ? { ...current, location: result.address }
+              ? {
+                  ...current,
+                  location: result.address,
+                  celebration: current.celebration
+                    ? {
+                        ...current.celebration,
+                        mapLatitude: result.latitude,
+                        mapLongitude: result.longitude,
+                      }
+                    : current.celebration,
+                }
               : current,
           );
           setMapStatus(

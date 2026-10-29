@@ -72,6 +72,7 @@ export default function TemplateDetail({
               {n + 1}. {page.heading}
             </span>
             <FlyerSurface
+              event={draft}
               canvas={page.canvas!}
               photoURL={(key) =>
                 `/api/photos/${draft.id}/${encodeURIComponent(key)}`

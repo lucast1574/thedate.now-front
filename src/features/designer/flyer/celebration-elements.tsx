@@ -23,6 +23,7 @@ export default function CelebrationElements({
           onAdd(
             element("text", {
               binding: "dress_code",
+              eventBound: true,
               dressStyle: "icon-text",
               dressIcon: "lucide:shirt",
               dressExcludedColors:

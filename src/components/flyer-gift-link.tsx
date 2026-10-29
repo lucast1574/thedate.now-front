@@ -1,4 +1,5 @@
 import Icon from "./icon";
+import ElementActionHint from "./element-action-hint";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { giftHref } from "@/lib/events/gift-link";
 export default function FlyerGiftLink({
@@ -13,6 +14,7 @@ export default function FlyerGiftLink({
     <>
       <Icon name="lucide:gift" />
       <span>{item.text || "Lista de regalos"}</span>
+      <ElementActionHint item={item} label="Ver regalos" />
     </>
   );
   return href ? (
