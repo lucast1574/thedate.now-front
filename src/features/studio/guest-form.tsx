@@ -5,6 +5,9 @@ import CompanionFields from "@/components/companion-fields";
 import { useState, type FormEvent } from "react";
 import type { GuestFields } from "@/lib/events/types";
 import { guestCategories } from "@/lib/events/guest-categories";
+import { guestPhone } from "@/lib/events/guest-phone";
+import GuestPhoneField from "./guest-phone-field";
+import type { CountryCode } from "libphonenumber-js";
 const blank = (): GuestFields => ({
   name: "",
   lastName: "",
@@ -22,9 +25,18 @@ export default function GuestForm({
   onAdd: (fields: GuestFields) => Promise<boolean>;
 }) {
   const [guest, setGuest] = useState(blank);
+  const [country, setCountry] = useState<CountryCode>("PE");
+  const [phoneError, setPhoneError] = useState("");
   async function submit(e: FormEvent) {
     e.preventDefault();
-    if (await onAdd(guest)) setGuest(blank());
+    let phone: string;
+    try {
+      phone = guestPhone(guest.phone, country);
+    } catch (error) {
+      setPhoneError((error as Error).message);
+      return;
+    }
+    if (await onAdd({ ...guest, phone })) setGuest(blank());
   }
   return (
     <form className="manual-guest" onSubmit={submit}>
@@ -48,24 +60,20 @@ export default function GuestForm({
             onChange={(e) => setGuest({ ...guest, lastName: e.target.value })}
           />
         </label>
-        <label>
-          WhatsApp con código de país
-          <input
-            required
-            type="tel"
-            autoComplete="tel"
-            placeholder="+51987654321"
-            title="Incluye + y el código de país, sin espacios. Ejemplo para Perú: +51987654321."
-            aria-describedby="guest-phone-help"
-            pattern="\+[1-9][0-9]{6,14}"
-            value={guest.phone}
-            onChange={(e) => setGuest({ ...guest, phone: e.target.value })}
-          />
-          <small id="guest-phone-help">
-            Incluye + y el código de país, sin espacios. Perú: +51; otros
-            países: su propio código.
-          </small>
-        </label>
+        <GuestPhoneField
+          country={country}
+          value={guest.phone}
+          error={phoneError}
+          disabled={busy}
+          onCountry={(code) => {
+            setCountry(code);
+            setPhoneError("");
+          }}
+          onChange={(phone) => {
+            setGuest({ ...guest, phone });
+            setPhoneError("");
+          }}
+        />
         <label>
           Acompañantes permitidos
           <Listbox

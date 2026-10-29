@@ -39,7 +39,7 @@ export default function GuestFileDropzone({
       <Icon name="table" />
       <strong>
         {busy
-          ? "Estamos revisando tu lista…"
+          ? "Revisando y añadiendo invitados…"
           : fileName || "Arrastra aquí tu Excel"}
       </strong>
       <span>También puedes buscarlo en tus archivos.</span>

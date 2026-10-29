@@ -68,18 +68,19 @@ test("Excel template and door export create valid workbooks with no formula cell
     await readFile("public/templates/plantilla-invitados.xlsx"),
   );
   const sheet = book.worksheets[0];
-  assert.equal(sheet.getCell("C8").value, "WhatsApp");
-  assert.equal(sheet.getCell("C9").numFmt, "@");
-  assert.equal(sheet.getCell("D9").dataValidation.type, "list");
-  assert.equal(sheet.getCell("E508").dataValidation.type, "list");
+  assert.equal(sheet.getCell("D8").value, "WhatsApp");
+  assert.equal(sheet.getCell("D9").numFmt, "@");
+  assert.equal(sheet.getCell("C9").dataValidation.type, "list");
+  assert.equal(sheet.getCell("E9").dataValidation.type, "list");
+  assert.equal(sheet.getCell("F508").dataValidation.type, "list");
   assert.equal(sheet.getCell("A9").value, null);
   assert.equal(sheet.views[0].showGridLines, false);
   assert.equal(sheet.views[0].ySplit, 8);
   sheet.getCell("A9").value = "Ana";
   sheet.getCell("B9").value = "Rojas";
-  sheet.getCell("C9").value = "+51987654321";
-  sheet.getCell("D9").value = "Si";
-  sheet.getCell("E9").value = "Familia de la novia";
+  sheet.getCell("D9").value = "987654321";
+  sheet.getCell("E9").value = "Si";
+  sheet.getCell("F9").value = "Familia de la novia";
   const templateBytes = new Uint8Array(await book.xlsx.writeBuffer());
   const imported = await readGuestFile({
     name: "template.xlsx",
@@ -88,11 +89,11 @@ test("Excel template and door export create valid workbooks with no formula cell
   });
   assert.equal(imported.length, 1);
   assert.equal(imported[0].seats, 2);
-  assert.equal(imported[0].family, sheet.getCell("E9").value);
+  assert.equal(imported[0].family, sheet.getCell("F9").value);
   assert.equal(imported[0].companions.length, 0);
   sheet.getCell("A508").value = "Luis";
-  sheet.getCell("C508").value = "+51987654322";
-  sheet.getCell("D508").value = "No";
+  sheet.getCell("D508").value = "987654322";
+  sheet.getCell("E508").value = "No";
   const lastBytes = new Uint8Array(await book.xlsx.writeBuffer());
   const lastRow = await readGuestFile({
     name: "last.xlsx",
@@ -101,7 +102,7 @@ test("Excel template and door export create valid workbooks with no formula cell
   });
   assert.equal(lastRow.length, 2);
   assert.equal(lastRow[1].seats, 1);
-  sheet.getCell("D508").value = "Tal vez";
+  sheet.getCell("E508").value = "Tal vez";
   const invalidBytes = new Uint8Array(await book.xlsx.writeBuffer());
   await assert.rejects(
     () =>

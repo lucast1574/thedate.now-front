@@ -1,10 +1,10 @@
 "use client";
 import { useRef, useState } from "react";
-import type { GuestFields } from "@/lib/events/types";
 import {
-  readGuestFile,
+  readGuestFileReport,
   downloadGuestTemplate,
 } from "@/lib/events/guest-spreadsheet";
+import type { GuestRowIssue } from "@/lib/events/guest-rows";
 import { api } from "@/lib/api/client";
 import Icon from "@/components/icon";
 import GuestFileDropzone from "./guest-file-dropzone";
@@ -19,8 +19,8 @@ export default function GuestImport({
   disabled?: boolean;
 }) {
   const reading = useRef(false);
-  const [rows, setRows] = useState<GuestFields[]>([]);
   const [notice, setNotice] = useState("");
+  const [issues, setIssues] = useState<GuestRowIssue[]>([]);
   const [failed, setFailed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -29,37 +29,30 @@ export default function GuestImport({
     if (!file || locked || reading.current) return;
     reading.current = true;
     setBusy(true);
-    setRows([]);
     setNotice("");
+    setIssues([]);
     setFailed(false);
     setFileName(file.name);
     try {
-      setRows(await readGuestFile(file));
-    } catch (error) {
-      setFailed(true);
-      setNotice((error as Error).message);
-    } finally {
-      reading.current = false;
-      setBusy(false);
-    }
-  }
-  async function importRows() {
-    if (locked || reading.current) return;
-    reading.current = true;
-    setBusy(true);
-    setFailed(false);
-    setNotice("");
-    try {
+      const report = await readGuestFileReport(file);
+      setIssues(report.issues);
+      if (!report.guests.length) {
+        setFailed(true);
+        setNotice(
+          report.issues.length
+            ? "No añadimos invitados. Corrige las filas indicadas y vuelve a subir el archivo."
+            : "El archivo no tiene invitados. Completa la plantilla y vuelve a subirla.",
+        );
+        return;
+      }
       const result = await api<{ added: number; skipped: number }>(
         `/api/backend/events/${eventId}/guests/import`,
         "POST",
-        { guests: rows },
+        { guests: report.guests },
       );
       setNotice(
-        `${result.added} invitados añadidos en el orden del archivo.${result.skipped ? ` Omitimos ${result.skipped} teléfonos que ya estaban en tu lista.` : ""}`,
+        `${result.added} ${result.added === 1 ? "invitado añadido" : "invitados añadidos"} en el orden del archivo.${result.skipped ? ` ${result.skipped} ${result.skipped === 1 ? "teléfono ya estaba" : "teléfonos ya estaban"} en tu lista.` : ""}${report.issues.length ? " Corrige las filas indicadas y vuelve a subir el archivo; no se duplicarán los invitados." : ""}`,
       );
-      setRows([]);
-      setFileName("");
       await onImported();
     } catch (error) {
       setFailed(true);
@@ -107,38 +100,6 @@ export default function GuestImport({
           setNotice(message);
         }}
       />
-      <p className="guest-file-tip">
-        Indica los acompañantes permitidos: 0 para ir solo, 1 para un +1. El
-        titular se cuenta aparte. Puede registrar sus acompañantes al confirmar.
-      </p>
-      {rows.length > 0 && (
-        <div className="guest-import-review">
-          <h4>{rows.length} invitaciones listas para añadir</h4>
-          <p>Así empieza tu lista. Conservaremos este orden.</p>
-          <ol>
-            {rows.slice(0, 5).map((row, index) => (
-              <li key={index}>
-                <strong>
-                  {row.name} {row.lastName}
-                </strong>
-                <span>
-                  {row.phone} · {row.seats} {row.seats === 1 ? "cupo" : "cupos"}
-                </span>
-              </li>
-            ))}
-          </ol>
-          <button
-            type="button"
-            className="office-button"
-            disabled={locked}
-            onClick={() => void importRows()}
-          >
-            {busy
-              ? "Añadiendo invitados…"
-              : `Añadir ${rows.length} invitaciones a mi lista`}
-          </button>
-        </div>
-      )}
       {notice && (
         <p
           className={`guest-import-notice ${failed ? "is-error" : ""}`}
@@ -146,6 +107,25 @@ export default function GuestImport({
         >
           {notice}
         </p>
+      )}
+      {issues.length > 0 && (
+        <div
+          className="guest-import-issues"
+          role="region"
+          aria-label="Filas por corregir"
+        >
+          <h4>
+            {issues.length}{" "}
+            {issues.length === 1 ? "fila por corregir" : "filas por corregir"}
+          </h4>
+          <ul>
+            {issues.map((issue) => (
+              <li key={issue.row}>
+                <strong>Fila {issue.row}:</strong> {issue.message}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </section>
   );

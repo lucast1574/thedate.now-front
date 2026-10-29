@@ -1,6 +1,8 @@
 import type { GuestFields } from "./types";
 import type { Gender } from "./seating";
 import { guestCategory } from "./guest-categories";
+import { guestPhone, phoneCountry } from "./guest-phone";
+export type GuestRowIssue = { row: number; message: string };
 export const guestHeaders = [
   "nombre",
   "apellido",
@@ -21,6 +23,16 @@ const gender = (value: string): Gender => {
   throw new Error("Usa hombre, mujer o sin especificar en género.");
 };
 export function parseGuestRows(rows: string[][]): GuestFields[] {
+  const report = collectGuestRows(rows);
+  if (report.issues.length) {
+    const issue = report.issues[0];
+    throw new Error(`Revisa la fila ${issue.row}: ${issue.message}`);
+  }
+  if (!report.guests.length)
+    throw new Error("Importa entre 1 y 500 invitados por archivo.");
+  return report.guests;
+}
+export function collectGuestRows(rows: string[][]) {
   const headerRow = rows.slice(0, 20).findIndex((row) => {
     const labels = row.map((cell) => cell.trim().toLowerCase());
     return (
@@ -38,15 +50,21 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
     index(["telefono", "teléfono", "phone", "whatsapp"]) < 0
   )
     throw new Error(
-      "Usa la plantilla con nombre, telefono y acompanantes_permitidos. El teléfono debe incluir +código de país.",
+      "Usa la plantilla con Nombre y WhatsApp. Elige un país o incluye el código de país en el número.",
     );
   const data = rows
     .map((cells, rowIndex) => ({ cells, rowIndex }))
     .slice(headerRow + 1)
-    .filter(({ cells }) => cells.some((cell) => cell.trim()));
-  if (!data.length || data.length > 500)
+    .filter(({ cells }) =>
+      cells.some(
+        (cell, column) =>
+          column !== index(["país", "pais", "country"]) && cell.trim(),
+      ),
+    );
+  if (data.length > 500)
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
-  return data.map(({ cells, rowIndex }) => {
+  const issues: GuestRowIssue[] = [];
+  const guests = data.map(({ cells, rowIndex }) => {
     const field = (...names: string[]) => (cells[index(names)] || "").trim();
     const parts = (name: string) =>
       field(name)
@@ -90,10 +108,17 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
         throw new Error(
           "Los cupos no coinciden con los acompañantes permitidos.",
         );
+      const countryValue = field("país", "pais", "country");
+      const country = phoneCountry(countryValue);
+      if (countryValue && !country)
+        throw new Error("País: elige una opción de la lista.");
       const guest: GuestFields = {
         name: field("nombre", "name"),
         lastName: field("apellido"),
-        phone: field("telefono", "teléfono", "phone", "whatsapp"),
+        phone: guestPhone(
+          field("telefono", "teléfono", "phone", "whatsapp"),
+          country,
+        ),
         seats,
         gender: gender(field("genero")),
         family: guestCategory(
@@ -105,27 +130,30 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
           gender: gender(genders[i] || ""),
         })),
       };
+      if (guest.name.length < 2 || guest.name.length > 120)
+        throw new Error("Nombre: escribe entre 2 y 120 caracteres.");
+      if ((guest.lastName?.length || 0) > 80)
+        throw new Error("Apellido: usa como máximo 80 caracteres.");
+      if (!Number.isInteger(guest.seats) || guest.seats < 1 || guest.seats > 2)
+        throw new Error("Acompañante: permite solo cero o un +1.");
       if (
-        guest.name.length < 2 ||
-        guest.name.length > 120 ||
-        (guest.lastName?.length || 0) > 80 ||
-        (guest.family?.length || 0) > 80 ||
-        !/^\+[1-9][0-9]{6,14}$/.test(guest.phone) ||
-        !Number.isInteger(guest.seats) ||
-        guest.seats < 1 ||
-        guest.seats > 2 ||
         names.length > guest.seats - 1 ||
         guest.companions?.some(
           (p) =>
             p.name.length < 2 || p.name.length > 120 || p.lastName.length > 80,
         )
       )
-        throw new Error("Revisa nombres, teléfono, cupos y acompañantes.");
+        throw new Error(
+          "Acompañante: permite solo uno y revisa su nombre y apellido.",
+        );
       return guest;
     } catch (error) {
-      throw new Error(
-        `Revisa la fila ${rowIndex + 1}: ${(error as Error).message}`,
-      );
+      issues.push({ row: rowIndex + 1, message: (error as Error).message });
+      return undefined;
     }
   });
+  return {
+    guests: guests.filter((guest): guest is GuestFields => !!guest),
+    issues,
+  };
 }
