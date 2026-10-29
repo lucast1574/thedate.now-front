@@ -20,10 +20,10 @@ export function useGuestImport(
   const [failed, setFailed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [fileName, setFileName] = useState("");
-  const locked = busy || disabled;
+  const locked = busy || disabled || complete;
   useEffect(() => {
     if (!complete) return;
-    const timer = setTimeout(() => setComplete(false), 2600);
+    const timer = setTimeout(() => setComplete(false), 10_000);
     return () => clearTimeout(timer);
   }, [complete, receipt]);
   function reportError(message: string) {

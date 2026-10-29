@@ -53,7 +53,8 @@ export default function GuestFileDropzone({
                 ? "Arrastra otro Excel cuando quieras"
                 : "Arrastra aquí tu Excel")}
       </strong>
-      <span>
+      <span className={complete ? "guest-complete-hint" : undefined}>
+        {complete && <Icon name="down" />}
         {complete
           ? "Ya puedes ver a tus invitados en la lista de abajo."
           : "También puedes buscarlo en tus archivos."}
@@ -65,7 +66,11 @@ export default function GuestFileDropzone({
       >
         {uploaded ? "Subir otro Excel" : "Elegir archivo"}
       </button>
-      <small>Excel (.xlsx) · Hasta 500 invitados por archivo</small>
+      <small>
+        {complete
+          ? "Podrás subir otro Excel al terminar este aviso."
+          : "Excel (.xlsx) · Hasta 500 invitados por archivo"}
+      </small>
       <input
         ref={fileInput}
         className="guest-file-input"

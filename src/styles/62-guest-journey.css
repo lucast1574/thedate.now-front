@@ -167,6 +167,28 @@
   animation: guest-import-check-in 420ms ease-out both;
   color: var(--ui-accent);
 }
+.guest-dropzone .guest-complete-hint {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ui-accent);
+}
+.guest-complete-hint .ui-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  animation: guest-import-point-down 1.2s ease-in-out 8;
+}
+@keyframes guest-import-point-down {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
 .guest-import-receipt {
   margin-top: 18px;
   animation: guest-import-receipt-in 240ms ease-out both;
@@ -684,6 +706,9 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .guest-complete-hint .ui-icon {
+    animation: none;
+  }
   .guest-dropzone.is-complete > .ui-icon,
   .guest-import-receipt {
     animation: none;
