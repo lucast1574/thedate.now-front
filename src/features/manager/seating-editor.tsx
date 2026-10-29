@@ -38,15 +38,14 @@ export default function SeatingEditor({
   onReload,
 }: Props) {
   const [selected, setSelected] = useState(""),
-    [capacity, setCapacity] = useState(8),
-    [shape, setShape] = useState<SeatingTable["shape"]>("round"),
-    [includePending, setIncludePending] = useState(false);
+    [capacity, setCapacity] = useState(10),
+    [shape, setShape] = useState<SeatingTable["shape"]>("round");
   const [proposal, setProposal] = useState<ReturnType<
     typeof proposeSeating
   > | null>(null);
-  const people = attendees(
-    guests.filter((g) => g.response !== "not_going"),
-  ).sort(surnameOrder);
+  const people = attendees(guests.filter((g) => g.response === "going"))
+    .filter((person) => person.registered)
+    .sort(surnameOrder);
   const table = plan.tables.find((t) => t.id === selected);
   const area = plan.areas?.find((item) => item.id === selected);
   const count = people.filter((p) => plan.assignments[p.id]).length;
@@ -96,25 +95,19 @@ export default function SeatingEditor({
       <SeatingTools
         capacity={capacity}
         shape={shape}
-        includePending={includePending}
         busy={busy}
-        full={plan.tables.length >= 100}
         onCapacity={setCapacity}
         onShape={setShape}
-        onPending={setIncludePending}
         onAdd={add}
         onPropose={() =>
-          setProposal(
-            proposeSeating(guests, plan, event, capacity, includePending),
-          )
+          setProposal(proposeSeating(guests, plan, event, capacity))
         }
       />
       <VenueAreaTools plan={plan} onChange={onChange} onSelect={setSelected} />
       <p className="guest-hint">
         Arrastra las mesas en el lienzo. También puedes moverlas con las flechas
         del teclado o editar su posición. Elige una mesa para asignar personas.
-        Iconos según el dato registrado; los nombres y parentescos no se
-        adivinan.{" "}
+        Solo aparecen confirmados. Cada titular se mueve junto a su acompañante.{" "}
         {dirty
           ? "Hay cambios sin guardar."
           : `Plano guardado · v${plan.version}`}
@@ -172,8 +165,8 @@ export default function SeatingEditor({
           <aside className="seating-instructions">
             <h3>Un lugar para cada persona</h3>
             <p>
-              Selecciona una mesa para ver sus asientos y asignar titulares o
-              acompañantes. Cada persona puede estar en una sola mesa.
+              Al confirmar, cada invitado recibe una mesa con su categoría.
+              Puedes moverlo junto a su acompañante o crear otras mesas.
             </p>
             <p>
               El plano es orientativo. Revisa pasillos y distancias con tu

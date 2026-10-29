@@ -4,24 +4,18 @@ import type { SeatingTable } from "@/lib/events/seating";
 type Props = {
   capacity: number;
   shape: SeatingTable["shape"];
-  includePending: boolean;
   busy: boolean;
-  full: boolean;
   onCapacity: (n: number) => void;
   onShape: (shape: SeatingTable["shape"]) => void;
-  onPending: (value: boolean) => void;
   onAdd: () => void;
   onPropose: () => void;
 };
 export default function SeatingTools({
   capacity,
   shape,
-  includePending,
   busy,
-  full,
   onCapacity,
   onShape,
-  onPending,
   onAdd,
   onPropose,
 }: Props) {
@@ -51,19 +45,11 @@ export default function SeatingTools({
           <option value="rectangle">Rectangular</option>
         </Listbox>
       </label>
-      <button disabled={busy || full} onClick={onAdd}>
+      <button disabled={busy} onClick={onAdd}>
         ＋ Añadir mesa
       </button>
-      <label className="checkbox-label">
-        <input
-          type="checkbox"
-          checked={includePending}
-          onChange={(e) => onPending(e.target.checked)}
-        />
-        Incluir respuestas pendientes en propuesta
-      </label>
       <button disabled={busy} onClick={onPropose}>
-        <Icon name="users" /> Agrupar familias y proponer mesas
+        <Icon name="users" /> Completar mesas por categoría
       </button>
     </div>
   );

@@ -5,6 +5,8 @@ export const guestCategories = [
   "Amigos de la novia",
   "Amigos",
   "Compañeros de trabajo",
+  "Compañeros de trabajo del novio",
+  "Compañeros de trabajo de la novia",
   "Otros",
 ];
 const key = (value: string) =>

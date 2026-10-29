@@ -90,7 +90,7 @@ test("auto seating keeps households, counts +1, groups families and observes afo
       { capacityUnlimited: true },
       4,
       false,
-    ).unassigned.length,
+    ).plan.tables.length,
     2,
   );
 });

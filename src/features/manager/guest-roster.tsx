@@ -132,17 +132,22 @@ export default function GuestRoster({
                 </td>
                 <td>
                   {partySeats(g)} {partySeats(g) === 1 ? "persona" : "personas"}
-                  <br />
                   <small>Máximo {g.seats}</small>
                 </td>
                 <td>
-                  {attendees([g]).map((p) => (
-                    <small key={p.id}>
-                      {plan.tables.find((t) => t.id === plan.assignments[p.id])
-                        ?.name || "Sin mesa"}
-                      {p.slot ? ` · +${p.slot}` : ""}
+                  {g.response !== "going" ? (
+                    <small>
+                      {g.response === "not_going"
+                        ? "No asistirá"
+                        : "Se asignará al confirmar"}
                     </small>
-                  ))}
+                  ) : (
+                    <small>
+                      {plan.tables.find(
+                        (t) => t.id === plan.assignments[`${g.id}~0`],
+                      )?.name || "Sin mesa"}
+                    </small>
+                  )}
                 </td>
                 <td>
                   {g.gift ? (

@@ -38,8 +38,12 @@ export default function TableInspector({
   }
   function assign(person: Attendee, checked: boolean) {
     const assignments = { ...plan.assignments };
-    if (checked) assignments[person.id] = table.id;
-    else delete assignments[person.id];
+    people
+      .filter((p) => p.guestId === person.guestId)
+      .forEach((p) => {
+        if (checked) assignments[p.id] = table.id;
+        else delete assignments[p.id];
+      });
     onChange({ ...plan, assignments });
   }
   return (
@@ -133,8 +137,8 @@ export default function TableInspector({
         />
       </label>
       <p>
-        Marca personas para sentarlas aquí. Desmarca para liberar el asiento.
-        Las respuestas pendientes se muestran como provisionales.
+        El titular y su acompañante se mueven juntos. Desmarca para liberar sus
+        asientos.
       </p>
       <div className="seat-candidates">
         {candidates.map((person) => {
@@ -146,7 +150,19 @@ export default function TableInspector({
               : "";
           const disabled =
             !checked &&
-            (assigned.length >= table.capacity || (!current && used >= limit));
+            (assigned.length +
+              people.filter(
+                (p) =>
+                  p.guestId === person.guestId &&
+                  plan.assignments[p.id] !== table.id,
+              ).length >
+              table.capacity ||
+              used +
+                people.filter(
+                  (p) =>
+                    p.guestId === person.guestId && !plan.assignments[p.id],
+                ).length >
+                limit);
           return (
             <label key={person.id} className={checked ? "assigned" : ""}>
               <input

@@ -23,7 +23,7 @@ export default function AutoProposal({
       onCancel={onClose}
     >
       <header>
-        <h2 id="proposal-title">Propuesta por familias</h2>
+        <h2 id="proposal-title">Completar mesas por categoría</h2>
         <button onClick={onClose} aria-label="Cerrar propuesta">
           ×
         </button>
@@ -31,12 +31,12 @@ export default function AutoProposal({
       <p>
         {assigned} de {proposal.total} personas en {proposal.plan.tables.length}{" "}
         mesas. Se mantiene al titular con sus acompañantes.{" "}
-        {proposal.splitFamilies} familias necesitan mesas separadas por falta de
+        {proposal.splitFamilies} categorías ocupan varias mesas por falta de
         espacio.
       </p>
       <p>
-        Usamos familia y luego el primer apellido. No se deducen parentescos:
-        revisa los grupos, especialmente apellidos iguales.
+        Se agrupan los confirmados por su categoría, respetando las mesas que ya
+        elegiste.
       </p>
       {proposal.unnamed > 0 && (
         <p className="manager-warning">
@@ -73,7 +73,7 @@ export default function AutoProposal({
         ))}
       </ul>
       <p>
-        Aplicar reemplaza las asignaciones actuales del borrador. El plano se
+        Aplicar completa las asignaciones pendientes del borrador. El plano se
         guardará cuando pulses Guardar plano.
       </p>
       <footer>
