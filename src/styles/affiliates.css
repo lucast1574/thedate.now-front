@@ -1,0 +1,112 @@
+.partner-page {
+  max-width: 1180px;
+}
+.partner-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.partner-heading h1 {
+  font-family: var(--ui-heading-font);
+  font-weight: var(--ui-heading-weight);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 10px 0;
+}
+.partner-heading p {
+  color: var(--ui-muted);
+  margin: 0;
+}
+.partner-heading .office-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+.partner-balances {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 20px;
+}
+.partner-balances article {
+  padding: 30px;
+  border: 1px solid var(--ui-border);
+  border-radius: 16px;
+}
+.partner-available {
+  background: var(--ui-soft);
+}
+.partner-pending {
+  background: var(--ui-surface);
+}
+.partner-balances article > span {
+  font-weight: 600;
+  font-size: 0.88rem;
+}
+.partner-balances article > strong {
+  display: block;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  margin: 14px 0 10px;
+}
+.partner-balances p {
+  font-size: 0.9rem;
+  margin: 0 0 20px;
+  line-height: 1.6;
+  color: var(--ui-muted);
+}
+.partner-balances small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--ui-muted);
+}
+.partner-balances .office-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.partner-benefit {
+  display: grid;
+  grid-template-columns: 190px 1fr;
+  gap: 30px;
+  margin: 26px 0 36px;
+  padding: 24px 0;
+  border-bottom: 1px solid var(--ui-border);
+}
+.partner-benefit-amount {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  align-content: center;
+  gap: 8px;
+  color: var(--ui-accent);
+}
+.partner-benefit-amount strong {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.partner-benefit-amount span {
+  grid-column: 1 / -1;
+  font-size: 0.8rem;
+}
+.partner-benefit h2 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+}
+.partner-benefit p {
+  margin: 0 0 8px;
+  font-size: 0.88rem;
+  line-height: 1.7;
+}
+.partner-benefit small {
+  color: var(--ui-muted);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  display: block;
+}

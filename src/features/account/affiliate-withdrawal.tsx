@@ -1,7 +1,7 @@
 "use client";
 import { useState, type FormEvent } from "react";
 import { api } from "@/lib/api/client";
-import type { Run } from "@/lib/account/types";
+import { money, type Run } from "@/lib/account/types";
 export default function AffiliateWithdrawal({
   busy,
   available,
@@ -12,7 +12,6 @@ export default function AffiliateWithdrawal({
   run: Run;
 }) {
   const [amount, setAmount] = useState("10"),
-    [method, setMethod] = useState(""),
     [details, setDetails] = useState("");
   function withdraw(e: FormEvent) {
     e.preventDefault();
@@ -20,15 +19,28 @@ export default function AffiliateWithdrawal({
       () =>
         api("/api/backend/affiliates/withdrawals", "POST", {
           amountCents: Math.round(Number(amount) * 100),
-          method,
+          method: "bank",
           details,
         }),
-      "Solicitud recibida. El saldo quedó reservado hasta su revisión.",
+      "Retiro solicitado. Reservamos el importe mientras revisamos tus datos.",
     );
   }
+  if (available < 1000)
+    return (
+      <section className="partner-withdrawal-note">
+        <strong>Retira desde US$10</strong>
+        <p>
+          Te faltan {money(1000 - available)} de saldo disponible. Cuando
+          llegues, podrás añadir tu cuenta bancaria aquí.
+        </p>
+      </section>
+    );
   return (
-    <section className="account-card">
-      <h2>Solicita tu retiro.</h2>
+    <section className="account-card partner-withdrawal" id="retiro">
+      <h2>Retirar saldo</h2>
+      <p>
+        Recíbelo por transferencia bancaria. Disponible: {money(available)}.
+      </p>
       <form onSubmit={withdraw}>
         <label>
           Monto en USD
@@ -43,18 +55,7 @@ export default function AffiliateWithdrawal({
           />
         </label>
         <label>
-          Medio de pago
-          <input
-            required
-            minLength={2}
-            maxLength={40}
-            value={method}
-            onChange={(e) => setMethod(e.target.value)}
-            placeholder="Transferencia bancaria"
-          />
-        </label>
-        <label>
-          Datos de pago
+          Tu cuenta bancaria
           <textarea
             required
             minLength={5}
@@ -65,7 +66,7 @@ export default function AffiliateWithdrawal({
           />
         </label>
         <button className="office-button" disabled={busy || available < 1000}>
-          Solicitar retiro
+          {busy ? "Enviando solicitud…" : "Solicitar retiro"}
         </button>
       </form>
     </section>

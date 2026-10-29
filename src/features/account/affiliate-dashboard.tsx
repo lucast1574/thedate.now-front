@@ -1,12 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { api } from "@/lib/api/client";
-import { money, statusLabel, type Affiliate } from "@/lib/account/types";
+import { money, type Affiliate } from "@/lib/account/types";
 import type { User } from "@/lib/events/types";
 import AffiliateWithdrawal from "./affiliate-withdrawal";
+import AffiliateActivity from "./affiliate-activity";
 import Alert from "@/components/alert";
+import Icon from "@/components/icon";
 export default function AffiliateDashboard({
-  user,
   wedding,
 }: {
   user: User;
@@ -16,9 +18,6 @@ export default function AffiliateDashboard({
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
-  async function load() {
-    setData(await api<Affiliate>("/api/backend/affiliates"));
-  }
   useEffect(() => {
     let active = true;
     api<Affiliate>("/api/backend/affiliates")
@@ -37,7 +36,7 @@ export default function AffiliateDashboard({
     setError("");
     try {
       await action();
-      await load();
+      setData(await api<Affiliate>("/api/backend/affiliates"));
       setNotice(message);
     } catch (e) {
       setError((e as Error).message);
@@ -45,117 +44,117 @@ export default function AffiliateDashboard({
       setBusy(false);
     }
   }
-  const professional = wedding
-    ? user.role === "planner"
-    : user.role === "organizer";
+  const pending = (data?.partnerEvents || [])
+    .filter((e) => e.amount > e.credited)
+    .sort((a, b) => Date.parse(a.availableAt) - Date.parse(b.availableAt));
+  const next = pending[0];
   return (
-    <section className="account-content">
-      <p className="office-kicker">
-        PROGRAMA PARA {wedding ? "WEDDING PLANNERS" : "ORGANIZADORES"}
-      </p>
-      <h1>
-        {wedding
-          ? "Cada boda cuenta. Tu trabajo también."
-          : "Organiza más. Gana con cada evento."}
-      </h1>
-      <p className="office-lead">
-        {professional
-          ? wedding
-            ? "Paga US$20 por cada boda desde tu cuenta profesional y recibe US$5 de comisión. Gestiona todas tus bodas y añade a cada pareja a su evento."
-            : "Paga US$10 por cada evento desde tu cuenta profesional y recibe US$2 de comisión. Gestiona todos tus eventos y añade a tus clientes a cada uno."
-          : "Las comisiones se reservan a las cuentas profesionales. Las compras desde tu cuenta personal no generan comisiones."}{" "}
-        {professional &&
-          " Tu comisión es privada y queda disponible después de 7 días. Retira desde US$10 o usa tu saldo para pagar próximos eventos completos."}
-      </p>
+    <section className="account-content partner-page">
+      <header className="partner-heading">
+        <div>
+          <p className="office-kicker">
+            {wedding ? "WEDDING PLANNERS" : "ORGANIZADORES"}
+          </p>
+          <h1>Tu saldo profesional</h1>
+          <p>
+            Todo lo que ganas con {wedding ? "tus bodas" : "tus eventos"}, en un
+            solo lugar.
+          </p>
+        </div>
+        <Link href="/?new=1" className="office-button">
+          <Icon name="plus" />
+          {wedding ? "Crear boda" : "Crear evento"}
+        </Link>
+      </header>
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
-      {user.role === "admin" ? (
-        <p className="account-note">
-          Las cuentas administradoras y las cortesías no participan en
-          comisiones. Puedes gestionar los retiros desde Administración.
-        </p>
-      ) : (
-        data && (
-          <>
-            <div className="account-stats">
-              <article>
-                <small>SALDO DISPONIBLE</small>
-                <strong>{money(data.availableCents)}</strong>
-              </article>
-              <article>
-                <small>SALDO PENDIENTE · 7 DÍAS</small>
-                <strong>{money(data.pendingCents || 0)}</strong>
-              </article>
-              <article>
-                <small>EVENTOS GESTIONADOS / CON COMISIÓN</small>
-                <strong>
-                  {data.managedEvents || 0} / {data.partnerEvents?.length || 0}
-                </strong>
-              </article>
-            </div>
-            <section className="account-card">
-              <h2>Gestiona todo desde tu cuenta.</h2>
-              <p>
-                Crea y paga cada evento desde tu cuenta profesional. Después,
-                añade a tus clientes para colaborar en su invitación. Ellos no
-                ven tus comisiones.
-              </p>
-              <p>
-                El beneficio corresponde solo a eventos creados y pagados desde
-                tu cuenta profesional. Las compras de cuentas normales no
-                generan comisión. Las pruebas, cortesías, pagos con saldo y
-                devoluciones no generan saldo disponible.
-              </p>
-            </section>
-            {!!data.partnerEvents?.length && (
-              <section className="account-card">
-                <h2>Tus eventos con beneficio</h2>
-                {data.partnerEvents.map((entry) => (
-                  <div className="access-row" key={entry.eventId}>
-                    <span>
-                      {entry.title}
-                      <small>
-                        {entry.kind === "wedding" ? "Boda" : "Evento"} ·{" "}
-                        {entry.credited >= entry.amount
-                          ? "Disponible"
-                          : "Pendiente hasta " +
-                            new Date(entry.availableAt).toLocaleDateString(
-                              "es",
-                            )}
-                      </small>
-                    </span>
-                    <strong>{money(entry.amount)}</strong>
-                  </div>
-                ))}
-              </section>
-            )}
-            <AffiliateWithdrawal
-              busy={busy}
-              available={data.availableCents}
-              run={run}
-            />
-            <section className="account-card">
-              <h2>Tus solicitudes.</h2>
-              {data.withdrawals.length === 0 ? (
-                <p>Aún no solicitaste un retiro.</p>
-              ) : (
-                data.withdrawals.map((w) => (
-                  <div className="access-row" key={w.id}>
-                    <span>
-                      {money(w.amountCents)}
-                      <small>
-                        {new Date(w.createdAt).toLocaleDateString("es-PE")} ·{" "}
-                        {w.method}
-                      </small>
-                      {w.note && <small>{w.note}</small>}
-                    </span>
-                    <strong>{statusLabel[w.status]}</strong>
-                  </div>
-                ))
-              )}
-            </section>
-          </>
+      {!data ? (
+        error ? (
+          <button
+            className="office-button"
+            disabled={busy}
+            onClick={() => void run(async () => {}, "")}
+          >
+            {busy ? "Cargando…" : "Reintentar"}
+          </button>
+        ) : (
+          <p role="status">Cargando tu saldo…</p>
         )
+      ) : (
+        <>
+          <div className="partner-balances">
+            <article className="partner-available">
+              <span>Disponible para ti</span>
+              <strong>{money(data.availableCents)}</strong>
+              <p>
+                Puedes retirarlo o usarlo en{" "}
+                {wedding ? "tu próxima boda" : "tu próximo evento"}.
+              </p>
+              {data.availableCents >= 1000 ? (
+                <a href="#retiro" className="office-button">
+                  Retirar saldo
+                  <Icon name="arrow" />
+                </a>
+              ) : (
+                <small>Los retiros se habilitan desde US$10.</small>
+              )}
+            </article>
+            <article className="partner-pending">
+              <span>En espera</span>
+              <strong>{money(data.pendingCents || 0)}</strong>
+              <p>
+                {next
+                  ? `Próximo saldo disponible el ${new Date(next.availableAt).toLocaleDateString("es", { day: "numeric", month: "long" })}.`
+                  : "No tienes comisiones pendientes."}
+              </p>
+              <small>
+                <Icon name="clock" />
+                Cada comisión se libera 7 días después del pago.
+              </small>
+            </article>
+          </div>
+          <section
+            className="partner-benefit"
+            aria-label="Cómo ganas comisiones"
+          >
+            <div className="partner-benefit-amount">
+              <Icon name="sparkle" />
+              <strong>{wedding ? "US$5" : "US$2"}</strong>
+              <span>para ti por cada {wedding ? "boda" : "evento"}</span>
+            </div>
+            <div>
+              <h2>Tú creas, tú pagas, tú gestionas.</h2>
+              <p>
+                Paga {wedding ? "US$20 por boda" : "US$10 por evento"} desde tu
+                cuenta y añade a {wedding ? "la pareja" : "tus clientes"} para
+                colaborar. Tu comisión es privada.
+              </p>
+              <small>
+                Solo pagos reales con Stripe. Sin comisión en pagos con saldo,
+                pruebas o cortesías; las devoluciones ajustan el beneficio.
+              </small>
+            </div>
+          </section>
+          <div className="partner-section-heading">
+            <h2>Tu actividad</h2>
+            <span>
+              {data.managedEvents || 0}{" "}
+              {wedding
+                ? data.managedEvents === 1
+                  ? "boda gestionada"
+                  : "bodas gestionadas"
+                : data.managedEvents === 1
+                  ? "evento gestionado"
+                  : "eventos gestionados"}
+            </span>
+          </div>
+          <AffiliateActivity data={data} wedding={wedding} />
+          <AffiliateWithdrawal
+            busy={busy}
+            available={data.availableCents}
+            run={run}
+          />
+        </>
       )}
     </section>
   );

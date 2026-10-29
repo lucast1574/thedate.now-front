@@ -88,13 +88,15 @@ export default function WorkspaceSidebar({
             </span>
           </Link>
         )}
-        <Link
-          href="/affiliates"
-          aria-current={active === "affiliates" ? "page" : undefined}
-        >
-          <Icon name="sparkle" />
-          Afiliados
-        </Link>
+        {user.role === (wedding ? "planner" : "organizer") && (
+          <Link
+            href="/affiliates"
+            aria-current={active === "affiliates" ? "page" : undefined}
+          >
+            <Icon name="sparkle" />
+            Afiliados
+          </Link>
+        )}
         <Link
           href="/support"
           aria-current={active === "support" ? "page" : undefined}
