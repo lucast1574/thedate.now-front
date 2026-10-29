@@ -1,7 +1,7 @@
 "use client";
 import Icon from "@/components/icon";
 import GuestFileDropzone from "./guest-file-dropzone";
-import GuestImportReceipt from "./guest-import-receipt";
+import GuestImportReceipt, { GuestImportReview } from "./guest-import-receipt";
 import { useGuestImport } from "./use-guest-import";
 
 export default function GuestImport({
@@ -54,8 +54,10 @@ export default function GuestImport({
         complete={complete}
         uploaded={!!receipt}
         onError={reportError}
-      />
-      {receipt && <GuestImportReceipt result={receipt} />}
+      >
+        {complete && receipt && <GuestImportReceipt result={receipt} />}
+      </GuestFileDropzone>
+      {receipt && <GuestImportReview result={receipt} />}
       {notice && (
         <p
           className={`guest-import-notice ${failed ? "is-error" : ""}`}

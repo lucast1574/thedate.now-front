@@ -9,23 +9,11 @@ export default function GuestImportReceipt({
 }: {
   result: GuestImportResult;
 }) {
-  const changed = result.added > 0 || (result.updated || 0) > 0;
   return (
-    <div className="guest-import-receipt">
-      <div className="guest-import-result" role="status">
-        <span className="guest-import-check">
-          <Icon name="check" />
-        </span>
-        <div>
-          <strong>
-            {changed
-              ? "Tu lista está actualizada"
-              : "Tu lista ya estaba al día"}
-          </strong>
-          <p>{guestImportSummary(result)}</p>
-        </div>
-      </div>
+    <div className="guest-import-receipt" role="status">
+      <p>{guestImportSummary(result)}</p>
       <a
+        className="guest-complete-hint"
         href="#guest-list"
         onClick={(event) => {
           const list = document.getElementById("guest-list");
@@ -41,27 +29,32 @@ export default function GuestImportReceipt({
           list.focus({ preventScroll: true });
         }}
       >
-        Ver invitados abajo <Icon name="down" />
+        Ver tus invitados en la lista de abajo <Icon name="down" />
       </a>
-      {!!result.review?.length && (
-        <div
-          className="guest-import-issues"
-          role="region"
-          aria-label="Cambios por revisar"
-        >
-          <h4>Acompañantes por revisar</h4>
-          <ul>
-            {result.review.map((item) => (
-              <li key={item.phone}>
-                <strong>
-                  {item.name} ({item.phone}):
-                </strong>{" "}
-                {item.reason}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
+  );
+}
+
+export function GuestImportReview({ result }: { result: GuestImportResult }) {
+  return (
+    !!result.review?.length && (
+      <div
+        className="guest-import-issues"
+        role="region"
+        aria-label="Cambios por revisar"
+      >
+        <h4>Acompañantes por revisar</h4>
+        <ul>
+          {result.review.map((item) => (
+            <li key={item.phone}>
+              <strong>
+                {item.name} ({item.phone}):
+              </strong>{" "}
+              {item.reason}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
   );
 }

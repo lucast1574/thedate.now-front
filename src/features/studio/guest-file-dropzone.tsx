@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Icon from "@/components/icon";
 export default function GuestFileDropzone({
   locked,
@@ -6,6 +6,7 @@ export default function GuestFileDropzone({
   fileName,
   complete = false,
   uploaded = false,
+  children,
   onRead,
   onError,
 }: {
@@ -14,6 +15,7 @@ export default function GuestFileDropzone({
   fileName: string;
   complete?: boolean;
   uploaded?: boolean;
+  children?: ReactNode;
   onRead: (file?: File) => Promise<void>;
   onError: (message: string) => void;
 }) {
@@ -53,12 +55,15 @@ export default function GuestFileDropzone({
                 ? "Arrastra otro Excel cuando quieras"
                 : "Arrastra aquí tu Excel")}
       </strong>
-      <span className={complete ? "guest-complete-hint" : undefined}>
-        {complete && <Icon name="down" />}
-        {complete
-          ? "Ya puedes ver a tus invitados en la lista de abajo."
-          : "También puedes buscarlo en tus archivos."}
-      </span>
+      {(!complete || !children) && (
+        <span className={complete ? "guest-complete-hint" : undefined}>
+          {complete && <Icon name="down" />}
+          {complete
+            ? "Ya puedes ver a tus invitados en la lista de abajo."
+            : "También puedes buscarlo en tus archivos."}
+        </span>
+      )}
+      {children}
       <button
         type="button"
         disabled={locked}
