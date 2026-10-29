@@ -6,7 +6,8 @@ import { applyCompleteTemplate } from "@/features/designer/template-sequence";
 import { templateCanvas } from "@/features/designer/template-canvas";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { Event } from "@/lib/events/types";
-import EventDesignDetails from "./event-design-details";
+import EventOpeningFields from "./event-opening-fields";
+import { templateOpening } from "@/features/designer/template-extras";
 
 export default function EventTemplateStart({
   draft,
@@ -21,6 +22,8 @@ export default function EventTemplateStart({
     (t) => t.kind === draft.kind && t.mode === "flyer",
   );
   const template = templates.find((t) => t.id === draft.templateId);
+  const opening =
+    draft.opening || (template ? templateOpening(template) : undefined);
   const featured =
     template && !templates.slice(0, 4).includes(template)
       ? [...templates.slice(0, 3), template]
@@ -110,10 +113,15 @@ export default function EventTemplateStart({
             <Icon name="check" /> {template.name} · {designed.sections?.length}{" "}
             secciones listas para personalizar
           </p>
-          <EventDesignDetails
+          <EventOpeningFields
             draft={draft}
             setDraft={setDraft}
-            template={template}
+            opening={opening!}
+            palette={
+              opening?.paletteMode === "design"
+                ? templateOpening(template)
+                : opening!
+            }
           />
         </>
       )}
