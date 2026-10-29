@@ -6,7 +6,30 @@ import {
 } from "libphonenumber-js/max";
 
 const names = new Intl.DisplayNames(["es"], { type: "region" });
-export const phoneCountries = getCountries()
+const marketCountries = new Set<CountryCode>([
+  "AR",
+  "BO",
+  "CL",
+  "CO",
+  "CR",
+  "CU",
+  "DO",
+  "EC",
+  "SV",
+  "GT",
+  "HN",
+  "MX",
+  "NI",
+  "PA",
+  "PY",
+  "PE",
+  "PR",
+  "UY",
+  "VE",
+  "ES",
+  "US",
+]);
+const allPhoneCountries = getCountries()
   .map((code) => ({
     code,
     name: names.of(code) || code,
@@ -14,10 +37,13 @@ export const phoneCountries = getCountries()
     label: `${names.of(code) || code} (+${getCountryCallingCode(code)})`,
   }))
   .sort((a, b) => a.name.localeCompare(b.name, "es"));
+export const phoneCountries = allPhoneCountries.filter((country) =>
+  marketCountries.has(country.code),
+);
 
 export function phoneCountry(value: string): CountryCode | undefined {
   const text = value.trim();
-  return phoneCountries.find(
+  return allPhoneCountries.find(
     (country) =>
       country.code === text.toUpperCase() ||
       country.label.toLowerCase() === text.toLowerCase() ||
@@ -45,7 +71,7 @@ export function guestPhone(value: string, country?: CountryCode): string {
 export function splitInternationalPhone(value: string) {
   if (!value.trim().startsWith("+")) return undefined;
   const phone = parsePhoneNumberFromString(value);
-  return phone?.country
+  return phone?.country && marketCountries.has(phone.country)
     ? { country: phone.country, national: String(phone.nationalNumber) }
     : undefined;
 }

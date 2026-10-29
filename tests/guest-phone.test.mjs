@@ -27,7 +27,16 @@ test("country-aware phones normalize formatting and reject incorrect national nu
     assert.throws(() => guestPhone(bad, "PE"), /WhatsApp/);
   assert.throws(() => guestPhone("925431535"), /país/);
   assert.equal(splitInternationalPhone("+34 612 345 678").country, "ES");
-  assert.equal(phoneCountries.length, 245);
+  assert.equal(phoneCountries.length, 21);
+  assert.ok(phoneCountries.some((country) => country.code === "US"));
+  assert.ok(phoneCountries.some((country) => country.code === "ES"));
+  assert.ok(phoneCountries.some((country) => country.code === "PR"));
+  assert.ok(
+    !phoneCountries.some((country) =>
+      ["BR", "FR", "CN"].includes(country.code),
+    ),
+  );
+  assert.equal(splitInternationalPhone("+33 6 12 34 56 78"), undefined);
 });
 
 test("valid rows continue in file order and invalid rows report their original Excel row", () => {
@@ -59,7 +68,7 @@ test("distributed workbook inherits first country without trusting formula cache
   );
   const sheet = book.worksheets[0];
   assert.equal(book.worksheets[1].state, "hidden");
-  assert.equal(book.worksheets[1].rowCount, 246);
+  assert.equal(book.worksheets[1].rowCount, 22);
   assert.equal(
     sheet.getCell("D11").dataValidation.formulae[0],
     "PaisesTelefonicos",
