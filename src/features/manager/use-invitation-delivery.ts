@@ -56,14 +56,17 @@ export function useInvitationDelivery(
       clearTimeout(timer);
     };
   }, [eventId]);
-  async function start() {
+  async function start(retry = false) {
     if (request.current) return;
     request.current = true;
     setBusy(true);
     setError("");
     try {
       setDelivery(
-        await api<Delivery>(`/api/backend/events/${eventId}/delivery`, "POST"),
+        await api<Delivery>(
+          `/api/backend/events/${eventId}/delivery${retry ? "/retry" : ""}`,
+          "POST",
+        ),
       );
       await onUpdate();
     } catch (e) {

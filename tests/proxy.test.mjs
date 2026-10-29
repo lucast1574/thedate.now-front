@@ -195,3 +195,31 @@ test("OAuth callback clears state and continuation at their original cookie path
     assert.equal(c.value, "");
   }
 });
+
+test("studio proxy forwards only the supported delivery retry path", async () => {
+  let captured;
+  const proxy = proxyFixture("local-test-session", (url) => {
+    captured = url;
+    return Response.json({ phase: "sending" }, { status: 202 });
+  });
+  const result = await proxy(
+    request("POST"),
+    ["events", "wedding", "delivery", "retry"],
+    "POST",
+  );
+  assert.equal(result.status, 202);
+  assert.equal(
+    captured,
+    "https://api.thedate.now/events/wedding/delivery/retry",
+  );
+  assert.equal(
+    (
+      await proxy(
+        request("POST"),
+        ["events", "wedding", "delivery", "reset"],
+        "POST",
+      )
+    ).status,
+    404,
+  );
+});

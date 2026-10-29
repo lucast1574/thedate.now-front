@@ -4,7 +4,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadSource } from "./support/load-source.cjs";
 
-function renderDelivery(phase, total = 4) {
+function renderDelivery(phase, total = 4, failed = 0, uncertain = 0) {
   const Delivery = loadSource("src/features/manager/invitation-delivery.tsx", {
     mocks: {
       "./use-invitation-delivery": {
@@ -14,8 +14,8 @@ function renderDelivery(phase, total = 4) {
             total,
             sent: 0,
             waiting: total,
-            failed: 0,
-            uncertain: 0,
+            failed,
+            uncertain,
           },
           busy: false,
           error: "",
@@ -88,4 +88,10 @@ test("roster defaults to invitation priority instead of surname and hides unsent
   assert.ok(html.indexOf("Juan Zapata") < html.indexOf("Ana Alvarez"));
   assert.doesNotMatch(html, /https:\/\/private/);
   assert.match(html, /Esperando su turno/);
+});
+
+test("only rejected deliveries offer a safe retry, including while others are sending", () => {
+  assert.match(renderDelivery("attention", 4, 2), /Reintentar env�os fallidos/);
+  assert.match(renderDelivery("sending", 4, 1), /Reintentar env�os fallidos/);
+  assert.doesNotMatch(renderDelivery("attention", 4, 0, 2), /<button/);
 });

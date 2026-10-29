@@ -92,19 +92,23 @@ export default function InvitationDelivery({
           </span>
         </div>
       )}
-      {(phase === "draft" || phase === "error") && (
+      {(phase === "draft" ||
+        phase === "error" ||
+        (delivery?.failed ?? 0) > 0) && (
         <button
           type="button"
           className="office-button"
           disabled={busy || !total}
-          onClick={() => void start()}
+          onClick={() => void start((delivery?.failed ?? 0) > 0)}
         >
           <Icon name="mail" />
           {busy
             ? "Preparando…"
-            : phase === "error"
-              ? "Volver a intentar"
-              : "Enviar invitaciones"}
+            : (delivery?.failed ?? 0) > 0
+              ? "Reintentar env�os fallidos"
+              : phase === "error"
+                ? "Volver a intentar"
+                : "Enviar invitaciones"}
         </button>
       )}
       {!total && (
