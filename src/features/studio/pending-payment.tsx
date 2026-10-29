@@ -19,12 +19,10 @@ export default function PendingPayment({
     event.kind === "wedding"
       ? user.role === "planner"
       : user.role === "organizer";
-  const price =
-    event.kind === "wedding" ? (professional ? 15 : 20) : professional ? 8 : 10;
+  const price = event.kind === "wedding" ? 20 : 10;
   const [working, setWorking] = useState(false),
-    [link, setLink] = useState(""),
     [error, setError] = useState("");
-  async function pay(mode: "client" | "balance" | "cancel_balance") {
+  async function pay(mode: "balance" | "cancel_balance") {
     setWorking(true);
     setError("");
     try {
@@ -33,8 +31,7 @@ export default function PendingPayment({
         "POST",
         { mode },
       );
-      if (mode === "client") setLink(result.url);
-      else window.location.href = result.url;
+      window.location.href = result.url;
     } catch (err) {
       setError((err as Error).message);
     } finally {
@@ -53,42 +50,17 @@ export default function PendingPayment({
         disabled={busy || working || !enabled}
         onClick={onCheckout}
       >
-        {enabled
-          ? `Pagar ${professional ? "con precio profesional" : "el evento"} · USD ${price}`
-          : "Pagos en preparación"}
+        {enabled ? `Pagar el evento · USD ${price}` : "Pagos en preparación"}
       </ActionButton>
-      {professional && (
-        <>
-          <p>
-            Tu descuento ya está incluido. Si paga tu cliente el precio público,
-            recibes {event.kind === "wedding" ? "US$5" : "US$2"} de comisión
-            después de 7 días. No se acumula con el descuento.
-          </p>
-          <button
-            className="office-button secondary"
-            disabled={busy || working || !enabled}
-            onClick={() => void pay("client")}
-          >
-            Crear enlace de pago para mi cliente · US$
-            {event.kind === "wedding" ? "20" : "10"}
-          </button>
-        </>
-      )}
-      {link && (
-        <label>
-          Enlace de pago de Stripe
-          <input readOnly value={link} />
-          <button
-            className="office-button secondary"
-            onClick={() =>
-              void navigator.clipboard
-                .writeText(link)
-                .catch(() => setError("Selecciona y copia el enlace."))
-            }
-          >
-            Copiar enlace para el cliente
-          </button>
-        </label>
+      {professional && event.ownerId === user.id && (
+        <p>
+          Recibes{" "}
+          {event.kind === "wedding"
+            ? "US$5 por esta boda"
+            : "US$2 por este evento"}{" "}
+          en tu saldo profesional después de 7 días del pago. Este beneficio es
+          privado de tu cuenta.
+        </p>
       )}
       <button
         className="office-button secondary"

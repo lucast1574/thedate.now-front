@@ -45,12 +45,9 @@ export default function AffiliateDashboard({
       setBusy(false);
     }
   }
-  const links = data?.enabled
-    ? [
-        `https://studio.save.thedate.now/?ref=${data.code}`,
-        `https://crea.thedate.now/?ref=${data.code}`,
-      ]
-    : [];
+  const professional = wedding
+    ? user.role === "planner"
+    : user.role === "organizer";
   return (
     <section className="account-content">
       <p className="office-kicker">
@@ -62,10 +59,13 @@ export default function AffiliateDashboard({
           : "Organiza más. Gana con cada evento."}
       </h1>
       <p className="office-lead">
-        Como profesional, paga US$15 por boda o US$8 por evento. Si paga tu
-        cliente el precio público (US$20 / US$10), recibes US$5 / US$2 por cada
-        evento elegible. Un solo beneficio por evento. Retira desde US$10 o usa
-        tu saldo para pagar próximos eventos completos.
+        {professional
+          ? wedding
+            ? "Paga US$20 por cada boda desde tu cuenta profesional y recibe US$5 de comisión. Gestiona todas tus bodas y añade a cada pareja a su evento."
+            : "Paga US$10 por cada evento desde tu cuenta profesional y recibe US$2 de comisión. Gestiona todos tus eventos y añade a tus clientes a cada uno."
+          : "Las comisiones se reservan a las cuentas profesionales. Las compras desde tu cuenta personal no generan comisiones."}{" "}
+        {professional &&
+          " Tu comisión es privada y queda disponible después de 7 días. Retira desde US$10 o usa tu saldo para pagar próximos eventos completos."}
       </p>
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
@@ -94,39 +94,17 @@ export default function AffiliateDashboard({
               </article>
             </div>
             <section className="account-card">
-              <h2>Tu enlace ya está activo.</h2>
+              <h2>Gestiona todo desde tu cuenta.</h2>
               <p>
-                Comparte el enlace con tus clientes. También puedes crear sus
-                eventos desde tu cuenta profesional y generar el enlace de pago
-                al activarlos.
+                Crea y paga cada evento desde tu cuenta profesional. Después,
+                añade a tus clientes para colaborar en su invitación. Ellos no
+                ven tus comisiones.
               </p>
-              {links.map((link, i) => (
-                <label key={link}>
-                  {i === 0 ? "Save the Date · bodas" : "The Date · eventos"}
-                  <div className="copy-link">
-                    <input readOnly value={link} />
-                    <button
-                      onClick={() =>
-                        void navigator.clipboard
-                          .writeText(link)
-                          .then(() => setNotice("Enlace copiado."))
-                          .catch(() =>
-                            setError("Selecciona y copia el enlace."),
-                          )
-                      }
-                    >
-                      Copiar enlace
-                    </button>
-                  </div>
-                </label>
-              ))}
               <p>
-                La atribución se guarda al crear la cuenta hasta 30 días después
-                de abrir el enlace. Los profesionales reciben comisión en cada
-                evento elegible; los referidos generales conservan el 10% del
-                primer pago. Las pruebas, cortesías y devoluciones no generan
-                saldo. Activa tu perfil profesional desde el estudio si aún no
-                lo tienes.
+                El beneficio corresponde solo a eventos creados y pagados desde
+                tu cuenta profesional. Las compras de cuentas normales no
+                generan comisión. Las pruebas, cortesías, pagos con saldo y
+                devoluciones no generan saldo disponible.
               </p>
             </section>
             {!!data.partnerEvents?.length && (
