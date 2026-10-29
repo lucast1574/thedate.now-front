@@ -7,7 +7,8 @@ import WishlistPanel from "@/features/gifts/wishlist-panel";
 import ManagerTools from "./manager-tools";
 import Alert from "@/components/alert";
 import { useManager } from "./use-manager";
-import ManagerEventPicker from "./manager-event-picker";
+import Icon from "@/components/icon";
+import { organizationEvents } from "@/lib/events/organization-events";
 import GuestSummary from "./guest-summary";
 export default function ManagerPage({ id }: { id: string }) {
   return <ManagerWorkspace key={id} id={id} />;
@@ -85,13 +86,21 @@ function ManagerWorkspace({ id }: { id: string }) {
           </div>
         </header>
         {!event.isDemo && user && (
-          <ManagerEventPicker
-            events={events}
-            user={user}
-            event={event}
-            tab={tab}
-            guard={guard}
-          />
+          <div className="manager-event-navigation">
+            {organizationEvents(events, event.kind, user).length > 1 && (
+              <Link
+                className="manager-event-back"
+                href={`/organizar?tool=${tab}`}
+                onClick={(e) => {
+                  if (!guard()) e.preventDefault();
+                }}
+              >
+                <Icon name="chevron" />
+                {event.kind === "wedding" ? "Mis bodas" : "Mis eventos"}
+              </Link>
+            )}
+            <p className="manager-event-context">{event.title}</p>
+          </div>
         )}
         <Alert>{error}</Alert>
         <Alert variant="success">{manager.notice}</Alert>

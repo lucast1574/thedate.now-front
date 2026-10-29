@@ -5,7 +5,6 @@ import Icon from "@/components/icon";
 import UserAvatar from "@/components/user-avatar";
 import type { User } from "@/lib/events/types";
 export default function WorkspaceSidebar({
-  eventId,
   guard,
   wedding,
   user,
@@ -57,11 +56,7 @@ export default function WorkspaceSidebar({
         ).map(([key, icon, title, hint]) => (
           <Link
             key={key}
-            href={
-              eventId
-                ? `/manager/${eventId}?tab=${key}`
-                : `/organizar?tool=${key}`
-            }
+            href={`/organizar?tool=${key}`}
             aria-current={active === key ? "page" : undefined}
           >
             <Icon name={icon} />

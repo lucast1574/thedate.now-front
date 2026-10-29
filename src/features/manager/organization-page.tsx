@@ -6,6 +6,7 @@ import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import { organizationEvents } from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
+import ManagerEventPicker from "./manager-event-picker";
 function OrganizationTools({
   wedding,
   tool,
@@ -36,7 +37,8 @@ function OrganizationTools({
     };
   }, [wedding, user]);
   const selected =
-    events.find((e) => e.id === params.get("event")) || events[0];
+    events.find((e) => e.id === params.get("event")) ||
+    (events.length === 1 ? events[0] : undefined);
   useEffect(() => {
     if (selected?.paymentStatus === "paid")
       router.replace(`/manager/${encodeURIComponent(selected.id)}?tab=${tool}`);
@@ -56,18 +58,27 @@ function OrganizationTools({
                 : "Invitados y respuestas"}
           </h1>
           <p>
-            Conoce lo que incluye tu evento y abre su espacio de organización.
+            {events.length > 1
+              ? wedding
+                ? "Selecciona la boda que quieres organizar."
+                : "Selecciona el evento que quieres organizar."
+              : "Conoce lo que incluye tu evento y abre su espacio de organizaci�n."}
           </p>
         </div>
       </header>
       {error && <p role="alert">{error}</p>}
-      <p role="status">
-        {selected
-          ? "Abriendo tu evento…"
-          : loaded
-            ? "Tus herramientas estarán disponibles cuando actives tu evento."
-            : "Cargando tus eventos…"}
-      </p>
+      {loaded && !error && !selected && events.length > 1 && (
+        <ManagerEventPicker events={events} wedding={wedding} tab={tool} />
+      )}
+      {(selected || !loaded || events.length === 0) && (
+        <p role="status">
+          {selected
+            ? "Abriendo tu evento…"
+            : loaded
+              ? "Tus herramientas estarán disponibles cuando actives tu evento."
+              : "Cargando tus eventos…"}
+        </p>
+      )}
       {loaded && !error && !hasPaidEvent && (
         <OrganizationPreview
           wedding={wedding}

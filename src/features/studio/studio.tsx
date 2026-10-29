@@ -46,7 +46,11 @@ export default function Studio({
     await feedback.run(
       async () => {
         const created = await events.saveEvent();
-        if (!created) return;
+        if (!created) {
+          events.createDraft();
+          router.push("/");
+          return;
+        }
         if (created.paymentStatus === "paid") {
           router.push(`/editor/${created.id}`);
           return;
@@ -109,6 +113,7 @@ export default function Studio({
           ) : (
             <>
               <Alert>{feedback.error}</Alert>
+              <Alert variant="success">{feedback.notice}</Alert>
               {session.user.role === "user" && (
                 <ProfessionalUpgrade
                   wedding={wedding}

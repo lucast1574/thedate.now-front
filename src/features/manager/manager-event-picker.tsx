@@ -1,46 +1,27 @@
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import InvitationThumbnail from "@/features/studio/invitation-thumbnail";
-import Icon from "@/components/icon";
-import {
-  organizationEvents,
-  organizationEventDate,
-} from "@/lib/events/organization-events";
-import type { Event, User } from "@/lib/events/types";
+import { organizationEventDate } from "@/lib/events/organization-events";
+import type { Event } from "@/lib/events/types";
 
 export default function ManagerEventPicker({
   events,
-  event,
-  user,
+  wedding,
   tab,
-  guard,
 }: {
   events: Event[];
-  event: Event;
-  user: User;
+  wedding: boolean;
   tab: string;
-  guard: () => boolean;
 }) {
-  const router = useRouter();
-  const items = organizationEvents(events, event.kind, user);
-  if (items.length < 2)
-    return <p className="manager-event-context">{event.title}</p>;
   return (
     <section
       className="organization-event-cards"
-      aria-label={
-        event.kind === "wedding" ? "Seleccionar boda" : "Seleccionar evento"
-      }
+      aria-label={wedding ? "Seleccionar boda" : "Seleccionar evento"}
     >
-      {items.map((item) => (
-        <button
-          type="button"
+      {events.map((item) => (
+        <Link
           key={item.id}
           className="organization-event-card"
-          aria-pressed={item.id === event.id}
-          onClick={() => {
-            if (item.id !== event.id && guard())
-              router.push(`/manager/${encodeURIComponent(item.id)}?tab=${tab}`);
-          }}
+          href={`/manager/${encodeURIComponent(item.id)}?tab=${tab}`}
         >
           <span className="organization-event-thumbnail">
             <InvitationThumbnail event={item} />
@@ -49,8 +30,7 @@ export default function ManagerEventPicker({
             <strong>{item.title}</strong>
             <small>{organizationEventDate(item)}</small>
           </span>
-          {item.id === event.id && <Icon name="check" />}
-        </button>
+        </Link>
       ))}
     </section>
   );
