@@ -61,24 +61,24 @@ test("distributed workbook inherits first country without trusting formula cache
   assert.equal(book.worksheets[1].state, "hidden");
   assert.equal(book.worksheets[1].rowCount, 246);
   assert.equal(
-    sheet.getCell("C9").dataValidation.formulae[0],
+    sheet.getCell("D11").dataValidation.formulae[0],
     "PaisesTelefonicos",
   );
-  sheet.getCell("A9").value = "Ana";
-  sheet.getCell("C9").value = "España (+34)";
-  sheet.getCell("D9").value = "612345678";
-  sheet.getCell("A10").value = "Luis";
-  sheet.getCell("D10").value = "622345678";
-  sheet.getCell("A11").value = "Peruvian";
-  sheet.getCell("C11").value = "Perú (+51)";
-  sheet.getCell("D11").value = "925431535";
-  sheet.getCell("A12").value = "Invalid";
-  sheet.getCell("D12").value = "123";
-  sheet.getCell("A13").value = {
+  sheet.getCell("B11").value = "Ana";
+  sheet.getCell("D5").value = "España (+34)";
+  sheet.getCell("E11").value = "612345678";
+  sheet.getCell("B12").value = "Luis";
+  sheet.getCell("E12").value = "622345678";
+  sheet.getCell("B13").value = "Peruvian";
+  sheet.getCell("D13").value = "Perú (+51)";
+  sheet.getCell("E13").value = "925431535";
+  sheet.getCell("B14").value = "Invalid";
+  sheet.getCell("E14").value = "123";
+  sheet.getCell("B15").value = {
     formula: 'HYPERLINK("https://example.com","unsafe")',
   };
-  sheet.getCell("A14").value = "Bad formula";
-  sheet.getCell("C14").value = { formula: "UPPER(C9)", result: "España (+34)" };
+  sheet.getCell("B16").value = "Bad formula";
+  sheet.getCell("D16").value = { formula: "UPPER(D5)", result: "España (+34)" };
   const bytes = new Uint8Array(await book.xlsx.writeBuffer());
   const report = await readGuestFileReport({
     name: "test.xlsx",
@@ -91,6 +91,35 @@ test("distributed workbook inherits first country without trusting formula cache
   );
   assert.deepEqual(
     Array.from(report.issues, (i) => i.row),
-    [12, 13, 14],
+    [14, 15, 16],
   );
+});
+
+test("blank template has no preset country or phantom guests and Colombia can be the main country", async () => {
+  const book = new ExcelJS.Workbook();
+  await book.xlsx.load(
+    await readFile("public/templates/plantilla-invitados.xlsx"),
+  );
+  const sheet = book.worksheets[0];
+  assert.equal(sheet.getCell("D5").value, "Selecciona un país");
+  assert.equal(sheet.getCell("A11").value, null);
+  const read = async () => {
+    const bytes = new Uint8Array(await book.xlsx.writeBuffer());
+    return readGuestFileReport({
+      name: "test.xlsx",
+      size: bytes.length,
+      arrayBuffer: async () => bytes.buffer,
+    });
+  };
+  const blank = await read();
+  assert.equal(blank.guests.length, 0);
+  assert.equal(blank.issues.length, 0);
+  sheet.getCell("B11").value = "Ana";
+  sheet.getCell("E11").value = "3001234567";
+  assert.match((await read()).issues[0].message, /País/);
+  sheet.getCell("D5").value = "Colombia (+57)";
+  const colombia = await read();
+  assert.equal(colombia.guests.length, 1);
+  assert.equal(colombia.issues.length, 0);
+  assert.equal(colombia.guests[0].phone, "+573001234567");
 });

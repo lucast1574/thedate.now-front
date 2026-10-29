@@ -47,6 +47,10 @@ export async function readGuestFileReport(file: File) {
   const countryIndex = countryColumn === undefined ? -1 : countryColumn;
   const firstDataRow = header ? header.number + 1 : 0;
   sheet.eachRow({ includeEmpty: true }, (row) => {
+    if (header && row.number < header.number) {
+      rows.push([]);
+      return;
+    }
     const cells: string[] = [];
     let unsafe = false;
     for (let i = 1; i <= sheet.columnCount; i++) {
@@ -65,6 +69,20 @@ export async function readGuestFileReport(file: File) {
       ) {
         const initial = firstCountry!.value;
         value = typeof initial === "string" ? initial : "";
+      }
+      if (
+        value &&
+        typeof value === "object" &&
+        "formula" in value &&
+        header?.number === 10 &&
+        countryIndex === 3 &&
+        i === 4 &&
+        row.number >= firstDataRow &&
+        value.formula === `IF($B${row.number}="","",$D$5)`
+      ) {
+        const initial = sheet.getCell("D5").value;
+        value =
+          row.getCell(2).value && typeof initial === "string" ? initial : "";
       }
       if (
         value !== null &&
