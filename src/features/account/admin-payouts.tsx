@@ -28,9 +28,9 @@ export default function AdminPayouts({
       <p className="office-kicker">AFILIADOS · RETIROS</p>
       <h2>Pagos con registro.</h2>
       <p>
-        10% del primer pago real de cada referido; mínimo US$50. Marca pagado
-        después de transferir y escribe la referencia; este panel no envía
-        dinero automáticamente.
+        Beneficios por evento y referidos; mínimo US$10. Marca pagado después de
+        transferir y escribe la referencia; este panel no envía dinero
+        automáticamente.
       </p>
       {rows.length === 0 && <p>No hay solicitudes de retiro.</p>}
       {rows.map((row) => {

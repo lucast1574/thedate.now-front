@@ -49,6 +49,13 @@ export default function EventWorkspace({
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
       <Alert>{feedback.error}</Alert>
+      {selected?.addressChangedAfterPayment && !selected.publishedAt && (
+        <p role="status">
+          El nombre anterior se reservó con otro pago. Tu evento ya está pagado
+          y tiene un enlace alternativo; puedes cambiarlo aquí antes de
+          publicar.
+        </p>
+      )}
       <nav className="action-row" aria-label="Accesos de la invitación">
         {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
           <Link
@@ -79,6 +86,7 @@ export default function EventWorkspace({
         )}
       {selected && !selected.isDemo && selected.paymentStatus !== "paid" && (
         <PendingPayment
+          user={user}
           event={selected}
           busy={feedback.busy}
           enabled={paymentsEnabled}

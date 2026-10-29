@@ -35,6 +35,16 @@ export type AdminData = {
   payouts: Payout[];
 };
 export type Affiliate = {
+  pendingCents?: number;
+  managedEvents?: number;
+  partnerEvents?: {
+    eventId: string;
+    title: string;
+    kind: string;
+    amount: number;
+    credited: number;
+    availableAt: string;
+  }[];
   code: string;
   enabled: boolean;
   availableCents: number;

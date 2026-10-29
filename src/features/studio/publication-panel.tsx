@@ -66,7 +66,7 @@ export default function PublicationPanel({
               onClick={checkout}
             >
               {paymentsEnabled ? "Pagar" : "Pagos en preparación"} ·{" "}
-              {selected.kind === "wedding" ? "USD 20" : "USD 5"}
+              {selected.kind === "wedding" ? "USD 20" : "USD 10"}
             </ActionButton>
           ) : ready ? (
             <a

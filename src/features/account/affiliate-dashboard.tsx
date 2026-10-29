@@ -53,15 +53,19 @@ export default function AffiliateDashboard({
     : [];
   return (
     <section className="account-content">
-      <p className="office-kicker">PROGRAMA DE AFILIADOS</p>
+      <p className="office-kicker">
+        PROGRAMA PARA {wedding ? "WEDDING PLANNERS" : "ORGANIZADORES"}
+      </p>
       <h1>
         {wedding
-          ? "Comparte momentos. Gana juntos."
-          : "Tu recomendación tiene valor."}
+          ? "Cada boda cuenta. Tu trabajo también."
+          : "Organiza más. Gana con cada evento."}
       </h1>
       <p className="office-lead">
-        Recibe 10% del primer pago real de cada persona nueva que se registre
-        con tu enlace. Un solo referido para ambas marcas. Retira desde US$50.
+        Como profesional, paga US$15 por boda o US$8 por evento. Si paga tu
+        cliente el precio público (US$20 / US$10), recibes US$5 / US$2 por cada
+        evento elegible. Un solo beneficio por evento. Retira desde US$10 o usa
+        tu saldo para pagar próximos eventos completos.
       </p>
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
@@ -79,19 +83,23 @@ export default function AffiliateDashboard({
                 <strong>{money(data.availableCents)}</strong>
               </article>
               <article>
-                <small>COMISIONES NETAS</small>
-                <strong>{money(data.earnedCents)}</strong>
+                <small>SALDO PENDIENTE · 7 DÍAS</small>
+                <strong>{money(data.pendingCents || 0)}</strong>
               </article>
               <article>
-                <small>REGISTROS / PRIMEROS PAGOS</small>
+                <small>EVENTOS GESTIONADOS / CON COMISIÓN</small>
                 <strong>
-                  {data.referrals} / {data.conversions}
+                  {data.managedEvents || 0} / {data.partnerEvents?.length || 0}
                 </strong>
               </article>
             </div>
             <section className="account-card">
               <h2>Tu enlace ya está activo.</h2>
-              <p>Compártelo para bodas o eventos. No necesitas activarlo.</p>
+              <p>
+                Comparte el enlace con tus clientes. También puedes crear sus
+                eventos desde tu cuenta profesional y generar el enlace de pago
+                al activarlos.
+              </p>
               {links.map((link, i) => (
                 <label key={link}>
                   {i === 0 ? "Save the Date · bodas" : "The Date · eventos"}
@@ -113,11 +121,36 @@ export default function AffiliateDashboard({
                 </label>
               ))}
               <p>
-                La atribución se guarda al crear la cuenta, hasta 30 días
-                después de abrir el enlace. Los pagos de prueba, cortesías y
-                devoluciones no generan saldo retirable.
+                La atribución se guarda al crear la cuenta hasta 30 días después
+                de abrir el enlace. Los profesionales reciben comisión en cada
+                evento elegible; los referidos generales conservan el 10% del
+                primer pago. Las pruebas, cortesías y devoluciones no generan
+                saldo. Activa tu perfil profesional desde el estudio si aún no
+                lo tienes.
               </p>
             </section>
+            {!!data.partnerEvents?.length && (
+              <section className="account-card">
+                <h2>Tus eventos con beneficio</h2>
+                {data.partnerEvents.map((entry) => (
+                  <div className="access-row" key={entry.eventId}>
+                    <span>
+                      {entry.title}
+                      <small>
+                        {entry.kind === "wedding" ? "Boda" : "Evento"} ·{" "}
+                        {entry.credited >= entry.amount
+                          ? "Disponible"
+                          : "Pendiente hasta " +
+                            new Date(entry.availableAt).toLocaleDateString(
+                              "es",
+                            )}
+                      </small>
+                    </span>
+                    <strong>{money(entry.amount)}</strong>
+                  </div>
+                ))}
+              </section>
+            )}
             <AffiliateWithdrawal
               busy={busy}
               available={data.availableCents}

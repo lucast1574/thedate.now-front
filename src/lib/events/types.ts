@@ -35,6 +35,7 @@ export type DesignEvent = {
   isDemo?: boolean;
 };
 export type Event = DesignEvent & {
+  addressChangedAfterPayment?: boolean;
   invitationsEnabled?: boolean;
   invitationMessage?: string;
   creation?: {

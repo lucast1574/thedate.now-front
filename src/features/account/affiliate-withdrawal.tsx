@@ -11,7 +11,7 @@ export default function AffiliateWithdrawal({
   available: number;
   run: Run;
 }) {
-  const [amount, setAmount] = useState("50"),
+  const [amount, setAmount] = useState("10"),
     [method, setMethod] = useState(""),
     [details, setDetails] = useState("");
   function withdraw(e: FormEvent) {
@@ -35,8 +35,8 @@ export default function AffiliateWithdrawal({
           <input
             required
             type="number"
-            min="50"
-            max={Math.max(50, available / 100)}
+            min="10"
+            max={Math.max(10, available / 100)}
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
@@ -64,7 +64,7 @@ export default function AffiliateWithdrawal({
             placeholder="Titular, banco, país y cuenta"
           />
         </label>
-        <button className="office-button" disabled={busy || available < 5000}>
+        <button className="office-button" disabled={busy || available < 1000}>
           Solicitar retiro
         </button>
       </form>

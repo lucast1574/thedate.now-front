@@ -52,15 +52,6 @@ export default function Studio({
           return;
         }
         router.push(`/?event=${created.id}`);
-        if (paymentsEnabled) {
-          const result = await import("@/lib/api/client").then(({ api }) =>
-            api<{ url: string }>(
-              `/api/backend/events/${created.id}/checkout`,
-              "POST",
-            ),
-          );
-          window.location.href = result.url;
-        }
       },
       events.selected
         ? "Cambios guardados."
