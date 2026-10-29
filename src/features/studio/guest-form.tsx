@@ -49,16 +49,22 @@ export default function GuestForm({
           />
         </label>
         <label>
-          WhatsApp
+          WhatsApp con código de país
           <input
             required
             type="tel"
             autoComplete="tel"
             placeholder="+51987654321"
+            title="Incluye + y el código de país, sin espacios. Ejemplo para Perú: +51987654321."
+            aria-describedby="guest-phone-help"
             pattern="\+[1-9][0-9]{6,14}"
             value={guest.phone}
             onChange={(e) => setGuest({ ...guest, phone: e.target.value })}
           />
+          <small id="guest-phone-help">
+            Incluye + y el código de país, sin espacios. Perú: +51; otros
+            países: su propio código.
+          </small>
         </label>
         <label>
           Acompañantes permitidos
