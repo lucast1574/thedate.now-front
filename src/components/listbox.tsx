@@ -1,12 +1,5 @@
 "use client";
-import {
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type ReactNode,
-  type KeyboardEvent,
-} from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import ListboxMenu from "./listbox-menu";
 import { focusListbox, useListboxDismiss } from "./use-listbox-dismiss";
 import {
@@ -16,16 +9,7 @@ import {
   optionChoices,
 } from "@/lib/ui/listbox";
 import Icon from "./icon";
-type Props = {
-  children: ReactNode;
-  value?: string;
-  onValueChange: (value: string) => void;
-  disabled?: boolean;
-  required?: boolean;
-  id?: string;
-  name?: string;
-  "aria-label"?: string;
-};
+import type { ListboxProps } from "./listbox-types";
 export default function Listbox({
   children,
   value = "",
@@ -34,8 +18,10 @@ export default function Listbox({
   required,
   id,
   name,
+  renderLabel,
+  menuMinWidth = 0,
   "aria-label": label,
-}: Props) {
+}: ListboxProps) {
   const uid = useId(),
     listId = `${uid}-options`;
   const button = useRef<HTMLButtonElement>(null),
@@ -55,7 +41,16 @@ export default function Listbox({
     if (disabled || !options.some((option) => !option.disabled)) return;
     const rect = button.current!.getBoundingClientRect();
     setPopup({
-      position: listboxPosition(rect, window.innerWidth, window.innerHeight),
+      position: listboxPosition(
+        {
+          top: rect.top,
+          bottom: rect.bottom,
+          left: rect.left,
+          width: Math.max(rect.width, menuMinWidth),
+        },
+        window.innerWidth,
+        window.innerHeight,
+      ),
       title:
         label ||
         button.current?.labels?.[0]?.childNodes[0]?.textContent?.trim() ||
@@ -99,7 +94,8 @@ export default function Listbox({
     }
     if (
       key === "Enter" ||
-      (key === " " && Date.now() - search.current.at > 600)
+      (key === " " &&
+        (!search.current.at || event.timeStamp - search.current.at > 600))
     ) {
       event.preventDefault();
       if (popup) choose(active);
@@ -121,7 +117,7 @@ export default function Listbox({
       !event.metaKey &&
       !event.altKey
     ) {
-      const now = Date.now();
+      const now = event.timeStamp;
       search.current.text =
         now - search.current.at > 600 ? key : search.current.text + key;
       search.current.at = now;
@@ -160,7 +156,11 @@ export default function Listbox({
         }}
         onKeyDown={keyDown}
       >
-        <span>{options[selected]?.label || "Seleccionar…"}</span>
+        <span>
+          {options[selected]
+            ? renderLabel?.(options[selected], true) || options[selected].label
+            : "Seleccionar…"}
+        </span>
         <Icon name="chevron" />
       </button>
       {name && (
@@ -190,6 +190,7 @@ export default function Listbox({
           options={options}
           active={active}
           selected={selected}
+          renderLabel={renderLabel}
           onActive={setActive}
           onChoose={choose}
         />

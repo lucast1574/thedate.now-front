@@ -24,11 +24,31 @@ export default function GuestPhoneField({
   const id = useId();
   return (
     <div className="guest-phone-field">
-      <label>
-        País
+      <label htmlFor={`${id}-number`}>WhatsApp</label>
+      <div className="guest-phone-control">
         <Listbox
+          aria-label={`País y prefijo: ${phoneCountries.find((item) => item.code === country)?.label}`}
           value={country}
           disabled={disabled}
+          menuMinWidth={320}
+          renderLabel={(option, selected) => {
+            const item = phoneCountries.find(
+              (item) => item.code === option.value,
+            )!;
+            return (
+              <span className="phone-country-choice">
+                {/* Local SVG assets preserve the flag across operating systems. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={`/flags/${item.code.toLowerCase()}.svg`}
+                  alt=""
+                  width={24}
+                  height={18}
+                />
+                <span>{selected ? item.prefix : item.label}</span>
+              </span>
+            );
+          }}
           onValueChange={(code) => onCountry(code as CountryCode)}
         >
           {phoneCountries.map((item) => (
@@ -37,33 +57,26 @@ export default function GuestPhoneField({
             </option>
           ))}
         </Listbox>
-      </label>
-      <label>
-        WhatsApp
-        <span className="guest-phone-number">
-          <span>
-            {phoneCountries.find((item) => item.code === country)?.prefix}
-          </span>
-          <input
-            required
-            type="tel"
-            autoComplete="tel-national"
-            placeholder="Número local"
-            value={value}
-            disabled={disabled}
-            aria-invalid={!!error}
-            aria-describedby={error ? id : undefined}
-            onChange={(e) => {
-              const next = e.target.value;
-              const international = splitInternationalPhone(next);
-              if (international) {
-                onCountry(international.country);
-                onChange(international.national);
-              } else onChange(next);
-            }}
-          />
-        </span>
-      </label>
+        <input
+          id={`${id}-number`}
+          required
+          type="tel"
+          autoComplete="tel-national"
+          placeholder="Número local"
+          value={value}
+          disabled={disabled}
+          aria-invalid={!!error}
+          aria-describedby={error ? id : undefined}
+          onChange={(e) => {
+            const next = e.target.value;
+            const international = splitInternationalPhone(next);
+            if (international) {
+              onCountry(international.country);
+              onChange(international.national);
+            } else onChange(next);
+          }}
+        />
+      </div>
       {error && (
         <p id={id} className="guest-phone-error" role="alert">
           {error}

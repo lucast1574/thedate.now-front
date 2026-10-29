@@ -2,6 +2,7 @@ import { createPortal } from "react-dom";
 import type { CSSProperties, RefObject } from "react";
 import type { Choice } from "@/lib/ui/listbox";
 import Icon from "./icon";
+import type { ListboxProps } from "./listbox-types";
 export default function ListboxMenu({
   menuRef,
   id,
@@ -9,6 +10,7 @@ export default function ListboxMenu({
   options,
   active,
   selected,
+  renderLabel,
   onActive,
   onChoose,
 }: {
@@ -24,6 +26,7 @@ export default function ListboxMenu({
   options: Choice[];
   active: number;
   selected: number;
+  renderLabel?: ListboxProps["renderLabel"];
   onActive: (index: number) => void;
   onChoose: (index: number) => void;
 }) {
@@ -52,7 +55,7 @@ export default function ListboxMenu({
           }}
           onClick={() => onChoose(index)}
         >
-          <span>{option.label}</span>
+          <span>{renderLabel?.(option, false) || option.label}</span>
           {index === selected && <Icon name="check" />}
         </div>
       ))}
