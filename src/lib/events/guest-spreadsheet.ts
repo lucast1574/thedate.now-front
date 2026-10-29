@@ -54,31 +54,34 @@ export async function readGuestFileReport(file: File) {
     const cells: string[] = [];
     let unsafe = false;
     for (let i = 1; i <= sheet.columnCount; i++) {
-      let value = row.getCell(i).value;
+      const cell = row.getCell(i);
+      let value = cell.value;
+      const formula =
+        value &&
+        typeof value === "object" &&
+        ("formula" in value || "sharedFormula" in value)
+          ? cell.formula
+          : undefined;
       const firstCountry =
         countryIndex >= 0
           ? sheet.getRow(firstDataRow).getCell(countryIndex + 1)
           : null;
       if (
-        value &&
-        typeof value === "object" &&
-        "formula" in value &&
+        formula &&
         i === countryIndex + 1 &&
         row.number > firstDataRow &&
-        value.formula === `$${sheet.getColumn(i).letter}$${firstDataRow}`
+        formula === `$${sheet.getColumn(i).letter}$${firstDataRow}`
       ) {
         const initial = firstCountry!.value;
         value = typeof initial === "string" ? initial : "";
       }
       if (
-        value &&
-        typeof value === "object" &&
-        "formula" in value &&
+        formula &&
         header?.number === 10 &&
         countryIndex === 3 &&
         i === 4 &&
         row.number >= firstDataRow &&
-        value.formula === `IF($B${row.number}="","",$D$5)`
+        formula === `IF($B${row.number}="","",$D$5)`
       ) {
         const initial = sheet.getCell("D5").value;
         value =

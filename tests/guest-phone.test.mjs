@@ -123,3 +123,29 @@ test("blank template has no preset country or phantom guests and Colombia can be
   assert.equal(colombia.issues.length, 0);
   assert.equal(colombia.guests[0].phone, "+573001234567");
 });
+
+test("country defaults still import when Excel saves them as shared formulas", async () => {
+  const book = new ExcelJS.Workbook();
+  await book.xlsx.load(
+    await readFile("public/templates/plantilla-invitados.xlsx"),
+  );
+  const sheet = book.worksheets[0];
+  sheet.getCell("D5").value = "Colombia (+57)";
+  sheet.getCell("B11").value = "Ana";
+  sheet.getCell("E11").value = "3001234567";
+  sheet.getCell("B12").value = "Luis";
+  sheet.getCell("E12").value = "3001234568";
+  sheet.fillFormula("D11:D510", 'IF($B11="","",$D$5)');
+  assert.ok(sheet.getCell("D12").value.sharedFormula);
+  const bytes = new Uint8Array(await book.xlsx.writeBuffer());
+  const report = await readGuestFileReport({
+    name: "test.xlsx",
+    size: bytes.length,
+    arrayBuffer: async () => bytes.buffer,
+  });
+  assert.equal(report.issues.length, 0);
+  assert.deepEqual(
+    Array.from(report.guests, (guest) => guest.phone),
+    ["+573001234567", "+573001234568"],
+  );
+});
