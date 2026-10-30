@@ -3,7 +3,7 @@
 }
 .seating-toolbar-workspace > .table-organizer {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: 20px;
   align-items: start;
 }

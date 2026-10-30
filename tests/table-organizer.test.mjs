@@ -105,7 +105,7 @@ test("table inspector presents a party as one accessible assignment control", ()
   );
   assert.equal((html.match(/type="checkbox"/g) || []).length, 0);
   assert.doesNotMatch(html, /Quitar de esta mesa/);
-  assert.match(html, /Ver invitados/);
+  assert.doesNotMatch(html, /Ver invitados/);
   assert.doesNotMatch(html, /<details/);
   assert.doesNotMatch(html, /Ana Rojas/);
   assert.doesNotMatch(html, /Luis Perez/);
@@ -147,4 +147,38 @@ test("saving and Excel export follow the unchanged canvas in the editor", () => 
     html.indexOf("Guardando cambios automáticamente") <
       html.indexOf("Export workbook"),
   );
+});
+
+test("the compact table popover exposes one action for the entire household", () => {
+  const Popover = loadSource(
+    "src/features/manager/table-guest-popover.tsx",
+  ).default;
+  const html = renderToStaticMarkup(
+    React.createElement(Popover, {
+      table: plan.tables[1],
+      plan,
+      people,
+      limit: 3,
+      onChange() {},
+      onClose() {},
+    }),
+  );
+  assert.match(html, /Ana Rojas/);
+  assert.match(html, /Luis Perez/);
+  assert.equal((html.match(/aria-label="Quitar a /g) || []).length, 1);
+  assert.match(html, /Quitar a Ana Rojas y su grupo/);
+  assert.doesNotMatch(html, /<dialog/);
+});
+
+test("removing a legacy split household releases the entire group, preserving other guests", () => {
+  assert.equal(moveTableHousehold(people, plan, table, 3, "g", false), null);
+  const split = {
+    ...plan,
+    assignments: { "g~0": "one", "g~1": "two", "h~0": "two" },
+  };
+  const next = moveTableHousehold(people, split, table, 3, "g", false);
+  assert.equal(next.assignments["g~0"], undefined);
+  assert.equal(next.assignments["g~1"], undefined);
+  assert.equal(next.assignments["h~0"], "two");
+  assert.equal(split.assignments["g~1"], "two");
 });

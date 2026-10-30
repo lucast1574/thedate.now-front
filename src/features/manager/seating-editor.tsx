@@ -18,7 +18,6 @@ import SeatingCanvas from "./seating-canvas";
 import TableInspector from "./table-inspector";
 import AutoProposal from "./auto-proposal";
 import VenueAreaTools from "./venue-area-tools";
-import VenueAreaInspector from "./venue-area-inspector";
 type Props = {
   event: Event;
   guests: Guest[];
@@ -111,6 +110,7 @@ export default function SeatingEditor({
       </div>
       <TableGuestWorkspace
         table={table}
+        area={area}
         plan={plan}
         people={people}
         limit={event.capacityUnlimited ? 5000 : Math.min(5000, event.capacity)}
@@ -136,17 +136,9 @@ export default function SeatingEditor({
               setSelected("");
             }}
           />
-        ) : area ? (
-          <VenueAreaInspector
-            key={area.id}
-            area={area}
-            plan={plan}
-            onChange={onChange}
-            onDelete={() => setSelected("")}
-          />
-        ) : (
+        ) : !area ? (
           <SeatingEmptyInspector />
-        )}
+        ) : null}
         <SeatingCanvas
           plan={plan}
           people={people}

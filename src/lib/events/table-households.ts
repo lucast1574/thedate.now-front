@@ -73,11 +73,12 @@ export function moveTableHousehold(
   const group = tableHouseholds(people, plan, table, limit).find(
     (g) => g.guestId === guestId,
   );
-  if (!group || (checked && group.disabled)) return null;
+  if (!group || (checked && group.disabled) || (!checked && !group.here))
+    return null;
   const assignments = { ...plan.assignments };
   for (const person of group.members) {
     if (checked) assignments[person.id] = table.id;
-    else if (assignments[person.id] === table.id) delete assignments[person.id];
+    else delete assignments[person.id];
   }
   return { ...plan, assignments };
 }

@@ -1,38 +1,43 @@
+import Icon from "@/components/icon";
 import RemoveSeatingItem from "./remove-seating-item";
-import type { SeatingPlan } from "@/lib/events/seating";
 import { moveVenueArea, type VenueArea } from "@/lib/events/venue-areas";
-export default function VenueAreaInspector({
+import type { SeatingPlan } from "@/lib/events/seating";
+export default function VenueAreaPopover({
   area,
   plan,
   onChange,
-  onDelete,
+  onClose,
 }: {
   area: VenueArea;
   plan: SeatingPlan;
   onChange: (plan: SeatingPlan) => void;
-  onDelete: () => void;
+  onClose: () => void;
 }) {
-  function patch(value: Partial<VenueArea>) {
+  function patch(fields: Partial<VenueArea>) {
     const next = moveVenueArea(
-      { ...area, ...value },
-      value.x ?? area.x,
-      value.y ?? area.y,
+      { ...area, ...fields },
+      area.x,
+      area.y,
       plan.width,
       plan.height,
     );
     onChange({
       ...plan,
-      areas: plan.areas?.map((item) => (item.id === area.id ? next : item)),
+      areas: plan.areas?.map((a) => (a.id === area.id ? next : a)),
     });
   }
   return (
-    <aside className="table-inspector venue-area-inspector table-organizer">
-      <header className="table-organizer-heading">
-        <small>Espacio seleccionado</small>
-        <h3>{area.name}</h3>
-        <p>Ajusta sus dimensiones sin modificar el aforo.</p>
+    <>
+      <header>
+        <div>
+          <h3 id="table-popover-title">{area.name}</h3>
+          <small>Ajusta el tamaño aquí mismo.</small>
+        </div>
+        <button type="button" aria-label="Cerrar espacio" onClick={onClose}>
+          <Icon name="close" />
+        </button>
       </header>
-      <div className="table-properties">
+      <div className="venue-popover-fields">
         <label>
           Nombre
           <input
@@ -64,21 +69,17 @@ export default function VenueAreaInspector({
           />
         </label>
       </div>
-      <p>
-        Este espacio no tiene asientos ni modifica el aforo. Muévelo en el
-        lienzo con el ratón o las flechas.
-      </p>
       <RemoveSeatingItem
         name={area.name}
-        description="Se quitará este espacio del plano y el cambio se guardará automáticamente. Las mesas y las personas conservarán su posición."
+        description="Se quitará este espacio. Las mesas y sus invitados se conservan."
         onRemove={() => {
           onChange({
             ...plan,
-            areas: plan.areas?.filter((item) => item.id !== area.id),
+            areas: plan.areas?.filter((a) => a.id !== area.id),
           });
-          onDelete();
+          onClose();
         }}
       />
-    </aside>
+    </>
   );
 }
