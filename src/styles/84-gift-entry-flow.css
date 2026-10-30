@@ -1,0 +1,95 @@
+.wishlist-auto-status {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 350px;
+  padding: 16px 20px;
+  background: var(--ui-soft);
+  border: 1px solid var(--ui-border);
+  border-radius: 10px;
+}
+.wishlist-auto-status > .ui-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--ui-accent);
+}
+.wishlist-auto-status strong,
+.wishlist-auto-status small {
+  display: block;
+}
+.wishlist-auto-status strong {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.wishlist-auto-status small {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--ui-muted);
+  margin-top: 3px;
+}
+.guest-page-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  padding: 20px;
+  flex-wrap: wrap;
+  color: var(--rsvp-accent);
+  font-size: 14px;
+}
+.guest-page-navigation a {
+  color: inherit;
+  text-underline-offset: 5px;
+}
+.gift-access-dialog .gift-confirmation-body > .ui-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--ui-accent);
+}
+.gift-access-dialog form {
+  display: grid;
+  gap: 18px;
+  text-align: left;
+}
+.gift-access-dialog form > small {
+  font-size: 12px;
+  color: var(--ui-muted);
+  line-height: 1.7;
+}
+.gift-access-dialog .guest-phone-control {
+  display: flex;
+  gap: 8px;
+}
+.gift-access-dialog .guest-phone-control > input {
+  min-width: 0;
+  flex: 1;
+}
+.gift-access-dialog .guest-phone-control > .custom-listbox {
+  width: 110px;
+  min-width: 110px;
+  flex: 0 0 110px;
+}
+.gift-access-dialog input {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+}
+.gift-access-dialog button:focus-visible,
+.gift-access-dialog input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+}
+@media (max-width: 760px) {
+  .wishlist-auto-status {
+    max-width: none;
+  }
+}
+
+.gift-access-dialog h2:focus {
+  outline: none;
+}

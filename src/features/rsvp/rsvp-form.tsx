@@ -1,4 +1,5 @@
 "use client";
+import { personalPath } from "@/lib/events/personal-links";
 import RSVPReceipt from "./rsvp-receipt";
 import RSVPCompanions from "./rsvp-companions";
 import Alert from "@/components/alert";
@@ -35,6 +36,7 @@ export default function RSVPForm({ token }: { token: string }) {
     return (
       <RSVPReceipt
         details={details}
+        invitationHref={personalPath(token, details.guestName)}
         response={response}
         companions={rsvp.companions}
         onContinue={rsvp.resume}

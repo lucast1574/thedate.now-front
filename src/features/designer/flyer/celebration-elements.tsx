@@ -71,7 +71,7 @@ export default function CelebrationElements({
       >
         <Icon name="lucide:gift" />
         <span>
-          Lista de regalos<small>Tu lista o un enlace de otra tienda</small>
+          Lista de regalos<small>Conectada automáticamente a tus regalos</small>
         </span>
         <Icon name="plus" />
       </button>

@@ -1,10 +1,11 @@
 import "server-only";
 import { headers } from "next/headers";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { backendFetch, validInviteToken } from "@/lib/api/server";
 import { invitationTarget } from "@/lib/events/invitation-runtime";
 import { invitationFromHost } from "@/lib/events/domains";
 import type { PublicEvent } from "@/lib/events/types";
+import { personalPath } from "@/lib/events/personal-links";
 import Invitation from "./invitation";
 import InvitationBrand from "./invitation-brand";
 import LiveInvitation from "./live-invitation";
@@ -13,9 +14,11 @@ import RSVPForm from "@/features/rsvp/rsvp-form";
 export default async function PersonalInvitation({
   token,
   answer = false,
+  legacy = false,
 }: {
   token: string;
   answer?: boolean;
+  legacy?: boolean;
 }) {
   if (!validInviteToken(token)) notFound();
   const response = await backendFetch(`public/rsvp/${token}`);
@@ -39,9 +42,15 @@ export default async function PersonalInvitation({
       (pinned && data.event.id !== pinned.eventId))
   )
     notFound();
+  const path = personalPath(token, data.guestName);
+  if (legacy) redirect(`${path}${answer ? "/respuesta" : ""}`);
   if (answer)
     return (
       <RSVPTheme event={data.event}>
+        <nav className="guest-page-navigation">
+          <a href={path}>Ver invitación</a>
+          <a href={`${path}/regalos`}>Lista de regalos</a>
+        </nav>
         {data.finalized ||
         ["going", "not_going", "maybe"].includes(data.response || "") ? (
           <RSVPForm token={token} />
@@ -54,7 +63,7 @@ export default async function PersonalInvitation({
                 Elige Sí, No o Tal vez en la encuesta que te enviamos. Después
                 podrás completar tus datos desde este enlace.
               </p>
-              <a className="office-button" href={`/rsvp/${token}`}>
+              <a className="office-button" href={path}>
                 Ver invitación
               </a>
             </section>
@@ -71,7 +80,7 @@ export default async function PersonalInvitation({
         showBrand={false}
         event={data.event}
         guestName={data.guestName}
-        giftURL={`/regalos/${token}`}
+        giftURL={`${path}/regalos`}
       />
       <InvitationBrand event={data.event} />
     </>

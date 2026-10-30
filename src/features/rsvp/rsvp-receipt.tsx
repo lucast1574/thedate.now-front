@@ -7,11 +7,13 @@ export default function RSVPReceipt({
   response,
   companions,
   onContinue,
+  invitationHref = "/",
 }: {
   details: RSVPDetails;
   response: string;
   companions: Person[];
   onContinue?: () => void;
+  invitationHref?: string;
 }) {
   const attending = response !== "not_going";
   return (
@@ -78,7 +80,7 @@ export default function RSVPReceipt({
           className={
             response === "maybe" ? "rsvp-secondary-link" : "office-button"
           }
-          href="/"
+          href={invitationHref}
         >
           Ver invitación
         </Link>

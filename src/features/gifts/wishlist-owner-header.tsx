@@ -5,17 +5,13 @@ import type { Wishlist } from "@/lib/events/wishlist";
 export default function WishlistOwnerHeader({
   event,
   list,
-  busy,
   view,
   onView,
-  onToggle,
 }: {
   event: Event;
   list: Wishlist;
-  busy: boolean;
   view: string;
   onView: (view: string) => void;
-  onToggle: () => void;
 }) {
   const published =
     event.paymentStatus === "paid" && !event.isDemo && !!event.publishedAt;
@@ -30,35 +26,21 @@ export default function WishlistOwnerHeader({
             persona.
           </p>
         </div>
-        <button
-          type="button"
-          className="wishlist-visibility"
-          role="switch"
-          aria-checked={list.enabled}
-          aria-label="Mostrar lista de regalos en la invitación"
-          disabled={busy}
-          onClick={onToggle}
-        >
-          <span className="wishlist-toggle-track" aria-hidden="true">
-            <span />
-          </span>
+        <div className="wishlist-auto-status" role="status">
+          <Icon name={list.items.length ? "lucide:gift" : "clock"} />
           <span>
             <strong>
-              {list.enabled
-                ? published
-                  ? "Visible para tus invitados"
-                  : "Lista activada"
-                : "Solo tú puedes verla"}
+              {list.items.length
+                ? "Tu lista se actualiza automáticamente"
+                : "Empieza con un regalo"}
             </strong>
             <small>
-              {list.enabled
-                ? published
-                  ? "Pueden elegir y reservar sus regalos"
-                  : "Se mostrará al publicar la invitación"
-                : "Actívala cuando esté lista para compartir"}
+              {published
+                ? "Disponible desde el elemento de regalos de tu invitación"
+                : "Se compartirá al publicar la invitación"}
             </small>
           </span>
-        </button>
+        </div>
       </header>
       <div className="wishlist-owner-navigation">
         <div className="wishlist-view-actions">
@@ -85,7 +67,7 @@ export default function WishlistOwnerHeader({
             Ver ejemplo
           </button>
         </div>
-        {published && list.enabled ? (
+        {published ? (
           <a
             className="wishlist-share-link"
             href={`https://${invitationHost(event.kind, event.slug)}/regalos`}
@@ -97,10 +79,8 @@ export default function WishlistOwnerHeader({
           </a>
         ) : (
           <span className="wishlist-publication-hint">
-            <Icon name={list.enabled ? "clock" : "lock"} />
-            {!list.enabled
-              ? "Puedes prepararla sin mostrarla todavía"
-              : "Publica la invitación para compartirla"}
+            <Icon name="clock" />
+            Publica la invitación para compartirla
           </span>
         )}
       </div>

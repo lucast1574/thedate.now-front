@@ -1,5 +1,4 @@
 "use client";
-import { validGiftLink } from "@/lib/events/gift-link";
 import { validDesignDressColors } from "@/lib/events/dress-code";
 import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
@@ -99,17 +98,6 @@ export function useInvitationDesign(
       )
         throw new Error(
           "Revisa el enlace de Google Maps en la ubicación antes de guardar.",
-        );
-      if (
-        sections.some((s) =>
-          s.canvas?.elements.some(
-            (item) =>
-              item.binding === "gift_link" && !validGiftLink(item.link || ""),
-          ),
-        )
-      )
-        throw new Error(
-          "Revisa el enlace de la lista de regalos antes de guardar.",
         );
       await api(
         `/api/backend/events/${draft.id}/design`,

@@ -22,7 +22,7 @@ export default function FlyerGiftLink({
       className="flyer-gift-link"
       data-align={item.align}
       href={href}
-      target={item.link === "/regalos" ? undefined : "_blank"}
+
       rel="noopener noreferrer"
     >
       {content}

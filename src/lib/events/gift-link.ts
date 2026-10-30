@@ -11,7 +11,6 @@ export function validGiftLink(raw: string) {
     return false;
   }
 }
-export function giftHref(item: FlyerElement, personalURL = "/regalos") {
-  if (!item.link || !validGiftLink(item.link)) return "";
-  return item.link === "/regalos" ? personalURL : item.link;
+export function giftHref(_item: FlyerElement, personalURL = "/regalos") {
+  return personalURL;
 }

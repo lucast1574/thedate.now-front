@@ -8,7 +8,7 @@ const { default: Gift } = loadSource("src/components/flyer-gift-link.tsx");
 const { default: Invitation } = loadSource(
   "src/features/invitations/invitation.tsx",
 );
-test("gift links preserve personal destinations, permit HTTPS lists and never render unsafe links", () => {
+test("gift elements always resolve the app-owned list and preserve personal destinations", () => {
   for (const link of ["/regalos", "https://store.example/lista?a=1#regalos"])
     assert.ok(validGiftLink(link));
   for (const link of [
@@ -23,11 +23,11 @@ test("gift links preserve personal destinations, permit HTTPS lists and never re
     "https://example.com\\evil",
   ]) {
     assert.equal(validGiftLink(link), false, link);
-    assert.equal(giftHref({ link }), "");
+    assert.equal(giftHref({ link }), "/regalos");
     assert.ok(
-      !renderToStaticMarkup(
+      renderToStaticMarkup(
         createElement(Gift, { item: { link, text: "Regalos" } }),
-      ).includes("<a "),
+      ).includes('href="/regalos"'),
     );
   }
   assert.equal(

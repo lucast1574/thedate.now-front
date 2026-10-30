@@ -25,6 +25,13 @@ export function allowedInvitationPath(path: string) {
     path === "/vendor/maplibre/maplibre-gl-worker.mjs" ||
     path === "/template-photos/placeholder.svg" ||
     path === "/regalos" ||
+    /^\/para\/[a-z0-9-]{1,60}-[A-Za-z0-9_-]{32}(?:\/(?:respuesta|regalos))?$/.test(
+      path,
+    ) ||
+    /^\/flags\/[a-z]{2}\.svg$/.test(path) ||
+    /^\/api\/gift-catalog(?:\/(?:access|images\/[a-zA-Z0-9-]{1,64}))?$/.test(
+      path,
+    ) ||
     /^\/regalos\/[a-f0-9]{48}$/.test(path) ||
     /^\/api\/gifts\/[a-f0-9]{48}(?:\/images\/[a-zA-Z0-9-]{1,64})?$/.test(
       path,

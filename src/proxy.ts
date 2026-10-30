@@ -1,5 +1,6 @@
 import { applicationHost, configuredProduct } from "@/lib/products/application";
 import { NextResponse, type NextRequest } from "next/server";
+import { tokenFromPath } from "@/lib/events/personal-links";
 import { safeReferral } from "@/lib/auth/continuation";
 import { invitationHost } from "@/lib/events/domains";
 import {
@@ -22,9 +23,10 @@ export function proxy(request: NextRequest) {
       return new NextResponse("Not found", { status: 404 });
   }
   const target = invitationTarget();
-  const personal = /^\/(?:rsvp|join|regalos|api\/(?:rsvp|join|gifts))\//.test(
-    request.nextUrl.pathname,
-  );
+  const personal =
+    /^\/(?:para|rsvp|join|regalos|api\/(?:rsvp|join|gifts))\//.test(
+      request.nextUrl.pathname,
+    );
   const next = () => {
     const response = NextResponse.next();
     if (product) response.headers.set("X-Application-Product", product);
@@ -37,7 +39,20 @@ export function proxy(request: NextRequest) {
         path: "/",
         maxAge: 30 * 86400,
       });
-    if (personal) {
+    const guestToken = tokenFromPath(request.nextUrl.pathname);
+    if (target && guestToken)
+      response.cookies.set("thedate_guest", guestToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        path: "/",
+        maxAge: 180 * 86400,
+      });
+    if (
+      personal ||
+      request.nextUrl.pathname === "/regalos" ||
+      request.nextUrl.pathname.startsWith("/api/gift-catalog")
+    ) {
       response.headers.set("Cache-Control", "private, no-store");
       response.headers.set("Referrer-Policy", "no-referrer");
       response.headers.set("X-Robots-Tag", "noindex, nofollow");

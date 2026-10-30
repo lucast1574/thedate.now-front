@@ -74,7 +74,7 @@ test("received gifts expose delivery controls while unreserved gifts expose edit
   assert.match(received, /Marcar pendiente/);
   assert.match(received, /Recibido/);
 });
-test("visibility control accurately separates a private list from an unpublished activated list", () => {
+test("wishlist access depends on publication and never needs a visibility switch", () => {
   const Header = loadSource(
     "src/features/gifts/wishlist-owner-header.tsx",
   ).default;
@@ -94,9 +94,13 @@ test("visibility control accurately separates a private list from an unpublished
         onToggle() {},
       }),
     );
-  assert.match(render(false, "today"), /Solo tú puedes verla/);
-  assert.match(render(true, undefined), /Lista activada/);
+  assert.doesNotMatch(render(false, "today"), /role="switch"/);
+  assert.match(render(false, "today"), /Abrir lista publicada/);
+  assert.match(render(true, undefined), /Publica la invitación/);
   assert.doesNotMatch(render(true, undefined), /Abrir lista publicada/);
-  assert.match(render(true, "today"), /Visible para tus invitados/);
+  assert.match(
+    render(true, "today"),
+    /Disponible desde el elemento de regalos/,
+  );
   assert.match(render(true, "today"), /Abrir lista publicada/);
 });

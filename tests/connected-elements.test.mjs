@@ -42,7 +42,7 @@ const source = {
     restrictionText: "Sin mascotas",
   },
 };
-test("both products ship every essential connected element including an inactive wishlist", () => {
+test("both products ship every essential connected element and always show gift access", () => {
   for (const template of invitationTemplates.filter(
     (t) => t.mode === "flyer",
   )) {
@@ -73,7 +73,7 @@ test("both products ship every essential connected element including an inactive
         pages.find((p) => p.when === "gifts"),
         source,
       ),
-      false,
+      true,
     );
   }
 });

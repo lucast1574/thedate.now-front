@@ -55,10 +55,8 @@ export default function WishlistPanel({ event }: { event: Event }) {
       <WishlistOwnerHeader
         event={event}
         list={list}
-        busy={state.busy}
         view={view}
         onView={setView}
-        onToggle={() => void state.save({ ...list, enabled: !list.enabled })}
       />
       {state.error && (
         <div role="alert" className="gift-error">

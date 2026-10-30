@@ -13,19 +13,28 @@ export default function GuestWishlistView({
   imageSource,
   onChoose,
   preview = false,
+  onIdentify,
+  initialGiftId,
 }: {
   data: GuestWishlist;
   busy?: boolean;
   error?: string;
   notice?: string;
   preview?: boolean;
+  initialGiftId?: string;
+  onIdentify?: (item: GuestGift) => void;
   imageSource: (item: GuestGift) => string | undefined;
   onChoose: (id: string, release: boolean) => Promise<boolean>;
 }) {
   const [pending, setPending] = useState<{
     item: GuestGift;
     release: boolean;
-  } | null>(null);
+  } | null>(() => {
+    const item = data.items.find(
+      (item) => item.id === initialGiftId && !item.reserved,
+    );
+    return item && data.guestName ? { item, release: false } : null;
+  });
   const [filter, setFilter] = useState("all");
   const mine = data.items.find((item) => item.mine);
   const available = data.items.filter((item) => !item.reserved).length;
@@ -40,8 +49,8 @@ export default function GuestWishlistView({
         <span className="gift-event-title">{data.event.title}</span>
         <Heading>Un detalle para celebrar</Heading>
         <p>
-          {data.guestName}, tu compañía es lo más importante. Si quieres tener
-          un detalle, aquí tienes algunas ideas.
+          {data.guestName ? `${data.guestName}, tu` : "Tu"} compañía es lo más
+          importante. Si quieres tener un detalle, aquí tienes algunas ideas.
         </p>
       </header>
       {mine ? (
@@ -132,8 +141,9 @@ export default function GuestWishlistView({
           <Icon name="lucide:gift" />
           <h2>Estamos preparando la lista</h2>
           <p>
-            Vuelve a tu invitación; pronto encontrarás aquí las ideas de
-            regalos.
+            {data.event.kind === "wedding"
+              ? "Los novios aún no han añadido sus regalos. Vuelve pronto para descubrir su lista de deseos."
+              : "Quien organiza aún está preparando su lista de deseos. Vuelve pronto para descubrir las ideas de regalos."}
           </p>
         </section>
       ) : !visible.length ? (
@@ -150,7 +160,7 @@ export default function GuestWishlistView({
               busy={busy}
               hasChoice={!!mine}
               onChoose={(item, release = false) =>
-                setPending({ item, release })
+                onIdentify ? onIdentify(item) : setPending({ item, release })
               }
             />
           ))}
