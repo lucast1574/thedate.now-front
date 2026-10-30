@@ -9,7 +9,7 @@
 }
 .organization-selection {
   margin-top: 36px;
-  max-width: 1240px;
+  max-width: 1040px;
 }
 .organization-selection-heading {
   display: flex;
@@ -42,15 +42,15 @@
     background 180ms ease;
 }
 .organization-selection .organization-event-thumbnail {
-  height: 248px;
+  height: 208px;
   background: var(--ui-soft);
 }
 .organization-selection .invitation-thumbnail {
   background: var(--ui-soft);
 }
 .organization-selection .organization-event-info {
-  gap: 12px;
-  padding: 20px 22px 0;
+  gap: 10px;
+  padding: 16px 20px 0;
 }
 .organization-event-meta {
   display: flex;
@@ -64,7 +64,7 @@
   color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
 }
 .organization-selection .organization-event-info > strong {
-  font: var(--ui-heading-weight) 27px/1.15 var(--ui-heading-font);
+  font: var(--ui-heading-weight) 25px/1.15 var(--ui-heading-font);
   color: var(--ui-ink);
 }
 .organization-publication {
@@ -88,7 +88,7 @@
   justify-content: space-between;
   gap: 16px;
   margin-top: 5px;
-  padding-block: 17px;
+  padding-block: 14px;
   border-top: 1px solid var(--ui-border);
   font-size: 13px;
   font-weight: 500;
@@ -146,7 +146,7 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
   }
   .organization-selection .organization-event-thumbnail {
-    height: 220px;
+    height: 200px;
   }
 }
 @media (max-width: 600px) {
@@ -163,7 +163,7 @@
     gap: 12px;
   }
   .organization-selection .organization-event-thumbnail {
-    height: 240px;
+    height: 208px;
   }
   .organization-selection .organization-event-info {
     padding: 18px 18px 0;
