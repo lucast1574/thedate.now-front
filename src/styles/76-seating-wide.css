@@ -4,24 +4,62 @@
 }
 .seating-workspace-wide > .table-organizer {
   display: grid;
-  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
-  gap: 0 28px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px 24px;
   align-items: start;
 }
-.seating-workspace-wide .table-organizer-heading,
-.seating-workspace-wide .table-occupancy,
-.seating-workspace-wide .table-edit-settings,
-.seating-workspace-wide .seating-remove {
+.seating-workspace-wide .table-organizer-heading {
   grid-column: 1;
+  grid-row: 1;
+}
+.seating-workspace-wide .table-occupancy {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+}
+.seating-workspace-wide .table-edit-settings {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  padding: 0 0 16px;
+}
+.seating-workspace-wide .seating-remove {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  max-width: 360px;
 }
 .seating-workspace-wide .table-guest-workflow {
-  grid-column: 2;
-  grid-row: 1 / span 5;
+  grid-column: 1 / -1;
+  grid-row: 4;
   margin: 0;
-  padding-left: 28px;
-  border-left: 1px solid var(--ui-border);
+  padding: 0;
+  border: 0;
   min-width: 0;
   max-width: none;
+}
+.seating-workspace-wide .table-edit-settings .table-properties {
+  grid-template-columns: minmax(180px, 1.2fr) minmax(280px, 1fr) minmax(
+      220px,
+      1.2fr
+    );
+  align-items: start;
+  gap: 24px;
+}
+.seating-workspace-wide .table-position-details {
+  border: 0;
+  padding: 0;
+}
+.seating-workspace-wide .table-properties-row {
+  grid-template-columns: minmax(80px, 0.65fr) minmax(160px, 1fr);
+}
+.manager-page
+  .seating-workspace-wide
+  .table-properties
+  input:not([type="range"]),
+.manager-page .seating-workspace-wide .table-properties button {
+  min-height: 44px;
 }
 .seating-workspace-wide .seating-households {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
@@ -44,26 +82,31 @@
 .seating-workspace-wide > .seating-empty-inspector {
   max-width: none;
 }
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
+  .seating-workspace-wide .table-edit-settings .table-properties {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .seating-workspace-wide .table-position-details {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .seating-workspace-wide .table-edit-settings .table-properties {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .seating-workspace-wide > .table-organizer {
     grid-template-columns: minmax(0, 1fr);
   }
-  .seating-workspace-wide .table-guest-workflow {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 20px 0 0;
-    margin-top: 16px;
-    border-left: 0;
-    border-top: 1px solid var(--ui-border);
-  }
   .seating-workspace-wide .seating-remove {
-    grid-row: 6;
+    grid-column: 1;
+    grid-row: 5;
+    padding-top: 16px;
+    border-top: 1px solid var(--ui-border);
   }
   .seating-workspace-wide .table-add-guests {
     width: 100%;
   }
 }
-
 @media (min-width: 1200px) {
   .seating-workspace-wide .table-guest-workflow:has(.table-add-panel) {
     display: grid;
