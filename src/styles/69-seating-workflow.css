@@ -48,7 +48,7 @@
 .seating-setup {
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  align-items: start;
+  align-items: stretch;
   gap: 18px;
   margin-bottom: 28px;
 }

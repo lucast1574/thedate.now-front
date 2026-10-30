@@ -10,7 +10,7 @@ export default function SeatingEmptyInspector() {
       </p>
       <ol>
         <li>Elige una mesa en el plano.</li>
-        <li>Marca al titular para mover a todo su grupo.</li>
+        <li>Pulsa «Añadir invitados» para sentarlos juntos.</li>
         <li>Guarda el plano cuando termines.</li>
       </ol>
       <small>

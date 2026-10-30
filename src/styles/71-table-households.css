@@ -1,26 +1,93 @@
 .seating-households {
   display: grid;
-  gap: 8px;
-  max-height: 390px;
+  gap: 10px;
+  max-height: 360px;
   overflow-y: auto;
-  padding-right: 3px;
+  min-width: 0;
 }
-.manager-page .table-organizer .seating-household {
+.seating-party-card {
   display: grid;
-  grid-template-columns: 18px minmax(0, 1fr) 36px;
-  align-items: start;
-  gap: 9px;
-  padding: 12px 9px;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
   border: 1px solid var(--ui-border);
   border-radius: 6px;
-  cursor: pointer;
 }
-.seating-household[data-assigned="true"] {
+.seating-household-person > span {
+  min-width: 0;
+}
+.seating-party-context {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--seating-muted);
+  overflow-wrap: anywhere;
+}
+.manager-page .seating-party-card button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  width: 100%;
+  white-space: normal;
+  font-size: 12px;
+  padding: 8px;
+}
+.seating-party-card .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+.manager-page .table-add-guests {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
   background: var(--ui-soft);
 }
-.seating-household[data-disabled="true"] {
-  opacity: 0.6;
-  cursor: not-allowed;
+.table-add-guests .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+.table-add-panel {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--ui-border);
+}
+.manager-page .table-add-panel h4 {
+  margin: 0;
+  font-size: 14px;
+}
+.table-add-panel .table-search {
+  margin-bottom: 12px;
+}
+.table-edit-settings {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--ui-border);
+}
+.table-edit-settings > summary {
+  cursor: pointer;
+  font-size: 13px;
+  padding: 6px 0;
+}
+.table-edit-settings[open] > summary {
+  margin-bottom: 12px;
+}
+.table-edit-settings > summary:focus-visible {
+  outline: none;
+  background: var(--ui-soft);
+}
+.manager-page .table-assignment-notice {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 0 0;
+  color: var(--ui-accent);
+  overflow-wrap: anywhere;
+}
+.table-assignment-notice:empty {
+  display: none;
 }
 .seating-household-people {
   display: grid;

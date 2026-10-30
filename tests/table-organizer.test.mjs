@@ -103,9 +103,12 @@ test("table inspector presents a party as one accessible assignment control", ()
       onDelete() {},
     }),
   );
-  assert.equal((html.match(/type="checkbox"/g) || []).length, 2);
-  assert.match(html, /Ana Rojas/);
-  assert.match(html, /Luis Perez/);
+  assert.equal((html.match(/type="checkbox"/g) || []).length, 0);
+  assert.match(html, /Quitar de esta mesa: Maria Vega/);
+  assert.match(html, /Añadir invitados/);
+  assert.match(html, /aria-expanded="false"/);
+  assert.doesNotMatch(html, /Ana Rojas/);
+  assert.doesNotMatch(html, /Luis Perez/);
   assert.match(html, /Ubicaci/);
 });
 test("saving and Excel export follow the unchanged canvas in the editor", () => {

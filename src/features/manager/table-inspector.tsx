@@ -48,18 +48,21 @@ export default function TableInspector({
           }}
         />
       </div>
-      <TableProperties
-        table={table}
-        assigned={assigned}
-        onPatch={(fields) =>
-          onChange({
-            ...plan,
-            tables: plan.tables.map((t) =>
-              t.id === table.id ? { ...t, ...fields } : t,
-            ),
-          })
-        }
-      />
+      <details className="table-edit-settings">
+        <summary>Editar mesa</summary>
+        <TableProperties
+          table={table}
+          assigned={assigned}
+          onPatch={(fields) =>
+            onChange({
+              ...plan,
+              tables: plan.tables.map((t) =>
+                t.id === table.id ? { ...t, ...fields } : t,
+              ),
+            })
+          }
+        />
+      </details>
       <TableHouseholds
         table={table}
         plan={plan}
