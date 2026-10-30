@@ -104,9 +104,9 @@ test("table inspector presents a party as one accessible assignment control", ()
     }),
   );
   assert.equal((html.match(/type="checkbox"/g) || []).length, 0);
-  assert.match(html, /Quitar de esta mesa: Maria Vega/);
-  assert.match(html, /Añadir invitados/);
-  assert.match(html, /aria-expanded="false"/);
+  assert.doesNotMatch(html, /Quitar de esta mesa/);
+  assert.match(html, /Ver invitados/);
+  assert.doesNotMatch(html, /<details/);
   assert.doesNotMatch(html, /Ana Rojas/);
   assert.doesNotMatch(html, /Luis Perez/);
   assert.match(html, /Ubicaci/);

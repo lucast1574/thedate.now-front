@@ -13,6 +13,7 @@ import SeatingSaveBar from "./seating-save-bar";
 import SeatingEmptyInspector from "./seating-empty-inspector";
 import SeatingOverview from "./seating-overview";
 import SeatingTools from "./seating-tools";
+import TableGuestWorkspace from "./table-guest-workspace";
 import SeatingCanvas from "./seating-canvas";
 import TableInspector from "./table-inspector";
 import AutoProposal from "./auto-proposal";
@@ -102,22 +103,25 @@ export default function SeatingEditor({
         <div>
           <h3>Plano del salón</h3>
           <p>
-            Selecciona una mesa y organízala en el panel de arriba. Arrastra
-            para colocar mesas y espacios.
+            Pulsa una mesa para ver o cambiar sus invitados. Arrastra para
+            colocar mesas y espacios.
           </p>
         </div>
         <span>Solo invitados confirmados</span>
       </div>
-      <div className="seating-workspace seating-workspace-wide">
+      <TableGuestWorkspace
+        table={table}
+        plan={plan}
+        people={people}
+        limit={event.capacityUnlimited ? 5000 : Math.min(5000, event.capacity)}
+        onChange={onChange}
+      >
         {table ? (
           <TableInspector
             key={table.id}
             table={table}
             plan={plan}
             people={people}
-            limit={
-              event.capacityUnlimited ? 5000 : Math.min(5000, event.capacity)
-            }
             onChange={onChange}
             onDelete={() => {
               onChange({
@@ -159,7 +163,7 @@ export default function SeatingEditor({
             })
           }
         />
-      </div>
+      </TableGuestWorkspace>
       <SeatingSaveBar
         busy={busy}
         dirty={dirty}

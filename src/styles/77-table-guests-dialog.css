@@ -1,0 +1,108 @@
+.table-guests-dialog {
+  width: min(1000px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  color: var(--ui-ink);
+  background: var(--ui-surface);
+  outline: none;
+  overflow-y: auto;
+}
+.table-guests-dialog::backdrop {
+  background: rgb(35 30 26 / 0.4);
+}
+.table-guests-dialog > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+.manager-page .table-guests-dialog h2 {
+  margin: 0 0 8px;
+  font: 500 28px/1.2 var(--ui-heading-font);
+}
+.manager-page .table-guests-dialog p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ui-muted);
+}
+.table-guests-dialog > header button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+}
+.table-guests-dialog > header .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.table-guests-dialog .table-guest-workflow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px 24px;
+  margin: 0;
+}
+.table-guests-dialog .table-section-title {
+  grid-column: 1;
+}
+.table-guests-dialog .table-guest-workflow > .seating-households {
+  grid-column: 1;
+  grid-row: 2;
+}
+.table-guests-dialog .table-add-panel {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.table-guests-dialog .seating-households {
+  grid-template-columns: minmax(0, 1fr);
+  max-height: 48dvh;
+  align-content: start;
+}
+.table-guests-dialog .seating-household-people {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+}
+.table-guests-dialog .table-assignment-notice {
+  grid-column: 1 / -1;
+}
+.table-guests-dialog > footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ui-border);
+  font-size: 12px;
+  color: var(--ui-muted);
+}
+.table-guests-dialog > footer button {
+  min-height: 44px;
+}
+.table-guests-dialog button:focus-visible {
+  outline: none;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
+}
+@media (max-width: 650px) {
+  .table-guests-dialog {
+    padding: 18px;
+  }
+  .table-guests-dialog .table-guest-workflow {
+    display: flex;
+    flex-direction: column;
+  }
+  .table-guests-dialog .table-add-panel {
+    padding-top: 18px;
+    border-top: 1px solid var(--ui-border);
+  }
+}

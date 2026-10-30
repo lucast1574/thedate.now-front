@@ -1,172 +1,103 @@
-/* The organizer sits above the original, unchanged salon canvas. */
 .seating-workspace.seating-workspace-wide {
   grid-template-columns: minmax(0, 1fr);
 }
-.seating-workspace-wide > .table-organizer {
+.seating-toolbar-workspace > .table-organizer {
   display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
   align-items: start;
 }
-.table-config {
+.seating-toolbar-workspace .table-config {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 12px 24px;
   min-width: 0;
 }
-.seating-workspace-wide .table-occupancy {
-  margin: 14px 0;
+.seating-toolbar-workspace .table-organizer-heading {
+  grid-column: 1;
 }
-.seating-workspace-wide .table-edit-settings {
-  padding: 0;
+.seating-toolbar-workspace .table-occupancy {
+  grid-column: 1;
+  margin: 0;
+}
+.seating-toolbar-workspace .table-edit-settings {
+  grid-column: 2;
+  grid-row: 1 / span 3;
   border: 0;
+  padding: 0;
 }
-.seating-workspace-wide .seating-remove {
-  margin-top: 12px;
+.seating-toolbar-workspace .seating-remove {
+  grid-column: 1;
+  margin: 0;
   padding-top: 10px;
 }
-.seating-workspace-wide .table-guest-workflow {
-  margin: 0;
-  padding-left: 24px;
-  border-left: 1px solid var(--ui-border);
-  min-width: 0;
-  max-width: none;
+.seating-toolbar-workspace .table-properties {
+  grid-template-columns: minmax(160px, 1fr) minmax(240px, 1.2fr);
+  gap: 16px;
 }
-.seating-workspace-wide .table-edit-settings .table-properties {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+.seating-toolbar-workspace .table-properties-row {
+  grid-template-columns: minmax(70px, 0.6fr) minmax(140px, 1fr);
 }
-@media (min-width: 1100px) {
-  .seating-workspace-wide > .table-organizer:has(.table-edit-settings[open]) {
-    grid-template-columns: minmax(460px, 0.8fr) minmax(0, 1fr);
-  }
-  .seating-workspace-wide
-    .table-config:has(.table-edit-settings[open])
-    .table-properties {
-    grid-template-columns: minmax(120px, 1fr) minmax(252px, 1.2fr);
-  }
-  .seating-workspace-wide .table-config .table-position-details {
-    grid-column: 1 / -1;
-  }
-  .seating-workspace-wide .table-guest-workflow > .seating-households {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .seating-workspace-wide
-    .table-guest-workflow
-    > .seating-households
-    .seating-party-card {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
-  }
-  .seating-workspace-wide
-    .table-guest-workflow
-    > .seating-households
-    .seating-household-people {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-  }
-  .seating-workspace-wide
-    .table-guest-workflow
-    > .seating-households
-    .seating-party-card
-    > button {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    width: auto;
-    max-width: 170px;
-  }
-}
-.seating-workspace-wide .table-position-details {
+.seating-toolbar-workspace .table-position-details {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) minmax(180px, 1fr);
+  gap: 8px 20px;
   border: 0;
   padding: 0;
 }
-.seating-workspace-wide .table-properties-row {
-  grid-template-columns: minmax(80px, 0.65fr) minmax(160px, 1fr);
+.manager-page .seating-toolbar-workspace .table-position-details h4 {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  margin: 0;
 }
-.manager-page
-  .seating-workspace-wide
-  .table-properties
-  input:not([type="range"]),
-.manager-page .seating-workspace-wide .table-properties button {
+.seating-toolbar-workspace .table-position-details p {
+  display: none;
+}
+.manager-page .table-guests-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
   min-height: 44px;
 }
-.seating-workspace-wide .seating-households {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
-  align-items: start;
-  max-height: 320px;
+.table-guests-trigger .ui-icon {
+  width: 17px;
+  height: 17px;
 }
-.seating-workspace-wide .table-add-panel .table-search {
-  max-width: 480px;
+@media (min-width: 1500px) {
+  .seating-toolbar-workspace .table-properties {
+    grid-template-columns: minmax(160px, 1fr) minmax(240px, 1fr) minmax(
+        300px,
+        1.4fr
+      );
+  }
+  .seating-toolbar-workspace .table-position-details {
+    grid-column: 3;
+  }
 }
-.seating-workspace-wide .table-add-guests {
-  width: auto;
-  padding-inline: 18px;
-}
-.seating-workspace-wide .table-assignment-empty {
-  grid-column: 1 / -1;
-}
-.seating-workspace-wide .table-properties {
-  max-width: none;
-}
-.seating-workspace-wide > .seating-empty-inspector {
-  max-width: none;
-}
-@media (max-width: 900px) {
-  .seating-workspace-wide > .table-organizer {
+@media (max-width: 1100px) {
+  .seating-toolbar-workspace .table-config {
     grid-template-columns: minmax(0, 1fr);
   }
-  .seating-workspace-wide .table-guest-workflow {
-    padding: 16px 0 0;
-    border-left: 0;
-    border-top: 1px solid var(--ui-border);
+  .seating-toolbar-workspace .table-edit-settings {
+    grid-column: 1;
+    grid-row: auto;
   }
-  .seating-workspace-wide .table-edit-settings .table-properties {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-  .seating-workspace-wide .table-position-details {
-    grid-column: 1 / -1;
+  .seating-toolbar-workspace .table-occupancy {
+    max-width: 220px;
   }
 }
 @media (max-width: 600px) {
-  .seating-workspace-wide .table-edit-settings .table-properties {
+  .seating-toolbar-workspace > .table-organizer,
+  .seating-toolbar-workspace .table-properties,
+  .seating-toolbar-workspace .table-position-details {
     grid-template-columns: minmax(0, 1fr);
   }
-  .seating-workspace-wide .table-add-guests {
-    width: 100%;
+  .seating-toolbar-workspace .table-position-details {
+    grid-column: 1;
   }
 }
-@media (min-width: 1200px) {
-  .seating-workspace-wide .table-guest-workflow:has(.table-add-panel) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 14px 24px;
-  }
-  .seating-workspace-wide .table-guest-workflow > .table-section-title {
-    grid-column: 1;
-    align-self: center;
-  }
-  .seating-workspace-wide .table-guest-workflow > .seating-households {
-    grid-column: 1;
-    grid-row: 2;
-  }
-  .seating-workspace-wide
-    .table-guest-workflow:has(.table-add-panel)
-    > .table-add-guests {
-    grid-column: 2;
-    grid-row: 1;
-    margin: 0;
-  }
-  .seating-workspace-wide .table-add-panel {
-    grid-column: 2;
-    grid-row: 2;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    min-width: 0;
-  }
-  .seating-workspace-wide .table-assignment-notice {
-    grid-column: 1 / -1;
-  }
-}
-
 .seating-workspace-wide > .seating-organizer-empty {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr);
@@ -187,4 +118,9 @@
 .seating-workspace-wide > .seating-organizer-empty ol,
 .seating-workspace-wide > .seating-organizer-empty small {
   display: none;
+}
+/* Fit the complete salon to the viewport without changing its coordinates. */
+.seating-toolbar-workspace > .seating-scroll > .seating-board {
+  width: min(100%, calc((100dvh - 100px) * 1.6));
+  margin-inline: auto;
 }

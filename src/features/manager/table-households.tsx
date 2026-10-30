@@ -21,9 +21,8 @@ export default function TableHouseholds({
   limit: number;
   onChange: (plan: SeatingPlan) => void;
 }) {
-  const addButton = useRef<HTMLButtonElement>(null);
+  const addButton = useRef<HTMLInputElement>(null);
   const [search, setSearch] = useState("");
-  const [adding, setAdding] = useState(false);
   const [notice, setNotice] = useState("");
   const groups = tableHouseholds(people, plan, table, limit);
   const seated = groups.filter((group) => group.here > 0);
@@ -35,7 +34,7 @@ export default function TableHouseholds({
       ? "Quitar de esta mesa"
       : group.elsewhere.length
         ? "Mover aquí"
-        : "Añadir a esta mesa";
+        : "Sentar aquí";
     return (
       <article className="seating-party-card" key={group.guestId}>
         <div className="seating-household-people">
@@ -110,45 +109,34 @@ export default function TableHouseholds({
           </p>
         )}
       </div>
-      <button
-        ref={addButton}
-        className="table-add-guests"
-        type="button"
-        aria-expanded={adding}
-        onClick={() => setAdding(!adding)}
-      >
-        <Icon name="plus" />
-        {adding ? "Cerrar lista de invitados" : "Añadir invitados"}
-      </button>
-      {adding && (
-        <div className="table-add-panel">
-          <h4>¿A quién quieres sentar aquí?</h4>
-          <p>Cada invitado se mueve junto con sus acompañantes.</p>
-          <label className="table-search">
-            <span>Buscar invitado o acompañante</span>
-            <span>
-              <Icon name="search" />
-              <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Escribe un nombre o apellido"
-              />
-            </span>
-          </label>
-          <div className="seating-households">
-            {available.map((group) => card(group, false))}
-            {!available.length && (
-              <p className="table-assignment-empty">
-                {search
-                  ? "No encontramos ese nombre."
-                  : people.length
-                    ? "Todos los invitados confirmados ya están en esta mesa."
-                    : "Aquí aparecerán tus invitados cuando confirmen su asistencia."}
-              </p>
-            )}
-          </div>
+      <div className="table-add-panel">
+        <h4>¿A quién quieres sentar aquí?</h4>
+        <p>Cada invitado se mueve junto con sus acompañantes.</p>
+        <label className="table-search">
+          <span>Buscar invitado o acompañante</span>
+          <span>
+            <Icon name="search" />
+            <input
+              ref={addButton}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Escribe un nombre o apellido"
+            />
+          </span>
+        </label>
+        <div className="seating-households">
+          {available.map((group) => card(group, false))}
+          {!available.length && (
+            <p className="table-assignment-empty">
+              {search
+                ? "No encontramos ese nombre."
+                : people.length
+                  ? "Todos los invitados confirmados ya están en esta mesa."
+                  : "Aquí aparecerán tus invitados cuando confirmen su asistencia."}
+            </p>
+          )}
         </div>
-      )}
+      </div>
       <p className="table-assignment-notice" role="status">
         {notice}
       </p>

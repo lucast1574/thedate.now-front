@@ -52,8 +52,8 @@ export default function TableProperties({
           </Listbox>
         </label>
       </div>
-      <details className="table-position-details">
-        <summary>Ubicación y giro</summary>
+      <section className="table-position-details">
+        <h4>Ubicación y giro</h4>
         <p>
           También puedes arrastrar la mesa en el plano o moverla con las
           flechas.
@@ -97,7 +97,7 @@ export default function TableProperties({
             />
           </label>
         </div>
-      </details>
+      </section>
     </div>
   );
 }

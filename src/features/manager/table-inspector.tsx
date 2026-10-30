@@ -1,20 +1,18 @@
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
 import TableProperties from "./table-properties";
-import TableHouseholds from "./table-households";
+import Icon from "@/components/icon";
 import RemoveSeatingItem from "./remove-seating-item";
 
 export default function TableInspector({
   table,
   plan,
   people,
-  limit,
   onChange,
   onDelete,
 }: {
   table: SeatingTable;
   plan: SeatingPlan;
   people: Attendee[];
-  limit: number;
   onChange: (plan: SeatingPlan) => void;
   onDelete: () => void;
 }) {
@@ -49,8 +47,7 @@ export default function TableInspector({
             }}
           />
         </div>
-        <details className="table-edit-settings">
-          <summary>Editar mesa</summary>
+        <section className="table-edit-settings">
           <TableProperties
             table={table}
             assigned={assigned}
@@ -63,20 +60,17 @@ export default function TableInspector({
               })
             }
           />
-        </details>
+        </section>
         <RemoveSeatingItem
           name={table.name}
           description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
           onRemove={onDelete}
         />
       </section>
-      <TableHouseholds
-        table={table}
-        plan={plan}
-        people={people}
-        limit={limit}
-        onChange={onChange}
-      />
+      <button type="button" className="table-guests-trigger" data-table-guests>
+        <Icon name="users" />
+        Ver invitados ({assigned})
+      </button>
     </aside>
   );
 }
