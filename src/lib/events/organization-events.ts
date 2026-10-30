@@ -1,19 +1,17 @@
 import type { Event, Kind, User } from "./types";
 
+import { orderEvents } from "./event-order";
+
 export function organizationEvents(events: Event[], kind: Kind, user: User) {
-  return events
-    .filter(
+  return orderEvents(
+    events.filter(
       (event) =>
         event.kind === kind &&
         !event.isDemo &&
         event.paymentStatus === "paid" &&
         (event.ownerId === user.id || event.coupleUserIds?.includes(user.id)),
-    )
-    .sort(
-      (a, b) =>
-        (Date.parse(a.createdAt || "") || 0) -
-        (Date.parse(b.createdAt || "") || 0),
-    );
+    ),
+  );
 }
 
 export function organizationEventDate(event: Event) {

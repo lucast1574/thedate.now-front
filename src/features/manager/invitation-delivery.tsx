@@ -105,7 +105,7 @@ export default function InvitationDelivery({
           {busy
             ? "Preparando…"
             : (delivery?.failed ?? 0) > 0
-              ? "Reintentar env�os fallidos"
+              ? "Reintentar envíos fallidos"
               : phase === "error"
                 ? "Volver a intentar"
                 : "Enviar invitaciones"}

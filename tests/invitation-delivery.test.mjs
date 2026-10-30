@@ -91,7 +91,7 @@ test("roster defaults to invitation priority instead of surname and hides unsent
 });
 
 test("only rejected deliveries offer a safe retry, including while others are sending", () => {
-  assert.match(renderDelivery("attention", 4, 2), /Reintentar env�os fallidos/);
-  assert.match(renderDelivery("sending", 4, 1), /Reintentar env�os fallidos/);
+  assert.match(renderDelivery("attention", 4, 2), /Reintentar envíos fallidos/);
+  assert.match(renderDelivery("sending", 4, 1), /Reintentar envíos fallidos/);
   assert.doesNotMatch(renderDelivery("attention", 4, 0, 2), /<button/);
 });

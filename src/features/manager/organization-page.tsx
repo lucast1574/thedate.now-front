@@ -6,6 +6,8 @@ import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import { organizationEvents } from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
+import { useEventRecency } from "@/features/studio/use-event-recency";
+import { orderEvents } from "@/lib/events/event-order";
 import ManagerEventPicker from "./manager-event-picker";
 function OrganizationTools({
   wedding,
@@ -19,6 +21,7 @@ function OrganizationTools({
   const [events, setEvents] = useState<Event[]>([]),
     [error, setError] = useState(""),
     [loaded, setLoaded] = useState(false);
+  const lastOpened = useEventRecency(user.id, wedding ? "wedding" : "general");
   const params = useSearchParams(),
     router = useRouter();
   useEffect(() => {
@@ -62,13 +65,17 @@ function OrganizationTools({
               ? wedding
                 ? "Selecciona la boda que quieres organizar."
                 : "Selecciona el evento que quieres organizar."
-              : "Conoce lo que incluye tu evento y abre su espacio de organizaci�n."}
+              : "Conoce lo que incluye tu evento y abre su espacio de organización."}
           </p>
         </div>
       </header>
       {error && <p role="alert">{error}</p>}
       {loaded && !error && !selected && events.length > 1 && (
-        <ManagerEventPicker events={events} wedding={wedding} tab={tool} />
+        <ManagerEventPicker
+          events={orderEvents(events, lastOpened)}
+          wedding={wedding}
+          tab={tool}
+        />
       )}
       {(selected || !loaded || events.length === 0) && (
         <p role="status">

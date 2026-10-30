@@ -104,7 +104,7 @@ test("organization excludes unpaid, demo and unrelated events even for admins", 
   ];
   assert.deepEqual(
     Array.from(organizationEvents(events, "wedding", user), (e) => e.id),
-    ["first", "shared", "new"],
+    ["new", "shared", "first"],
   );
   assert.equal(events[0].id, "new");
 });

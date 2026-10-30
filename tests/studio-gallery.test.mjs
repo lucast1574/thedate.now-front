@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { loadSource } from "./support/load-source.cjs";
 const { galleryEvents } = loadSource("src/lib/events/studio-gallery.ts");
-test("studio prioritizes recent work, preserves shared invitations, and keeps demos personal", () => {
+test("studio prioritizes recent creation, preserves shared invitations, and keeps demos personal", () => {
   const user = { id: "owner", role: "admin" };
   const events = [
     {
@@ -10,34 +10,34 @@ test("studio prioritizes recent work, preserves shared invitations, and keeps de
       kind: "wedding",
       ownerId: "owner",
       isDemo: true,
-      updatedAt: "2026-10-06",
+      createdAt: "2026-10-06",
     },
     {
       id: "other-demo",
       kind: "wedding",
       ownerId: "other",
       isDemo: true,
-      updatedAt: "2026-10-07",
+      createdAt: "2026-10-07",
     },
-    { id: "old", kind: "wedding", ownerId: "owner", updatedAt: "2026-08-01" },
+    { id: "old", kind: "wedding", ownerId: "owner", createdAt: "2026-08-01" },
     {
       id: "recent",
       kind: "wedding",
       ownerId: "owner",
-      updatedAt: "2026-10-01",
+      createdAt: "2026-10-01",
     },
     {
       id: "shared",
       kind: "wedding",
       ownerId: "other",
       coupleUserIds: ["owner"],
-      updatedAt: "2026-09-01",
+      createdAt: "2026-09-01",
     },
     {
       id: "general",
       kind: "general",
       ownerId: "owner",
-      updatedAt: "2026-10-05",
+      createdAt: "2026-10-05",
     },
   ];
   assert.deepEqual(

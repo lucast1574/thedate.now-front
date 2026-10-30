@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import { blankEvent, eventPayload, normalizeEvent } from "@/lib/events/draft";
 import type { Event, Guest, Kind, User } from "@/lib/events/types";
@@ -20,6 +21,8 @@ export function useStudioEvents(
   const [selected, setSelected] = useState<Event | null>(null);
   const [draft, setDraft] = useState<Event>(() => blankEvent(portal));
   const [guests, setGuests] = useState<Guest[]>([]);
+
+  useEventRecency(user?.id, portal, selected?.id);
 
   const refreshEvents = useCallback(async () => {
     const list = (await api<Event[]>("/api/backend/events")).filter(

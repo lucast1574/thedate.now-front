@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, Guest, GuestFields, User } from "@/lib/events/types";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
@@ -17,6 +18,7 @@ export function useManager(id: string) {
     [stale, setStale] = useState(false);
   const dirtyRef = useRef(false),
     versionRef = useRef(0);
+  useEventRecency(user?.id, event?.kind, event?.id);
   const refresh = useCallback(
     async (discard = false) => {
       const [list, remote, events] = await Promise.all([

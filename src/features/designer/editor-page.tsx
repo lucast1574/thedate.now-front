@@ -3,6 +3,7 @@ import { ColorMemoryProvider } from "@/components/color-memory";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import InvitationDesigner from "./invitation-designer";
@@ -12,6 +13,7 @@ export default function EditorPage({ id }: { id: string }) {
   const [userId, setUserId] = useState("");
   const [userRole, setUserRole] = useState<User["role"]>("user");
   const [error, setError] = useState("");
+  useEventRecency(userId, event?.kind, event?.id);
   const reload = useCallback(async () => {
     const list = await api<Event[]>("/api/backend/events");
     const current = list.find((item) => item.id === id);

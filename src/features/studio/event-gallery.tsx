@@ -1,3 +1,4 @@
+import { useEventRecency } from "./use-event-recency";
 import Link from "next/link";
 import Icon from "@/components/icon";
 import type { Event, Kind, User } from "@/lib/events/types";
@@ -18,7 +19,8 @@ export default function EventGallery({
   loading: boolean;
   onCreate: () => void;
 }) {
-  const all = galleryEvents(events, user, portal),
+  const lastOpened = useEventRecency(user.id, portal);
+  const all = galleryEvents(events, user, portal, lastOpened),
     pending = all.filter((e) => !e.isDemo && e.paymentStatus !== "paid"),
     items = all.filter((e) => e.isDemo || e.paymentStatus === "paid"),
     wedding = portal === "wedding";
