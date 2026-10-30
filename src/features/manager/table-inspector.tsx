@@ -1,8 +1,8 @@
-import Listbox from "@/components/listbox";
-import { useState } from "react";
-import PersonGlyph from "@/components/person-glyph";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
-import { fullName } from "@/lib/events/attendees";
+import TableProperties from "./table-properties";
+import TableHouseholds from "./table-households";
+import RemoveSeatingItem from "./remove-seating-item";
+
 export default function TableInspector({
   table,
   plan,
@@ -18,175 +18,60 @@ export default function TableInspector({
   onChange: (plan: SeatingPlan) => void;
   onDelete: () => void;
 }) {
-  const [search, setSearch] = useState("");
-  const assigned = people.filter((p) => plan.assignments[p.id] === table.id);
-  const used = Object.keys(plan.assignments).length;
-  const candidates = people.filter(
-    (p) =>
-      plan.assignments[p.id] === table.id ||
-      `${fullName(p)} ${p.family}`
-        .toLocaleLowerCase("es")
-        .includes(search.toLocaleLowerCase("es")),
-  );
-  function patch(fields: Partial<SeatingTable>) {
-    onChange({
-      ...plan,
-      tables: plan.tables.map((t) =>
-        t.id === table.id ? { ...t, ...fields } : t,
-      ),
-    });
-  }
-  function assign(person: Attendee, checked: boolean) {
-    const assignments = { ...plan.assignments };
-    people
-      .filter((p) => p.guestId === person.guestId)
-      .forEach((p) => {
-        if (checked) assignments[p.id] = table.id;
-        else delete assignments[p.id];
-      });
-    onChange({ ...plan, assignments });
-  }
+  const assigned = people.filter(
+    (p) => plan.assignments[p.id] === table.id,
+  ).length;
   return (
-    <aside className="table-inspector">
-      <h3>
-        {table.name} · {assigned.length}/{table.capacity}
-      </h3>
-      <div className="manager-fields">
-        <label>
-          Nombre de mesa
-          <input
-            maxLength={60}
-            value={table.name}
-            onChange={(e) => patch({ name: e.target.value })}
-          />
-        </label>
-        <label>
-          Forma
-          <Listbox
-            value={table.shape}
-            onValueChange={(value) =>
-              patch({ shape: value as SeatingTable["shape"] })
-            }
-          >
-            <option value="round">Circular</option>
-            <option value="rectangle">Rectangular</option>
-          </Listbox>
-        </label>
-        <label>
-          Capacidad
-          <input
-            type="number"
-            min={Math.max(1, assigned.length)}
-            max={50}
-            value={table.capacity}
-            onChange={(e) => {
-              const capacity = Number(e.target.value);
-              if (
-                Number.isInteger(capacity) &&
-                capacity >= Math.max(1, assigned.length) &&
-                capacity <= 50
-              )
-                patch({ capacity });
-            }}
-          />
-        </label>
-        <label>
-          Rotación: {table.rotation}°
-          <input
-            type="range"
-            min={-180}
-            max={180}
-            step={5}
-            value={table.rotation}
-            onChange={(e) => patch({ rotation: Number(e.target.value) })}
-          />
-        </label>
-        <label>
-          Posición X
-          <input
-            type="number"
-            min={0}
-            max={1360}
-            value={table.x}
-            onChange={(e) => {
-              const x = Number(e.target.value);
-              if (x >= 0 && x <= 1360) patch({ x });
-            }}
-          />
-        </label>
-        <label>
-          Posición Y
-          <input
-            type="number"
-            min={0}
-            max={800}
-            value={table.y}
-            onChange={(e) => {
-              const y = Number(e.target.value);
-              if (y >= 0 && y <= 800) patch({ y });
-            }}
-          />
-        </label>
-      </div>
-      <label>
-        Buscar personas
-        <input
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Apellido, nombre o familia"
+    <aside
+      className="table-inspector table-organizer"
+      aria-label={`Organizar ${table.name}`}
+    >
+      <header className="table-organizer-heading">
+        <small>Mesa seleccionada</small>
+        <h3>{table.name}</h3>
+        <p>
+          {assigned} personas sentadas ·{" "}
+          {Math.max(0, table.capacity - assigned)} asientos libres
+        </p>
+      </header>
+      <div
+        className="table-occupancy"
+        role="progressbar"
+        aria-label={`Ocupación de ${table.name}`}
+        aria-valuemin={0}
+        aria-valuemax={table.capacity}
+        aria-valuenow={assigned}
+      >
+        <span
+          style={{
+            width: `${Math.min(100, (assigned / table.capacity) * 100)}%`,
+          }}
         />
-      </label>
-      <p>
-        El titular y su acompañante se mueven juntos. Desmarca para liberar sus
-        asientos.
-      </p>
-      <div className="seat-candidates">
-        {candidates.map((person) => {
-          const current = plan.assignments[person.id],
-            checked = current === table.id;
-          const elsewhere =
-            current && !checked
-              ? plan.tables.find((t) => t.id === current)?.name
-              : "";
-          const disabled =
-            !checked &&
-            (assigned.length +
-              people.filter(
-                (p) =>
-                  p.guestId === person.guestId &&
-                  plan.assignments[p.id] !== table.id,
-              ).length >
-              table.capacity ||
-              used +
-                people.filter(
-                  (p) =>
-                    p.guestId === person.guestId && !plan.assignments[p.id],
-                ).length >
-                limit);
-          return (
-            <label key={person.id} className={checked ? "assigned" : ""}>
-              <input
-                type="checkbox"
-                checked={checked}
-                disabled={disabled}
-                onChange={(e) => assign(person, e.target.checked)}
-              />
-              <PersonGlyph gender={person.gender} />
-              <span>
-                {fullName(person)}
-                <small>
-                  {person.family || (person.slot ? "Acompañante" : "Titular")} ·{" "}
-                  {person.response === "going" ? "Confirmado" : "Provisional"}
-                  {elsewhere ? ` · ${elsewhere} (se moverá aquí)` : ""}
-                </small>
-              </span>
-            </label>
-          );
-        })}
       </div>
-      <button type="button" className="table-delete" onClick={onDelete}>
-        Eliminar mesa y liberar asientos
-      </button>
+      <TableProperties
+        table={table}
+        assigned={assigned}
+        onPatch={(fields) =>
+          onChange({
+            ...plan,
+            tables: plan.tables.map((t) =>
+              t.id === table.id ? { ...t, ...fields } : t,
+            ),
+          })
+        }
+      />
+      <TableHouseholds
+        table={table}
+        plan={plan}
+        people={people}
+        limit={limit}
+        onChange={onChange}
+      />
+      <RemoveSeatingItem
+        name={table.name}
+        description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará cuando guardes el plano."
+        onRemove={onDelete}
+      />
     </aside>
   );
 }

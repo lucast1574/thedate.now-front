@@ -1,3 +1,4 @@
+import Icon from "@/components/icon";
 import { useEffect, useRef } from "react";
 import { fullName } from "@/lib/events/attendees";
 import type { proposeSeating } from "@/lib/events/auto-seating";
@@ -12,7 +13,11 @@ export default function AutoProposal({
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
+    const trigger = document.activeElement as HTMLElement | null;
     dialog.current?.showModal();
+    return () => {
+      if (trigger?.isConnected) trigger.focus();
+    };
   }, []);
   const assigned = Object.keys(proposal.plan.assignments).length;
   return (
@@ -23,9 +28,9 @@ export default function AutoProposal({
       onCancel={onClose}
     >
       <header>
-        <h2 id="proposal-title">Completar mesas por categoría</h2>
+        <h2 id="proposal-title">Revisar distribución por categoría</h2>
         <button onClick={onClose} aria-label="Cerrar propuesta">
-          ×
+          <Icon name="close" />
         </button>
       </header>
       <p>
@@ -77,9 +82,9 @@ export default function AutoProposal({
         guardará cuando pulses Guardar plano.
       </p>
       <footer>
-        <button onClick={onClose}>Volver sin aplicar</button>
+        <button onClick={onClose}>Cancelar</button>
         <button className="office-button" onClick={onApply}>
-          Aplicar propuesta al lienzo
+          Aplicar al borrador
         </button>
       </footer>
     </dialog>

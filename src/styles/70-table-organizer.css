@@ -1,0 +1,133 @@
+.table-organizer {
+  color: var(--ui-ink);
+}
+.table-organizer-heading > small {
+  display: block;
+  font-size: 11px;
+  color: var(--seating-muted, var(--ui-muted));
+  margin-bottom: 6px;
+}
+.manager-page .table-organizer-heading h3 {
+  margin: 0 0 7px;
+  font: var(--ui-heading-weight) 25px/1.2 var(--ui-heading-font);
+}
+.manager-page .table-organizer p {
+  color: var(--seating-muted, var(--ui-muted));
+  line-height: 1.65;
+}
+.manager-page .table-organizer-heading p {
+  margin: 0;
+  font-size: 12px;
+}
+.table-occupancy {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--ui-soft);
+  margin: 16px 0 20px;
+  overflow: hidden;
+}
+.table-occupancy > span {
+  display: block;
+  height: 100%;
+  background: var(--ui-accent);
+}
+.table-properties {
+  display: grid;
+  gap: 14px;
+}
+.table-organizer .table-properties label {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  font-size: 12px;
+}
+.table-properties-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.table-position-details {
+  border-block: 1px solid var(--ui-border);
+  padding-block: 13px;
+}
+.table-position-details summary {
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.table-position-details[open] {
+  display: grid;
+  gap: 14px;
+}
+.table-position-details label {
+  margin-top: 14px;
+}
+.table-position-details p {
+  font-size: 12px;
+  margin: 12px 0;
+}
+.table-position-details output {
+  float: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-accent);
+}
+.table-assignment {
+  margin-top: 22px;
+}
+.table-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.table-section-title h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+}
+.table-section-title > span {
+  font-size: 12px;
+  color: var(--ui-accent);
+  font-variant-numeric: tabular-nums;
+}
+.manager-page .table-assignment > p {
+  margin: 8px 0 15px;
+  font-size: 12px;
+}
+.table-search {
+  font-size: 12px;
+}
+.table-search > span:last-child {
+  position: relative;
+  display: block;
+}
+.table-search .ui-icon {
+  position: absolute;
+  left: 10px;
+  top: 12px;
+  width: 15px;
+  height: 15px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.manager-page .table-search input {
+  padding-left: 32px;
+  font-size: 12px;
+}
+.table-person-filters {
+  display: flex;
+  gap: 4px;
+  margin: 12px 0;
+}
+.manager-page .table-person-filters > button {
+  padding: 7px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  background: transparent;
+  border-color: transparent;
+  white-space: nowrap;
+}
+.manager-page .table-person-filters > button[aria-pressed="true"] {
+  background: var(--ui-soft);
+  border-color: var(--ui-border);
+  color: var(--ui-ink);
+}

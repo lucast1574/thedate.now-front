@@ -1,0 +1,117 @@
+.seating-households {
+  display: grid;
+  gap: 8px;
+  max-height: 390px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+.manager-page .table-organizer .seating-household {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 36px;
+  align-items: start;
+  gap: 9px;
+  padding: 12px 9px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.seating-household[data-assigned="true"] {
+  background: var(--ui-soft);
+}
+.seating-household[data-disabled="true"] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.seating-household-people {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+.seating-household-person {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-width: 0;
+}
+.seating-household-person > .person-glyph {
+  width: 12px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.seating-household-person strong {
+  display: block;
+  font-size: 12px;
+  line-height: 1.5;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.seating-household-person small {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-household-state {
+  display: block;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ui-accent);
+}
+.seating-household-size {
+  text-align: right;
+  font-size: 13px;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+}
+.seating-household-size > span {
+  display: block;
+  font-size: 11px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.manager-page .table-assignment-empty {
+  padding: 18px 10px;
+  border: 1px dashed var(--ui-border);
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
+  margin: 0;
+}
+.seating-remove {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ui-border);
+}
+.manager-page .seating-remove-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #944438;
+  background: transparent;
+  border-color: transparent;
+  font-size: 12px;
+  padding: 7px 0;
+}
+.seating-remove-trigger .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+.seating-remove > div > strong {
+  font-size: 13px;
+}
+.manager-page .seating-remove p {
+  font-size: 12px;
+  margin: 8px 0 12px;
+}
+.seating-remove > div > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.manager-page .seating-remove button {
+  font-size: 12px;
+}
+.manager-page .seating-remove .seating-danger {
+  color: #944438;
+  border-color: #d8b9b2;
+}

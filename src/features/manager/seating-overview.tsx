@@ -1,0 +1,32 @@
+export default function SeatingOverview({
+  tables,
+  count,
+  pending,
+}: {
+  tables: number;
+  count: number;
+  pending: number;
+}) {
+  return (
+    <header className="seating-overview">
+      <div>
+        <h2>Organiza las mesas</h2>
+        <p>Crea el espacio, coloca las mesas y sienta a tus invitados.</p>
+      </div>
+      <dl className="seating-overview-counts">
+        <div>
+          <dt>Mesas</dt>
+          <dd>{tables}</dd>
+        </div>
+        <div>
+          <dt>Personas ubicadas</dt>
+          <dd>{count}</dd>
+        </div>
+        <div data-pending={pending > 0}>
+          <dt>Sin mesa</dt>
+          <dd>{pending}</dd>
+        </div>
+      </dl>
+    </header>
+  );
+}

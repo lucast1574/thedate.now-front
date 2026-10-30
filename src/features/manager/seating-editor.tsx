@@ -7,6 +7,10 @@ import {
   proposeSeating,
   surnameOrder,
 } from "@/lib/events/auto-seating";
+import Icon from "@/components/icon";
+import SeatingSaveBar from "./seating-save-bar";
+import SeatingEmptyInspector from "./seating-empty-inspector";
+import SeatingOverview from "./seating-overview";
 import SeatingTools from "./seating-tools";
 import SeatingCanvas from "./seating-canvas";
 import TableInspector from "./table-inspector";
@@ -70,48 +74,39 @@ export default function SeatingEditor({
   }
   return (
     <fieldset disabled={busy} className="seating-editor">
-      <div className="seating-top">
+      <SeatingOverview
+        tables={plan.tables.length}
+        count={count}
+        pending={people.length - count}
+      />
+      <div className="seating-setup">
+        <SeatingTools
+          capacity={capacity}
+          shape={shape}
+          busy={busy}
+          onCapacity={setCapacity}
+          onShape={setShape}
+          onAdd={add}
+          onPropose={() =>
+            setProposal(proposeSeating(guests, plan, event, capacity))
+          }
+        />
+        <VenueAreaTools
+          plan={plan}
+          onChange={onChange}
+          onSelect={setSelected}
+        />
+      </div>
+      <div className="seating-canvas-heading">
         <div>
-          <h2>Diseña el salón</h2>
+          <h3>Plano del salón</h3>
           <p>
-            {plan.tables.length} mesas · {count} personas asignadas ·{" "}
-            {people.length - count} sin mesa
+            Selecciona una mesa para asignar personas. Arrastra para colocar
+            mesas y espacios.
           </p>
         </div>
-        <div className="action-row">
-          {exportAction}
-          <button
-            disabled={busy || !dirty || stale}
-            className="office-button"
-            onClick={onSave}
-          >
-            {busy ? "Guardando…" : "Guardar plano"}
-          </button>
-          <button disabled={busy} onClick={onReload}>
-            {dirty ? "Descartar borrador y recargar" : "Recargar plano"}
-          </button>
-        </div>
+        <span>Solo invitados confirmados</span>
       </div>
-      <SeatingTools
-        capacity={capacity}
-        shape={shape}
-        busy={busy}
-        onCapacity={setCapacity}
-        onShape={setShape}
-        onAdd={add}
-        onPropose={() =>
-          setProposal(proposeSeating(guests, plan, event, capacity))
-        }
-      />
-      <VenueAreaTools plan={plan} onChange={onChange} onSelect={setSelected} />
-      <p className="guest-hint">
-        Arrastra las mesas en el lienzo. También puedes moverlas con las flechas
-        del teclado o editar su posición. Elige una mesa para asignar personas.
-        Solo aparecen confirmados. Cada titular se mueve junto a su acompañante.{" "}
-        {dirty
-          ? "Hay cambios sin guardar."
-          : `Plano guardado · v${plan.version}`}
-      </p>
       <div
         className={`seating-workspace ${table || area ? "with-inspector" : ""}`}
       >
@@ -156,25 +151,37 @@ export default function SeatingEditor({
           />
         ) : area ? (
           <VenueAreaInspector
+            key={area.id}
             area={area}
             plan={plan}
             onChange={onChange}
             onDelete={() => setSelected("")}
           />
         ) : (
-          <aside className="seating-instructions">
-            <h3>Un lugar para cada persona</h3>
-            <p>
-              Al confirmar, cada invitado recibe una mesa con su categoría.
-              Puedes moverlo junto a su acompañante o crear otras mesas.
-            </p>
-            <p>
-              El plano es orientativo. Revisa pasillos y distancias con tu
-              local.
-            </p>
-          </aside>
+          <SeatingEmptyInspector />
         )}
       </div>
+      <SeatingSaveBar
+        busy={busy}
+        dirty={dirty}
+        stale={stale}
+        version={plan.version}
+        onSave={onSave}
+        onReload={onReload}
+      />
+      <section className="seating-export-panel">
+        <div>
+          <Icon name="lucide:file-spreadsheet" />
+          <div>
+            <h3>Lista para la entrada</h3>
+            <p>
+              Cuando la distribución esté lista, descarga el Excel con las
+              personas confirmadas, sus familias y sus mesas.
+            </p>
+          </div>
+        </div>
+        {exportAction}
+      </section>
       {proposal && (
         <AutoProposal
           proposal={proposal}

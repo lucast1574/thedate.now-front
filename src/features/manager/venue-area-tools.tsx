@@ -18,36 +18,45 @@ export default function VenueAreaTools({
 }) {
   const [kind, setKind] = useState<VenueArea["kind"]>("stage");
   return (
-    <div className="venue-area-tools">
-      <label>
-        Espacios del salón
-        <Listbox
-          value={kind}
-          onValueChange={(value) => setKind(value as VenueArea["kind"])}
+    <section className="venue-area-tools seating-setup-card">
+      <header>
+        <Icon name="lucide:map-pin" />
+        <div>
+          <h3>Espacios del salón</h3>
+          <p>Señala las zonas que acompañan a las mesas.</p>
+        </div>
+      </header>
+      <div className="seating-area-fields">
+        <label>
+          Tipo de espacio
+          <Listbox
+            value={kind}
+            onValueChange={(value) => setKind(value as VenueArea["kind"])}
+          >
+            {venueAreaKinds.map((item) => (
+              <option key={item.kind} value={item.kind}>
+                {item.name}
+              </option>
+            ))}
+          </Listbox>
+        </label>
+        <button
+          type="button"
+          disabled={(plan.areas?.length || 0) >= 30}
+          onClick={() => {
+            const area = newVenueArea(kind, crypto.randomUUID());
+            onChange({ ...plan, areas: [...(plan.areas || []), area] });
+            onSelect(area.id);
+          }}
         >
-          {venueAreaKinds.map((item) => (
-            <option key={item.kind} value={item.kind}>
-              {item.name}
-            </option>
-          ))}
-        </Listbox>
-      </label>
-      <button
-        type="button"
-        disabled={(plan.areas?.length || 0) >= 30}
-        onClick={() => {
-          const area = newVenueArea(kind, crypto.randomUUID());
-          onChange({ ...plan, areas: [...(plan.areas || []), area] });
-          onSelect(area.id);
-        }}
-      >
-        <Icon name="plus" />
-        Añadir espacio
-      </button>
+          <Icon name="plus" />
+          Añadir espacio
+        </button>
+      </div>
       <small>
-        Escenario, bar, bocaditos, pista, fotos, descanso o entrada. Arrastra
-        cada espacio y guarda el plano.
+        Escenario, bar, pista de baile, fotos y más. Puedes moverlos después en
+        el plano; no ocupan asientos.
       </small>
-    </div>
+    </section>
   );
 }

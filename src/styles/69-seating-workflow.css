@@ -1,0 +1,154 @@
+/* Page chrome only. The salon canvas and its styles remain untouched. */
+.seating-editor {
+  --seating-muted: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.seating-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.manager-page .seating-overview h2 {
+  margin-bottom: 6px;
+  font-size: 24px;
+}
+.manager-page .seating-overview p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-overview-counts {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.seating-overview-counts > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 5px;
+}
+.seating-overview-counts dt {
+  font-size: 12px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-overview-counts dd {
+  margin: 0;
+  font-size: 25px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.seating-overview-counts [data-pending="true"] dd {
+  color: var(--ui-accent);
+}
+.seating-setup {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+.seating-setup .seating-setup-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 18px;
+  padding: 22px;
+  margin: 0;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+}
+.seating-setup-card > header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.seating-setup-card > header > .ui-icon {
+  width: 21px;
+  height: 21px;
+  margin-top: 2px;
+  color: var(--ui-accent);
+  flex-shrink: 0;
+}
+.manager-page .seating-setup-card h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+.manager-page .seating-setup-card header p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-create-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.seating-area-fields {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+.seating-setup-card label {
+  min-width: 0;
+  max-width: none;
+  font-size: 12px;
+}
+.seating-setup-card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+.seating-setup-card button .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+.seating-auto-help {
+  padding-top: 16px;
+  border-top: 1px solid var(--ui-border);
+}
+.manager-page .seating-auto-help p {
+  margin: 0 0 9px;
+  font-size: 12px;
+}
+.seating-auto-help small,
+.seating-setup-card > small {
+  display: block;
+  margin-top: 9px;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-area-fields + small {
+  margin-top: 0;
+}
+.seating-canvas-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.manager-page .seating-canvas-heading h3 {
+  margin: 0 0 5px;
+  font-size: 18px;
+}
+.manager-page .seating-canvas-heading p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-canvas-heading > span {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--seating-muted, var(--ui-muted));
+}

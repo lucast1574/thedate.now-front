@@ -1,0 +1,48 @@
+@media (max-width: 1300px) {
+  .seating-create-fields {
+    grid-template-columns: 1fr 1fr;
+  }
+  .seating-create-fields > button {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 900px) {
+  .seating-overview {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .seating-setup {
+    grid-template-columns: 1fr;
+  }
+  .seating-canvas-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .seating-export-panel {
+    align-items: flex-start;
+  }
+}
+@media (max-width: 600px) {
+  .seating-overview-counts {
+    gap: 24px;
+  }
+  .seating-setup .seating-setup-card {
+    padding: 18px;
+  }
+  .seating-area-fields {
+    grid-template-columns: 1fr;
+  }
+  .seating-save-actions {
+    width: 100%;
+  }
+  .seating-save-actions > button {
+    flex: 1;
+    justify-content: center;
+    padding-inline: 10px;
+  }
+  .seating-export-panel {
+    flex-direction: column;
+    gap: 16px;
+  }
+}

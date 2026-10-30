@@ -1,0 +1,144 @@
+/* Scope controls to the organizer and toolbar, never to canvas elements. */
+.seating-setup,
+.table-organizer,
+.seating-save-bar,
+.seating-export-panel {
+  --seating-muted: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.seating-setup :is(p, small),
+.table-organizer :is(p, small),
+.seating-save-state small,
+.seating-export-panel p {
+  color: var(--seating-muted);
+}
+.manager-page .table-organizer input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  min-height: 5px;
+  padding: 0;
+  margin: 10px 0;
+  border: 0;
+  border-radius: 4px;
+  background: var(--ui-border);
+  cursor: pointer;
+}
+.table-organizer input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ui-accent);
+}
+.table-organizer input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--ui-accent);
+}
+.manager-page .table-organizer .seating-household > input[type="checkbox"] {
+  appearance: none;
+  display: grid;
+  place-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  margin: 2px 0 0;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  background: var(--ui-surface);
+}
+.seating-household > input[type="checkbox"]::before {
+  content: "";
+  width: 8px;
+  height: 5px;
+  border-left: 1.5px solid var(--ui-surface);
+  border-bottom: 1.5px solid var(--ui-surface);
+  transform: rotate(-45deg) scale(0);
+}
+.manager-page
+  .table-organizer
+  .seating-household
+  > input[type="checkbox"]:checked {
+  background: var(--ui-accent);
+  border-color: var(--ui-accent);
+}
+.seating-household > input[type="checkbox"]:checked::before {
+  transform: rotate(-45deg) scale(1);
+}
+.table-organizer :is(input, summary, button):focus-visible,
+.seating-setup :is(input, button):focus-visible,
+.seating-save-bar button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background-color: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.table-organizer .seating-household:focus-within {
+  border-color: var(--ui-accent);
+}
+.table-organizer input[type="range"]:focus-visible {
+  background: var(--ui-accent);
+}
+.seating-setup input[type="number"]::-webkit-inner-spin-button,
+.table-properties input[type="number"]::-webkit-inner-spin-button {
+  appearance: none;
+}
+.manager-page .auto-proposal {
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  border-color: var(--ui-border);
+  border-radius: 10px;
+  padding: 28px;
+}
+.manager-page .auto-proposal h2 {
+  font: var(--ui-heading-weight) 27px/1.2 var(--ui-heading-font);
+  margin: 0;
+}
+.auto-proposal header > button {
+  flex-shrink: 0;
+  padding: 8px;
+}
+.auto-proposal header > button .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.manager-page .auto-proposal p {
+  color: var(--ui-ink);
+  font-size: 13px;
+}
+.auto-proposal .proposal-tables {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  margin: 20px 0;
+}
+.auto-proposal footer {
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--ui-border);
+}
+@media (max-width: 1100px) {
+  .seating-households {
+    max-height: 350px;
+  }
+  .table-properties {
+    max-width: 520px;
+  }
+  .table-assignment {
+    max-width: 680px;
+  }
+}
+@media (max-width: 600px) {
+  .manager-page .auto-proposal {
+    padding: 20px;
+  }
+  .auto-proposal footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .auto-proposal .proposal-tables {
+    grid-template-columns: 1fr;
+  }
+}
