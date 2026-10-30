@@ -40,7 +40,7 @@
   .seating-workspace-wide
     .table-config:has(.table-edit-settings[open])
     .table-properties {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    grid-template-columns: minmax(120px, 1fr) minmax(252px, 1.2fr);
   }
   .seating-workspace-wide .table-config .table-position-details {
     grid-column: 1 / -1;
