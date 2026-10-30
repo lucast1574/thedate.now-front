@@ -44,3 +44,42 @@ test("venue rotation is rendered and survives moving without changing size", () 
   );
   assert.match(html, /rotate\(45deg\)/);
 });
+
+test("table rotation applies to the full element while its count stays upright", () => {
+  const Canvas = loadSource("src/features/manager/seating-canvas.tsx").default;
+  const plan = {
+    width: 1600,
+    height: 1000,
+    version: 1,
+    tables: [
+      {
+        id: "one",
+        name: "Mesa 1",
+        shape: "round",
+        capacity: 10,
+        x: 50,
+        y: 50,
+        rotation: 90,
+      },
+    ],
+    assignments: {},
+  };
+  const html = renderToStaticMarkup(
+    React.createElement(Canvas, {
+      plan,
+      people: [],
+      selected: "one",
+      onSelect() {},
+      onMove() {},
+    }),
+  );
+  assert.match(
+    html,
+    /class="seating-table is-selected" style="[^"]*transform:rotate\(90deg\)/,
+  );
+  assert.match(
+    html,
+    /class="table-seat-count" style="transform:rotate\(-90deg\)"/,
+  );
+  assert.doesNotMatch(html, /class="table-shape table-round" style=/);
+});

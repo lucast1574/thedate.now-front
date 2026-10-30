@@ -88,6 +88,7 @@ export default function SeatingCanvas({
               style={{
                 left: `${(table.x / plan.width) * 100}%`,
                 top: `${(table.y / plan.height) * 100}%`,
+                transform: `rotate(${table.rotation}deg)`,
               }}
               aria-label={`${table.name}, ${assigned.length} de ${table.capacity} personas. Seleccionar y mover mesa`}
               onClick={() => onSelect(table.id)}
@@ -117,12 +118,16 @@ export default function SeatingCanvas({
                 }
               }}
             >
-              <strong>{table.name}</strong>
-              <span
-                className={`table-shape table-${table.shape}`}
-                style={{ transform: `rotate(${table.rotation}deg)` }}
-              >
-                {assigned.length}/{table.capacity}
+              <strong style={{ transform: `rotate(${-table.rotation}deg)` }}>
+                {table.name}
+              </strong>
+              <span className={`table-shape table-${table.shape}`}>
+                <span
+                  className="table-seat-count"
+                  style={{ transform: `rotate(${-table.rotation}deg)` }}
+                >
+                  {assigned.length}/{table.capacity}
+                </span>
               </span>
               <span className="table-people">
                 {assigned.slice(0, 12).map((person) => (
