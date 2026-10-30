@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
 import TableProperties from "./table-properties";
 import RemoveSeatingItem from "./remove-seating-item";
@@ -8,12 +9,14 @@ export default function TableInspector({
   people,
   onChange,
   onDelete,
+  actions,
 }: {
   table: SeatingTable;
   plan: SeatingPlan;
   people: Attendee[];
   onChange: (plan: SeatingPlan) => void;
   onDelete: () => void;
+  actions?: ReactNode;
 }) {
   const assigned = people.filter(
     (p) => plan.assignments[p.id] === table.id,
@@ -60,11 +63,14 @@ export default function TableInspector({
             }
           />
         </section>
-        <RemoveSeatingItem
-          name={table.name}
-          description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
-          onRemove={onDelete}
-        />
+        <div className="table-toolbar-actions">
+          {actions}
+          <RemoveSeatingItem
+            name={table.name}
+            description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
+            onRemove={onDelete}
+          />
+        </div>
       </section>
     </aside>
   );

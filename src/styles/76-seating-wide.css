@@ -9,7 +9,7 @@
 }
 .seating-toolbar-workspace .table-config {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr) auto;
+  grid-template-columns: 180px minmax(0, 1fr) auto;
   gap: 12px 24px;
   min-width: 0;
 }
@@ -34,7 +34,7 @@
   border: 0;
 }
 .seating-toolbar-workspace .table-properties {
-  grid-template-columns: minmax(160px, 1fr) minmax(240px, 1.2fr);
+  grid-template-columns: minmax(120px, 1fr) minmax(220px, 0.9fr);
   gap: 16px;
 }
 .seating-toolbar-workspace .table-properties-row {
@@ -63,31 +63,67 @@
   }
 }
 .seating-workspace-wide > .seating-organizer-empty {
-  display: grid;
-  grid-template-columns: 32px minmax(0, 1fr);
-  gap: 4px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
   padding: 18px 20px;
-}
-.seating-workspace-wide > .seating-organizer-empty > .ui-icon {
-  grid-row: 1 / span 2;
 }
 .manager-page .seating-workspace-wide > .seating-organizer-empty h3 {
   font-size: 18px;
-  margin: 0;
+  margin: 0 0 5px;
 }
 .manager-page .seating-workspace-wide > .seating-organizer-empty p {
   margin: 0;
   font-size: 12px;
 }
-.seating-workspace-wide > .seating-organizer-empty ol,
-.seating-workspace-wide > .seating-organizer-empty small {
-  display: none;
+.table-toolbar-actions {
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 212px;
+}
+.manager-page .seating-auto-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.seating-auto-action .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 1100px) {
+  .table-toolbar-actions {
+    grid-column: 1;
+    grid-row: auto;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 650px) {
+  .seating-workspace-wide > .seating-organizer-empty {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .table-toolbar-actions {
+    min-width: 0;
+  }
 }
 /* Width uses the available space; only height follows the viewport. */
-.seating-toolbar-workspace > .seating-scroll {
+.seating-toolbar-workspace .seating-canvas-stage > .seating-scroll {
   padding: 5px;
 }
-.seating-toolbar-workspace > .seating-scroll > .seating-board {
+.seating-toolbar-workspace
+  .seating-canvas-stage
+  > .seating-scroll
+  > .seating-board {
   width: 100%;
   height: clamp(360px, calc(100dvh - 100px), 850px);
   aspect-ratio: auto;

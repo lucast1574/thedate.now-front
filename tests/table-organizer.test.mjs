@@ -135,8 +135,7 @@ test("saving and Excel export follow the unchanged canvas in the editor", () => 
     }),
   );
   assert.ok(
-    html.indexOf("Selecciona una mesa") <
-      html.indexOf('data-canvas="protected"'),
+    html.indexOf("Organiza tu salón") < html.indexOf('data-canvas="protected"'),
   );
   assert.match(html, /seating-workspace-wide/);
   assert.ok(

@@ -1,23 +1,18 @@
 import { useState, type ReactNode } from "react";
 import type { Event, Guest } from "@/lib/events/types";
-import type { SeatingPlan, SeatingTable } from "@/lib/events/seating";
+import type { SeatingPlan } from "@/lib/events/seating";
 import { attendees } from "@/lib/events/attendees";
-import {
-  newTable,
-  proposeSeating,
-  surnameOrder,
-} from "@/lib/events/auto-seating";
+import { proposeSeating, surnameOrder } from "@/lib/events/auto-seating";
 import Icon from "@/components/icon";
 import type { useSeatingAutosave } from "./use-seating-autosave";
 import SeatingSaveBar from "./seating-save-bar";
 import SeatingEmptyInspector from "./seating-empty-inspector";
 import SeatingOverview from "./seating-overview";
-import SeatingTools from "./seating-tools";
+import SeatingAddMenu from "./seating-add-menu";
 import TableGuestWorkspace from "./table-guest-workspace";
 import SeatingCanvas from "./seating-canvas";
 import TableInspector from "./table-inspector";
 import AutoProposal from "./auto-proposal";
-import VenueAreaTools from "./venue-area-tools";
 type Props = {
   event: Event;
   guests: Guest[];
@@ -42,9 +37,7 @@ export default function SeatingEditor({
   autosave,
   onReload,
 }: Props) {
-  const [selected, setSelected] = useState(""),
-    [capacity, setCapacity] = useState(10),
-    [shape, setShape] = useState<SeatingTable["shape"]>("round");
+  const [selected, setSelected] = useState("");
   const [proposal, setProposal] = useState<ReturnType<
     typeof proposeSeating
   > | null>(null);
@@ -54,25 +47,23 @@ export default function SeatingEditor({
   const table = plan.tables.find((t) => t.id === selected);
   const area = plan.areas?.find((item) => item.id === selected);
   const count = people.filter((p) => plan.assignments[p.id]).length;
-  function add() {
-    const next = newTable(
-      plan.tables.length,
-      capacity,
-      shape,
-      crypto.randomUUID(),
-    );
-    let n = plan.tables.length + 1;
-    while (plan.tables.some((t) => t.name === `Mesa ${n}`)) n++;
-    next.name = `Mesa ${n}`;
-    onChange({ ...plan, tables: [...plan.tables, next] });
-    setSelected(next.id);
-  }
   function move(id: string, x: number, y: number) {
     onChange({
       ...plan,
       tables: plan.tables.map((t) => (t.id === id ? { ...t, x, y } : t)),
     });
   }
+  const automaticAction = (
+    <button
+      type="button"
+      className="office-button seating-auto-action"
+      disabled={busy}
+      onClick={() => setProposal(proposeSeating(guests, plan, event, 10))}
+    >
+      <Icon name="users" />
+      Asignar automáticamente
+    </button>
+  );
   return (
     <fieldset disabled={busy} className="seating-editor">
       <SeatingOverview
@@ -80,34 +71,6 @@ export default function SeatingEditor({
         count={count}
         pending={people.length - count}
       />
-      <div className="seating-setup">
-        <SeatingTools
-          capacity={capacity}
-          shape={shape}
-          busy={busy}
-          onCapacity={setCapacity}
-          onShape={setShape}
-          onAdd={add}
-          onPropose={() =>
-            setProposal(proposeSeating(guests, plan, event, capacity))
-          }
-        />
-        <VenueAreaTools
-          plan={plan}
-          onChange={onChange}
-          onSelect={setSelected}
-        />
-      </div>
-      <div className="seating-canvas-heading">
-        <div>
-          <h3>Plano del salón</h3>
-          <p>
-            Pulsa una mesa para ver o cambiar sus invitados. Arrastra para
-            colocar mesas y espacios.
-          </p>
-        </div>
-        <span>Solo invitados confirmados</span>
-      </div>
       <TableGuestWorkspace
         table={table}
         area={area}
@@ -119,6 +82,7 @@ export default function SeatingEditor({
         {table ? (
           <TableInspector
             key={table.id}
+            actions={automaticAction}
             table={table}
             plan={plan}
             people={people}
@@ -136,25 +100,32 @@ export default function SeatingEditor({
               setSelected("");
             }}
           />
-        ) : !area ? (
-          <SeatingEmptyInspector />
-        ) : null}
-        <SeatingCanvas
-          plan={plan}
-          people={people}
-          selected={selected}
-          onSelect={setSelected}
-          onMove={move}
-          areas={plan.areas}
-          onMoveArea={(id, x, y) =>
-            onChange({
-              ...plan,
-              areas: plan.areas?.map((item) =>
-                item.id === id ? { ...item, x, y } : item,
-              ),
-            })
-          }
-        />
+        ) : (
+          <SeatingEmptyInspector actions={automaticAction} />
+        )}
+        <div className="seating-canvas-stage">
+          <SeatingAddMenu
+            plan={plan}
+            onChange={onChange}
+            onSelect={setSelected}
+          />
+          <SeatingCanvas
+            plan={plan}
+            people={people}
+            selected={selected}
+            onSelect={setSelected}
+            onMove={move}
+            areas={plan.areas}
+            onMoveArea={(id, x, y) =>
+              onChange({
+                ...plan,
+                areas: plan.areas?.map((item) =>
+                  item.id === id ? { ...item, x, y } : item,
+                ),
+              })
+            }
+          />
+        </div>
       </TableGuestWorkspace>
       <SeatingSaveBar
         busy={busy}

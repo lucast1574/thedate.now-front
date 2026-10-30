@@ -1,21 +1,19 @@
-import Icon from "@/components/icon";
-export default function SeatingEmptyInspector() {
+import type { ReactNode } from "react";
+export default function SeatingEmptyInspector({
+  actions,
+}: {
+  actions?: ReactNode;
+}) {
   return (
     <aside className="seating-instructions seating-organizer-empty">
-      <Icon name="lucide:mouse-pointer-2" />
-      <h3>Selecciona una mesa</h3>
-      <p>
-        Su organizador aparecerá aquí. Podrás revisar sus asientos y asignar a
-        tus invitados.
-      </p>
-      <ol>
-        <li>Elige una mesa en el plano.</li>
-        <li>Pulsa «Añadir invitados» para sentarlos juntos.</li>
-        <li>Los cambios se guardan automáticamente.</li>
-      </ol>
-      <small>
-        El plano es orientativo. Revisa pasillos y distancias con tu local.
-      </small>
+      <div>
+        <h3>Organiza tu salón</h3>
+        <p>
+          Usa el + del plano para añadir mesas y espacios. Selecciona una mesa
+          para editarla.
+        </p>
+      </div>
+      {actions}
     </aside>
   );
 }
