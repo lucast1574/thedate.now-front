@@ -9,7 +9,7 @@
 }
 .seating-toolbar-workspace .table-config {
   display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
+  grid-template-columns: 200px minmax(0, 1fr) auto;
   gap: 12px 24px;
   min-width: 0;
 }
@@ -22,14 +22,16 @@
 }
 .seating-toolbar-workspace .table-edit-settings {
   grid-column: 2;
-  grid-row: 1 / span 3;
+  grid-row: 1 / span 2;
   border: 0;
   padding: 0;
 }
 .seating-toolbar-workspace .seating-remove {
-  grid-column: 1;
+  grid-column: 3;
+  grid-row: 1;
   margin: 0;
-  padding-top: 10px;
+  padding: 0;
+  border: 0;
 }
 .seating-toolbar-workspace .table-properties {
   grid-template-columns: minmax(160px, 1fr) minmax(240px, 1.2fr);
@@ -43,6 +45,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
   .seating-toolbar-workspace .table-edit-settings {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .seating-toolbar-workspace .seating-remove {
     grid-column: 1;
     grid-row: auto;
   }

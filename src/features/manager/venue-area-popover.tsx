@@ -1,3 +1,4 @@
+import SeatingRotationControl from "./seating-rotation-control";
 import Icon from "@/components/icon";
 import RemoveSeatingItem from "./remove-seating-item";
 import { moveVenueArea, type VenueArea } from "@/lib/events/venue-areas";
@@ -69,6 +70,10 @@ export default function VenueAreaPopover({
           />
         </label>
       </div>
+      <SeatingRotationControl
+        value={area.rotation || 0}
+        onChange={(rotation) => patch({ rotation })}
+      />
       <RemoveSeatingItem
         name={area.name}
         description="Se quitará este espacio. Las mesas y sus invitados se conservan."

@@ -6,6 +6,7 @@ export type VenueArea = {
   y: number;
   width: number;
   height: number;
+  rotation?: number;
 };
 export const exampleVenueAreas = (): VenueArea[] => [
   {

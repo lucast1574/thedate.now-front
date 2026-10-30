@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import SeatingRotationControl from "./seating-rotation-control";
 import Icon from "@/components/icon";
 import { fullName } from "@/lib/events/attendees";
 import {
@@ -98,6 +99,17 @@ export default function TableGuestPopover({
           <Icon name="close" />
         </button>
       </header>
+      <SeatingRotationControl
+        value={table.rotation}
+        onChange={(rotation) =>
+          onChange({
+            ...plan,
+            tables: plan.tables.map((item) =>
+              item.id === table.id ? { ...item, rotation } : item,
+            ),
+          })
+        }
+      />
       <div className="table-popover-list">
         {seated.map((g) => row(g, true))}
         {!seated.length && <p>Aún no hay personas en esta mesa.</p>}

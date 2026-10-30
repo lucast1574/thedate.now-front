@@ -138,3 +138,30 @@
 .manager-page .venue-popover-fields label {
   gap: 4px;
 }
+
+.seating-rotation-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 0;
+  border-block: 1px solid var(--ui-border);
+  margin: 10px 0;
+  font-size: 12px;
+}
+.seating-rotation-control > span {
+  flex: 1;
+}
+.seating-rotation-control output {
+  min-width: 38px;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.manager-page .seating-rotation-control button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-height: 36px;
+  min-width: 36px;
+}

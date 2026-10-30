@@ -57,6 +57,7 @@ export default function VenueAreas({
             top: `${(area.y / height) * 100}%`,
             width: `${(area.width / width) * 100}%`,
             height: `${(area.height / height) * 100}%`,
+            transform: `rotate(${area.rotation || 0}deg)`,
           }}
           aria-label={`${area.name}. Arrastra o usa las flechas para mover este espacio`}
           onClick={() => onSelect(area.id)}
