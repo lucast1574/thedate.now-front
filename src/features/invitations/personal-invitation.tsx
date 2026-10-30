@@ -10,7 +10,13 @@ import InvitationBrand from "./invitation-brand";
 import LiveInvitation from "./live-invitation";
 import RSVPTheme from "@/features/rsvp/rsvp-theme";
 import RSVPForm from "@/features/rsvp/rsvp-form";
-export default async function PersonalInvitation({ token }: { token: string }) {
+export default async function PersonalInvitation({
+  token,
+  answer = false,
+}: {
+  token: string;
+  answer?: boolean;
+}) {
   if (!validInviteToken(token)) notFound();
   const response = await backendFetch(`public/rsvp/${token}`);
   if (!response?.ok) notFound();
@@ -33,33 +39,40 @@ export default async function PersonalInvitation({ token }: { token: string }) {
       (pinned && data.event.id !== pinned.eventId))
   )
     notFound();
-  if (
-    data.finalized ||
-    ["going", "not_going", "maybe"].includes(data.response || "")
-  )
+  if (answer)
     return (
       <RSVPTheme event={data.event}>
-        <RSVPForm token={token} />
+        {data.finalized ||
+        ["going", "not_going", "maybe"].includes(data.response || "") ? (
+          <RSVPForm token={token} />
+        ) : (
+          <main className="rsvp-page">
+            <section className="rsvp-card">
+              <p className="eyebrow">TU RESPUESTA</p>
+              <h1>Primero, responde en WhatsApp.</h1>
+              <p>
+                Elige Sí, No o Tal vez en la encuesta que te enviamos. Después
+                podrás completar tus datos desde este enlace.
+              </p>
+              <a className="office-button" href={`/rsvp/${token}`}>
+                Ver invitación
+              </a>
+            </section>
+          </main>
+        )}
+        <LiveInvitation />
         <InvitationBrand event={data.event} />
       </RSVPTheme>
     );
   return (
     <>
       <LiveInvitation />
-      <a className="personal-confirm-link" href="#confirmacion">
-        Confirmar asistencia
-      </a>
       <Invitation
         showBrand={false}
         event={data.event}
         guestName={data.guestName}
         giftURL={`/regalos/${token}`}
       />
-      <div id="confirmacion">
-        <RSVPTheme event={data.event}>
-          <RSVPForm token={token} />
-        </RSVPTheme>
-      </div>
       <InvitationBrand event={data.event} />
     </>
   );

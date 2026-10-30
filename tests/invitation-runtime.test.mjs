@@ -36,6 +36,7 @@ test("dedicated invitation runtime exposes public routes and denies account rout
     "/api/invitation-health",
     "/_next/static/styles.css",
     `/rsvp/${"a".repeat(48)}`,
+    `/rsvp/${"a".repeat(48)}/respuesta`,
     `/api/rsvp/${"b".repeat(48)}`,
     "/api/public-photos/wedding/ana/photo.jpg",
   ])
@@ -47,6 +48,8 @@ test("dedicated invitation runtime exposes public routes and denies account rout
     "/join/token",
     "/api/photos/id/key",
     "/rsvp/invalid",
+    `/rsvp/${"a".repeat(48)}/otra`,
+    `/api/rsvp/${"a".repeat(48)}/respuesta`,
   ])
     assert.equal(allow(path), false, path);
 });

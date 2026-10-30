@@ -38,7 +38,7 @@ test("every new flyer template includes an optional editable calendar element", 
     assert.equal(items.find((e) => e.binding === "calendar_link").type, "text");
   }
 });
-test("answered personal links open the form directly without replaying the invitation", async () => {
+test("invitation links preserve the design and response links isolate the form", async () => {
   for (const response of ["going", "maybe", "not_going", "pending"]) {
     const event = {
       id: "event",
@@ -72,9 +72,17 @@ test("answered personal links open the form directly without replaying the invit
       },
     ).default;
     const html = renderToStaticMarkup(await Page({ token: "a".repeat(48) }));
-    assert.equal(html.includes("Full invitation"), response === "pending");
-    assert.match(html, /Companions/);
-    assert.match(html, /#f4f0ff/i);
+    assert.match(html, /Full invitation/);
+    assert.doesNotMatch(html, /Companions|confirmacion|personal-confirm-link/);
+    const answer = renderToStaticMarkup(
+      await Page({ token: "a".repeat(48), answer: true }),
+    );
+    assert.doesNotMatch(answer, /Full invitation/);
+    if (response === "pending") {
+      assert.doesNotMatch(answer, /Companions/);
+      assert.match(answer, /Primero, responde en WhatsApp/);
+    } else assert.match(answer, /Companions/);
+    assert.match(answer, /#f4f0ff/i);
   }
 });
 test("a completed RSVP shows its receipt with no editable form", () => {
