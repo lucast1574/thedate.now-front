@@ -50,7 +50,7 @@ export default function OrganizationPreview({
           {tool === "tables"
             ? "Mueve mesas, bocaditos, bar y pista de baile para distribuir el espacio de tu evento."
             : tool === "gifts"
-              ? "Comparte ideas de tus tiendas favoritas y conoce quién se compromete con cada regalo."
+              ? "Tu invitación conecta con tu lista automáticamente. Añade regalos, evita repetidos y conoce quién elige cada detalle."
               : "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento."}
         </p>
       </header>

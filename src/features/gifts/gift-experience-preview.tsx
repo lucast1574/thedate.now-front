@@ -2,13 +2,9 @@
 import { useState } from "react";
 import Icon from "@/components/icon";
 import type { GuestWishlist } from "@/lib/events/wishlist";
-import GiftCodeEntry from "./gift-code-entry";
+import GiftPreviewInvitation from "./gift-preview-invitation";
 import GuestWishlistView from "./guest-wishlist-view";
-import {
-  exampleProducts,
-  exampleToken,
-  exampleWishlist,
-} from "./gift-examples";
+import { exampleProducts, exampleWishlist } from "./gift-examples";
 
 export default function GiftExperiencePreview({
   wedding = false,
@@ -19,13 +15,16 @@ export default function GiftExperiencePreview({
   initial?: GuestWishlist;
   imageSource?: (id: string) => string | undefined;
 }) {
-  const [step, setStep] = useState<"entry" | "list">("list");
+  const [step, setStep] = useState<"entry" | "list">(
+    initial ? "list" : "entry",
+  );
+  const [empty, setEmpty] = useState(false);
   const [selected, setSelected] = useState("");
   const [notice, setNotice] = useState("");
   const source = initial || exampleWishlist(wedding);
   const data = {
     ...source,
-    items: source.items.map((item) => ({
+    items: (empty ? [] : source.items).map((item) => ({
       ...item,
       mine: item.id === selected,
       reserved: item.reserved || item.id === selected,
@@ -44,15 +43,29 @@ export default function GiftExperiencePreview({
               : "Productos de ejemplo · Vista del invitado"}
           </span>
           <p>
-            Prueba la entrada y elige un regalo. Las reservas de esta vista no
-            se guardan.
+            Abre la lista desde la invitación y prueba una reserva. Los cambios
+            de esta vista no se guardan.
           </p>
         </div>
+        {!initial && (
+          <button
+            className="gift-secondary"
+            onClick={() => {
+              setEmpty(!empty);
+              setSelected("");
+              setNotice("");
+              setStep("list");
+            }}
+          >
+            {empty ? "Ver regalos de ejemplo" : "Ver lista por preparar"}
+          </button>
+        )}
         <button
           className="gift-secondary"
           onClick={() => {
             setSelected("");
             setNotice("");
+            setEmpty(false);
             setStep("entry");
           }}
         >
@@ -64,21 +77,21 @@ export default function GiftExperiencePreview({
           aria-pressed={step === "entry"}
           onClick={() => setStep("entry")}
         >
-          <span>1</span> Entrar con mi invitación
+          <span>1</span> Desde la invitación
         </button>
         <Icon name="chevron" />
         <button aria-pressed={step === "list"} onClick={() => setStep("list")}>
-          <span>2</span>{" "}
-          {selected ? "Mi regalo elegido" : "Ver y elegir regalos"}
+          <span>2</span> {selected ? "Mi regalo elegido" : "Lista de regalos"}
         </button>
       </div>
       <div
         className={`gift-preview-canvas ${wedding ? "gifts-wedding" : "gifts-general"}`}
       >
         {step === "entry" ? (
-          <GiftCodeEntry
-            example={`https://celebracion.${wedding ? "save." : ""}thedate.now/rsvp/${exampleToken}`}
-            onEnter={() => setStep("list")}
+          <GiftPreviewInvitation
+            title={source.event.title}
+            wedding={wedding}
+            onOpen={() => setStep("list")}
           />
         ) : (
           <GuestWishlistView

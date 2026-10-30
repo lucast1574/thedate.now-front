@@ -1,0 +1,95 @@
+.gift-preview-invitation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  align-items: center;
+  gap: clamp(24px, 5vw, 72px);
+  padding: clamp(24px, 4vw, 56px);
+}
+.gift-preview-invitation h3 {
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 18px 0;
+}
+.gift-preview-invitation > div > p {
+  max-width: 520px;
+  line-height: 1.8;
+  color: var(--ui-ink);
+  font-size: 14px;
+}
+.gift-preview-element {
+  padding: 24px;
+  background: var(--ui-soft);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+}
+.gift-preview-element .flyer-gift-link {
+  min-height: 100px;
+  justify-content: center;
+  text-align: center;
+  color: var(--ui-accent);
+  font-family: var(--font-serif);
+  font-size: 24px;
+}
+.gift-preview-element > p {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--ui-ink);
+  margin: 20px 0 0;
+}
+.gift-preview-element > p > .ui-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+@media (max-width: 760px) {
+  .gift-preview-invitation {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gift-preview-invitation h3 {
+    font-size: 28px;
+  }
+  .gift-preview-toolbar {
+    flex-wrap: wrap;
+  }
+  .gift-preview-toolbar > div {
+    width: 100%;
+  }
+}
+
+.manager-page .gift-preview-steps button {
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+}
+.manager-page .gift-preview-steps button[aria-pressed="true"] {
+  border-bottom-color: var(--ui-accent);
+  color: var(--ui-ink);
+}
+@media (max-width: 760px) {
+  .gift-preview-steps {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 12px minmax(0, 1fr);
+    gap: 4px;
+    padding: 0 6px;
+  }
+  .gift-preview-steps button {
+    min-width: 0;
+    white-space: normal;
+    justify-content: center;
+    padding: 12px 6px;
+    line-height: 1.5;
+  }
+  .gift-preview-steps button > span {
+    display: none;
+  }
+  .gift-preview-element {
+    padding: 18px;
+  }
+}
