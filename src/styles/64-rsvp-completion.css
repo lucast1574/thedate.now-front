@@ -1,0 +1,194 @@
+.flyer-calendar-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+.flyer-calendar-link .ui-icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+.flyer-calendar-link:focus-visible,
+.flyer-calendar-link:hover {
+  outline: none;
+  text-decoration: underline;
+}
+.rsvp-theme {
+  background: var(--rsvp-paper);
+  color: var(--rsvp-ink);
+}
+.rsvp-theme .rsvp-page {
+  background: var(--rsvp-paper);
+  padding: clamp(24px, 5vw, 64px) 20px;
+  min-height: 100svh;
+}
+.rsvp-theme .rsvp-card {
+  width: min(600px, 100%);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 48px);
+  background: transparent;
+  color: var(--rsvp-ink);
+  border: 0;
+  box-shadow: none;
+}
+.rsvp-theme .rsvp-card h1 {
+  font-family: var(--rsvp-heading);
+  font-size: clamp(34px, 7vw, 52px);
+  line-height: 1.12;
+  margin: 18px 0 24px;
+}
+.rsvp-theme .rsvp-card p {
+  color: inherit;
+  line-height: 1.65;
+}
+.rsvp-theme .rsvp-card .eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+}
+.rsvp-theme .rsvp-card form {
+  gap: 24px;
+  margin-top: 28px;
+}
+.rsvp-theme .rsvp-card fieldset {
+  min-width: 0;
+  margin: 0;
+}
+.rsvp-theme .rsvp-card fieldset > label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid color-mix(in srgb, var(--rsvp-ink) 20%, transparent);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.rsvp-theme .rsvp-card fieldset > label:has(input:checked) {
+  background: color-mix(in srgb, var(--rsvp-accent) 12%, var(--rsvp-paper));
+}
+.rsvp-theme .rsvp-card input[type="radio"] {
+  accent-color: var(--rsvp-accent);
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 0;
+}
+.rsvp-theme .rsvp-card .companion-fields {
+  display: grid;
+  gap: 16px;
+}
+.rsvp-theme .rsvp-card .companion-fields h3 {
+  font-size: 18px;
+  margin: 4px 0 0;
+}
+.rsvp-theme .rsvp-card .companion-fields p {
+  margin: 0;
+  font-size: 14px;
+}
+.rsvp-theme .rsvp-card .companion-fields fieldset {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--rsvp-ink) 20%, transparent);
+  border-radius: 12px;
+}
+.rsvp-theme .rsvp-card .companion-fields legend {
+  font-size: 13px;
+  padding: 0 6px;
+  margin: 0;
+}
+.rsvp-theme .rsvp-card .companion-fields label {
+  display: grid;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+  font-size: 13px;
+  cursor: default;
+}
+.rsvp-theme .rsvp-card input:not([type="radio"]),
+.rsvp-theme .rsvp-card textarea {
+  width: 100%;
+  min-height: 48px;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  margin: 0;
+  font: inherit;
+  color: var(--rsvp-ink);
+  background: color-mix(in srgb, var(--rsvp-paper) 96%, var(--rsvp-ink));
+  border: 1px solid color-mix(in srgb, var(--rsvp-ink) 24%, transparent);
+  border-radius: 7px;
+}
+.rsvp-theme .rsvp-card input:focus-visible,
+.rsvp-theme .rsvp-card textarea:focus-visible {
+  outline: none;
+  background: color-mix(in srgb, var(--rsvp-accent) 10%, var(--rsvp-paper));
+}
+.rsvp-theme .custom-listbox {
+  --ui-ink: var(--rsvp-ink);
+  --ui-surface: var(--rsvp-paper);
+  --ui-soft: color-mix(in srgb, var(--rsvp-paper) 92%, var(--rsvp-ink));
+  --ui-accent: var(--rsvp-accent);
+}
+.rsvp-theme .companion-fields button:not(.custom-listbox) {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  padding: 10px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rsvp-theme .companion-fields button:not(.custom-listbox):hover,
+.rsvp-theme .companion-fields button:not(.custom-listbox):focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+.rsvp-theme .rsvp-card .office-button {
+  width: 100%;
+  justify-content: center;
+  min-height: 50px;
+  background: var(--rsvp-ink);
+  color: var(--rsvp-paper);
+  border: 0;
+  border-radius: 8px;
+}
+.rsvp-theme .rsvp-card .office-button:focus-visible {
+  outline: none;
+  opacity: 0.8;
+}
+.rsvp-theme .rsvp-current-choice {
+  padding-bottom: 20px;
+  border-bottom: 1px solid color-mix(in srgb, var(--rsvp-ink) 18%, transparent);
+}
+@media (max-width: 480px) {
+  .rsvp-theme .rsvp-card {
+    padding: 16px 0;
+  }
+  .rsvp-theme .rsvp-card .companion-fields fieldset {
+    padding: 18px;
+  }
+}
+
+.rsvp-theme {
+  --ui-ink: var(--rsvp-ink);
+  --ui-surface: var(--rsvp-paper);
+  --ui-accent: var(--rsvp-accent);
+  --ui-soft: color-mix(in srgb, var(--rsvp-paper) 92%, var(--rsvp-ink));
+  --ui-border: color-mix(in srgb, var(--rsvp-ink) 22%, transparent);
+}
+.rsvp-theme button.custom-listbox {
+  min-height: 48px;
+}
+
+.flyer-calendar-link[data-align="left"] {
+  justify-content: flex-start;
+}
+.flyer-calendar-link[data-align="right"] {
+  justify-content: flex-end;
+}

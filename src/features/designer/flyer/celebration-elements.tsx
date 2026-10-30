@@ -1,3 +1,4 @@
+import CalendarElement from "./calendar-element";
 import { restrictionDefaults } from "@/lib/events/restrictions";
 import Icon from "@/components/icon";
 import { defaultCelebration } from "@/lib/events/celebration";
@@ -17,6 +18,11 @@ export default function CelebrationElements({
     draft.celebration || defaultCelebration(draft.kind === "wedding");
   return (
     <div className="canvas-special-tools">
+      <CalendarElement
+        disabled={disabled}
+        color={draft.accentColor}
+        onAdd={onAdd}
+      />
       <button
         disabled={disabled}
         onClick={() =>

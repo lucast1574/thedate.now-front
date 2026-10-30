@@ -59,7 +59,7 @@ export default function Listbox({
         ".office-general, .editor-general, .manager-general",
       ),
       editor: !!button.current?.closest(".editor-general"),
-      container: button.current?.closest("dialog") || document.body,
+      container: button.current?.closest("dialog,.rsvp-theme") || document.body,
     });
     setActive(
       index >= 0 && !options[index]?.disabled

@@ -22,6 +22,7 @@ export function addMissingTemplateElements(
     "location",
     "dress_code",
     "gift_link",
+    "calendar_link",
     "restrictions",
   ]);
   const additions = templateSequence(template, draft).flatMap((page) => {

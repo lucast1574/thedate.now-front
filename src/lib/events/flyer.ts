@@ -36,6 +36,7 @@ export type FlyerElement = {
     | "dress_code"
     | "adults_notice"
     | "gift_link"
+    | "calendar_link"
     | "restrictions";
   locationStyle?:
     | "icon"

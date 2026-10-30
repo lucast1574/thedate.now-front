@@ -1,5 +1,6 @@
 import type { Person } from "@/lib/events/seating";
 export type RSVPDetails = {
+  finalized?: boolean;
   guestName: string;
   seats: number;
   companions?: Person[];

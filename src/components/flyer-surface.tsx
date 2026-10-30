@@ -5,6 +5,7 @@ import type { PublicEvent } from "@/lib/events/types";
 import type { BackgroundSlice } from "@/lib/events/background";
 import type { CSSProperties, ReactNode } from "react";
 import { templatePhotoURL } from "@/lib/events/template-photos";
+import FlyerCalendarLink from "./flyer-calendar-link";
 import FlyerGiftLink from "./flyer-gift-link";
 import FlyerDressCode from "./flyer-dress-code";
 import FlyerRestrictions from "./flyer-restrictions";
@@ -63,6 +64,8 @@ export function FlyerContent({
         draggable={false}
       />
     );
+  if (item.binding === "calendar_link")
+    return <FlyerCalendarLink item={item} event={event} />;
   if (item.binding === "gift_link")
     return <FlyerGiftLink item={item} giftURL={giftURL} />;
   if (item.binding === "dress_code")

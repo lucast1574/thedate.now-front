@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, useRef, type FormEvent } from "react";
 import type { Person } from "@/lib/events/seating";
 import type { RSVPDetails } from "./types";
 
@@ -11,6 +11,7 @@ export function useRSVP(token: string) {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
+  const request = useRef(false);
   useEffect(() => {
     let active = true;
     fetch(`/api/rsvp/${token}`)
@@ -21,6 +22,7 @@ export function useRSVP(token: string) {
       .then((data) => {
         if (active) {
           setDetails(data);
+          setSaved(Boolean(data.finalized));
           setCompanions(data.companions || []);
           if (["going", "not_going", "maybe"].includes(data.response))
             setResponse(data.response);
@@ -36,6 +38,8 @@ export function useRSVP(token: string) {
   }, [token]);
   async function submit(e: FormEvent) {
     e.preventDefault();
+    if (saved || request.current) return;
+    request.current = true;
     setBusy(true);
     setError("");
     const result = await fetch(`/api/rsvp/${token}`, {
@@ -49,12 +53,15 @@ export function useRSVP(token: string) {
     }).catch(() => null);
     if (!result?.ok) {
       const data = await result?.json().catch(() => ({}));
-      setError(
-        data?.error === "There are not enough seats available"
-          ? "Ya no hay cupos disponibles. Comunícate con el organizador."
-          : (data?.error ?? "No pudimos guardar tu respuesta."),
-      );
+      if (data?.error === "Response already completed") setSaved(true);
+      else
+        setError(
+          data?.error === "There are not enough seats available"
+            ? "Ya no hay cupos disponibles. Comunícate con el organizador."
+            : (data?.error ?? "No pudimos guardar tu respuesta."),
+        );
     } else setSaved(true);
+    request.current = false;
     setBusy(false);
   }
   return {

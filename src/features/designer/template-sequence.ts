@@ -1,3 +1,4 @@
+import { calendarTemplatePage } from "./calendar-template-page";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { defaultCelebration } from "@/lib/events/celebration";
@@ -156,6 +157,7 @@ export function templateSequence(
     );
   pages.push(...templateExtraPages(template, source));
   pages.push(...templateLayoutPages(template));
+  pages.push(calendarTemplatePage(template));
   pages.push(
     page(wedding ? "Con todo nuestro cariño" : "Te esperamos", 560, [
       templateIcon(template, wedding ? "flower" : "sparkle", 70),

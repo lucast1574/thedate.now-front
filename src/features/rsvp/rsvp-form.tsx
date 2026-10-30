@@ -1,4 +1,5 @@
 "use client";
+import RSVPReceipt from "./rsvp-receipt";
 import RSVPCompanions from "./rsvp-companions";
 import Alert from "@/components/alert";
 import ActionButton from "@/components/action-button";
@@ -30,6 +31,14 @@ export default function RSVPForm({ token }: { token: string }) {
   const placeLink = safeHTTPSLink(
     virtual ? details?.virtualUrl || "" : details?.mapUrl || "",
   );
+  if (saved && details)
+    return (
+      <RSVPReceipt
+        details={details}
+        response={response}
+        companions={rsvp.companions}
+      />
+    );
   return (
     <main className="rsvp-page">
       <section className="rsvp-card">
@@ -50,8 +59,10 @@ export default function RSVPForm({ token }: { token: string }) {
                 ? "es solo para ti."
                 : `te permite llevar hasta ${details.seats - 1} ${details.seats === 2 ? "acompañante" : "acompañantes"}.`}
             </p>
-            <EventDetails event={details} variant="rsvp" />
-            {placeLink && (
+            {details.response === "pending" && (
+              <EventDetails event={details} variant="rsvp" />
+            )}
+            {placeLink && details.response === "pending" && (
               <a
                 className="rsvp-place-link"
                 href={placeLink}
@@ -68,18 +79,41 @@ export default function RSVPForm({ token }: { token: string }) {
         )}
         {saved ? (
           <p>
-            Gracias por responder. Puedes volver a este enlace si necesitas
-            cambiar tu respuesta.
+            Tu confirmación ya está registrada. Para solicitar un cambio,
+            comunícate con quienes organizan la celebración.
           </p>
         ) : (
           details && (
             <form onSubmit={submit}>
-              <ResponseFields
-                response={response}
-                reason={reason}
-                onResponse={setResponse}
-                onReason={setReason}
-              />
+              {details.response === "pending" || !details.response ? (
+                <ResponseFields
+                  response={response}
+                  reason={reason}
+                  onResponse={setResponse}
+                  onReason={setReason}
+                />
+              ) : (
+                <>
+                  <p className="rsvp-current-choice">
+                    {response === "going"
+                      ? "Asistirás a la celebración"
+                      : response === "maybe"
+                        ? "Has respondido: Tal vez"
+                        : "Has respondido: No asistiré"}
+                  </p>
+                  {response === "maybe" && (
+                    <label>
+                      Cuéntanos por qué estás en espera
+                      <textarea
+                        required
+                        minLength={3}
+                        value={reason}
+                        onChange={(e) => setReason(e.target.value)}
+                      />
+                    </label>
+                  )}
+                </>
+              )}
               {details.seats > 1 && response !== "not_going" && (
                 <RSVPCompanions
                   people={rsvp.companions}
@@ -96,11 +130,11 @@ export default function RSVPForm({ token }: { token: string }) {
                   {rsvp.companions.length ? "personas" : "persona"}, contándote
                   a ti.
                   {details.seats > 1 &&
-                    " Si vienes sin acompañantes, sus lugares quedarán disponibles. Añadirlos después dependerá del aforo."}
+                    " Revisa los nombres antes de guardar. Esta confirmaci\u00f3n se registra una sola vez."}
                 </p>
               )}
               <ActionButton className="office-button" disabled={busy}>
-                Enviar respuesta ↗
+                Guardar confirmación
               </ActionButton>
             </form>
           )

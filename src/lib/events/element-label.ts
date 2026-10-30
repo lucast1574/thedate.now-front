@@ -9,6 +9,7 @@ const labels: Record<NonNullable<FlyerElement["binding"]>, string> = {
   dress_code: "Dress code",
   restrictions: "Restricciones",
   adults_notice: "Solo adultos",
+  calendar_link: "Añadir al calendario",
   gift_link: "Lista de regalos",
 };
 export function elementLabel(item: FlyerElement) {

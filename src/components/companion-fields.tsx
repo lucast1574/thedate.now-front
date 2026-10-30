@@ -1,3 +1,4 @@
+import Icon from "./icon";
 import Listbox from "@/components/listbox";
 import type { Person } from "@/lib/events/seating";
 export default function CompanionFields({
@@ -46,7 +47,7 @@ export default function CompanionFields({
             />
           </label>
           <label>
-            Icono
+            Género (opcional)
             <Listbox
               value={person.gender}
               onValueChange={(value) =>
@@ -76,7 +77,7 @@ export default function CompanionFields({
             ])
           }
         >
-          ＋ Añadir acompañante
+          <Icon name="plus" /> Añadir acompañante
         </button>
       )}
     </section>

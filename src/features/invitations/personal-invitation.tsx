@@ -8,6 +8,7 @@ import type { PublicEvent } from "@/lib/events/types";
 import Invitation from "./invitation";
 import InvitationBrand from "./invitation-brand";
 import LiveInvitation from "./live-invitation";
+import RSVPTheme from "@/features/rsvp/rsvp-theme";
 import RSVPForm from "@/features/rsvp/rsvp-form";
 export default async function PersonalInvitation({ token }: { token: string }) {
   if (!validInviteToken(token)) notFound();
@@ -16,6 +17,8 @@ export default async function PersonalInvitation({ token }: { token: string }) {
   const data = (await response.json()) as {
     event: PublicEvent;
     guestName: string;
+    response?: string;
+    finalized?: boolean;
   };
   if (!data.event) notFound();
   const pinned = invitationTarget();
@@ -30,6 +33,16 @@ export default async function PersonalInvitation({ token }: { token: string }) {
       (pinned && data.event.id !== pinned.eventId))
   )
     notFound();
+  if (
+    data.finalized ||
+    ["going", "not_going", "maybe"].includes(data.response || "")
+  )
+    return (
+      <RSVPTheme event={data.event}>
+        <RSVPForm token={token} />
+        <InvitationBrand event={data.event} />
+      </RSVPTheme>
+    );
   return (
     <>
       <LiveInvitation />
@@ -43,7 +56,9 @@ export default async function PersonalInvitation({ token }: { token: string }) {
         giftURL={`/regalos/${token}`}
       />
       <div id="confirmacion">
-        <RSVPForm token={token} />
+        <RSVPTheme event={data.event}>
+          <RSVPForm token={token} />
+        </RSVPTheme>
       </div>
       <InvitationBrand event={data.event} />
     </>
