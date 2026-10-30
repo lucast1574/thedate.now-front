@@ -14,8 +14,8 @@
 .organization-selection-heading {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: flex-start;
+  gap: 14px;
   margin-bottom: 18px;
 }
 .organization-selection-heading h2 {
@@ -30,9 +30,9 @@
   color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
 }
 .organization-selection .organization-event-cards {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 320px));
   max-width: none;
-  gap: 24px;
+  gap: 16px;
   margin: 0;
 }
 .organization-selection .organization-event-card {
@@ -42,15 +42,15 @@
     background 180ms ease;
 }
 .organization-selection .organization-event-thumbnail {
-  height: 208px;
+  height: 156px;
   background: var(--ui-soft);
 }
 .organization-selection .invitation-thumbnail {
   background: var(--ui-soft);
 }
 .organization-selection .organization-event-info {
-  gap: 10px;
-  padding: 16px 20px 0;
+  gap: 8px;
+  padding: 14px 16px 0;
 }
 .organization-event-meta {
   display: flex;
@@ -64,7 +64,7 @@
   color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
 }
 .organization-selection .organization-event-info > strong {
-  font: var(--ui-heading-weight) 25px/1.15 var(--ui-heading-font);
+  font: var(--ui-heading-weight) 22px/1.15 var(--ui-heading-font);
   color: var(--ui-ink);
 }
 .organization-publication {
@@ -88,7 +88,7 @@
   justify-content: space-between;
   gap: 16px;
   margin-top: 5px;
-  padding-block: 14px;
+  padding-block: 12px;
   border-top: 1px solid var(--ui-border);
   font-size: 13px;
   font-weight: 500;
@@ -143,13 +143,16 @@
   }
   .organization-selection .organization-event-cards {
     gap: 18px;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 320px));
   }
   .organization-selection .organization-event-thumbnail {
-    height: 200px;
+    height: 156px;
   }
 }
 @media (max-width: 600px) {
+  .organization-selection .organization-event-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .organization-page {
     padding: 24px 16px 48px;
   }
@@ -163,13 +166,13 @@
     gap: 12px;
   }
   .organization-selection .organization-event-thumbnail {
-    height: 208px;
+    height: 156px;
   }
   .organization-selection .organization-event-info {
-    padding: 18px 18px 0;
+    padding: 14px 16px 0;
   }
   .organization-selection .organization-event-info > strong {
-    font-size: 25px;
+    font-size: 22px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

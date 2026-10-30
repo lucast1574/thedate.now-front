@@ -20,17 +20,30 @@ export default function SeatingTools({
   onPropose,
 }: Props) {
   return (
-    <section className="seating-tools seating-setup-card">
+    <section className="seating-tools seating-setup-card seating-automation-card">
       <header>
-        <Icon name="table" />
+        <Icon name="users" />
         <div>
-          <h3>Añade mesas</h3>
-          <p>Elige su tamaño y forma antes de colocarlas.</p>
+          <h3>Distribuye a tus invitados automáticamente</h3>
+          <p>
+            Generamos las mesas necesarias y ubicamos a los confirmados por
+            categoría.
+          </p>
         </div>
       </header>
-      <div className="seating-create-fields">
+      <ul className="seating-automation-benefits">
+        <li>
+          <Icon name="check" />
+          Titular y acompañantes juntos
+        </li>
+        <li>
+          <Icon name="check" />
+          Respeta los cupos y tus asignaciones
+        </li>
+      </ul>
+      <div className="seating-automation-start">
         <label>
-          Asientos por mesa
+          Asientos por mesa nueva
           <input
             type="number"
             min={1}
@@ -43,29 +56,43 @@ export default function SeatingTools({
             }}
           />
         </label>
-        <label>
-          Forma
-          <Listbox
-            value={shape}
-            onValueChange={(value) => onShape(value as SeatingTable["shape"])}
-          >
-            <option value="round">Circular</option>
-            <option value="rectangle">Rectangular</option>
-          </Listbox>
-        </label>
-        <button type="button" disabled={busy} onClick={onAdd}>
-          <Icon name="plus" /> Añadir mesa
+        <button
+          type="button"
+          className="office-button"
+          disabled={busy}
+          onClick={onPropose}
+        >
+          <Icon name="users" />
+          Generar propuesta automática
         </button>
       </div>
-      <div className="seating-auto-help">
-        <button type="button" disabled={busy} onClick={onPropose}>
-          <Icon name="users" /> Completar por categoría
-        </button>
+      <small className="seating-automation-review">
+        Primero revisas la propuesta. Solo se aplica cuando tú lo decides y se
+        conserva al guardar el plano.
+      </small>
+      <details className="seating-manual-option">
+        <summary>También puedes añadir una mesa a mano</summary>
+        <div className="seating-manual-fields">
+          <label>
+            Forma
+            <Listbox
+              value={shape}
+              onValueChange={(value) => onShape(value as SeatingTable["shape"])}
+            >
+              <option value="round">Circular</option>
+              <option value="rectangle">Rectangular</option>
+            </Listbox>
+          </label>
+          <button type="button" disabled={busy} onClick={onAdd}>
+            <Icon name="plus" />
+            Añadir mesa
+          </button>
+        </div>
         <small>
-          Revisa la propuesta antes de aplicarla. Respeta tus asignaciones
-          actuales.
+          Se creará con {capacity} asientos. Después puedes editarla o moverla
+          en el plano.
         </small>
-      </div>
+      </details>
     </section>
   );
 }

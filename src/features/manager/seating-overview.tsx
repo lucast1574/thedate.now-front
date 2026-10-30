@@ -11,7 +11,10 @@ export default function SeatingOverview({
     <header className="seating-overview">
       <div>
         <h2>Organiza las mesas</h2>
-        <p>Crea el espacio, coloca las mesas y sienta a tus invitados.</p>
+        <p>
+          Los invitados se ubican automáticamente al confirmar. Revisa la
+          distribución, completa las mesas o ajusta lo que necesites.
+        </p>
       </div>
       <dl className="seating-overview-counts">
         <div>

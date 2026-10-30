@@ -1,0 +1,85 @@
+.seating-automation-card .seating-automation-benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.seating-automation-benefits li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.seating-automation-benefits .ui-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--ui-accent);
+  flex-shrink: 0;
+}
+.seating-automation-start {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto;
+  gap: 14px;
+  align-items: end;
+}
+.seating-automation-start > label {
+  max-width: 200px;
+}
+.manager-page .seating-automation-start > .office-button {
+  background: var(--ui-accent);
+  border-color: var(--ui-accent);
+  color: var(--ui-surface);
+}
+.seating-automation-card > .seating-automation-review {
+  margin: -7px 0 0;
+}
+.seating-manual-option {
+  border-top: 1px solid var(--ui-border);
+  padding-top: 15px;
+}
+.seating-manual-option > summary {
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ui-ink);
+}
+.seating-manual-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  padding-top: 16px;
+}
+.seating-manual-option small {
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+  color: var(--seating-muted, var(--ui-muted));
+}
+.seating-manual-option summary:focus-visible {
+  outline: none;
+  background: var(--ui-soft);
+}
+.manager-page .seating-overview > div > p {
+  max-width: 660px;
+}
+@media (max-width: 1300px) {
+  .seating-automation-start {
+    grid-template-columns: 1fr;
+  }
+  .seating-automation-start > label {
+    max-width: none;
+  }
+}
+@media (max-width: 600px) {
+  .seating-manual-fields {
+    grid-template-columns: 1fr;
+  }
+  .seating-automation-card .seating-automation-benefits {
+    flex-direction: column;
+  }
+}
