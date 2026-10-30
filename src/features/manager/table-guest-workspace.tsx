@@ -69,7 +69,11 @@ export default function TableGuestWorkspace({
       }}
       onPointerMoveCapture={(e) => {
         const p = pointer.current;
-        if (p && Math.hypot(e.clientX - p.x, e.clientY - p.y) > 5) {
+        if (
+          p &&
+          (e.buttons & 1) !== 0 &&
+          Math.hypot(e.clientX - p.x, e.clientY - p.y) > 5
+        ) {
           p.moved = true;
           if ((e.target as Element).closest(".seating-table, .venue-area"))
             setPosition(null);
