@@ -50,9 +50,7 @@ export default function ManagerTools({
             />
           }
           onChange={manager.update}
-          onSave={() => {
-            void manager.save();
-          }}
+          autosave={manager.autosave}
           onReload={() => {
             void manager.run(() => manager.refresh(true), "Plano recargado.");
           }}

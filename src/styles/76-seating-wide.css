@@ -1,0 +1,121 @@
+/* The organizer sits above the original, unchanged salon canvas. */
+.seating-workspace.seating-workspace-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+.seating-workspace-wide > .table-organizer {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) minmax(0, 1fr);
+  gap: 0 28px;
+  align-items: start;
+}
+.seating-workspace-wide .table-organizer-heading,
+.seating-workspace-wide .table-occupancy,
+.seating-workspace-wide .table-edit-settings,
+.seating-workspace-wide .seating-remove {
+  grid-column: 1;
+}
+.seating-workspace-wide .table-guest-workflow {
+  grid-column: 2;
+  grid-row: 1 / span 5;
+  margin: 0;
+  padding-left: 28px;
+  border-left: 1px solid var(--ui-border);
+  min-width: 0;
+  max-width: none;
+}
+.seating-workspace-wide .seating-households {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
+  align-items: start;
+  max-height: 320px;
+}
+.seating-workspace-wide .table-add-panel .table-search {
+  max-width: 480px;
+}
+.seating-workspace-wide .table-add-guests {
+  width: auto;
+  padding-inline: 18px;
+}
+.seating-workspace-wide .table-assignment-empty {
+  grid-column: 1 / -1;
+}
+.seating-workspace-wide .table-properties {
+  max-width: none;
+}
+.seating-workspace-wide > .seating-empty-inspector {
+  max-width: none;
+}
+@media (max-width: 800px) {
+  .seating-workspace-wide > .table-organizer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .seating-workspace-wide .table-guest-workflow {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 20px 0 0;
+    margin-top: 16px;
+    border-left: 0;
+    border-top: 1px solid var(--ui-border);
+  }
+  .seating-workspace-wide .seating-remove {
+    grid-row: 6;
+  }
+  .seating-workspace-wide .table-add-guests {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .seating-workspace-wide .table-guest-workflow:has(.table-add-panel) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px 24px;
+  }
+  .seating-workspace-wide .table-guest-workflow > .table-section-title {
+    grid-column: 1;
+    align-self: center;
+  }
+  .seating-workspace-wide .table-guest-workflow > .seating-households {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .seating-workspace-wide
+    .table-guest-workflow:has(.table-add-panel)
+    > .table-add-guests {
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
+  }
+  .seating-workspace-wide .table-add-panel {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .seating-workspace-wide .table-assignment-notice {
+    grid-column: 1 / -1;
+  }
+}
+
+.seating-workspace-wide > .seating-organizer-empty {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 4px 12px;
+  padding: 18px 20px;
+}
+.seating-workspace-wide > .seating-organizer-empty > .ui-icon {
+  grid-row: 1 / span 2;
+}
+.manager-page .seating-workspace-wide > .seating-organizer-empty h3 {
+  font-size: 18px;
+  margin: 0;
+}
+.manager-page .seating-workspace-wide > .seating-organizer-empty p {
+  margin: 0;
+  font-size: 12px;
+}
+.seating-workspace-wide > .seating-organizer-empty ol,
+.seating-workspace-wide > .seating-organizer-empty small {
+  display: none;
+}

@@ -4,6 +4,7 @@ import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, Guest, GuestFields, User } from "@/lib/events/types";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
+import { useSeatingAutosave } from "./use-seating-autosave";
 import { useLiveResponses } from "./use-live-responses";
 export function useManager(id: string) {
   const [event, setEvent] = useState<Event | null>(null),
@@ -107,14 +108,16 @@ export function useManager(id: string) {
       dirtyRef.current = false;
       setStale(false);
       await refresh();
-    }, "Plano guardado.");
+    }, "");
   const add = (fields: GuestFields) =>
     run(async () => {
       await api(`/api/backend/events/${id}/guests`, "POST", fields);
       await refresh();
     }, "Invitado añadido.");
 
+  const autosave = useSeatingAutosave(plan, dirty, busy, stale, save);
   return {
+    autosave,
     event,
     events,
     user,

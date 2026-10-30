@@ -8,6 +8,7 @@ import {
   surnameOrder,
 } from "@/lib/events/auto-seating";
 import Icon from "@/components/icon";
+import type { useSeatingAutosave } from "./use-seating-autosave";
 import SeatingSaveBar from "./seating-save-bar";
 import SeatingEmptyInspector from "./seating-empty-inspector";
 import SeatingOverview from "./seating-overview";
@@ -26,7 +27,7 @@ type Props = {
   stale: boolean;
   exportAction: ReactNode;
   onChange: (plan: SeatingPlan) => void;
-  onSave: () => void;
+  autosave: ReturnType<typeof useSeatingAutosave>;
   onReload: () => void;
 };
 export default function SeatingEditor({
@@ -38,7 +39,7 @@ export default function SeatingEditor({
   stale,
   exportAction,
   onChange,
-  onSave,
+  autosave,
   onReload,
 }: Props) {
   const [selected, setSelected] = useState(""),
@@ -101,31 +102,13 @@ export default function SeatingEditor({
         <div>
           <h3>Plano del salón</h3>
           <p>
-            Selecciona una mesa para asignar personas. Arrastra para colocar
-            mesas y espacios.
+            Selecciona una mesa y organízala en el panel de arriba. Arrastra
+            para colocar mesas y espacios.
           </p>
         </div>
         <span>Solo invitados confirmados</span>
       </div>
-      <div
-        className={`seating-workspace ${table || area ? "with-inspector" : ""}`}
-      >
-        <SeatingCanvas
-          plan={plan}
-          people={people}
-          selected={selected}
-          onSelect={setSelected}
-          onMove={move}
-          areas={plan.areas}
-          onMoveArea={(id, x, y) =>
-            onChange({
-              ...plan,
-              areas: plan.areas?.map((item) =>
-                item.id === id ? { ...item, x, y } : item,
-              ),
-            })
-          }
-        />
+      <div className="seating-workspace seating-workspace-wide">
         {table ? (
           <TableInspector
             key={table.id}
@@ -160,13 +143,28 @@ export default function SeatingEditor({
         ) : (
           <SeatingEmptyInspector />
         )}
+        <SeatingCanvas
+          plan={plan}
+          people={people}
+          selected={selected}
+          onSelect={setSelected}
+          onMove={move}
+          areas={plan.areas}
+          onMoveArea={(id, x, y) =>
+            onChange({
+              ...plan,
+              areas: plan.areas?.map((item) =>
+                item.id === id ? { ...item, x, y } : item,
+              ),
+            })
+          }
+        />
       </div>
       <SeatingSaveBar
         busy={busy}
         dirty={dirty}
         stale={stale}
-        version={plan.version}
-        onSave={onSave}
+        autosave={autosave}
         onReload={onReload}
       />
       <section className="seating-export-panel">
@@ -175,8 +173,8 @@ export default function SeatingEditor({
           <div>
             <h3>Lista para la entrada</h3>
             <p>
-              Cuando la distribución esté lista, descarga el Excel con las
-              personas confirmadas, sus familias y sus mesas.
+              Descarga la lista para quien recibe a tus invitados: nombres,
+              acompañantes y mesa asignada para comprobar el ingreso y guiarlos.
             </p>
           </div>
         </div>

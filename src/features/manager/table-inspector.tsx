@@ -72,7 +72,7 @@ export default function TableInspector({
       />
       <RemoveSeatingItem
         name={table.name}
-        description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará cuando guardes el plano."
+        description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
         onRemove={onDelete}
       />
     </aside>

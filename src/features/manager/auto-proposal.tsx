@@ -78,13 +78,13 @@ export default function AutoProposal({
         ))}
       </ul>
       <p>
-        Aplicar completa las asignaciones pendientes del borrador. El plano se
-        guardará cuando pulses Guardar plano.
+        Al aplicar la propuesta, las asignaciones y el plano se guardan
+        automáticamente.
       </p>
       <footer>
         <button onClick={onClose}>Cancelar</button>
         <button className="office-button" onClick={onApply}>
-          Aplicar al borrador
+          Aplicar distribución
         </button>
       </footer>
     </dialog>

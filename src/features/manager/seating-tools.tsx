@@ -68,10 +68,11 @@ export default function SeatingTools({
       </div>
       <small className="seating-automation-review">
         Primero revisas la propuesta. Solo se aplica cuando tú lo decides y se
-        conserva al guardar el plano.
+        guarda automáticamente al aplicarla.
       </small>
-      <details className="seating-manual-option">
-        <summary>También puedes añadir una mesa a mano</summary>
+      <section className="seating-manual-option">
+        <h4>Añadir mesa a mano</h4>
+        <p>Crea una mesa y elige a quién sentar.</p>
         <div className="seating-manual-fields">
           <label>
             Forma
@@ -92,7 +93,7 @@ export default function SeatingTools({
           Se creará con {capacity} asientos. Después puedes editarla o moverla
           en el plano.
         </small>
-      </details>
+      </section>
     </section>
   );
 }

@@ -11,7 +11,7 @@ export default function SeatingEmptyInspector() {
       <ol>
         <li>Elige una mesa en el plano.</li>
         <li>Pulsa «Añadir invitados» para sentarlos juntos.</li>
-        <li>Guarda el plano cuando termines.</li>
+        <li>Los cambios se guardan automáticamente.</li>
       </ol>
       <small>
         El plano es orientativo. Revisa pasillos y distancias con tu local.

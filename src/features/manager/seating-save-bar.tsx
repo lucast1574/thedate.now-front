@@ -1,20 +1,20 @@
 import { useInlineConfirmation } from "@/components/use-inline-confirmation";
+import type { useSeatingAutosave } from "./use-seating-autosave";
 import Icon from "@/components/icon";
 export default function SeatingSaveBar({
   busy,
   dirty,
   stale,
-  version,
-  onSave,
+  autosave,
   onReload,
 }: {
   busy: boolean;
   dirty: boolean;
   stale: boolean;
-  version: number;
-  onSave: () => void;
+  autosave: ReturnType<typeof useSeatingAutosave>;
   onReload: () => void;
 }) {
+  const { saving, failed, retry } = autosave;
   const {
     open: confirmReload,
     setOpen: setConfirmReload,
@@ -35,15 +35,21 @@ export default function SeatingSaveBar({
             {stale
               ? "Hay nuevas respuestas"
               : dirty
-                ? "Cambios sin guardar"
-                : "Plano guardado"}
+                ? failed
+                  ? "No pudimos guardar los cambios"
+                  : saving
+                    ? "Guardando…"
+                    : "Guardando cambios automáticamente…"
+                : "Cambios guardados"}
           </strong>
           <small>
             {stale
               ? "Recarga el plano para incorporar los cambios antes de guardar o descargar."
               : dirty
-                ? "Guarda para conservar la distribución y las asignaciones."
-                : `Todo está al día · versión ${version}`}
+                ? failed
+                  ? "Tus cambios siguen aquí. Revisa tu conexión y vuelve a intentarlo."
+                  : "Puedes seguir organizando; guardamos por ti."
+                : "El plano y las mesas están al día."}
           </small>
         </div>
       </div>
@@ -71,24 +77,28 @@ export default function SeatingSaveBar({
         </div>
       ) : (
         <div className="seating-save-actions">
-          <button
-            type="button"
-            disabled={busy}
-            ref={trigger}
-            onClick={() => (dirty ? setConfirmReload(true) : onReload())}
-          >
-            <Icon name="refresh" />
-            Recargar plano
-          </button>
-          <button
-            type="button"
-            className="office-button"
-            disabled={busy || !dirty || stale}
-            onClick={onSave}
-          >
-            <Icon name="check" />
-            {busy ? "Un momento…" : "Guardar plano"}
-          </button>
+          {stale && (
+            <button
+              type="button"
+              disabled={busy}
+              ref={trigger}
+              onClick={() => (dirty ? setConfirmReload(true) : onReload())}
+            >
+              <Icon name="refresh" />
+              Recargar plano
+            </button>
+          )}
+          {failed && !stale && (
+            <button
+              type="button"
+              className="seating-retry-save"
+              disabled={busy || saving}
+              onClick={retry}
+            >
+              <Icon name="check" />
+              Reintentar guardado
+            </button>
+          )}
         </div>
       )}
     </div>

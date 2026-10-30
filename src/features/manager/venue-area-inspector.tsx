@@ -70,7 +70,7 @@ export default function VenueAreaInspector({
       </p>
       <RemoveSeatingItem
         name={area.name}
-        description="Se quitará este espacio del borrador. Las mesas y las personas conservarán su posición."
+        description="Se quitará este espacio del plano y el cambio se guardará automáticamente. Las mesas y las personas conservarán su posición."
         onRemove={() => {
           onChange({
             ...plan,

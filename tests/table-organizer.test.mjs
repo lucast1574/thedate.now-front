@@ -130,12 +130,21 @@ test("saving and Excel export follow the unchanged canvas in the editor", () => 
       stale: false,
       exportAction: React.createElement("button", null, "Export workbook"),
       onChange() {},
-      onSave() {},
+      autosave: { saving: false, failed: false, retry() {} },
       onReload() {},
     }),
   );
   assert.ok(
-    html.indexOf('data-canvas="protected"') < html.indexOf("Guardar plano"),
+    html.indexOf("Selecciona una mesa") <
+      html.indexOf('data-canvas="protected"'),
   );
-  assert.ok(html.indexOf("Guardar plano") < html.indexOf("Export workbook"));
+  assert.match(html, /seating-workspace-wide/);
+  assert.ok(
+    html.indexOf('data-canvas="protected"') <
+      html.indexOf("Guardando cambios automáticamente"),
+  );
+  assert.ok(
+    html.indexOf("Guardando cambios automáticamente") <
+      html.indexOf("Export workbook"),
+  );
 });

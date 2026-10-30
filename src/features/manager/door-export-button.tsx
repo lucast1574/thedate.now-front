@@ -23,7 +23,7 @@ export default function DoorExportButton({
   const description = stale
     ? "Recarga el plano para incluir los cambios nuevos antes de exportar."
     : dirty
-      ? "Guarda el plano antes de descargar el Excel."
+      ? "Estamos guardando el plano. La descarga se habilitará al terminar."
       : "Personas confirmadas con su familia y mesa; incluye una hoja de respuestas para revisión.";
   return (
     <div className="seating-export-action">
