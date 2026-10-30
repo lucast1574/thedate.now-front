@@ -109,7 +109,7 @@ test("table inspector presents a party as one accessible assignment control", ()
   assert.doesNotMatch(html, /<details/);
   assert.doesNotMatch(html, /Ana Rojas/);
   assert.doesNotMatch(html, /Luis Perez/);
-  assert.match(html, /Ubicaci/);
+  assert.doesNotMatch(html, /table-position-details|type="range"|Posici/);
 });
 test("saving and Excel export follow the unchanged canvas in the editor", () => {
   const Editor = loadSource("src/features/manager/seating-editor.tsx", {
