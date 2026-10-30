@@ -65,6 +65,9 @@ export default function GuestWorkspace({
         guests={manager.guests}
         plan={manager.plan}
         enabled={manager.event.invitationsEnabled}
+        eventId={manager.event.id}
+        onUpdated={() => manager.refresh()}
+        blocked={manager.busy || manager.dirty}
       />
     </section>
   );

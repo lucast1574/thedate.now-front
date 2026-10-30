@@ -1,24 +1,25 @@
 import Listbox from "@/components/listbox";
 import { useState } from "react";
-import {
-  attendees,
-  fullName,
-  partySeats,
-  responseLabel,
-} from "@/lib/events/attendees";
+import { fullName } from "@/lib/events/attendees";
 import { surnameOrder } from "@/lib/events/auto-seating";
 import type { Guest } from "@/lib/events/types";
 import type { SeatingPlan } from "@/lib/events/seating";
-import PersonGlyph from "@/components/person-glyph";
+import GuestRosterRow from "./guest-roster-row";
 import { useClock } from "@/components/use-clock";
 export default function GuestRoster({
   guests,
   plan,
   enabled,
+  eventId,
+  onUpdated,
+  blocked,
 }: {
   guests: Guest[];
   plan: SeatingPlan;
   enabled?: boolean;
+  eventId?: string;
+  onUpdated?: () => Promise<void>;
+  blocked?: boolean;
 }) {
   const [search, setSearch] = useState(""),
     [filter, setFilter] = useState("all"),
@@ -95,101 +96,23 @@ export default function GuestRoster({
               <th>Mesa</th>
               <th>Regalo</th>
               <th>Contacto</th>
+              {eventId && <th>Acciones</th>}
             </tr>
           </thead>
           <tbody>
             {list.map((g, index) => (
-              <tr key={g.id}>
-                <td>
-                  {!sorted && !search && filter === "all" && (
-                    <span className="guest-queue-position">{index + 1}</span>
-                  )}
-                  <strong>{fullName(g)}</strong>
-                  {g.family && <small>{g.family}</small>}
-                  <ul className="party-names">
-                    {attendees([g]).map((p) => (
-                      <li key={p.id}>
-                        <PersonGlyph gender={p.gender} />
-                        <span>
-                          {fullName(p)}
-                          {p.slot ? ` (+${p.slot})` : ""}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </td>
-                <td>
-                  <span className={`response-pill response-${g.response}`}>
-                    {responseLabel(g, now)}
-                  </span>
-                  {g.maybeReason && <small>{g.maybeReason}</small>}
-                  {g.maybeExpiresAt && (
-                    <small>
-                      Reserva hasta{" "}
-                      {new Date(g.maybeExpiresAt).toLocaleString("es-PE")}
-                    </small>
-                  )}
-                </td>
-                <td>
-                  {partySeats(g)} {partySeats(g) === 1 ? "persona" : "personas"}
-                  <small>Máximo {g.seats}</small>
-                </td>
-                <td>
-                  {g.response !== "going" ? (
-                    <small>
-                      {g.response === "not_going"
-                        ? "No asistirá"
-                        : "Se asignará al confirmar"}
-                    </small>
-                  ) : (
-                    <small>
-                      {plan.tables.find(
-                        (t) => t.id === plan.assignments[`${g.id}~0`],
-                      )?.name || "Sin mesa"}
-                    </small>
-                  )}
-                </td>
-                <td>
-                  {g.gift ? (
-                    <>
-                      <strong>{g.gift.title}</strong>
-                      <small>
-                        {g.gift.delivered
-                          ? "Recibido"
-                          : "Se comprometió a regalarlo"}
-                      </small>
-                    </>
-                  ) : (
-                    <small>Sin elección</small>
-                  )}
-                </td>
-                <td>
-                  {g.phone}
-                  <br />
-                  {g.sentAt && (
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={g.invitationUrl}
-                    >
-                      Enlace personal ↗
-                    </a>
-                  )}
-                  <small>
-                    {g.sentAt
-                      ? "WhatsApp enviado"
-                      : g.sendState === "sending"
-                        ? "Enviando…"
-                        : g.sendState === "unknown"
-                          ? "Envío por verificar"
-                          : g.sendState === "failed"
-                            ? "No se pudo enviar"
-                            : enabled
-                              ? "Esperando su turno"
-                              : "Por enviar"}
-                  </small>
-                </td>
-              </tr>
+              <GuestRosterRow
+                key={g.id}
+                g={g}
+                index={index}
+                showPosition={!sorted && !search && filter === "all"}
+                plan={plan}
+                enabled={enabled}
+                now={now}
+                eventId={eventId}
+                onUpdated={onUpdated}
+                blocked={blocked}
+              />
             ))}
           </tbody>
         </table>

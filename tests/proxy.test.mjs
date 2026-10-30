@@ -223,3 +223,39 @@ test("studio proxy forwards only the supported delivery retry path", async () =>
     404,
   );
 });
+
+test("guest management forwards authenticated corrections and deletions", async () => {
+  const captured = [];
+  const proxy = proxyFixture("local-test-session", (url, init) => {
+    captured.push({ url, method: init.method });
+    return Response.json({ status: "updated" });
+  });
+  for (const method of ["PATCH", "DELETE"]) {
+    const result = await proxy(
+      request(method),
+      ["events", "wedding", "guests", "guest-one"],
+      method,
+    );
+    assert.equal(result.status, 200);
+  }
+  assert.deepEqual(captured, [
+    {
+      url: "https://api.thedate.now/events/wedding/guests/guest-one",
+      method: "PATCH",
+    },
+    {
+      url: "https://api.thedate.now/events/wedding/guests/guest-one",
+      method: "DELETE",
+    },
+  ]);
+  assert.equal(
+    (
+      await proxy(
+        request("PATCH"),
+        ["events", "wedding", "guests", "guest-one", "admin"],
+        "PATCH",
+      )
+    ).status,
+    404,
+  );
+});
