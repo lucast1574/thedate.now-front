@@ -8,10 +8,12 @@ export default function ManagerEventPicker({
   events,
   wedding,
   tab,
+  lastOpened,
 }: {
   events: Event[];
   wedding: boolean;
   tab: string;
+  lastOpened?: string;
 }) {
   const label =
     tab === "tables"
@@ -19,17 +21,14 @@ export default function ManagerEventPicker({
       : tab === "gifts"
         ? "Ver lista de regalos"
         : "Gestionar invitados";
-  const description =
-    tab === "tables"
-      ? "Dale su lugar a cada persona. Abre una celebraci\u00f3n para distribuir a tus invitados y preparar sus mesas."
-      : tab === "gifts"
-        ? "Cada historia tiene sus propios deseos. Abre una celebraci\u00f3n para preparar y gestionar su lista de regalos."
-        : "Cada celebraci\u00f3n empieza con las personas. Abre una para gestionar su lista, enviar invitaciones y seguir las respuestas.";
   return (
     <div className="organization-selection">
-      <h2>
-        {wedding ? "Tus bodas" : "Tus eventos"} <span>{events.length}</span>
-      </h2>
+      <header className="organization-selection-heading">
+        <h2>{wedding ? "Tus bodas" : "Tus eventos"}</h2>
+        <span>
+          {events.length} {wedding ? "bodas" : "eventos"} disponibles
+        </span>
+      </header>
       <section
         className="organization-event-cards"
         aria-label={wedding ? "Seleccionar boda" : "Seleccionar evento"}
@@ -41,11 +40,25 @@ export default function ManagerEventPicker({
             href={`/manager/${encodeURIComponent(item.id)}?tab=${tab}`}
           >
             <span className="organization-event-thumbnail">
+              {item.id === lastOpened && (
+                <span className="organization-recent">
+                  <Icon name="clock" />
+                  Última abierta
+                </span>
+              )}
               <InvitationThumbnail event={item} />
             </span>
             <span className="organization-event-info">
+              <span className="organization-event-meta">
+                <small>{organizationEventDate(item)}</small>
+                <small
+                  className="organization-publication"
+                  data-published={Boolean(item.publishedAt)}
+                >
+                  {item.publishedAt ? "Publicada" : "Borrador"}
+                </small>
+              </span>
               <strong>{item.title}</strong>
-              <small>{organizationEventDate(item)}</small>
               <span className="organization-event-action">
                 {label}
                 <Icon name="arrow" />
@@ -54,20 +67,10 @@ export default function ManagerEventPicker({
           </Link>
         ))}
       </section>
-      <aside className="organization-selection-note">
-        <h3>
-          {tab === "tables"
-            ? "Un lugar para todos"
-            : tab === "gifts"
-              ? "Detalles que cuentan su historia"
-              : "Todo empieza con tus invitados"}
-        </h3>
-        <p>{description}</p>
-        <small>
-          Puedes volver a esta lista para continuar con otra{" "}
-          {wedding ? "boda" : "celebraci\u00f3n"} cuando quieras.
-        </small>
-      </aside>
+      <p className="organization-selection-hint">
+        <Icon name="clock" />
+        La última que abriste aparece primero. Después, las más recientes.
+      </p>
     </div>
   );
 }

@@ -1,0 +1,180 @@
+.organization-page {
+  max-width: none;
+  margin: 0;
+  padding: 36px 28px 64px;
+}
+.organization-heading p {
+  max-width: 680px;
+  color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.organization-selection {
+  margin-top: 36px;
+  max-width: 1240px;
+}
+.organization-selection-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.organization-selection-heading h2 {
+  font:
+    600 15px/1.5 var(--font-sans),
+    Arial,
+    sans-serif;
+  margin: 0;
+}
+.organization-selection-heading > span {
+  font-size: 12px;
+  color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.organization-selection .organization-event-cards {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  max-width: none;
+  gap: 24px;
+  margin: 0;
+}
+.organization-selection .organization-event-card {
+  border-radius: 10px;
+  transition:
+    border-color 180ms ease,
+    background 180ms ease;
+}
+.organization-selection .organization-event-thumbnail {
+  height: 248px;
+  background: var(--ui-soft);
+}
+.organization-selection .invitation-thumbnail {
+  background: var(--ui-soft);
+}
+.organization-selection .organization-event-info {
+  gap: 12px;
+  padding: 20px 22px 0;
+}
+.organization-event-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.organization-selection .organization-event-meta > small {
+  font-size: 12px;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.organization-selection .organization-event-info > strong {
+  font: var(--ui-heading-weight) 27px/1.15 var(--ui-heading-font);
+  color: var(--ui-ink);
+}
+.organization-publication {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.organization-publication::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+}
+.organization-publication[data-published="true"]::before {
+  background: currentColor;
+}
+.organization-event-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 5px;
+  padding-block: 17px;
+  border-top: 1px solid var(--ui-border);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--workspace-accent);
+}
+.organization-event-action .ui-icon {
+  width: 18px;
+  height: 18px;
+  transition: transform 180ms ease;
+}
+.organization-event-card:hover .organization-event-action .ui-icon,
+.organization-event-card:focus-visible .organization-event-action .ui-icon {
+  transform: translateX(4px);
+}
+.organization-recent {
+  position: absolute;
+  z-index: 2;
+  left: 14px;
+  top: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border-radius: 4px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  font-size: 11px;
+  line-height: 1.5;
+}
+.organization-recent .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+.organization-selection-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 22px 0 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.organization-selection-hint .ui-icon {
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+@media (max-width: 900px) {
+  .organization-page {
+    padding: 28px 22px 56px;
+  }
+  .organization-selection .organization-event-cards {
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+  .organization-selection .organization-event-thumbnail {
+    height: 220px;
+  }
+}
+@media (max-width: 600px) {
+  .organization-page {
+    padding: 24px 16px 48px;
+  }
+  .organization-heading h1 {
+    font-size: 31px;
+  }
+  .organization-selection {
+    margin-top: 28px;
+  }
+  .organization-selection-heading {
+    gap: 12px;
+  }
+  .organization-selection .organization-event-thumbnail {
+    height: 240px;
+  }
+  .organization-selection .organization-event-info {
+    padding: 18px 18px 0;
+  }
+  .organization-selection .organization-event-info > strong {
+    font-size: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .organization-selection .organization-event-card,
+  .organization-event-action .ui-icon {
+    transition: none;
+  }
+}

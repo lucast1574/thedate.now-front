@@ -63,8 +63,16 @@ function OrganizationTools({
           <p>
             {events.length > 1
               ? wedding
-                ? "Selecciona la boda que quieres organizar."
-                : "Selecciona el evento que quieres organizar."
+                ? tool === "tables"
+                  ? "Elige una boda para organizar sus mesas y darle su lugar a cada invitado."
+                  : tool === "gifts"
+                    ? "Elige una boda para preparar su lista de regalos y seguir cada elección."
+                    : "Elige una boda para gestionar sus invitados, enviar invitaciones y seguir sus respuestas."
+                : tool === "tables"
+                  ? "Elige un evento para distribuir a sus invitados y organizar las mesas."
+                  : tool === "gifts"
+                    ? "Elige un evento para preparar y gestionar su lista de regalos."
+                    : "Elige un evento para gestionar sus invitados y seguir cada respuesta."
               : "Conoce lo que incluye tu evento y abre su espacio de organización."}
           </p>
         </div>
@@ -75,6 +83,7 @@ function OrganizationTools({
           events={orderEvents(events, lastOpened)}
           wedding={wedding}
           tab={tool}
+          lastOpened={lastOpened}
         />
       )}
       {(selected || !loaded || events.length === 0) && (
