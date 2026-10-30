@@ -122,10 +122,7 @@ export default function SeatingCanvas({
                 {table.name}
               </strong>
               <span className={`table-shape table-${table.shape}`}>
-                <span
-                  className="table-seat-count"
-                  style={{ transform: `rotate(${-table.rotation}deg)` }}
-                >
+                <span className="table-seat-count">
                   {assigned.length}/{table.capacity}
                 </span>
               </span>

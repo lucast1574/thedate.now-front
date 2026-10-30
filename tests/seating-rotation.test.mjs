@@ -45,7 +45,7 @@ test("venue rotation is rendered and survives moving without changing size", () 
   assert.match(html, /rotate\(45deg\)/);
 });
 
-test("table rotation applies to the full element while its count stays upright", () => {
+test("table and its count rotate together", () => {
   const Canvas = loadSource("src/features/manager/seating-canvas.tsx").default;
   const plan = {
     width: 1600,
@@ -77,9 +77,6 @@ test("table rotation applies to the full element while its count stays upright",
     html,
     /class="seating-table is-selected" style="[^"]*transform:rotate\(90deg\)/,
   );
-  assert.match(
-    html,
-    /class="table-seat-count" style="transform:rotate\(-90deg\)"/,
-  );
+  assert.match(html, /class="table-seat-count">0\/10<\/span>/);
   assert.doesNotMatch(html, /class="table-shape table-round" style=/);
 });
