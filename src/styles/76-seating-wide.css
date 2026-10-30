@@ -119,8 +119,13 @@
 .seating-workspace-wide > .seating-organizer-empty small {
   display: none;
 }
-/* Fit the complete salon to the viewport without changing its coordinates. */
+/* Width uses the available space; only height follows the viewport. */
+.seating-toolbar-workspace > .seating-scroll {
+  padding: 5px;
+}
 .seating-toolbar-workspace > .seating-scroll > .seating-board {
-  width: min(100%, calc((100dvh - 100px) * 1.6));
-  margin-inline: auto;
+  width: 100%;
+  height: clamp(360px, calc(100dvh - 100px), 850px);
+  aspect-ratio: auto;
+  margin: 0;
 }
