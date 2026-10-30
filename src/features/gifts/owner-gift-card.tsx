@@ -1,6 +1,8 @@
 import Icon from "@/components/icon";
 import type { Gift } from "@/lib/events/wishlist";
+import { giftStore } from "@/lib/events/gift-store";
 import GiftImage from "./gift-image";
+import OwnerGiftActions from "./owner-gift-actions";
 export default function OwnerGiftCard({
   gift,
   eventId,
@@ -18,25 +20,38 @@ export default function OwnerGiftCard({
   onRemove: () => void;
   onReservation: (action: "release" | "delivered" | "pending") => void;
 }) {
+  const status = gift.delivered
+    ? "received"
+    : gift.guestId
+      ? "reserved"
+      : "available";
   return (
-    <article className="gift-card owner-gift-card">
-      <GiftImage
-        key={gift.imageUrl}
-        title={gift.title}
-        src={
-          gift.imageUrl
-            ? `/api/wishlist-images/${eventId}/${gift.id}`
-            : undefined
-        }
-      />
-      <div className="gift-card-content">
+    <article className="gift-card owner-gift-card" data-status={status}>
+      <div className="owner-gift-visual">
+        <GiftImage
+          key={gift.imageUrl}
+          title={gift.title}
+          src={
+            gift.imageUrl
+              ? `/api/wishlist-images/${eventId}/${gift.id}`
+              : undefined
+          }
+        />
         <span className="gift-status">
-          {gift.guestId
-            ? gift.delivered
-              ? "Recibido"
-              : "Con compromiso"
-            : "Disponible"}
+          <Icon
+            name={
+              gift.delivered ? "check" : gift.guestId ? "users" : "lucide:gift"
+            }
+          />
+          {gift.delivered
+            ? "Recibido"
+            : gift.guestId
+              ? "Reservado"
+              : "Disponible"}
         </span>
+      </div>
+      <div className="gift-card-content">
+        <span className="gift-merchant">{giftStore(gift.url)}</span>
         <h3>
           <a href={gift.url} target="_blank" rel="noopener noreferrer">
             {gift.title}
@@ -44,52 +59,24 @@ export default function OwnerGiftCard({
           </a>
         </h3>
         {gift.description && <p>{gift.description}</p>}
-        {gift.guestId ? (
+        {gift.guestId && (
           <div className="gift-assignment">
             <Icon name="users" />
             <span>
               <small>Lo regala</small>
               <strong>{name || "Invitado"}</strong>
             </span>
-            <button
-              className="gift-secondary"
-              disabled={busy}
-              onClick={() =>
-                onReservation(gift.delivered ? "pending" : "delivered")
-              }
-            >
-              {gift.delivered ? "Marcar pendiente" : "Marcar recibido"}
-            </button>
-            <details>
-              <summary>Gestionar reserva</summary>
-              <p>
-                Si liberas esta reserva, otra persona podrá elegir el regalo.
-              </p>
-              <button
-                className="gift-danger"
-                disabled={busy}
-                onClick={() => onReservation("release")}
-              >
-                Liberar reserva
-              </button>
-            </details>
-          </div>
-        ) : (
-          <div className="gift-card-actions">
-            <button className="gift-secondary" disabled={busy} onClick={onEdit}>
-              <Icon name="lucide:pencil" />
-              Editar
-            </button>
-            <button
-              className="gift-icon-button"
-              aria-label={`Eliminar ${gift.title}`}
-              disabled={busy}
-              onClick={onRemove}
-            >
-              <Icon name="lucide:trash" />
-            </button>
           </div>
         )}
+        <OwnerGiftActions
+          reserved={!!gift.guestId}
+          delivered={gift.delivered}
+          busy={busy}
+          title={gift.title}
+          onEdit={onEdit}
+          onRemove={onRemove}
+          onReservation={onReservation}
+        />
       </div>
     </article>
   );

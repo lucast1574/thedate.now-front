@@ -1,0 +1,167 @@
+.wishlist-collection .owner-gift-grid {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+  gap: 18px;
+  margin: 0;
+}
+.wishlist-collection .owner-gift-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--ui-border);
+  border-radius: 9px;
+  background: var(--ui-surface);
+}
+.owner-gift-visual {
+  position: relative;
+}
+.wishlist-collection .owner-gift-visual .gift-image {
+  height: 158px;
+  aspect-ratio: auto;
+  background: color-mix(in srgb, var(--ui-soft) 60%, var(--ui-surface));
+}
+.wishlist-collection .gift-image > .ui-icon {
+  width: 40px;
+  height: 40px;
+}
+.owner-gift-visual .gift-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 6px 8px;
+  border: 1px solid var(--ui-border);
+  border-radius: 5px;
+  background: var(--ui-surface);
+  font:
+    500 10px/1.3 var(--font-sans),
+    Arial,
+    sans-serif;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ui-accent);
+}
+.owner-gift-visual .gift-status .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+.wishlist-collection [data-status="received"] .gift-status {
+  color: #50634f;
+  background: #f0f3ed;
+  border-color: #d7dfd1;
+}
+.wishlist-collection .gift-card-content {
+  padding: 18px;
+  gap: 10px;
+  flex: 1;
+}
+.wishlist-collection .gift-merchant {
+  color: var(--wishlist-muted);
+  font:
+    500 10px/1.5 var(--font-sans),
+    Arial,
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  overflow-wrap: anywhere;
+}
+.wishlist-collection .gift-card-content h3 {
+  font:
+    600 15px/1.5 var(--font-sans),
+    Arial,
+    sans-serif;
+}
+.wishlist-collection .gift-card-content h3 a {
+  display: inline;
+}
+.wishlist-collection .gift-card-content h3 a .ui-icon {
+  width: 13px;
+  height: 13px;
+}
+.wishlist-collection .gift-card-content p {
+  font:
+    400 12px/1.7 var(--font-sans),
+    Arial,
+    sans-serif;
+  color: var(--wishlist-muted);
+}
+.wishlist-collection .gift-assignment {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 0;
+  border-block: 1px solid var(--ui-border);
+  background: transparent;
+  border-radius: 0;
+  margin-top: 2px;
+}
+.wishlist-collection .gift-assignment > .ui-icon {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: var(--ui-accent);
+}
+.wishlist-collection .gift-assignment small {
+  display: block;
+  font-size: 10px;
+  color: var(--wishlist-muted);
+  margin-bottom: 3px;
+}
+.wishlist-collection .gift-assignment strong {
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.gift-owner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+.manager-page .gift-owner-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 9px 10px;
+  font-size: 11px;
+}
+.gift-owner-actions button .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.manager-page .gift-owner-remove {
+  border-color: transparent;
+  background: transparent;
+  color: var(--wishlist-muted);
+}
+.gift-owner-confirm {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--ui-border);
+  border-radius: 6px;
+  background: var(--ui-soft);
+}
+.gift-owner-confirm > strong {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.wishlist-collection .gift-owner-confirm > p {
+  margin: 5px 0 10px;
+}
+.gift-owner-confirm > div {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.wishlist-collection .gift-card-content > .gift-owner-actions:first-child {
+  margin-top: 0;
+}
+@media (max-width: 1150px) {
+  .wishlist-collection .owner-gift-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  }
+}

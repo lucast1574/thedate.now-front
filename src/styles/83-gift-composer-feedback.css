@@ -1,0 +1,122 @@
+.wishlist-owner .gift-form-preview {
+  display: grid;
+  grid-template-columns: 68px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 10px;
+  background: var(--ui-soft);
+  border: 1px solid var(--ui-border);
+  border-radius: 7px;
+}
+.wishlist-owner .gift-form-preview .gift-image {
+  width: 68px;
+  height: 68px;
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--ui-surface);
+}
+.wishlist-owner .gift-form-preview .gift-image img {
+  padding: 6px;
+}
+.wishlist-owner .gift-form-preview .gift-image > .ui-icon {
+  width: 26px;
+  height: 26px;
+}
+.wishlist-owner .gift-form-preview h4 {
+  font:
+    500 12px/1.6 var(--font-sans),
+    Arial,
+    sans-serif;
+  margin: 3px 0 0;
+}
+.wishlist-owner .gift-form-preview small {
+  border: 0;
+  padding: 0;
+  font-size: 10px;
+  line-height: 1.5;
+  color: var(--wishlist-muted);
+}
+.wishlist-owner .gift-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 16px;
+  margin: 0;
+  border-top: 1px solid var(--ui-border);
+}
+.manager-page .wishlist-owner .gift-form-actions > button {
+  min-height: 42px;
+  padding: 10px 12px;
+  font-size: 11px;
+}
+.wishlist-owner .gift-form-actions > .gift-primary {
+  flex: 1;
+}
+.gift-form-discard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.manager-page .gift-form-discard p {
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 0 6px;
+}
+.manager-page .gift-form-discard button {
+  font-size: 11px;
+  padding: 8px 10px;
+}
+.manager-page .gift-composer-footnote {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  margin: -6px 0 0;
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--wishlist-muted);
+}
+.gift-composer-footnote .ui-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.gift-editor-switch {
+  padding: 16px 20px;
+  background: var(--ui-soft);
+  border-bottom: 1px solid var(--ui-border);
+  border-radius: 10px 10px 0 0;
+}
+.gift-editor-switch > strong {
+  font-size: 13px;
+}
+.manager-page .gift-editor-switch p {
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 6px 0 12px;
+}
+.manager-page .gift-editor-switch button {
+  font-size: 11px;
+  min-height: 36px;
+  padding: 8px;
+  margin-right: 6px;
+}
+.wishlist-limit {
+  padding: 22px;
+}
+.manager-page .wishlist-limit h3 {
+  font-size: 16px;
+}
+.manager-page .wishlist-limit p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--wishlist-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wishlist-toggle-track > span {
+    transition: none;
+  }
+}

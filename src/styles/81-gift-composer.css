@@ -1,0 +1,131 @@
+.wishlist-composer {
+  position: sticky;
+  top: 18px;
+  min-width: 0;
+  border: 1px solid var(--ui-border);
+  border-radius: 10px;
+  background: var(--ui-surface);
+  scroll-margin-top: 20px;
+}
+.wishlist-composer[hidden] {
+  display: none;
+}
+.wishlist-owner .gift-composer-form {
+  margin: 0;
+  padding: 20px;
+  gap: 20px;
+  border: 0;
+  border-radius: inherit;
+  max-width: none;
+  background: transparent;
+}
+.gift-composer-form > header {
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 12px;
+}
+.gift-composer-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+  flex-shrink: 0;
+}
+.gift-composer-icon .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.manager-page .gift-composer-form h3 {
+  margin: 0 0 5px;
+  font:
+    600 15px/1.4 var(--font-sans),
+    Arial,
+    sans-serif;
+}
+.manager-page .gift-composer-form header p {
+  margin: 0;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--wishlist-muted);
+}
+.wishlist-owner .gift-composer-form .gift-form-fields {
+  gap: 15px;
+}
+.wishlist-owner .gift-composer-form label {
+  gap: 7px;
+  font:
+    500 12px/1.5 var(--font-sans),
+    Arial,
+    sans-serif;
+  color: var(--ui-ink);
+}
+.wishlist-owner .gift-composer-form label small {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--wishlist-muted);
+}
+.wishlist-owner .gift-composer-form input,
+.wishlist-owner .gift-composer-form textarea {
+  font:
+    400 12px/1.6 var(--font-sans),
+    Arial,
+    sans-serif;
+  padding: 10px 11px;
+  border-radius: 6px;
+}
+.wishlist-owner .gift-composer-form input {
+  min-height: 42px;
+}
+.wishlist-owner .gift-composer-form textarea {
+  resize: vertical;
+  min-height: 76px;
+}
+.gift-import-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 9px;
+}
+.manager-page .gift-composer-form .gift-import-row > button {
+  min-height: 38px;
+  padding: 8px 11px;
+  font-size: 11px;
+  justify-self: start;
+}
+.gift-import-row > button .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.wishlist-owner .gift-form-hint {
+  font:
+    400 11px/1.7 var(--font-sans),
+    Arial,
+    sans-serif;
+  padding: 10px 12px;
+  border-left: 2px solid var(--ui-accent);
+  background: var(--ui-soft);
+  color: var(--wishlist-muted);
+}
+.manager-page .gift-image-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 36px;
+  padding: 4px 0;
+  border: 0;
+  background: transparent;
+  font-size: 11px;
+  color: var(--ui-accent);
+}
+.gift-image-toggle .ui-icon {
+  width: 15px;
+  height: 15px;
+}
+@media (max-width: 1150px) {
+  .wishlist-composer {
+    position: static;
+  }
+}
