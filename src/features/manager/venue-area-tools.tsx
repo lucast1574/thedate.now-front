@@ -26,6 +26,20 @@ export default function VenueAreaTools({
           <p>Señala las zonas que acompañan a las mesas.</p>
         </div>
       </header>
+      <ul className="seating-space-examples" aria-label="Ideas para tu salón">
+        <li>
+          <Icon name="music" />
+          <span>Baile y música</span>
+        </li>
+        <li>
+          <Icon name="lucide:wine" />
+          <span>Bar y bocaditos</span>
+        </li>
+        <li>
+          <Icon name="lucide:camera" />
+          <span>Fotos y recuerdos</span>
+        </li>
+      </ul>
       <div className="seating-area-fields">
         <label>
           Tipo de espacio
@@ -57,6 +71,13 @@ export default function VenueAreaTools({
         Escenario, bar, pista de baile, fotos y más. Puedes moverlos después en
         el plano; no ocupan asientos.
       </small>
+      <div className="seating-space-tip">
+        <Icon name="lucide:move" />
+        <span>
+          <strong>Haz espacio para cada momento</strong>
+          Añade una zona y arrástrala en el plano hasta donde quieras colocarla.
+        </span>
+      </div>
     </section>
   );
 }

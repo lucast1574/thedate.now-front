@@ -121,3 +121,59 @@
 .seating-setup .seating-area-fields {
   grid-template-columns: minmax(0, 1fr);
 }
+
+.seating-space-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.seating-space-examples li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.seating-space-examples .ui-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ui-accent);
+  flex-shrink: 0;
+}
+.seating-space-tip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid var(--ui-border);
+  color: var(--seating-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.seating-space-tip > .ui-icon {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  color: var(--ui-accent);
+}
+.seating-space-tip strong {
+  display: block;
+  color: var(--ui-ink);
+  font-weight: 500;
+}
+.seating-setup .seating-automation-start,
+.seating-setup .seating-area-fields {
+  width: 100%;
+  min-width: 0;
+}
+@media (min-width: 901px) {
+  .seating-space-examples {
+    grid-row: 2;
+  }
+  .seating-space-tip {
+    grid-row: 5;
+  }
+}
