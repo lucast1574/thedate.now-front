@@ -210,3 +210,15 @@
   margin: 6px 0;
   line-height: 1.6;
 }
+
+.rsvp-secondary-link {
+  display: inline-block;
+  margin-top: 18px;
+  color: var(--rsvp-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.rsvp-secondary-link:focus-visible {
+  outline: none;
+  background: var(--ui-soft);
+}

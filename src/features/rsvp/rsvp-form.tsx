@@ -37,6 +37,7 @@ export default function RSVPForm({ token }: { token: string }) {
         details={details}
         response={response}
         companions={rsvp.companions}
+        onContinue={rsvp.resume}
       />
     );
   return (
@@ -85,7 +86,9 @@ export default function RSVPForm({ token }: { token: string }) {
         ) : (
           details && (
             <form onSubmit={submit}>
-              {details.response === "pending" || !details.response ? (
+              {details.response === "pending" ||
+              details.response === "maybe" ||
+              !details.response ? (
                 <ResponseFields
                   response={response}
                   reason={reason}
@@ -130,11 +133,15 @@ export default function RSVPForm({ token }: { token: string }) {
                   {rsvp.companions.length ? "personas" : "persona"}, contándote
                   a ti.
                   {details.seats > 1 &&
-                    " Revisa los nombres antes de guardar. Esta confirmaci\u00f3n se registra una sola vez."}
+                    (response === "maybe"
+                      ? " Tus acompa\u00f1antes quedar\u00e1n guardados. Puedes confirmar S\u00ed o No despu\u00e9s."
+                      : " Revisa los nombres antes de guardar. Esta confirmaci\u00f3n se registra una sola vez.")}
                 </p>
               )}
               <ActionButton className="office-button" disabled={busy}>
-                Guardar confirmación
+                {response === "maybe"
+                  ? "Guardar respuesta pendiente"
+                  : "Guardar confirmaci\u00f3n"}
               </ActionButton>
             </form>
           )

@@ -22,7 +22,7 @@ export function useRSVP(token: string) {
       .then((data) => {
         if (active) {
           setDetails(data);
-          setSaved(Boolean(data.finalized));
+          setSaved(Boolean(data.finalized) && data.response !== "maybe");
           setCompanions(data.companions || []);
           if (["going", "not_going", "maybe"].includes(data.response))
             setResponse(data.response);
@@ -60,7 +60,20 @@ export function useRSVP(token: string) {
             ? "Ya no hay cupos disponibles. Comunícate con el organizador."
             : (data?.error ?? "No pudimos guardar tu respuesta."),
         );
-    } else setSaved(true);
+    } else {
+      setDetails((previous) =>
+        previous
+          ? {
+              ...previous,
+              response,
+              companions,
+              maybeReason: reason,
+              finalized: response !== "maybe",
+            }
+          : previous,
+      );
+      setSaved(true);
+    }
     request.current = false;
     setBusy(false);
   }
@@ -76,5 +89,9 @@ export function useRSVP(token: string) {
     saved,
     busy,
     submit,
+    resume: () => {
+      setSaved(false);
+      setError("");
+    },
   };
 }

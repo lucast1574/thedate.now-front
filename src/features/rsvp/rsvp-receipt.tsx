@@ -6,17 +6,23 @@ export default function RSVPReceipt({
   details,
   response,
   companions,
+  onContinue,
 }: {
   details: RSVPDetails;
   response: string;
   companions: Person[];
+  onContinue?: () => void;
 }) {
   const attending = response !== "not_going";
   return (
     <main className="rsvp-page">
       <section className="rsvp-card rsvp-receipt">
-        <Icon name="check" />
-        <p className="eyebrow">CONFIRMACIÓN GUARDADA</p>
+        <Icon name={response === "maybe" ? "clock" : "check"} />
+        <p className="eyebrow">
+          {response === "maybe"
+            ? "RESPUESTA PENDIENTE"
+            : "CONFIRMACI\u00d3N GUARDADA"}
+        </p>
         <h1>Gracias, {details.guestName}.</h1>
         <p>
           Tu respuesta para <strong>{details.eventTitle}</strong> ya está
@@ -46,11 +52,34 @@ export default function RSVPReceipt({
             )}
           </>
         )}
-        <p>
-          Para solicitar un cambio, comunícate con quienes organizan la
-          celebración.
-        </p>
-        <Link className="office-button" href="/">
+        {response === "maybe" ? (
+          <>
+            <p>
+              Guardamos tu respuesta y tus acompañantes. Puedes confirmar Sí o
+              No desde este enlace.
+            </p>
+            {onContinue && (
+              <button
+                type="button"
+                className="office-button"
+                onClick={onContinue}
+              >
+                Confirmar Sí o No
+              </button>
+            )}
+          </>
+        ) : (
+          <p>
+            Para solicitar un cambio, comunícate con quienes organizan la
+            celebración.
+          </p>
+        )}
+        <Link
+          className={
+            response === "maybe" ? "rsvp-secondary-link" : "office-button"
+          }
+          href="/"
+        >
           Ver invitación
         </Link>
       </section>

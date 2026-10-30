@@ -96,3 +96,63 @@ test("a completed RSVP shows its receipt with no editable form", () => {
   assert.match(html, /Luis/);
   assert.doesNotMatch(html, /<form|<input|<textarea|cambiar tu respuesta/);
 });
+
+test("a saved maybe stays pending and offers a final confirmation with its companions", () => {
+  const Form = loadSource("src/features/rsvp/rsvp-form.tsx", {
+    mocks: {
+      "./use-rsvp": {
+        useRSVP: () => ({
+          details: {
+            guestName: "Ana",
+            eventTitle: "Boda",
+            seats: 2,
+            response: "maybe",
+          },
+          saved: true,
+          response: "maybe",
+          companions: [{ name: "Luis", lastName: "Perez" }],
+          resume() {},
+        }),
+      },
+    },
+  }).default;
+  const html = renderToStaticMarkup(
+    createElement(Form, { token: "b".repeat(48) }),
+  );
+  assert.match(html, /RESPUESTA PENDIENTE/);
+  assert.match(html, /Confirmar S\u00ed o No/);
+  assert.match(html, /Luis/);
+  assert.doesNotMatch(html, /Para solicitar un cambio/);
+});
+test("reopening maybe allows choosing a final response and keeps the registered companion", () => {
+  const Form = loadSource("src/features/rsvp/rsvp-form.tsx", {
+    mocks: {
+      "./use-rsvp": {
+        useRSVP: () => ({
+          details: {
+            guestName: "Ana",
+            eventTitle: "Boda",
+            seats: 2,
+            response: "maybe",
+          },
+          saved: false,
+          response: "maybe",
+          companions: [{ name: "Luis", lastName: "Perez", gender: "man" }],
+          reason: "Waiting for permission",
+          setResponse() {},
+          setReason() {},
+          setCompanions() {},
+          submit() {},
+        }),
+      },
+    },
+  }).default;
+  const html = renderToStaticMarkup(
+    createElement(Form, { token: "b".repeat(48) }),
+  );
+  assert.match(html, /name="response"/);
+  assert.match(html, /value="going"/);
+  assert.match(html, /value="not_going"/);
+  assert.match(html, /value="Luis"/);
+  assert.doesNotMatch(html, /se registra una sola vez/);
+});
