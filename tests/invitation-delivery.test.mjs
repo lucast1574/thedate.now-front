@@ -4,7 +4,7 @@ import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { loadSource } from "./support/load-source.cjs";
 
-function renderDelivery(phase, total = 4, failed = 0, uncertain = 0) {
+function renderDelivery(phase, total = 4, failed = 0, uncertain = 0, sent = 0) {
   const Delivery = loadSource("src/features/manager/invitation-delivery.tsx", {
     mocks: {
       "./use-invitation-delivery": {
@@ -12,8 +12,8 @@ function renderDelivery(phase, total = 4, failed = 0, uncertain = 0) {
           delivery: {
             phase,
             total,
-            sent: 0,
-            waiting: total,
+            sent,
+            waiting: Math.max(0, total - sent - failed - uncertain),
             failed,
             uncertain,
           },
@@ -94,4 +94,17 @@ test("only rejected deliveries offer a safe retry, including while others are se
   assert.match(renderDelivery("attention", 4, 2), /Reintentar envíos fallidos/);
   assert.match(renderDelivery("sending", 4, 1), /Reintentar envíos fallidos/);
   assert.doesNotMatch(renderDelivery("attention", 4, 0, 2), /<button/);
+});
+
+test("dispatch progress reflects confirmed sends and keeps preparation at zero", () => {
+  const preparing = renderDelivery("preparing", 16);
+  assert.match(preparing, /aria-valuenow="0"/);
+  assert.match(preparing, /width:0%/);
+  const sending = renderDelivery("sending", 16, 0, 0, 7);
+  assert.match(sending, /aria-valuenow="7"/);
+  assert.match(sending, /aria-valuemax="16"/);
+  assert.match(sending, /width:44%/);
+  const complete = renderDelivery("complete", 16, 0, 0, 16);
+  assert.match(complete, /width:100%/);
+  assert.doesNotMatch(complete, /aria-current="step"/);
 });

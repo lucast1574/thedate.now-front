@@ -1,3 +1,5 @@
+import DeliveryArtwork from "./delivery-artwork";
+import DeliveryProgress from "./delivery-progress";
 import Icon from "@/components/icon";
 import { useInvitationDelivery } from "./use-invitation-delivery";
 
@@ -51,47 +53,28 @@ export default function InvitationDelivery({
   return (
     <section
       className="invitation-delivery"
+      data-phase={phase}
+      data-working={working}
       aria-labelledby="delivery-title"
       aria-busy={working}
     >
-      <div className="delivery-heading">
-        <span className={`delivery-symbol ${working ? "is-working" : ""}`}>
-          <Icon
-            name={working ? "refresh" : phase === "complete" ? "check" : "mail"}
-          />
-        </span>
-        <div>
-          <p className="journey-eyebrow">EL SIGUIENTE PASO</p>
-          <h2 id="delivery-title">{title}</h2>
-          <p role="status" aria-live="polite">
-            {description}
-          </p>
+      <div className="delivery-intro">
+        <div className="delivery-heading">
+          <div>
+            <p className="journey-eyebrow">
+              {phase === "draft"
+                ? "EL SIGUIENTE PASO"
+                : "EL ENVÍO DE TU INVITACIÓN"}
+            </p>
+            <h2 id="delivery-title">{title}</h2>
+            <p role="status" aria-live="polite">
+              {description}
+            </p>
+          </div>
         </div>
+        <DeliveryArtwork phase={phase} />
       </div>
-      <ol className="delivery-steps" aria-label="Pasos del envío">
-        <li data-complete={!["draft", "preparing", "error"].includes(phase)}>
-          <span>1</span>Preparamos la web
-        </li>
-        <li data-complete={!["draft", "preparing", "error"].includes(phase)}>
-          <span>2</span>Comprobamos el enlace
-        </li>
-        <li data-complete={phase === "complete"}>
-          <span>3</span>Enviamos por WhatsApp
-        </li>
-      </ol>
-      {delivery && phase !== "draft" && (
-        <div className="delivery-counts" role="status">
-          <strong>
-            {delivery.sent} de {delivery.total} enviadas
-          </strong>
-          <span>
-            {delivery.waiting} por enviar
-            {delivery.failed + delivery.uncertain > 0
-              ? ` · ${delivery.failed + delivery.uncertain} por revisar`
-              : ""}
-          </span>
-        </div>
-      )}
+      <DeliveryProgress delivery={delivery} phase={phase} />
       {(phase === "draft" ||
         phase === "error" ||
         (delivery?.failed ?? 0) > 0) && (

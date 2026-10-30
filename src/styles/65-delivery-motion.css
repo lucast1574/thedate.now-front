@@ -1,0 +1,164 @@
+.invitation-delivery {
+  --delivery-muted: color-mix(in srgb, var(--ui-muted) 75%, var(--ui-ink));
+}
+.invitation-delivery
+  :is(
+    .delivery-art-caption,
+    .delivery-steps li small,
+    .delivery-steps li p,
+    .delivery-counts span,
+    .delivery-reassurance
+  ),
+.invitation-delivery .delivery-heading div > p:last-child {
+  color: var(--delivery-muted);
+}
+.delivery-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 36px;
+  align-items: center;
+}
+.delivery-artwork {
+  position: relative;
+  width: 260px;
+  color: var(--ui-accent);
+  text-align: center;
+}
+.delivery-artwork > svg {
+  display: block;
+  width: 100%;
+  height: 180px;
+  overflow: visible;
+}
+.delivery-art-shadow {
+  fill: var(--ui-soft);
+}
+.delivery-flight-path {
+  stroke: var(--ui-border);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 7;
+}
+.delivery-envelope {
+  stroke: var(--ui-accent);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.delivery-envelope-back {
+  fill: var(--ui-soft);
+}
+.delivery-letter rect {
+  fill: var(--ui-surface);
+}
+.delivery-letter path {
+  stroke: var(--ui-accent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.delivery-envelope-front {
+  fill: var(--ui-soft);
+}
+.delivery-envelope-fold {
+  opacity: 0.45;
+}
+.delivery-art-seal {
+  position: absolute;
+  top: 111px;
+  left: 115px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--ui-surface);
+  background: var(--ui-accent);
+}
+.delivery-art-seal .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+.delivery-art-caption {
+  display: block;
+  color: var(--ui-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.invitation-delivery[data-working="true"] .delivery-letter {
+  animation: delivery-letter-rise 3.6s ease-in-out infinite;
+}
+.invitation-delivery[data-working="true"] .delivery-flight-path {
+  animation: delivery-route 12s linear infinite;
+  stroke: var(--ui-accent);
+}
+.invitation-delivery[data-phase="sending"] .delivery-envelope,
+.invitation-delivery[data-phase="sending"] .delivery-art-seal {
+  animation: delivery-envelope-float 3.6s ease-in-out infinite;
+}
+.invitation-delivery[data-phase="complete"] .delivery-art-seal {
+  animation: delivery-seal-ready 450ms ease-out both;
+}
+@keyframes delivery-letter-rise {
+  0%,
+  100% {
+    transform: translateY(6px);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+@keyframes delivery-route {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes delivery-envelope-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(5px, -4px);
+  }
+}
+@keyframes delivery-seal-ready {
+  from {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@media (max-width: 900px) {
+  .delivery-intro {
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 18px;
+  }
+  .delivery-artwork {
+    width: 200px;
+  }
+  .delivery-artwork > svg {
+    height: auto;
+  }
+  .delivery-art-seal {
+    top: 85px;
+    left: 88px;
+    width: 24px;
+    height: 24px;
+  }
+}
+@media (max-width: 600px) {
+  .delivery-intro {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 20px;
+  }
+  .delivery-artwork {
+    width: 200px;
+    align-self: center;
+  }
+  .delivery-heading {
+    display: block;
+  }
+}
