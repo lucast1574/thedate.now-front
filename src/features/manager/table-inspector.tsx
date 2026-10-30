@@ -26,54 +26,56 @@ export default function TableInspector({
       className="table-inspector table-organizer"
       aria-label={`Organizar ${table.name}`}
     >
-      <header className="table-organizer-heading">
-        <small>Mesa seleccionada</small>
-        <h3>{table.name}</h3>
-        <p>
-          {assigned} personas sentadas ·{" "}
-          {Math.max(0, table.capacity - assigned)} asientos libres
-        </p>
-      </header>
-      <div
-        className="table-occupancy"
-        role="progressbar"
-        aria-label={`Ocupación de ${table.name}`}
-        aria-valuemin={0}
-        aria-valuemax={table.capacity}
-        aria-valuenow={assigned}
-      >
-        <span
-          style={{
-            width: `${Math.min(100, (assigned / table.capacity) * 100)}%`,
-          }}
+      <section className="table-config">
+        <header className="table-organizer-heading">
+          <small>Mesa seleccionada</small>
+          <h3>{table.name}</h3>
+          <p>
+            {assigned} personas sentadas ·{" "}
+            {Math.max(0, table.capacity - assigned)} asientos libres
+          </p>
+        </header>
+        <div
+          className="table-occupancy"
+          role="progressbar"
+          aria-label={`Ocupación de ${table.name}`}
+          aria-valuemin={0}
+          aria-valuemax={table.capacity}
+          aria-valuenow={assigned}
+        >
+          <span
+            style={{
+              width: `${Math.min(100, (assigned / table.capacity) * 100)}%`,
+            }}
+          />
+        </div>
+        <details className="table-edit-settings">
+          <summary>Editar mesa</summary>
+          <TableProperties
+            table={table}
+            assigned={assigned}
+            onPatch={(fields) =>
+              onChange({
+                ...plan,
+                tables: plan.tables.map((t) =>
+                  t.id === table.id ? { ...t, ...fields } : t,
+                ),
+              })
+            }
+          />
+        </details>
+        <RemoveSeatingItem
+          name={table.name}
+          description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
+          onRemove={onDelete}
         />
-      </div>
-      <details className="table-edit-settings">
-        <summary>Editar mesa</summary>
-        <TableProperties
-          table={table}
-          assigned={assigned}
-          onPatch={(fields) =>
-            onChange({
-              ...plan,
-              tables: plan.tables.map((t) =>
-                t.id === table.id ? { ...t, ...fields } : t,
-              ),
-            })
-          }
-        />
-      </details>
+      </section>
       <TableHouseholds
         table={table}
         plan={plan}
         people={people}
         limit={limit}
         onChange={onChange}
-      />
-      <RemoveSeatingItem
-        name={table.name}
-        description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
-        onRemove={onDelete}
       />
     </aside>
   );
