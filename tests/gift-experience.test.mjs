@@ -9,10 +9,12 @@ const { default: View } = loadSource(
 );
 const { giftStore } = loadSource("src/lib/events/gift-store.ts");
 
-function hooks() {
+function hooks(runEffects = false) {
+  const effects = [];
   const slots = [];
   let cursor = 0;
   return {
+    flushEffects: () => effects.splice(0).forEach((effect) => effect()),
     reset: () => {
       cursor = 0;
     },
@@ -32,7 +34,9 @@ function hooks() {
         const i = cursor++;
         return (slots[i] ||= { current: initial });
       },
-      useEffect() {},
+      useEffect(effect) {
+        if (runEffects) effects.push(effect);
+      },
       useCallback: (fn) => fn,
     },
   };
@@ -241,4 +245,72 @@ test("editing a saved gift with a different product link clears the previous pro
   render().changeURL("https://shop.example/new");
   assert.equal(render().draft.title, "");
   assert.equal(render().draft.imageUrl, "");
+});
+
+test("pasted links fetch automatically and preserve custom product fields", async () => {
+  const h = hooks(true);
+  const timers = [];
+  let calls = 0;
+  const { useGiftDraft: draftHook } = loadSource(
+    "src/features/gifts/use-gift-draft.ts",
+    {
+      mocks: {
+        react: h.react,
+        "@/lib/api/client": {
+          api: async () => {
+            calls++;
+            return {
+              title: "Store title",
+              imageUrl: "https://cdn.example/product.jpg",
+              url: "https://shop.example/products/cup",
+            };
+          },
+        },
+      },
+      globals: {
+        crypto: globalThis.crypto,
+        setTimeout: (fn) => {
+          timers.push(fn);
+          return timers.length;
+        },
+        clearTimeout: () => {},
+      },
+    },
+  );
+  const render = () => {
+    h.reset();
+    return draftHook("event");
+  };
+  render().changeURL("https://shop.example/products/cup?utm_source=share");
+  let hook = render();
+  hook.setDraft({
+    ...hook.draft,
+    title: "Our favourite cups",
+    imageUrl: "https://cdn.example/our-choice.jpg",
+  });
+  render();
+  h.flushEffects();
+  timers.at(-1)();
+  await new Promise(setImmediate);
+  hook = render();
+  assert.equal(calls, 1);
+  assert.equal(hook.draft.title, "Our favourite cups");
+  assert.equal(hook.draft.imageUrl, "https://cdn.example/our-choice.jpg");
+  assert.equal(hook.draft.url, "https://shop.example/products/cup");
+  const scheduled = timers.length;
+  h.flushEffects();
+  assert.equal(timers.length, scheduled);
+  assert.equal(calls, 1);
+});
+
+test("retail store labels cover LATAM without matching unrelated hosts", () => {
+  for (const [url, label] of [
+    ["https://simple.ripley.com.pe/p", "Ripley"],
+    ["https://www.falabella.com.co/p", "Falabella"],
+    ["https://www.mercadolibre.com.mx/p", "Mercado Libre"],
+    ["https://www.mercadolivre.com.br/p", "Mercado Livre"],
+    ["https://www.oechsle.pe/p", "Oechsle"],
+    ["https://ripley.cl.evil.example/p", "ripley.cl.evil.example"],
+  ])
+    assert.equal(giftStore(url), label);
 });

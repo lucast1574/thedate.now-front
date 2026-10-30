@@ -62,7 +62,7 @@ export default function GiftForm({
           <p>
             {gift
               ? "Actualiza sus detalles antes de guardar."
-              : "Empieza por el enlace de la tienda."}
+              : "Pega el enlace. Buscamos los datos por ti."}
           </p>
         </div>
       </header>

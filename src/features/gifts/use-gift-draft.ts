@@ -1,7 +1,12 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { Gift } from "@/lib/events/wishlist";
-type Metadata = { title: string; imageUrl: string; description: string };
+type Metadata = {
+  title: string;
+  imageUrl: string;
+  description: string;
+  url?: string;
+};
 export function useGiftDraft(eventId: string, gift?: Gift) {
   const [draft, setDraft] = useState<Gift>(
     gift || {
@@ -16,6 +21,7 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
   const [fetching, setFetching] = useState(false),
     [hint, setHint] = useState("");
   const attempt = useRef(0);
+  const autoAttempted = useRef(gift?.url.trim() || "");
   const imported = useRef<Metadata | null>(
     gift
       ? {
@@ -37,7 +43,8 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
         value.imageUrl === imported.current?.imageUrl ? "" : value.imageUrl,
     }));
   }
-  async function lookup() {
+  const lookup = useCallback(async () => {
+    autoAttempted.current = draft.url.trim();
     const current = ++attempt.current;
     const before = draft;
     try {
@@ -57,15 +64,20 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
         { url: draft.url.trim() },
       );
       if (current !== attempt.current) return;
+      autoAttempted.current = result.url || before.url.trim();
+      const previous = imported.current;
       imported.current = result;
       setDraft((value) => ({
         ...value,
+        url: value.url === before.url ? result.url || value.url : value.url,
         title:
-          value.title === before.title
+          value.title === before.title &&
+          (!before.title || before.title === previous?.title)
             ? result.title || value.title
             : value.title,
         imageUrl:
-          value.imageUrl === before.imageUrl
+          value.imageUrl === before.imageUrl &&
+          (!before.imageUrl || before.imageUrl === previous?.imageUrl)
             ? result.imageUrl || value.imageUrl
             : value.imageUrl,
       }));
@@ -77,11 +89,25 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
     } catch {
       if (current === attempt.current)
         setHint(
-          "Esta tienda no permite leer su ficha automáticamente. Puedes escribir el nombre y pegar una imagen aquí.",
+          "La tienda no compartió la ficha del producto. Tu enlace se conserva; completa el nombre y añade una imagen.",
         );
     } finally {
       if (current === attempt.current) setFetching(false);
     }
-  }
+  }, [draft, eventId]);
+  useEffect(() => {
+    const raw = draft.url.trim();
+    if (!raw || raw === autoAttempted.current) return;
+    try {
+      const url = new URL(raw);
+      if (url.protocol !== "https:" || url.username || url.password) return;
+    } catch {
+      return;
+    }
+    const timer = setTimeout(() => {
+      if (autoAttempted.current !== raw) void lookup();
+    }, 700);
+    return () => clearTimeout(timer);
+  }, [draft.url, lookup]);
   return { draft, setDraft, fetching, hint, changeURL, lookup };
 }
