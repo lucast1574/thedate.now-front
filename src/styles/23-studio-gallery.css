@@ -125,6 +125,50 @@
 .invitation-card-preview:focus-visible .card-edit {
   opacity: 1;
 }
+.invitation-public-access {
+  margin-top: 12px;
+  border-radius: 8px;
+  padding: 16px 20px;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
+}
+.invitation-public-access > span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ui-muted);
+  font-size: 11px;
+}
+.invitation-public-access a {
+  min-height: 44px;
+  align-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 12px;
+  color: inherit;
+  text-decoration: none;
+}
+.invitation-public-access strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.invitation-public-access small {
+  grid-column: 1 / -1;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.invitation-public-access svg {
+  width: 18px;
+  height: 18px;
+  color: var(--ui-accent);
+}
+.invitation-public-access a:hover strong,
+.invitation-public-access a:focus-visible strong {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.invitation-public-access a:focus-visible {
+  outline: none;
+}
 .invitation-card-meta {
   display: flex;
   justify-content: space-between;

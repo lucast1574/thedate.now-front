@@ -87,6 +87,107 @@
   user-select: none;
   outline: none;
 }
+.canvas-item:has(.canvas-inline-edit) {
+  z-index: 5;
+  cursor: text;
+  touch-action: auto;
+  user-select: text;
+}
+.canvas-editor .flyer-surface:has(.canvas-inline-edit) {
+  overflow: visible;
+  z-index: 4;
+}
+.canvas-inline-edit {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.canvas-inline-edit textarea {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 44px;
+  resize: none;
+  padding: 0;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  background: color-mix(in srgb, var(--ui-surface) 88%, transparent);
+  user-select: text;
+  touch-action: auto;
+}
+.canvas-inline-actions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: max-content;
+  max-width: min(380px, 80vw);
+  padding: 10px 12px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  border-radius: 8px;
+  font:
+    12px/1.4 var(--font-sans),
+    Arial,
+    sans-serif;
+  text-align: left;
+}
+.canvas-inline-actions small {
+  flex: 1 1 160px;
+}
+.canvas-inline-actions button {
+  min-height: 36px;
+  padding: 8px 12px;
+}
+.canvas-inline-edit.is-names {
+  height: auto;
+  min-width: 240px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  font:
+    14px/1.5 var(--font-sans),
+    Arial,
+    sans-serif;
+  text-align: left;
+}
+.canvas-inline-edit.is-names label {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.canvas-inline-edit.is-names input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
+  font: inherit;
+  outline: none;
+  box-shadow: none;
+}
+.canvas-inline-edit.is-names .canvas-inline-actions {
+  position: static;
+  width: auto;
+  padding: 0;
+}
+.canvas-inline-edit button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .canvas-item.is-selected {
   outline: 2px solid #8c5bd1;
   z-index: 2;
