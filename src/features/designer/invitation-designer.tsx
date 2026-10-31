@@ -43,6 +43,33 @@ export default function InvitationDesigner({
     window.addEventListener("beforeunload", leave);
     return () => window.removeEventListener("beforeunload", leave);
   }, [editor.dirty]);
+  if (!editor.recovery.ready)
+    return (
+      <main className="editor-loading" aria-busy="true">
+        Preparando tu diseño…
+      </main>
+    );
+  if (editor.recovery.pending)
+    return (
+      <main className="editor-loading editor-recovery">
+        <h1>Recupera tu trabajo</h1>
+        <p>Hay una copia de este diseño sin guardar en este navegador.</p>
+        <p>
+          Recuperarla combina tus cambios locales con los datos actuales. Puedes
+          deshacer después de abrir el editor.
+        </p>
+        <button
+          className="recovery-primary"
+          type="button"
+          onClick={() => editor.recovery.resolve(true)}
+        >
+          Recuperar mi trabajo
+        </button>
+        <button type="button" onClick={() => editor.recovery.resolve(false)}>
+          Continuar con la versión guardada
+        </button>
+      </main>
+    );
   return (
     <main
       className={`editor-shell canvas-studio ${event.kind === "wedding" ? "editor-wedding" : "editor-general"}`}

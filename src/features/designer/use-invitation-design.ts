@@ -3,6 +3,7 @@ import { validDesignDressColors } from "@/lib/events/dress-code";
 import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
+import { useDesignRecovery } from "./use-design-recovery";
 import { designPayload } from "./design-state";
 import { guestNameElement } from "@/lib/events/guest-name";
 import { blankCanvas } from "./flyer/canvas-model";
@@ -15,6 +16,7 @@ export function useInvitationDesign(
 ) {
   const history = useDesignHistory(event, initialDraft);
   const { draft, setDraft } = history;
+  const recovery = useDesignRecovery(event, draft, setDraft, history.dirty);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const sections = draft.sections || [];
@@ -173,6 +175,7 @@ export function useInvitationDesign(
   }
   return {
     ...history,
+    recovery,
     busy,
     message,
     sections,

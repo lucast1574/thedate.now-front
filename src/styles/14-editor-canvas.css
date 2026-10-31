@@ -132,6 +132,44 @@
   padding: 60px;
   text-align: center;
 }
+.editor-recovery {
+  width: min(560px, calc(100% - 32px));
+  margin: 12vh auto;
+  padding: 32px 24px;
+  border-radius: 16px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+}
+.editor-recovery h1 {
+  font-family: var(--ui-heading-font);
+  font-size: 28px;
+}
+.editor-recovery p {
+  line-height: 1.6;
+}
+.editor-recovery button {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.editor-recovery .recovery-primary {
+  background: var(--ui-accent);
+  color: var(--ui-surface);
+}
+.editor-recovery button:hover,
+.editor-recovery button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .editor-open {
   display: inline-flex;
   margin: 24px 0;

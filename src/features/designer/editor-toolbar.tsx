@@ -53,7 +53,7 @@ export default function EditorToolbar({
           {editor.busy
             ? "Procesando…"
             : editor.dirty
-              ? "Cambios sin guardar"
+              ? editor.recovery?.status || "Guardando copia en este navegador…"
               : "Todo guardado"}
         </small>
       </div>
