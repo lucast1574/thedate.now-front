@@ -15,6 +15,7 @@ export type DesignSection = {
   photoKey?: string;
 };
 export type DesignEvent = {
+  designVersion?: number;
   backgroundImage?: ImageBackground | null;
   opening?: Opening | null;
   celebration?: Celebration | null;

@@ -4,13 +4,13 @@ import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
-  finishHref,
   editor,
+  canPublish,
   preview,
   onPreview,
   onTemplates,
 }: {
-  finishHref: string;
+  canPublish: boolean;
   editor: Editor;
   preview: boolean;
   onPreview: () => void;
@@ -24,12 +24,9 @@ export default function EditorToolbar({
           href="/"
           className="editor-back-link"
           aria-label="Volver al estudio"
-          onClick={(e) => {
-            if (
-              editor.dirty &&
-              !window.confirm("Tienes cambios sin guardar. ¿Salir del editor?")
-            )
-              e.preventDefault();
+          onClick={async (e) => {
+            e.preventDefault();
+            if (await editor.save()) router.push("/");
           }}
         >
           <Icon name="chevron" />
@@ -49,13 +46,6 @@ export default function EditorToolbar({
             }
           />
         </h1>
-        <small role="status">
-          {editor.busy
-            ? "Procesando…"
-            : editor.dirty
-              ? "Cambios sin guardar"
-              : "Todo guardado"}
-        </small>
       </div>
       <div className="editor-toolbar-actions">
         {editor.draft.isDemo && (
@@ -108,24 +98,19 @@ export default function EditorToolbar({
         <button type="button" aria-pressed={preview} onClick={onPreview}>
           {preview ? "Volver a editar" : "Vista previa"}
         </button>
-        <button
-          type="button"
-          className={editor.draft.isDemo ? "editor-save" : undefined}
-          disabled={editor.busy}
-          onClick={editor.save}
-        >
-          <Icon name="save" /> Guardar diseño
-        </button>
-        {!editor.draft.isDemo && (
+        {!editor.draft.isDemo && canPublish && (
           <button
             type="button"
             className="editor-save editor-finish"
             disabled={editor.busy}
             onClick={async () => {
-              if (await editor.save()) router.push(finishHref);
+              await editor.publish();
             }}
           >
-            Terminar y continuar <Icon name="arrow" />
+            {editor.draft.publishedAt
+              ? "Actualizar invitación"
+              : "Publicar invitación"}
+            <Icon name="arrow" />
           </button>
         )}
       </div>

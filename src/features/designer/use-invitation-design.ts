@@ -1,12 +1,9 @@
 "use client";
-import { validDesignDressColors } from "@/lib/events/dress-code";
-import { validMapLink } from "@/lib/events/location-element";
+import { useSilentDesign } from "./use-silent-design";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
-import { designPayload } from "./design-state";
 import { guestNameElement } from "@/lib/events/guest-name";
 import { blankCanvas } from "./flyer/canvas-model";
-import { api } from "@/lib/api/client";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 export function useInvitationDesign(
   event: DesignEvent,
@@ -77,46 +74,9 @@ export function useInvitationDesign(
       ],
     }));
   }
+  const persistence = useSilentDesign(draft, event, setMessage);
   async function save() {
-    setBusy(true);
-    setMessage("");
-    try {
-      if (!validDesignDressColors(sections))
-        throw new Error(
-          "Revisa los colores no permitidos del dress code: cada muestra necesita un nombre y un color válido (máximo 8).",
-        );
-      if (
-        sections.some((section) =>
-          section.canvas?.elements.some(
-            (item) =>
-              item.binding === "location" &&
-              !item.eventBound &&
-              item.link &&
-              !validMapLink(item.link),
-          ),
-        )
-      )
-        throw new Error(
-          "Revisa el enlace de Google Maps en la ubicación antes de guardar.",
-        );
-      await api(
-        `/api/backend/events/${draft.id}/design`,
-        "PATCH",
-        designPayload(draft),
-      );
-      await onSaved();
-      setMessage(
-        draft.publishedAt
-          ? "Cambios publicados. Tus invitados los verán en el mismo enlace; no necesitas reenviar ni pagar de nuevo."
-          : "Diseño guardado.",
-      );
-      return true;
-    } catch (error) {
-      setMessage((error as Error).message);
-      return false;
-    } finally {
-      setBusy(false);
-    }
+    return persistence.save();
   }
   async function upload(file: File) {
     setBusy(true);
@@ -135,7 +95,6 @@ export function useInvitationDesign(
         photoKeys: [...current.photoKeys, body.key],
       }));
       await onSaved();
-      setMessage("Imagen añadida. Ahora puedes usarla en una sección.");
       return body.key as string;
     } catch (error) {
       setMessage((error as Error).message);
@@ -169,10 +128,17 @@ export function useInvitationDesign(
             },
       ),
     }));
-    setMessage("Foto reemplazada. Guarda el diseño para aplicar el cambio.");
   }
   return {
     ...history,
+    publish: async () => {
+      setBusy(true);
+      try {
+        if (await persistence.publish()) await onSaved();
+      } finally {
+        setBusy(false);
+      }
+    },
     busy,
     message,
     sections,

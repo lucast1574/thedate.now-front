@@ -1,3 +1,4 @@
+import { restoreDesign } from "./silent-recovery";
 import { useState, type SetStateAction } from "react";
 import type { DesignEvent } from "@/lib/events/types";
 import { mergeDesign } from "./merge-design";
@@ -7,7 +8,7 @@ export function useDesignHistory(
   initialDraft: DesignEvent = event,
 ) {
   const [state, setState] = useState({
-    draft: initialDraft,
+    draft: restoreDesign(event, initialDraft),
     baseline: event,
     past: [] as DesignEvent[],
     future: [] as DesignEvent[],

@@ -30,13 +30,17 @@ function toolbar(save, isDemo = false) {
     },
   );
   const tree = Toolbar({
-    finishHref: "/?event=one#publicacion",
+    canPublish: true,
     editor: {
       draft: { id: "one", title: "My day", isDemo },
       busy: false,
       dirty: false,
       save: async () => {
         calls.push("save");
+        return save;
+      },
+      publish: async () => {
+        calls.push("publish");
         return save;
       },
       setDraft() {},
@@ -49,20 +53,36 @@ function toolbar(save, isDemo = false) {
   });
   return { tree, calls };
 }
-test("finishing the normal editor saves before opening publication", async () => {
+test("publishing happens inside the editor without navigation", async () => {
   const { tree, calls } = toolbar(true);
-  const finish = button(tree, "Terminar y continuar");
+  const finish = button(tree, "Publicar invitación");
   assert.ok(finish);
   await finish.props.onClick();
-  assert.deepEqual(calls, ["save", "/?event=one#publicacion"]);
+  assert.deepEqual(calls, ["publish"]);
 });
 test("failed saves keep the user inside the editor", async () => {
   const { tree, calls } = toolbar(false);
-  await button(tree, "Terminar y continuar").props.onClick();
-  assert.deepEqual(calls, ["save"]);
+  await button(tree, "Publicar invitación").props.onClick();
+  assert.deepEqual(calls, ["publish"]);
 });
 test("demo activation keeps its own flow", () => {
   const { tree } = toolbar(true, true);
-  assert.equal(button(tree, "Terminar y continuar"), null);
+  assert.equal(button(tree, "Publicar invitación"), null);
   assert.ok(button(tree, "Activar mi invitación"));
+});
+
+test("the back chevron flushes work and leaves without confirmation", async () => {
+  for (const success of [true, false]) {
+    const { tree, calls } = toolbar(success);
+    const link = tree.props.children[0].props.children[0];
+    let prevented = false;
+    await link.props.onClick({
+      preventDefault() {
+        prevented = true;
+      },
+    });
+    assert.equal(prevented, true);
+    assert.deepEqual(calls, success ? ["save", "/"] : ["save"]);
+    assert.equal(button(tree, "Guardar diseño"), null);
+  }
 });

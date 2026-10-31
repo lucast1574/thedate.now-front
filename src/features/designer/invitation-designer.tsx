@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Event } from "@/lib/events/types";
 import PreviewModal from "./preview-modal";
 import EditorToolbar from "./editor-toolbar";
@@ -8,11 +8,11 @@ import CanvasWorkspace from "./flyer/canvas-workspace";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
 export default function InvitationDesigner({
-  finishHref,
   event,
   onSaved,
+  canPublish = true,
 }: {
-  finishHref: string;
+  canPublish?: boolean;
   event: Event;
   onSaved: () => Promise<void>;
 }) {
@@ -37,30 +37,17 @@ export default function InvitationDesigner({
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);
   const [tool, setTool] = useState<string>(initialCanvasTool);
-  useEffect(() => {
-    if (!editor.dirty) return;
-    const leave = (e: BeforeUnloadEvent) => e.preventDefault();
-    window.addEventListener("beforeunload", leave);
-    return () => window.removeEventListener("beforeunload", leave);
-  }, [editor.dirty]);
   return (
     <main
       className={`editor-shell canvas-studio ${event.kind === "wedding" ? "editor-wedding" : "editor-general"}`}
     >
       <EditorToolbar
-        finishHref={finishHref}
+        canPublish={canPublish}
         editor={editor}
         preview={preview}
         onPreview={() => setPreview(!preview)}
         onTemplates={() => setTool("templates")}
       />
-      {event.isDemo && (
-        <p className="demo-continuity-note">
-          <strong>Tu demo sí cuenta.</strong> Lo que diseñes aquí se conservará
-          al completar los datos y activar tu invitación.{" "}
-          <span>Diseña → Completa tus datos → Paga → Sigue editando</span>
-        </p>
-      )}
       {editor.message && (
         <p role="status" className="editor-feedback">
           {editor.message}
