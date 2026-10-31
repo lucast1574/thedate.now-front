@@ -1,4 +1,25 @@
 /* Gallery previews use the invitation renderer, including private draft photos. */
+.invitation-card-public-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  margin-top: 4px;
+  color: var(--ui-muted);
+  font-size: 12px;
+  text-decoration: none;
+}
+.invitation-card-public-link svg {
+  width: 13px;
+  height: 13px;
+}
+.invitation-card-public-link:hover,
+.invitation-card-public-link:focus-visible {
+  outline: none;
+  color: var(--ui-ink);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 .workspace-gallery {
   max-width: 1520px;
   margin: 0 auto;

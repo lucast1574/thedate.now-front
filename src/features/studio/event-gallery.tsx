@@ -6,6 +6,7 @@ import { galleryEvents } from "@/lib/events/studio-gallery";
 import DemoCover from "./demo-cover";
 import { defaultDemoCover } from "@/lib/events/thumbnail";
 import InvitationThumbnail from "./invitation-thumbnail";
+import { invitationHost, validInvitationSlug } from "@/lib/events/domains";
 export default function EventGallery({
   events,
   user,
@@ -142,6 +143,20 @@ export default function EventGallery({
                   )}
                 </div>
               )}
+              {!event.isDemo &&
+                event.paymentStatus === "paid" &&
+                event.publishedAt &&
+                validInvitationSlug(event.slug) && (
+                  <a
+                    className="invitation-card-public-link"
+                    href={`https://${invitationHost(event.kind, event.slug)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Ver la invitación de ${event.title}`}
+                  >
+                    Ver invitación <Icon name="arrow" />
+                  </a>
+                )}
             </article>
           ))}
           <button className="invitation-new-card" onClick={onCreate}>
