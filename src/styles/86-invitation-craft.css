@@ -1,0 +1,253 @@
+@font-face {
+  font-family: "Invitation Serif";
+  src: url("/fonts/invitation-serif.woff2") format("woff2");
+  font-weight: 300 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Invitation Sans";
+  src: url("/fonts/invitation-sans.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Invitation Script";
+  src: url("/fonts/invitation-script.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+.invitation-artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+.invitation[data-design="flyer"]
+  .invite-sections
+  > .flyer-surface
+  + .flyer-surface {
+  margin-top: 0;
+}
+.invitation[data-design="flyer"] .flyer-surface {
+  scroll-margin-top: 24px;
+}
+.flyer-element .dress-composition {
+  gap: 0.65em;
+  padding: 0.25em 0.4em;
+  box-sizing: border-box;
+}
+.dress-composition-icon {
+  width: 2.2em;
+  height: 2.2em;
+}
+.dress-composition-icon .ui-icon {
+  stroke-width: 1.1;
+}
+.dress-composition-text {
+  display: grid;
+  gap: 0.5em;
+  line-height: 1.3;
+}
+.dress-composition-text > strong {
+  font-weight: 500;
+  font-size: 1.24em;
+}
+.dress-composition-text > span {
+  font-size: 0.76em;
+  line-height: 1.5;
+  max-width: 28em;
+  margin-inline: auto;
+}
+.dress-excluded-colors {
+  gap: 0.85em;
+  font-size: 0.62em;
+  margin-top: 0.4em;
+}
+.dress-excluded-colors > strong {
+  font-weight: 400;
+  font-size: 0.85em;
+  letter-spacing: 0.025em;
+}
+.dress-excluded-colors > span {
+  gap: 0.8em 1.2em;
+}
+.dress-excluded-color {
+  flex-direction: column;
+  gap: 0.45em;
+  min-width: 2.7em;
+}
+.dress-excluded-swatch {
+  width: 2.3em;
+  height: 2.3em;
+  border: 0;
+  border-radius: 50% 50% 42% 42%;
+  box-shadow: inset 0 0 0 1px #00000012;
+}
+.dress-excluded-swatch::after {
+  left: 25%;
+  right: 25%;
+  height: 1px;
+  opacity: 0.65;
+  box-shadow: 0 1px 0 #ffffffa0;
+}
+.flyer-rsvp-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  width: 100%;
+  padding: 0.5em;
+  color: inherit;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.flyer-rsvp-link .ui-icon {
+  width: 1em;
+  height: 1em;
+}
+.flyer-rsvp-link:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+.composition-tools {
+  display: grid;
+  gap: 10px;
+  margin-block: 12px;
+  padding: 14px;
+  background: var(--ui-surface, #f7f5f1);
+  border-radius: 8px;
+}
+.composition-tools > span {
+  font-size: 12px;
+  color: var(--ui-muted);
+}
+.composition-tools > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.composition-tools button {
+  font-size: 12px;
+  padding: 8px;
+}
+.composition-tools button:focus-visible,
+.section-library button:focus-visible {
+  outline: none;
+  background: var(--ui-background);
+  color: var(--ui-accent);
+}
+.canvas-item[data-locked] {
+  cursor: default;
+}
+.canvas-item[data-locked] .canvas-photo-hint {
+  display: none;
+}
+.section-library,
+.invitation-theme-panel {
+  margin-block: 12px;
+  padding: 16px;
+  background: var(--ui-surface, #f7f5f1);
+  border-radius: 8px;
+}
+.section-library summary,
+.invitation-theme-panel summary {
+  cursor: pointer;
+  font-size: 14px;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.section-library summary:focus-visible,
+.invitation-theme-panel summary:focus-visible {
+  outline: none;
+  text-decoration: underline;
+}
+.section-library p,
+.invitation-theme-panel p {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ui-muted);
+}
+.section-library > div {
+  display: grid;
+  gap: 6px;
+}
+.section-library button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  font-size: 13px;
+}
+.section-library button .ui-icon:last-child {
+  margin-left: auto;
+}
+.invitation-theme-panel label {
+  display: grid;
+  gap: 8px;
+  margin-block: 16px;
+  font-size: 13px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .invitation-artwork * {
+    animation: none !important;
+  }
+}
+
+.invitation-photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  overflow: hidden;
+}
+.invitation-photo > img,
+.invitation-photo .template-photo-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.invitation-photo[data-treatment="soft"] {
+  border-radius: 3%;
+  overflow: visible;
+}
+.invitation-photo[data-treatment="soft"] > img:not(.invitation-photo-glow),
+.invitation-photo[data-treatment="soft"] > .template-photo-placeholder {
+  mask-image: radial-gradient(
+    ellipse 74% 74% at 50% 50%,
+    #000 58%,
+    #000b 73%,
+    transparent 98%
+  );
+}
+.invitation-photo .invitation-photo-glow {
+  filter: blur(16px);
+  opacity: 0.3;
+  object-fit: cover;
+  transform: scale(0.94);
+  z-index: -1;
+}
+.invitation-photo[data-treatment="fade"] {
+  mask-image: linear-gradient(#000 78%, transparent 100%);
+}
+.invitation-photo[data-treatment="arch"] {
+  border-radius: 50% 50% 2% 2% / 35% 35% 2% 2%;
+}
+.invitation-photo[data-treatment="cinema"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#0003 0%, transparent 35%, #0009 100%);
+  pointer-events: none;
+}
+.template-photo-choices {
+  display: flex;
+  gap: 6px;
+  margin-block: 12px;
+}

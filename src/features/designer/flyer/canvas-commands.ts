@@ -18,12 +18,14 @@ export function canvasCommand(
   if (index < 0) return canvas;
   const elements = [...canvas.elements],
     item = elements[index];
+  if (item.locked) return canvas;
   if (command === "delete") elements.splice(index, 1);
   else if (command === "duplicate") {
     if (elements.length >= 60 || !newId) return canvas;
     elements.splice(index + 1, 0, {
       ...item,
       id: newId,
+      groupId: undefined,
       x: Math.min(item.x + 16, canvas.width - item.width),
       y: Math.min(item.y + 16, canvas.height - item.height),
     });

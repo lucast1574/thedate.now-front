@@ -13,7 +13,7 @@ const { templateOpening } = loadSource(
   "src/features/designer/template-extras.ts",
 );
 const { applyCompleteTemplate } = loadSource(
-  "src/features/designer/template-sequence.ts",
+  "src/features/designer/apply-template-design.ts",
   { globals: { crypto } },
 );
 

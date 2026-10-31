@@ -1,6 +1,8 @@
 import type { ImageBackground } from "./background";
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
+  locked?: boolean;
+  groupId?: string;
   eventBound?: boolean;
   nameFormat?: "names" | "initials" | "stacked" | "uppercase";
   actionHint?: boolean;
@@ -37,6 +39,7 @@ export type FlyerElement = {
     | "adults_notice"
     | "gift_link"
     | "calendar_link"
+    | "rsvp_link"
     | "restrictions";
   locationStyle?:
     | "icon"
@@ -57,6 +60,8 @@ export type FlyerElement = {
   rotation: number;
   text?: string;
   photoKey?: string;
+  photoTreatment?: "none" | "soft" | "fade" | "arch" | "cinema";
+  photoFit?: "cover" | "contain";
   icon?: string;
   color: string;
   font: "serif" | "sans" | "mono" | "script";
@@ -65,6 +70,8 @@ export type FlyerElement = {
   align: "left" | "center" | "right";
 };
 export type FlyerCanvas = {
+  font?: FlyerElement["font"];
+  art?: "botanical" | "romance" | "gala" | "editorial" | "fiesta" | "coastal";
   backgroundImage?: ImageBackground;
   backgroundOverride?: boolean;
   width: number;
@@ -73,8 +80,8 @@ export type FlyerCanvas = {
   elements: FlyerElement[];
 };
 export const flyerFonts = {
-  serif: "Georgia, 'Times New Roman', serif",
-  sans: "Arial, Helvetica, sans-serif",
+  serif: "'Invitation Serif', Georgia, 'Times New Roman', serif",
+  sans: "'Invitation Sans', Arial, Helvetica, sans-serif",
   mono: "'Courier New', monospace",
-  script: "'Brush Script MT', 'Segoe Script', cursive",
+  script: "'Invitation Script', 'Brush Script MT', 'Segoe Script', cursive",
 };

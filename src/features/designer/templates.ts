@@ -1,3 +1,4 @@
+import { updateInvitationTheme } from "./invitation-theme";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import { sectionCanvas } from "./flyer/canvas-model";
 import { templateCanvas } from "./template-canvas";
@@ -32,8 +33,13 @@ export function applyTemplate(
   template: InvitationTemplate,
 ): DesignEvent {
   if (template.kind !== draft.kind) return draft;
-  const source = draft.sections?.length
-    ? draft.sections
+  const themed = updateInvitationTheme(draft, {
+    ink: template.accent,
+    background: template.background,
+    font: template.font,
+  });
+  const source = themed.sections?.length
+    ? themed.sections
     : starterSections(draft);
   const updated = {
     ...draft,
@@ -59,12 +65,8 @@ export function applyTemplate(
       ...section,
       canvas: {
         ...canvas,
-        background: template.background,
-        elements: canvas.elements.map((item) =>
-          item.type === "image"
-            ? item
-            : { ...item, color: template.accent, font: template.font },
-        ),
+        background: canvas.background,
+        elements: canvas.elements,
       },
     };
   });

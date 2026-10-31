@@ -7,7 +7,7 @@ export default function DressExcludedColors({
   if (!colors?.length) return null;
   return (
     <span className="dress-excluded-colors">
-      <strong>Colores no permitidos</strong>
+      <strong>Evita estos colores</strong>
       <span>
         {colors.map((rule, index) => (
           <span className="dress-excluded-color" key={index}>

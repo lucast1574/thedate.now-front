@@ -14,10 +14,10 @@ type Name =
   | "grid";
 export const extendedLayouts: Record<Name, Layout> = {
   gallery: {
-    kicker: [70, 60, 580, 60, 18],
-    photo: [60, 180, 600, 440],
-    title: [90, 670, 540, 150, 58],
-    body: [100, 840, 520, 80, 23],
+    kicker: [80, 640, 560, 50, 18],
+    photo: [0, 0, 720, 600],
+    title: [80, 710, 560, 130, 64],
+    body: [100, 865, 520, 70, 23],
     motifs: [],
   },
   split: {
@@ -63,11 +63,11 @@ export const extendedLayouts: Record<Name, Layout> = {
     motifs: [["leaf", 590, 790, 70, 100, 30]],
   },
   cinematic: {
-    kicker: [80, 30, 560, 40, 16, "left"],
-    photo: [80, 100, 560, 370],
-    title: [80, 540, 560, 200, 80, "left"],
-    body: [80, 810, 560, 100, 25, "left"],
-    motifs: [["star", 595, 760, 45, 45]],
+    kicker: [70, 70, 580, 50, 18, "left"],
+    photo: [0, 0, 720, 960],
+    title: [70, 640, 580, 180, 76, "left"],
+    body: [70, 850, 580, 80, 24, "left"],
+    motifs: [],
   },
   mosaic: {
     kicker: [80, 40, 560, 45, 17, "left"],

@@ -1,8 +1,9 @@
+import CompositionTools from "./composition-tools";
 import { useCanvasPanel } from "./use-canvas-panel";
 import CanvasRail from "./canvas-rail";
 import CanvasPanelHeading from "./canvas-panel-heading";
 import CanvasSettings from "./canvas-settings";
-import TemplatePanel from "../template-panel";
+import TemplateWorkspacePanel from "./template-workspace-panel";
 import MusicPanel from "../music-panel";
 import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
@@ -43,34 +44,25 @@ export default function CanvasWorkspace({
     patch,
     moveLayer,
     addPage: appendPage,
+    selectPage,
   } = workspace;
-  const tab = tool,
-    setTab = onToolChange;
   const panel = useCanvasPanel(
-    tab,
-    tab === "elements" ? selectedId : "",
+    tool,
+    tool === "elements" ? selectedId : "",
     active?.id || "",
   );
   function addPage() {
     appendPage();
-    setTab("elements");
+    onToolChange("elements");
   }
-  function selectPage(id: string) {
-    setActiveId(id);
-    select("");
-    if (window.matchMedia("(min-width: 761px)").matches)
-      document
-        .getElementById(`page-${id}`)
-        ?.scrollIntoView({ block: "nearest" });
-  }
-  const inspecting = !!selected && tab === "elements";
+  const inspecting = !!selected && tool === "elements";
   return (
     <div className="canvas-workbench">
       <CanvasRail
-        tab={tab}
+        tab={tool}
         kind={event.kind}
         onChange={(id) => {
-          setTab(id);
+          onToolChange(id);
           select("");
         }}
       />
@@ -78,14 +70,14 @@ export default function CanvasWorkspace({
         id="canvas-tools"
         ref={panel}
         className="canvas-panel designer-controls"
-        data-tool={tab}
+        data-tool={tool}
       >
         {inspecting && (
           <button
             className="canvas-panel-back"
             onClick={() => {
               select("");
-              setTab("elements");
+              onToolChange("elements");
             }}
           >
             <Icon name="undo" /> Volver a elementos
@@ -93,38 +85,47 @@ export default function CanvasWorkspace({
         )}
         {!inspecting &&
           active &&
-          ["elements", "background", "photos", "layers"].includes(tab) && (
+          ["elements", "background", "photos", "layers"].includes(tool) && (
             <CanvasSectionControls
-              key={tab}
+              key={tool}
               sections={editor.sections}
               activeId={active.id}
               canvas={canvas}
               onSelect={selectPage}
               onAdd={addPage}
               onBackground={
-                tab === "background" ? undefined : () => setTab("background")
+                tool === "background"
+                  ? undefined
+                  : () => onToolChange("background")
               }
               onChange={change}
             />
           )}
-        <CanvasPanelHeading tool={tab} hidden={inspecting} />
-        {!inspecting && (tab === "elements" || tab === "photos") && (
+        <CanvasPanelHeading tool={tool} hidden={inspecting} />
+        {(inspecting || tool === "layers") && (
+          <CompositionTools
+            canvas={canvas}
+            ids={workspace.selectedIds}
+            onChange={change}
+          />
+        )}
+        {!inspecting && (tool === "elements" || tool === "photos") && (
           <CanvasToolbox
             event={event}
             draft={draft}
             canvas={canvas}
-            onPhotos={() => setTab("photos")}
-            photosOnly={tab === "photos"}
+            onPhotos={() => onToolChange("photos")}
+            photosOnly={tool === "photos"}
             disabled={!active || canvas.elements.length >= 60}
             onAdd={(item) => {
               add(item);
-              setTab("elements");
+              onToolChange("elements");
             }}
             onUpload={editor.upload}
             busy={editor.busy}
           />
         )}
-        {tab === "pages" && (
+        {tool === "pages" && (
           <CanvasSectionPanel
             editor={editor}
             onAdd={addPage}
@@ -133,43 +134,37 @@ export default function CanvasWorkspace({
             canvas={canvas}
             onOpening={() => {
               select("");
-              setTab("opening");
+              onToolChange("opening");
             }}
             onSelect={selectPage}
             onChange={change}
           />
         )}
-        {tab === "layers" && (
+        {tool === "layers" && (
           <CanvasLayers
             elements={canvas.elements}
             selectedId={selectedId}
+            selectedIds={workspace.selectedIds}
             onSelect={select}
             onMove={moveLayer}
             onEdit={(id) => {
               select(id);
-              setTab("elements");
+              onToolChange("elements");
             }}
             onElements={() => {
               select("");
-              setTab("elements");
+              onToolChange("elements");
             }}
           />
         )}
-        {tab === "music" && <MusicPanel editor={editor} />}
-        <CanvasSettings tool={tab} editor={editor} index={index} />
-        {tab === "templates" && (
-          <TemplatePanel
+        {tool === "music" && <MusicPanel editor={editor} />}
+        <CanvasSettings tool={tool} editor={editor} index={index} />
+        {tool === "templates" && (
+          <TemplateWorkspacePanel
             editor={editor}
-            sectionId={active?.id || ""}
-            onActivate={(id) => {
-              setActiveId(id);
-              select("");
-              requestAnimationFrame(() =>
-                document
-                  .getElementById(`page-${id}`)
-                  ?.scrollIntoView({ block: "start" }),
-              );
-            }}
+            activeId={active?.id || ""}
+            setActiveId={setActiveId}
+            select={select}
           />
         )}
         {inspecting && (
@@ -182,10 +177,11 @@ export default function CanvasWorkspace({
         editor={editor}
         activeId={active?.id || ""}
         selectedId={selectedId}
-        onSelect={(page, element) => {
+        selectedIds={workspace.selectedIds}
+        onSelect={(page, element, multiple) => {
           setActiveId(page);
-          select(element);
-          setTab("elements");
+          select(element, multiple);
+          onToolChange("elements");
           if (!element) {
             panel.current?.scrollTo({ top: 0 });
             panel.current?.scrollIntoView({ block: "nearest" });

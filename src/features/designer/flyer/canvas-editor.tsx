@@ -1,20 +1,18 @@
+import { moveSelection } from "./composition";
+import CanvasItems from "./canvas-items";
 import type { BackgroundSlice } from "@/lib/events/background";
 import { useImageReplacement } from "./use-image-replacement";
 import CanvasContextMenu from "./canvas-context-menu";
 import { useCanvasMenu } from "./use-canvas-menu";
 import { snapCenter } from "./canvas-geometry";
-import Icon from "@/components/icon";
 import type { KeyboardEvent } from "react";
 import type { FlyerCanvas } from "@/lib/events/flyer";
-import FlyerSurface, {
-  flyerElementStyle,
-  FlyerContent,
-} from "@/components/flyer-surface";
-import { moveElement } from "./canvas-model";
+import FlyerSurface from "@/components/flyer-surface";
 import { useCanvasGesture } from "./use-canvas-gesture";
 export default function CanvasEditor({
   canvas,
   selectedId,
+  selectedIds = [selectedId],
   onSelect,
   onChange,
   photoURL,
@@ -26,12 +24,13 @@ export default function CanvasEditor({
   canvas: FlyerCanvas;
   backgroundSlice?: BackgroundSlice;
   selectedId: string;
-  onSelect: (id: string) => void;
+  selectedIds?: string[];
+  onSelect: (id: string, multiple?: boolean) => void;
   onChange: (canvas: FlyerCanvas) => void;
   photoURL: (key: string) => string;
   onReplace?: (file: File, id: string) => Promise<void>;
 }) {
-  const gesture = useCanvasGesture(canvas, onChange);
+  const gesture = useCanvasGesture(canvas, onChange, selectedIds);
   const replacement = useImageReplacement(onReplace);
   const context = useCanvasMenu(canvas, onChange, onSelect);
   const moving = gesture.transient;
@@ -44,7 +43,7 @@ export default function CanvasEditor({
       onSelect("");
       return;
     }
-    const item = canvas.elements.find((el) => el.id === id)!;
+    const ids = selectedIds.includes(id) ? selectedIds : [id];
     const keys: Record<string, [number, number]> = {
       ArrowLeft: [-1, 0],
       ArrowRight: [1, 0],
@@ -56,19 +55,16 @@ export default function CanvasEditor({
       e.stopPropagation();
       onChange({
         ...canvas,
-        elements: canvas.elements.filter((el) => el.id !== id),
+        elements: canvas.elements.filter(
+          (el) => !ids.includes(el.id) || el.locked,
+        ),
       });
       onSelect("");
     } else if (keys[e.key]) {
       e.preventDefault();
       const [dx, dy] = keys[e.key];
       const step = e.shiftKey ? 10 : 1;
-      onChange({
-        ...canvas,
-        elements: canvas.elements.map((el) =>
-          el.id === id ? moveElement(item, dx * step, dy * step, canvas) : el,
-        ),
-      });
+      onChange(moveSelection(canvas, ids, dx * step, dy * step));
     }
   }
   return (
@@ -89,96 +85,18 @@ export default function CanvasEditor({
         {guides && (guides.vertical || guides.horizontal) && (
           <span className="canvas-center-label">Centrado</span>
         )}
-        {canvas.elements.map((original, index) => {
-          const item =
-            gesture.transient?.id === original.id
-              ? gesture.transient
-              : original;
-          const selected = selectedId === item.id;
-          return (
-            <div
-              key={item.id}
-              className={`flyer-element canvas-item ${selected ? "is-selected" : ""}`}
-              style={flyerElementStyle(item, canvas)}
-              role="button"
-              tabIndex={0}
-              aria-pressed={selected}
-              aria-label={`${item.binding === "map" ? "Mapa" : item.binding === "couple_names" ? "Nombres de los novios" : item.binding === "event_title" ? "Nombre del evento" : item.binding === "event_date" ? "Fecha y hora" : item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
-              data-photo={item.type === "image" || undefined}
-              onClick={(e) => {
-                e.stopPropagation();
-                if ((e.target as HTMLElement).closest("a")) e.preventDefault();
-                onSelect(item.id);
-                const imageTarget =
-                  item.type === "image" ||
-                  (item.binding === "dress_code" &&
-                    (e.target as HTMLElement).closest("[data-dress-image]"));
-                if (
-                  imageTarget &&
-                  !gesture.wasDragged() &&
-                  !(e.target as HTMLElement).closest(".canvas-handle")
-                )
-                  replacement.request(item.id);
-              }}
-              onFocus={() => onSelect(item.id)}
-              onKeyDown={(e) => {
-                if (
-                  item.type === "image" &&
-                  (e.key === "Enter" || e.key === " ")
-                ) {
-                  e.preventDefault();
-                  replacement.request(item.id);
-                } else keyboard(e, item.id);
-              }}
-              onContextMenu={(e) => context.open(e, item.id)}
-              onPointerDown={(e) => {
-                if (e.button !== 0) return;
-                e.currentTarget.focus({ preventScroll: true });
-                onSelect(item.id);
-                gesture.begin(e, original);
-              }}
-              onPointerMove={gesture.move}
-              onPointerUp={gesture.end}
-              onPointerCancel={(e) => gesture.end(e, true)}
-            >
-              <FlyerContent item={item} event={event} photoURL={photoURL} />
-              {item.type === "image" && (
-                <span className="canvas-photo-hint">
-                  <Icon name="image" /> Pulsa para cambiar foto
-                </span>
-              )}
-              {selected && (
-                <>
-                  <button
-                    type="button"
-                    className="canvas-handle canvas-rotate"
-                    aria-label="Rotar elemento"
-                    onPointerDown={(e) => gesture.begin(e, original, "rotate")}
-                    onPointerMove={gesture.move}
-                    onPointerUp={gesture.end}
-                    onPointerCancel={(e) => gesture.end(e, true)}
-                  >
-                    <Icon name="refresh" />
-                  </button>
-                  {(["nw", "ne", "sw", "se"] as const).map((corner) => (
-                    <button
-                      key={corner}
-                      type="button"
-                      className={`canvas-handle canvas-resize corner-${corner}`}
-                      aria-label="Cambiar tamaño del elemento"
-                      onPointerDown={(e) =>
-                        gesture.begin(e, original, `resize-${corner}`)
-                      }
-                      onPointerMove={gesture.move}
-                      onPointerUp={gesture.end}
-                      onPointerCancel={(e) => gesture.end(e, true)}
-                    ></button>
-                  ))}
-                </>
-              )}
-            </div>
-          );
-        })}
+        <CanvasItems
+          canvas={gesture.preview || canvas}
+          originalCanvas={canvas}
+          selectedIds={selectedIds}
+          onSelect={onSelect}
+          gesture={gesture}
+          replacement={replacement}
+          context={context}
+          keyboard={keyboard}
+          event={event}
+          photoURL={photoURL}
+        />
       </FlyerSurface>
       {context.menu && (
         <CanvasContextMenu

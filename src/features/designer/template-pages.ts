@@ -1,3 +1,5 @@
+import { adaptTemplateCanvas } from "./adapt-template-content";
+import { templateArt } from "./template-art-direction";
 import { element } from "./flyer/canvas-model";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -14,15 +16,31 @@ export function templatePage(
     heading,
     body: "",
     icon: "none",
-    canvas: {
+    canvas: adaptTemplateCanvas({
+      art: templateArt(template),
+      font: template.font,
       width: 720,
       height,
       background: template.background,
       elements: elements.map((item) => ({
         ...item,
+        ...(item.type === "image"
+          ? {
+              photoFit: "cover" as const,
+              photoTreatment:
+                templateArt(template) === "botanical"
+                  ? ("soft" as const)
+                  : ("fade" as const),
+            }
+          : {}),
+        ...(["editorial", "split", "typographic", "grid", "cinematic"].includes(
+          template.layout || "",
+        ) && item.type === "text"
+          ? { align: "left" as const }
+          : {}),
         id: `${id.slice(0, 8)}-${item.id}`,
       })),
-    },
+    }),
   };
 }
 export function templateText(
@@ -34,7 +52,6 @@ export function templateText(
   size = 36,
   patch: Partial<FlyerElement> = {},
 ) {
-  const longest = Math.max(1, ...text.split(/\s/).map((s) => s.length));
   return element("text", {
     id,
     text,
@@ -44,16 +61,7 @@ export function templateText(
     height,
     font: template.font,
     color: template.accent,
-    fontSize: Math.max(
-      14,
-      Math.min(
-        size,
-        Math.floor(600 / (longest * 0.65)),
-        Math.floor(
-          Math.sqrt((600 * height) / (Math.max(1, text.length) * 0.65)),
-        ),
-      ),
-    ),
+    fontSize: size,
     ...patch,
   });
 }

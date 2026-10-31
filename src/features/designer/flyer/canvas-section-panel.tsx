@@ -1,3 +1,4 @@
+import SectionLibrary from "../section-library-panel";
 import Icon from "@/components/icon";
 import type { DesignSection } from "@/lib/events/types";
 import type { FlyerCanvas } from "@/lib/events/flyer";
@@ -26,6 +27,7 @@ export default function CanvasSectionPanel({
 }) {
   return (
     <div className="canvas-section-panel">
+      <SectionLibrary editor={editor} onSelect={onSelect} />
       <p className="canvas-section-help">
         Elige una sección aquí o pulsa su fondo en el lienzo.
       </p>

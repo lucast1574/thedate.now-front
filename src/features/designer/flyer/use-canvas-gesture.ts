@@ -1,3 +1,4 @@
+import { moveSelection, selectionIds } from "./composition";
 import { useRef, useState, type PointerEvent } from "react";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import { clamp, moveElement } from "./canvas-model";
@@ -12,20 +13,24 @@ type Gesture = {
   centerY: number;
   angle: number;
   latest: FlyerElement;
+  ids: string[];
+  canvas: FlyerCanvas;
 };
 export function useCanvasGesture(
   canvas: FlyerCanvas,
   onChange: (canvas: FlyerCanvas) => void,
+  selectedIds: string[] = [],
 ) {
   const gesture = useRef<Gesture | null>(null);
   const dragged = useRef(false);
+  const [preview, setPreview] = useState<FlyerCanvas | null>(null);
   const [transient, setTransient] = useState<FlyerElement | null>(null);
   function begin(
     e: PointerEvent<HTMLElement>,
     item: FlyerElement,
     action: Gesture["action"] = "move",
   ) {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || item.locked || e.shiftKey) return;
     dragged.current = false;
     e.preventDefault();
     e.stopPropagation();
@@ -45,6 +50,11 @@ export function useCanvasGesture(
       centerY,
       angle: Math.atan2(e.clientY - centerY, e.clientX - centerX),
       latest: item,
+      ids: selectionIds(
+        canvas,
+        selectedIds.includes(item.id) ? selectedIds : [item.id],
+      ),
+      canvas,
     };
     e.currentTarget.setPointerCapture(e.pointerId);
   }
@@ -71,6 +81,16 @@ export function useCanvasGesture(
         rotation: clamp(Math.round(((degrees + 540) % 360) - 180), -180, 180),
       };
     }
+    g.canvas =
+      g.action === "move"
+        ? moveSelection(canvas, g.ids, next.x - g.item.x, next.y - g.item.y)
+        : {
+            ...canvas,
+            elements: canvas.elements.map((e) =>
+              e.id === g.item.id ? next : e,
+            ),
+          };
+    setPreview(g.canvas);
     g.latest = next;
     setTransient(next);
   }
@@ -79,15 +99,17 @@ export function useCanvasGesture(
     if (!g) return;
     gesture.current = null;
     setTransient(null);
-    if (!cancel)
-      onChange({
-        ...canvas,
-        elements: canvas.elements.map((item) =>
-          item.id === g.item.id ? g.latest : item,
-        ),
-      });
+    setPreview(null);
+    if (!cancel) onChange(g.canvas);
     if (e.currentTarget.hasPointerCapture(e.pointerId))
       e.currentTarget.releasePointerCapture(e.pointerId);
   }
-  return { transient, begin, move, end, wasDragged: () => dragged.current };
+  return {
+    transient,
+    preview,
+    begin,
+    move,
+    end,
+    wasDragged: () => dragged.current,
+  };
 }

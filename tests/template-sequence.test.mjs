@@ -4,8 +4,12 @@ import { loadSource } from "./support/load-source.cjs";
 const { invitationTemplates } = loadSource(
   "src/lib/events/template-catalog.ts",
 );
-const { templateSequence, applyCompleteTemplate } = loadSource(
+const { templateSequence } = loadSource(
   "src/features/designer/template-sequence.ts",
+  { globals: { crypto } },
+);
+const { applyCompleteTemplate } = loadSource(
+  "src/features/designer/apply-template-design.ts",
   { globals: { crypto } },
 );
 const { designPayload, sameDesign } = loadSource(

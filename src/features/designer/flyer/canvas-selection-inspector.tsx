@@ -20,6 +20,14 @@ export default function CanvasSelectionInspector({
     select,
   } = workspace;
   if (!active || !selected) return null;
+  if (selected.locked || workspace.selectedIds.length > 1)
+    return (
+      <p className="canvas-panel-description">
+        {selected.locked
+          ? "Desbloquea el elemento para editarlo."
+          : "Alinea, distribuye o agrupa la selección. Pulsa un solo elemento para editar su contenido."}
+      </p>
+    );
   return (
     <CanvasProperties
       kind={editor.draft.kind}

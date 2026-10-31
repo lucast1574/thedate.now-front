@@ -38,7 +38,10 @@ export default function FlyerDressCode({
       )}
       {parts.includes("text") && (
         <span className="dress-composition-text">
-          {item.text || "Dress code"}
+          <strong>{(item.text || "Dress code").split("\n")[0]}</strong>
+          {(item.text || "").split("\n").slice(1).join("\n") && (
+            <span>{item.text!.split("\n").slice(1).join("\n")}</span>
+          )}
         </span>
       )}
       <DressExcludedColors colors={item.dressExcludedColors} />

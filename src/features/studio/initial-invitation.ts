@@ -1,7 +1,7 @@
 import { eventPayload } from "@/lib/events/draft";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { Event } from "@/lib/events/types";
-import { applyCompleteTemplate } from "@/features/designer/template-sequence";
+import { applyCompleteTemplate } from "@/features/designer/apply-template-design";
 import { designPayload } from "@/features/designer/design-state";
 
 export function initialInvitation(draft: Event) {

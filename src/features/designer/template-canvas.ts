@@ -1,3 +1,5 @@
+import { adaptTemplateCanvas } from "./adapt-template-content";
+import { templateArt } from "./template-art-direction";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { element } from "./flyer/canvas-model";
@@ -41,22 +43,7 @@ export function templateCanvas(
     patch: Partial<FlyerElement> = {},
   ) {
     const [x, y, width, height, size, align = "center"] = box;
-    const longest = Math.max(
-      ...value.split(/\s/).map((word) => word.length),
-      1,
-    );
-    const capitals =
-      value === value.toLocaleUpperCase("es") && /[A-ZÁÉÍÓÚÑ]/.test(value);
-    const fontSize = Math.max(
-      14,
-      Math.min(
-        size,
-        Math.floor(
-          Math.sqrt((width * height) / (Math.max(value.length, 1) * 0.7)),
-        ),
-        Math.floor(width / (longest * (patch.bold || capitals ? 0.78 : 0.62))),
-      ),
-    );
+    const fontSize = size;
     elements.push(
       element("text", {
         id,
@@ -66,31 +53,13 @@ export function templateCanvas(
         height,
         text: value.slice(0, 2000),
         font: template.font,
-        color: template.accent,
+        color: template.layout === "cinematic" ? "#ffffff" : template.accent,
         fontSize,
         align,
         ...patch,
       }),
     );
   }
-  layout.motifs.forEach(([icon, x, y, width, height, rotation = 0], n) => {
-    elements.push(
-      element("icon", {
-        id: `motif-${n}`,
-        icon,
-        x,
-        y,
-        width,
-        height,
-        rotation,
-        fontSize: Math.min(width, 160),
-        color:
-          template.layout === "sunburst"
-            ? tint(template.accent, template.background)
-            : template.accent,
-      }),
-    );
-  });
   if (layout.monogram) {
     const initials = title
       .split(/\s*[&+]\s*|\s+y\s+/i)
@@ -139,10 +108,17 @@ export function templateCanvas(
       ? [65, 490, 590, 300]
       : null);
   if (photo)
-    elements.push(
+    elements.unshift(
       element("image", {
         id: "photo",
         photoKey: content.photoKey || "template-photo",
+        photoFit: "cover",
+        photoTreatment:
+          template.layout === "cinematic"
+            ? "cinema"
+            : templateArt(template) === "botanical"
+              ? "soft"
+              : "fade",
         x: photo[0],
         y: photo[1],
         width: photo[2],
@@ -154,5 +130,12 @@ export function templateCanvas(
     body,
     photo && !layout.photo ? [65, 815, 590, 120, 22, "left"] : layout.body,
   );
-  return { width: 720, height: 960, background: template.background, elements };
+  return adaptTemplateCanvas({
+    art: templateArt(template),
+    font: template.font,
+    width: 720,
+    height: 960,
+    background: template.background,
+    elements,
+  });
 }

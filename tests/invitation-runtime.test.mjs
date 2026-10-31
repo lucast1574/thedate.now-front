@@ -34,6 +34,9 @@ test("dedicated invitation runtime exposes public routes and denies account rout
   for (const path of [
     "/",
     "/api/invitation-health",
+    "/fonts/invitation-serif.woff2",
+    "/fonts/invitation-sans.woff2",
+    "/fonts/invitation-script.woff2",
     "/_next/static/styles.css",
     `/rsvp/${"a".repeat(48)}`,
     `/rsvp/${"a".repeat(48)}/respuesta`,
@@ -43,6 +46,8 @@ test("dedicated invitation runtime exposes public routes and denies account rout
     assert.equal(allow(path), true, path);
   for (const path of [
     "/api/session",
+    "/fonts/untrusted.woff2",
+    "/fonts/../private.json",
     "/api/backend/events",
     "/api/auth/google/start",
     "/join/token",

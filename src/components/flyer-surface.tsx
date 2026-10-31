@@ -1,16 +1,16 @@
+import InvitationPhoto from "./invitation-photo";
+import InvitationArtwork from "./invitation-artwork";
+import { fitInvitationText } from "@/lib/events/fit-invitation-text";
 import FlyerBackground from "./flyer-background";
 import InvitationMap from "./invitation-map";
 import { elementValue } from "@/lib/events/element-values";
 import type { PublicEvent } from "@/lib/events/types";
 import type { BackgroundSlice } from "@/lib/events/background";
 import type { CSSProperties, ReactNode } from "react";
-import { templatePhotoURL } from "@/lib/events/template-photos";
 import FlyerCalendarLink from "./flyer-calendar-link";
 import FlyerGiftLink from "./flyer-gift-link";
 import FlyerDressCode from "./flyer-dress-code";
 import FlyerRestrictions from "./flyer-restrictions";
-import Photo from "./photo";
-import TemplatePhotoPlaceholder from "./template-photo-placeholder";
 import FlyerLocation from "./flyer-location";
 import {
   flyerFonts,
@@ -51,18 +51,22 @@ export function FlyerContent({
 }) {
   item = elementValue(item, event);
   if (item.binding === "map") return <InvitationMap item={item} />;
-  if (item.type === "image" && item.photoKey === "template-photo")
-    return <TemplatePhotoPlaceholder />;
   if (item.type === "image")
-    return (
-      <Photo
-        src={
-          templatePhotoURL(item.photoKey || "") || photoURL(item.photoKey || "")
-        }
-        style={{ objectFit: "contain" }}
-        alt="Imagen de la invitación"
-        draggable={false}
-      />
+    return <InvitationPhoto item={item} photoURL={photoURL} />;
+  if (item.binding === "rsvp_link")
+    return giftURL ? (
+      <a
+        className="flyer-rsvp-link"
+        href={giftURL.replace(/\/regalos$/, "/respuesta")}
+      >
+        <Icon name="mail" />
+        {item.text || "Confirmar asistencia"}
+        <Icon name="arrow" />
+      </a>
+    ) : (
+      <span className="flyer-rsvp-link">
+        {item.text || "Confirma tu asistencia en WhatsApp"}
+      </span>
     );
   if (item.binding === "calendar_link")
     return <FlyerCalendarLink item={item} event={event} />;
@@ -125,6 +129,14 @@ export default function FlyerSurface({
         background: canvas.background,
       }}
     >
+      <InvitationArtwork
+        style={canvas.art}
+        color={
+          event?.accentColor ||
+          canvas.elements.find((e) => e.type !== "image")?.color ||
+          "#555555"
+        }
+      />
       {(backgroundSlice ||
         (!canvas.backgroundOverride && canvas.backgroundImage)) && (
         <FlyerBackground
@@ -144,7 +156,13 @@ export default function FlyerSurface({
           <div
             key={item.id}
             className="flyer-element"
-            style={flyerElementStyle(item, canvas)}
+            style={flyerElementStyle(
+              {
+                ...item,
+                fontSize: fitInvitationText(elementValue(item, event)),
+              },
+              canvas,
+            )}
           >
             <FlyerContent
               item={item}

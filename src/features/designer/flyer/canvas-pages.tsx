@@ -10,6 +10,7 @@ export default function CanvasPages({
   editor,
   activeId,
   selectedId,
+  selectedIds,
   onSelect,
   zoom,
   setZoom,
@@ -20,7 +21,8 @@ export default function CanvasPages({
   editor: Editor;
   activeId: string;
   selectedId: string;
-  onSelect: (page: string, element: string) => void;
+  selectedIds: string[];
+  onSelect: (page: string, element: string, multiple?: boolean) => void;
   zoom: number;
   setZoom: (zoom: number) => void;
   addPage: () => void;
@@ -38,7 +40,11 @@ export default function CanvasPages({
   return (
     <section className="canvas-desk" aria-label="Lienzos de la invitación">
       <div className="canvas-context">
-        {selected ? (
+        {selectedIds.length > 1 ? (
+          <span>{selectedIds.length} elementos seleccionados</span>
+        ) : selected?.locked ? (
+          <span>Elemento bloqueado</span>
+        ) : selected ? (
           <CanvasFormatting item={selected} onChange={patch} />
         ) : active ? (
           <button
@@ -131,8 +137,9 @@ export default function CanvasPages({
                 )}
                 canvas={sectionCanvas(section, draft)}
                 selectedId={activeId === section.id ? selectedId : ""}
-                onSelect={(id) => {
-                  onSelect(section.id, id);
+                selectedIds={activeId === section.id ? selectedIds : []}
+                onSelect={(id, multiple) => {
+                  onSelect(section.id, id, multiple);
                 }}
                 onChange={(next) => editor.updateSection(n, { canvas: next })}
                 photoURL={photoURL}

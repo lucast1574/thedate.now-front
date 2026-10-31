@@ -19,7 +19,7 @@ export default function CanvasProperties({
   photos: string[];
   patch: (patch: Partial<FlyerElement>) => void;
   layer: (direction: number) => void;
-  add: (element: FlyerElement) => void;
+  add: (element: FlyerElement, inherit?: boolean) => void;
   remove: () => void;
   replaceImage: (file: File, id: string) => Promise<void>;
   photoURL: (key: string) => string;
@@ -39,12 +39,17 @@ export default function CanvasProperties({
         onChange={patch}
         onLayer={layer}
         onDuplicate={() =>
-          add({
-            ...selected,
-            id: crypto.randomUUID(),
-            x: Math.min(selected.x + 16, canvas.width - selected.width),
-            y: Math.min(selected.y + 16, canvas.height - selected.height),
-          })
+          add(
+            {
+              ...selected,
+              id: crypto.randomUUID(),
+              groupId: undefined,
+              locked: false,
+              x: Math.min(selected.x + 16, canvas.width - selected.width),
+              y: Math.min(selected.y + 16, canvas.height - selected.height),
+            },
+            false,
+          )
         }
         onRemove={remove}
       />

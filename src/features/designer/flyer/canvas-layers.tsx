@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Icon from "@/components/icon";
 import { elementLabel } from "@/lib/events/element-label";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -14,6 +15,7 @@ function layerLabel(item: FlyerElement) {
 export default function CanvasLayers({
   elements,
   selectedId,
+  selectedIds = [selectedId],
   onSelect,
   onMove,
   onEdit,
@@ -21,11 +23,13 @@ export default function CanvasLayers({
 }: {
   elements: FlyerElement[];
   selectedId: string;
-  onSelect: (id: string) => void;
+  selectedIds?: string[];
+  onSelect: (id: string, multiple?: boolean) => void;
   onMove?: (id: string, direction: number) => void;
   onEdit?: (id: string) => void;
   onElements?: () => void;
 }) {
+  const [multiple, setMultiple] = useState(false);
   if (!elements.length)
     return (
       <div className="canvas-layers-empty">
@@ -47,6 +51,9 @@ export default function CanvasLayers({
         Los primeros se ven delante. Selecciona un elemento para localizarlo o
         cambia su posición con las flechas.
       </p>
+      <button aria-pressed={multiple} onClick={() => setMultiple(!multiple)}>
+        Seleccionar varios
+      </button>
       <div className="canvas-layers-list">
         {[...elements].reverse().map((item, displayIndex) => {
           const label = layerLabel(item);
@@ -54,12 +61,12 @@ export default function CanvasLayers({
             <div
               key={item.id}
               className="canvas-layer-row"
-              data-selected={item.id === selectedId || undefined}
+              data-selected={selectedIds.includes(item.id) || undefined}
             >
               <button
                 className="canvas-layer-select"
-                aria-pressed={item.id === selectedId}
-                onClick={() => onSelect(item.id)}
+                aria-pressed={selectedIds.includes(item.id)}
+                onClick={(e) => onSelect(item.id, multiple || e.shiftKey)}
               >
                 <Icon
                   name={
@@ -75,6 +82,7 @@ export default function CanvasLayers({
                   }
                 />
                 <span>
+                  {item.locked && <Icon name="lock" />}
                   {label}
                   <small>
                     {displayIndex === 0

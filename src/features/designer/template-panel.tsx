@@ -1,3 +1,4 @@
+import InvitationThemePanel from "./invitation-theme-panel";
 import { useEffect, useRef, useState } from "react";
 import FlyerSurface from "@/components/flyer-surface";
 import Icon from "@/components/icon";
@@ -8,7 +9,8 @@ import {
 import type { useInvitationDesign } from "./use-invitation-design";
 import { templateCanvas } from "./template-canvas";
 import { applyTemplate } from "./templates";
-import { applyCompleteTemplate, templateSequence } from "./template-sequence";
+import { templateSequence } from "./template-sequence";
+import { applyCompleteTemplate } from "./apply-template-design";
 import TemplateDetail from "./template-detail";
 import { addMissingTemplateElements } from "./missing-template-elements";
 import { useTemplateNavigation } from "./use-template-navigation";
@@ -54,22 +56,27 @@ export default function TemplatePanel({
   );
   const selected = catalog.find((item) => item.id === selectedId);
   const section = draft.sections?.find((item) => item.id === sectionId);
-  function apply(template: InvitationTemplate, styleOnly = false) {
+  function apply(
+    template: InvitationTemplate,
+    styleOnly = false,
+    photos = true,
+  ) {
     const next = styleOnly
       ? applyTemplate(draft, template)
-      : applyCompleteTemplate(draft, template);
+      : applyCompleteTemplate(draft, template, photos);
     setDraft(next);
     if (next.sections?.[0]) onActivate(next.sections[0].id);
     setMessage(
       styleOnly
         ? "Colores y tipografía actualizados. Puedes deshacer."
-        : "Invitación completa lista: cambia textos y pulsa las fotos para reemplazarlas. Puedes deshacer.",
+        : "Diseño aplicado conservando tu contenido. Puedes deshacer.",
     );
     // The generated section IDs are owned by the new draft; activate after render.
     setSelectedId("");
   }
   return (
     <div ref={panel} className="template-panel">
+      <InvitationThemePanel editor={editor} />
       {draft.sections?.length ? (
         <button
           className="template-style-only"
@@ -100,7 +107,7 @@ export default function TemplatePanel({
           draft={draft}
           section={section}
           onBack={() => setSelectedId("")}
-          onApply={() => apply(selected)}
+          onApply={(photos) => apply(selected, false, photos)}
           onStyle={() => apply(selected, true)}
           canAdd={true}
         />

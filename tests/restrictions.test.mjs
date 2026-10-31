@@ -23,7 +23,7 @@ test("dress code prints forbidden colors with names and crossed swatches in the 
   );
   for (const text of [
     "Elegante",
-    "Colores no permitidos",
+    "Evita estos colores",
     "Blanco",
     "Marfil",
     "dress-excluded-swatch",
@@ -34,7 +34,7 @@ test("dress code prints forbidden colors with names and crossed swatches in the 
   assert.ok(
     !renderToStaticMarkup(
       createElement(FlyerContent, { item, photoURL: () => "" }),
-    ).includes("Colores no permitidos"),
+    ).includes("Evita estos colores"),
   );
 });
 test("restrictions independently render icon, editable text or both without adding event rules", () => {

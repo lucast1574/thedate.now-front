@@ -2,7 +2,7 @@ import { useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import Icon from "@/components/icon";
 import FlyerSurface from "@/components/flyer-surface";
 import PreviewModal from "@/features/designer/preview-modal";
-import { applyCompleteTemplate } from "@/features/designer/template-sequence";
+import { applyCompleteTemplate } from "@/features/designer/apply-template-design";
 import { templateCanvas } from "@/features/designer/template-canvas";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { Event } from "@/lib/events/types";

@@ -1,5 +1,6 @@
+import { coupleNames } from "@/lib/events/element-values";
 import { calendarTemplatePage } from "./calendar-template-page";
-import type { DesignEvent, DesignSection } from "@/lib/events/types";
+import type { DesignSection } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { defaultCelebration } from "@/lib/events/celebration";
 import { formatEventDate } from "@/lib/events/date";
@@ -10,7 +11,6 @@ import { templateLayoutPages } from "./template-layout-pages";
 import {
   templateDress,
   templateExtraPages,
-  templateOpening,
   type TemplateSource as Source,
 } from "./template-extras";
 export function templateSequence(
@@ -33,7 +33,7 @@ export function templateSequence(
   ) => templatePage(template, heading, height, elements);
   const cover = page("Portada", 960, []);
   cover.canvas = templateCanvas(template, {
-    title: source?.title,
+    title: source && wedding ? coupleNames(source) : source?.title,
     body: source?.description,
   });
   const sample = "template-photo";
@@ -174,24 +174,4 @@ export function templateSequence(
     ]),
   );
   return pages;
-}
-export function applyCompleteTemplate(
-  draft: Source,
-  template: InvitationTemplate,
-): DesignEvent {
-  if (draft.kind !== template.kind || template.mode !== "flyer") return draft;
-  return {
-    ...draft,
-    template: template.style,
-    templateId: template.id,
-    designMode: "flyer",
-    accentColor: template.accent,
-    backgroundImage: null,
-    opening: draft.opening
-      ? { ...draft.opening, backgroundImage: undefined }
-      : templateOpening(template),
-    celebration:
-      draft.celebration || defaultCelebration(draft.kind === "wedding"),
-    sections: templateSequence(template, draft),
-  };
 }

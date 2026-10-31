@@ -54,7 +54,7 @@ test("24 complete templates per product never insert media from the user's libra
     "src/lib/events/template-catalog.ts",
   );
   const { applyCompleteTemplate } = loadSource(
-    "src/features/designer/template-sequence.ts",
+    "src/features/designer/apply-template-design.ts",
     { globals: { crypto } },
   );
   for (const kind of ["general", "wedding"]) {
@@ -78,7 +78,7 @@ test("24 complete templates per product never insert media from the user's libra
         template,
       );
       assert.equal(result.photoKeys, library);
-      assert.equal(result.backgroundImage, null);
+      assert.equal(result.backgroundImage.photoKey, library[0]);
       for (const item of result.sections.flatMap(
         (page) => page.canvas.elements,
       )) {

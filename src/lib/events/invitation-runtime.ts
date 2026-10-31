@@ -22,6 +22,7 @@ export function allowedInvitationPath(path: string) {
     path === "/" ||
     path === "/api/invitation-health" ||
     path === "/favicon.ico" ||
+    /^\/fonts\/invitation-(?:serif|sans|script)\.woff2$/.test(path) ||
     path === "/vendor/maplibre/maplibre-gl-worker.mjs" ||
     path === "/template-photos/placeholder.svg" ||
     path === "/regalos" ||

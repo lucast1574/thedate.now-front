@@ -1,3 +1,4 @@
+import PhotoPresentationFields from "./photo-presentation-fields";
 import GiftLinkInspector from "./gift-link-inspector";
 import { elementLabel } from "@/lib/events/element-label";
 import ActionHintInspector from "./action-hint-inspector";
@@ -50,7 +51,7 @@ export default function ElementInspector({
               : item.binding === "location"
                 ? "Un acceso al lugar de tu celebración"
                 : item.type === "image"
-                  ? "Tu imagen, completa y sin recortes"
+                  ? "Integra tu foto con el estilo de la invitación"
                   : item.type === "icon"
                     ? "Un detalle para tu invitación"
                     : "Dale voz a tu invitación"}
@@ -75,6 +76,9 @@ export default function ElementInspector({
           </button>
         </div>
       </header>
+      {item.type === "image" && (
+        <PhotoPresentationFields item={item} onChange={onChange} />
+      )}
       <EventBindingInspector item={item} onChange={onChange} />
       {["couple_names", "event_title", "event_date"].includes(
         item.binding || "",
