@@ -8,12 +8,10 @@ import CanvasWorkspace from "./flyer/canvas-workspace";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
 export default function InvitationDesigner({
-  canPublish = false,
   finishHref,
   event,
   onSaved,
 }: {
-  canPublish?: boolean;
   finishHref: string;
   event: Event;
   onSaved: () => Promise<void>;
@@ -38,7 +36,6 @@ export default function InvitationDesigner({
   );
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);
-  const [reviewPublication, setReviewPublication] = useState(false);
   const [tool, setTool] = useState<string>(initialCanvasTool);
   useEffect(() => {
     if (!editor.dirty) return;
@@ -46,33 +43,6 @@ export default function InvitationDesigner({
     window.addEventListener("beforeunload", leave);
     return () => window.removeEventListener("beforeunload", leave);
   }, [editor.dirty]);
-  if (!editor.recovery.ready)
-    return (
-      <main className="editor-loading" aria-busy="true">
-        Preparando tu diseño…
-      </main>
-    );
-  if (editor.recovery.pending)
-    return (
-      <main className="editor-loading editor-recovery">
-        <h1>Recupera tu trabajo</h1>
-        <p>Hay una copia de este diseño sin guardar en este navegador.</p>
-        <p>
-          Recuperarla combina tus cambios locales con los datos actuales. Puedes
-          deshacer después de abrir el editor.
-        </p>
-        <button
-          className="recovery-primary"
-          type="button"
-          onClick={() => editor.recovery.resolve(true)}
-        >
-          Recuperar mi trabajo
-        </button>
-        <button type="button" onClick={() => editor.recovery.resolve(false)}>
-          Continuar con la versión guardada
-        </button>
-      </main>
-    );
   return (
     <main
       className={`editor-shell canvas-studio ${event.kind === "wedding" ? "editor-wedding" : "editor-general"}`}
@@ -80,16 +50,8 @@ export default function InvitationDesigner({
       <EditorToolbar
         finishHref={finishHref}
         editor={editor}
-        canPublish={canPublish}
-        onPublish={() => {
-          setReviewPublication(true);
-          setPreview(true);
-        }}
         preview={preview}
-        onPreview={() => {
-          setReviewPublication(false);
-          setPreview(!preview);
-        }}
+        onPreview={() => setPreview(!preview)}
         onTemplates={() => setTool("templates")}
       />
       {event.isDemo && (
@@ -113,15 +75,6 @@ export default function InvitationDesigner({
       {preview && (
         <PreviewModal
           draft={editor.draft as Event}
-          busy={editor.busy}
-          feedback={reviewPublication ? editor.message : undefined}
-          onPublish={
-            reviewPublication && canPublish
-              ? async () => {
-                  if (await editor.publish()) setPreview(false);
-                }
-              : undefined
-          }
           onClose={() => setPreview(false)}
         />
       )}

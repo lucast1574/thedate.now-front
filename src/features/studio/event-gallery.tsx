@@ -6,7 +6,6 @@ import { galleryEvents } from "@/lib/events/studio-gallery";
 import DemoCover from "./demo-cover";
 import { defaultDemoCover } from "@/lib/events/thumbnail";
 import InvitationThumbnail from "./invitation-thumbnail";
-import InvitationPublicLink from "./invitation-public-link";
 export default function EventGallery({
   events,
   user,
@@ -143,7 +142,6 @@ export default function EventGallery({
                   )}
                 </div>
               )}
-              <InvitationPublicLink event={event} />
             </article>
           ))}
           <button className="invitation-new-card" onClick={onCreate}>

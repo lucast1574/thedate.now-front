@@ -4,16 +4,12 @@ import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
-  canPublish = false,
-  onPublish,
   finishHref,
   editor,
   preview,
   onPreview,
   onTemplates,
 }: {
-  canPublish?: boolean;
-  onPublish?: () => void;
   finishHref: string;
   editor: Editor;
   preview: boolean;
@@ -57,10 +53,8 @@ export default function EditorToolbar({
           {editor.busy
             ? "Procesando…"
             : editor.dirty
-              ? editor.recovery?.status || "Guardando copia en este navegador…"
-              : editor.unpublishedChanges
-                ? "Borrador guardado · Sin publicar"
-                : "Todo guardado"}
+              ? "Cambios sin guardar"
+              : "Todo guardado"}
         </small>
       </div>
       <div className="editor-toolbar-actions">
@@ -120,21 +114,8 @@ export default function EditorToolbar({
           disabled={editor.busy}
           onClick={editor.save}
         >
-          <Icon name="save" />{" "}
-          {editor.draft.publishedAt ? "Guardar borrador" : "Guardar diseño"}
+          <Icon name="save" /> Guardar diseño
         </button>
-        {canPublish && editor.draft.publishedAt && (
-          <button
-            type="button"
-            className="editor-save"
-            disabled={
-              editor.busy || (!editor.dirty && !editor.unpublishedChanges)
-            }
-            onClick={onPublish}
-          >
-            Revisar y publicar
-          </button>
-        )}
         {!editor.draft.isDemo && (
           <button
             type="button"

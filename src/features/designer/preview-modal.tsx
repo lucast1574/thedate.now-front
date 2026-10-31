@@ -3,15 +3,9 @@ import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
 import DesignPreview from "./design-preview";
 export default function PreviewModal({
-  onPublish,
-  busy = false,
-  feedback,
   draft,
   onClose,
 }: {
-  onPublish?: () => Promise<void>;
-  busy?: boolean;
-  feedback?: string;
   draft: Event;
   onClose: () => void;
 }) {
@@ -61,23 +55,6 @@ export default function PreviewModal({
         </button>
       </header>
       <DesignPreview draft={draft} />
-      {onPublish && (
-        <footer className="design-publication-review">
-          <p>
-            Revisa el borrador. Al publicar, tus invitados verán esta versión en
-            el mismo enlace.
-          </p>
-          {feedback && <p role="status">{feedback}</p>}
-          <button
-            type="button"
-            className="editor-save"
-            disabled={busy}
-            onClick={onPublish}
-          >
-            {busy ? "Publicando…" : "Publicar cambios"}
-          </button>
-        </footer>
-      )}
     </dialog>
   );
 }

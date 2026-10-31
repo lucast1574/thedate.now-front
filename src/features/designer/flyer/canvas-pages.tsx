@@ -1,6 +1,5 @@
 import { sectionBackground } from "@/lib/events/background";
-import CanvasSelectionTools from "./canvas-selection-tools";
-import { useState } from "react";
+import CanvasFormatting from "./canvas-formatting";
 import type { FlyerElement } from "@/lib/events/flyer";
 import Icon from "@/components/icon";
 import CanvasEditor from "./canvas-editor";
@@ -29,7 +28,6 @@ export default function CanvasPages({
   patch: (patch: Partial<FlyerElement>) => void;
 }) {
   const { draft, sections } = editor;
-  const [editingId, setEditingId] = useState("");
   const activeIndex = Math.max(
     0,
     sections.findIndex((s) => s.id === activeId),
@@ -41,15 +39,7 @@ export default function CanvasPages({
     <section className="canvas-desk" aria-label="Lienzos de la invitación">
       <div className="canvas-context">
         {selected ? (
-          <CanvasSelectionTools
-            editor={editor}
-            active={active}
-            index={activeIndex}
-            selected={selected}
-            patch={patch}
-            onSelect={onSelect}
-            onEdit={setEditingId}
-          />
+          <CanvasFormatting item={selected} onChange={patch} />
         ) : active ? (
           <button
             className="canvas-background-control"
@@ -133,11 +123,6 @@ export default function CanvasPages({
                 </div>
               </header>
               <CanvasEditor
-                editingId={activeId === section.id ? editingId : ""}
-                onEditingChange={setEditingId}
-                onEventChange={(patch) =>
-                  editor.setDraft((current) => ({ ...current, ...patch }))
-                }
                 event={draft}
                 backgroundSlice={sectionBackground(
                   sections,
