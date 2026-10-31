@@ -10,5 +10,6 @@ export const sectionIcons: Record<string, string> = {
   music: "Música",
   star: "Estrella",
   calendar: "Calendario",
+  "lucide:arrow-down": "Deslizar",
   none: "Sin icono",
 };

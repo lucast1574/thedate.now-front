@@ -52,6 +52,7 @@ function preserveSection(next: DesignSection, previous: DesignSection) {
       ...(source.binding === "dress_code"
         ? {
             dressStyle: source.dressStyle,
+            dressPaletteStyle: source.dressPaletteStyle,
             dressPhotoKey: source.dressPhotoKey,
             dressIcon: source.dressIcon,
             dressExcludedColors: source.dressExcludedColors,

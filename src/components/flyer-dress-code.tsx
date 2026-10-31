@@ -1,3 +1,4 @@
+import DressAttireIllustration from "./dress-attire-illustration";
 import Icon from "./icon";
 import Photo from "./photo";
 import DressExcludedColors from "./dress-excluded-colors";
@@ -24,7 +25,11 @@ export default function FlyerDressCode({
     >
       {parts.includes("icon") && (
         <span className="dress-composition-icon">
-          <Icon name={item.dressIcon || "lucide:shirt"} />
+          {!item.dressIcon || item.dressIcon === "lucide:shirt" ? (
+            <DressAttireIllustration />
+          ) : (
+            <Icon name={item.dressIcon} />
+          )}
         </span>
       )}
       {parts.includes("image") && (
@@ -44,7 +49,10 @@ export default function FlyerDressCode({
           )}
         </span>
       )}
-      <DressExcludedColors colors={item.dressExcludedColors} />
+      <DressExcludedColors
+        colors={item.dressExcludedColors}
+        presentation={item.dressPaletteStyle}
+      />
     </span>
   );
 }

@@ -7,7 +7,7 @@ const { FlyerContent } = loadSource("src/components/flyer-surface.tsx");
 const { validDressColors } = loadSource("src/lib/events/dress-code.ts");
 const { designPayload } = loadSource("src/features/designer/design-state.ts");
 const { sameDesign } = loadSource("src/features/designer/design-state.ts");
-test("dress code prints forbidden colors with names and crossed swatches in the shared canvas renderer", () => {
+test("dress code prints forbidden colors with named fabric samples in the shared canvas renderer", () => {
   const item = {
     type: "text",
     binding: "dress_code",
@@ -23,7 +23,7 @@ test("dress code prints forbidden colors with names and crossed swatches in the 
   );
   for (const text of [
     "Elegante",
-    "Evita estos colores",
+    "Preferimos evitar estos tonos",
     "Blanco",
     "Marfil",
     "dress-excluded-swatch",
@@ -34,7 +34,7 @@ test("dress code prints forbidden colors with names and crossed swatches in the 
   assert.ok(
     !renderToStaticMarkup(
       createElement(FlyerContent, { item, photoURL: () => "" }),
-    ).includes("Evita estos colores"),
+    ).includes("Preferimos evitar estos tonos"),
   );
 });
 test("restrictions independently render icon, editable text or both without adding event rules", () => {

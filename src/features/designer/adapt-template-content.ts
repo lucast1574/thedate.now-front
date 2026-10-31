@@ -1,6 +1,8 @@
+import { fitDressCanvas } from "@/lib/events/dress-layout";
 import type { FlyerCanvas } from "@/lib/events/flyer";
 import { fitInvitationText } from "@/lib/events/fit-invitation-text";
 export function adaptTemplateCanvas(canvas: FlyerCanvas): FlyerCanvas {
+  canvas = fitDressCanvas(canvas);
   let elements = canvas.elements.map((e) => ({ ...e })),
     height = canvas.height;
   for (const id of [...elements].sort((a, b) => a.y - b.y).map((e) => e.id)) {

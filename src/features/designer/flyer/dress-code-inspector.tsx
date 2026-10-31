@@ -1,3 +1,4 @@
+import DressPalettePicker from "./dress-palette-picker";
 import Icon from "@/components/icon";
 import Listbox from "@/components/listbox";
 import FlyerDressCode from "@/components/flyer-dress-code";
@@ -98,6 +99,7 @@ export default function DressCodeInspector({
           <SymbolLibrary onPick={(dressIcon) => onChange({ dressIcon })} />
         </details>
       )}
+      <DressPalettePicker item={item} onChange={onChange} />
       <DressColorRules item={item} onChange={onChange} />
       {parts.includes("image") && (
         <>

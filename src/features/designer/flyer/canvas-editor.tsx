@@ -1,3 +1,5 @@
+import { elementValue } from "@/lib/events/element-values";
+import { fitDressCanvas } from "@/lib/events/dress-layout";
 import { moveSelection } from "./composition";
 import CanvasItems from "./canvas-items";
 import type { BackgroundSlice } from "@/lib/events/background";
@@ -10,7 +12,7 @@ import type { FlyerCanvas } from "@/lib/events/flyer";
 import FlyerSurface from "@/components/flyer-surface";
 import { useCanvasGesture } from "./use-canvas-gesture";
 export default function CanvasEditor({
-  canvas,
+  canvas: authoredCanvas,
   selectedId,
   selectedIds = [selectedId],
   onSelect,
@@ -30,6 +32,10 @@ export default function CanvasEditor({
   photoURL: (key: string) => string;
   onReplace?: (file: File, id: string) => Promise<void>;
 }) {
+  const canvas = fitDressCanvas({
+    ...authoredCanvas,
+    elements: authoredCanvas.elements.map((e) => elementValue(e, event)),
+  });
   const gesture = useCanvasGesture(canvas, onChange, selectedIds);
   const replacement = useImageReplacement(onReplace);
   const context = useCanvasMenu(canvas, onChange, onSelect);

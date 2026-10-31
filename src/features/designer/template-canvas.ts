@@ -1,3 +1,4 @@
+import { stageTemplate } from "./template-stage";
 import { adaptTemplateCanvas } from "./adapt-template-content";
 import { templateArt } from "./template-art-direction";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
@@ -130,12 +131,18 @@ export function templateCanvas(
     body,
     photo && !layout.photo ? [65, 815, 590, 120, 22, "left"] : layout.body,
   );
-  return adaptTemplateCanvas({
-    art: templateArt(template),
-    font: template.font,
-    width: 720,
-    height: 960,
-    background: template.background,
-    elements,
-  });
+  return adaptTemplateCanvas(
+    stageTemplate(
+      {
+        art: templateArt(template),
+        font: template.font,
+        width: 720,
+        height: 960,
+        background: template.background,
+        elements,
+      },
+      template,
+      true,
+    ),
+  );
 }

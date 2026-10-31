@@ -62,7 +62,7 @@ export function templateDress(
   const previous = source?.sections
     ?.flatMap((s) => s.canvas?.elements || [])
     .find((e) => e.binding === "dress_code");
-  return templateText(template, "dress", text, 270, 340, 32, {
+  return templateText(template, "dress", text, 240, 570, 40, {
     binding: "dress_code",
     eventBound: true,
     dressStyle: "icon-text",

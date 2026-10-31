@@ -1,7 +1,12 @@
 import type { FlyerElement } from "./flyer";
 // Conservative wrapping estimate shared by generated designs and live bound text.
 export function fitInvitationText(item: FlyerElement, value = item.text || "") {
-  if (item.type !== "text" || !value.trim() || item.binding === "map")
+  if (
+    item.type !== "text" ||
+    !value.trim() ||
+    item.binding === "map" ||
+    item.binding === "dress_code"
+  )
     return item.fontSize;
   const width = item.width,
     height = item.height,

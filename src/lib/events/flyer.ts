@@ -15,6 +15,7 @@ export type FlyerElement = {
   mapStyle?: "natural" | "warm" | "ink";
   mapRadius?: number;
   mapSoftness?: number;
+  dressPaletteStyle?: "fabric" | "petal" | "bar" | "jewel" | "wave" | "ticket";
   dressExcludedColors?: { name: string; color: string }[];
   restrictionStyle?: "icon" | "text" | "icon-text";
   restrictionIcon?: string;

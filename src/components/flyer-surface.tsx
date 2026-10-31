@@ -1,3 +1,4 @@
+import { fitDressCanvas } from "@/lib/events/dress-layout";
 import InvitationPhoto from "./invitation-photo";
 import InvitationArtwork from "./invitation-artwork";
 import { fitInvitationText } from "@/lib/events/fit-invitation-text";
@@ -101,7 +102,7 @@ export function FlyerContent({
   );
 }
 export default function FlyerSurface({
-  canvas,
+  canvas: authoredCanvas,
   photoURL,
   children,
   guestName,
@@ -119,8 +120,15 @@ export default function FlyerSurface({
   children?: ReactNode;
   label?: string;
 }) {
+  const canvas = children
+    ? authoredCanvas
+    : fitDressCanvas({
+        ...authoredCanvas,
+        elements: authoredCanvas.elements.map((e) => elementValue(e, event)),
+      });
   return (
     <div
+      data-art={canvas.art}
       className="flyer-surface"
       role="group"
       aria-label={label}
@@ -156,6 +164,8 @@ export default function FlyerSurface({
           <div
             key={item.id}
             className="flyer-element"
+            data-element={item.binding || item.type}
+            data-title={item.fontSize >= 48 || undefined}
             style={flyerElementStyle(
               {
                 ...item,

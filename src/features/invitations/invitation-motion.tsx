@@ -1,90 +1,100 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { revealInvitationElement } from "./invitation-reveal";
 export default function InvitationMotion() {
   const marker = useRef<HTMLSpanElement>(null);
   useEffect(() => {
-    const root = marker.current?.closest<HTMLElement>(".invitation");
-    const view = root?.ownerDocument.defaultView;
+    const root = marker.current?.closest<HTMLElement>(".invitation"),
+      view = root?.ownerDocument.defaultView;
     if (!root || !view) return;
     const reduced = view.matchMedia("(prefers-reduced-motion: reduce)");
-    const items = Array.from(
-      root.querySelectorAll<HTMLElement>(
-        ".invite-top, .invite-content > :not(.invite-sections), .invite-sections > *, .invite-footer",
-      ),
-    );
-    let observer: IntersectionObserver | undefined;
-    const animations: Animation[] = [];
-    const animateSection = (section: HTMLElement) => {
-      section
-        .querySelectorAll<HTMLElement>(".flyer-element")
-        .forEach((element, index) => {
-          if (!element.animate) return;
-          const image = !!element.querySelector("img"),
-            icon = !!element.querySelector("svg");
-          animations.push(
-            element.animate(
-              [
-                {
-                  opacity: 0,
-                  translate: `0 ${image ? 28 : icon ? 8 : 18}px`,
-                  scale: image ? ".97" : "1",
-                },
-                { opacity: 1, translate: "0 0", scale: "1" },
-              ],
-              {
-                duration: image ? 1400 : 1000,
-                delay: Math.min(index * 85, 650),
-                easing: "cubic-bezier(.16,1,.3,1)",
-              },
-            ),
-          );
+    let reveal: IntersectionObserver | undefined,
+      ambient: IntersectionObserver | undefined;
+    const seen = new Set<Element>(),
+      observed = new Set<Element>(),
+      animations = new Set<Animation>();
+    function collect() {
+      if (
+        reduced.matches ||
+        root!.querySelector(".invitation-opening") ||
+        !reveal ||
+        !ambient
+      )
+        return;
+      root!
+        .querySelectorAll<HTMLElement>(
+          ".flyer-element, .invite-content > h1, .invite-content > p, .invite-section > *, .invite-gallery img, .invite-footer",
+        )
+        .forEach((el) => {
+          if (observed.has(el)) return;
+          observed.add(el);
+          reveal!.observe(el);
         });
-    };
-    function setup() {
-      observer?.disconnect();
-      animations.splice(0).forEach((animation) => animation.cancel());
-      for (const item of items) item.removeAttribute("data-reveal");
+      root!
+        .querySelectorAll<HTMLElement>(".flyer-surface")
+        .forEach((el) => ambient!.observe(el));
+    }
+    function reset() {
+      reveal?.disconnect();
+      ambient?.disconnect();
+      animations.forEach((a) => a.cancel());
+      animations.clear();
+      seen.clear();
+      observed.clear();
+      root!
+        .querySelectorAll("[data-scene-active]")
+        .forEach((e) => e.removeAttribute("data-scene-active"));
       if (reduced.matches || !view || !("IntersectionObserver" in view)) return;
-      observer = new view.IntersectionObserver(
+      reveal = new view.IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
             if (
               !entry.isIntersecting ||
-              root?.querySelector(".invitation-opening")
+              seen.has(entry.target) ||
+              root!.querySelector(".invitation-opening")
             )
               continue;
-            (entry.target as HTMLElement).dataset.reveal = "visible";
-            animateSection(entry.target as HTMLElement);
-            observer?.unobserve(entry.target);
+            seen.add(entry.target);
+            reveal!.unobserve(entry.target);
+            revealInvitationElement(entry.target as HTMLElement).forEach(
+              (a) => {
+                animations.add(a);
+                a.onfinish = () => {
+                  animations.delete(a);
+                  a.cancel();
+                };
+              },
+            );
           }
         },
-        { threshold: 0.05 },
+        { threshold: 0.12, rootMargin: "0px 0px -5% 0px" },
       );
-      items.forEach((item, index) => {
-        item.dataset.reveal = "pending";
-        item.style.setProperty(
-          "--reveal-delay",
-          `${Math.min(index, 3) * 65}ms`,
-        );
-        observer?.observe(item);
-      });
+      ambient = new view.IntersectionObserver(
+        (entries) =>
+          entries.forEach((entry) =>
+            entry.target.toggleAttribute(
+              "data-scene-active",
+              entry.isIntersecting,
+            ),
+          ),
+        { threshold: 0.01 },
+      );
+      collect();
     }
-    const openingObserver = new MutationObserver(() => {
-      if (!root.querySelector(".invitation-opening")) {
-        setup();
-        openingObserver.disconnect();
-      }
-    });
-    openingObserver.observe(root, { childList: true, subtree: true });
-    setup();
-    reduced.addEventListener("change", setup);
+    const changes = new MutationObserver(collect);
+    changes.observe(root, { childList: true, subtree: true });
+    reset();
+    reduced.addEventListener("change", reset);
     return () => {
-      observer?.disconnect();
-      openingObserver.disconnect();
-      animations.forEach((animation) => animation.cancel());
-      reduced.removeEventListener("change", setup);
-      for (const item of items) item.removeAttribute("data-reveal");
+      changes.disconnect();
+      reveal?.disconnect();
+      ambient?.disconnect();
+      animations.forEach((a) => a.cancel());
+      reduced.removeEventListener("change", reset);
+      root
+        .querySelectorAll("[data-scene-active]")
+        .forEach((e) => e.removeAttribute("data-scene-active"));
     };
   }, []);
-  return <span ref={marker} hidden aria-hidden="true" />;
+  return <span hidden ref={marker} aria-hidden="true" />;
 }

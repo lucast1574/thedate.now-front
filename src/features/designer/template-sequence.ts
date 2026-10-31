@@ -130,7 +130,7 @@ export function templateSequence(
         },
       ),
     ]),
-    page("Dress code", 700, [
+    page("Dress code", 1040, [
       text("dress-title", "Dress code", 80, 100, 46),
       templateDress(
         template,
