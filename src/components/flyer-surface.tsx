@@ -1,3 +1,4 @@
+import { flyerElementStyle } from "@/lib/events/flyer-element-style";
 import { fitDressCanvas } from "@/lib/events/dress-layout";
 import InvitationPhoto from "./invitation-photo";
 import InvitationArtwork from "./invitation-artwork";
@@ -13,30 +14,9 @@ import FlyerGiftLink from "./flyer-gift-link";
 import FlyerDressCode from "./flyer-dress-code";
 import FlyerRestrictions from "./flyer-restrictions";
 import FlyerLocation from "./flyer-location";
-import {
-  flyerFonts,
-  type FlyerCanvas,
-  type FlyerElement,
-} from "@/lib/events/flyer";
+import { type FlyerCanvas, type FlyerElement } from "@/lib/events/flyer";
 import Icon from "./icon";
 import { personalizedText } from "@/lib/events/guest-name";
-export function flyerElementStyle(
-  item: FlyerElement,
-  canvas: FlyerCanvas,
-): CSSProperties {
-  return {
-    left: `${(item.x / canvas.width) * 100}%`,
-    top: `${(item.y / canvas.height) * 100}%`,
-    width: `${(item.width / canvas.width) * 100}%`,
-    height: `${(item.height / canvas.height) * 100}%`,
-    transform: `rotate(${item.rotation}deg)`,
-    color: item.color,
-    fontFamily: flyerFonts[item.font],
-    fontSize: `${(item.fontSize / canvas.width) * 100}cqw`,
-    fontWeight: item.bold ? 700 : 400,
-    textAlign: item.align,
-  };
-}
 export function FlyerContent({
   item,
   photoURL,
@@ -132,13 +112,26 @@ export default function FlyerSurface({
       className="flyer-surface"
       role="group"
       aria-label={label}
-      style={{
-        aspectRatio: `${canvas.width} / ${canvas.height}`,
-        background: canvas.background,
-      }}
+      style={
+        {
+          aspectRatio: `${canvas.width} / ${canvas.height}`,
+          background: canvas.background,
+          "--photo-placeholder-paper": canvas.background,
+          "--photo-placeholder-ink":
+            event?.accentColor ||
+            canvas.elements.find((e) => e.type !== "image")?.color ||
+            "#766044",
+        } as CSSProperties
+      }
     >
       <InvitationArtwork
         style={canvas.art}
+        canvas={canvas}
+        interior={
+          !canvas.elements.some(
+            (e) => e.binding === "couple_names" || e.binding === "event_title",
+          )
+        }
         color={
           event?.accentColor ||
           canvas.elements.find((e) => e.type !== "image")?.color ||
@@ -169,7 +162,10 @@ export default function FlyerSurface({
             style={flyerElementStyle(
               {
                 ...item,
-                fontSize: fitInvitationText(elementValue(item, event)),
+                fontSize: fitInvitationText(
+                  item,
+                  personalizedText(item, guestName),
+                ),
               },
               canvas,
             )}

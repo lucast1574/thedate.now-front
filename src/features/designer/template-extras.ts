@@ -1,3 +1,4 @@
+import { templateIdentity } from "./template-identity";
 import type { Event, DesignEvent } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { Opening } from "@/lib/events/celebration";
@@ -42,12 +43,16 @@ export function templateOpening(template: InvitationTemplate): Opening {
     confetti: "bloom",
     grid: "ticket",
   };
+  const identity = templateIdentity(template);
   return {
     ...defaultOpening(
       template.kind === "wedding",
       template.background,
       template.accent,
     ),
+    message: identity.opening,
+    font: template.font,
+    sealIcon: identity.seal,
     style:
       styles[template.layout || ""] ||
       (template.kind === "wedding" ? "classic" : "ticket"),

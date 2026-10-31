@@ -1,3 +1,5 @@
+import { openingPreset } from "@/lib/events/opening-presets";
+import { templateOpening } from "./template-extras";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import FlyerSurface from "@/components/flyer-surface";
@@ -47,8 +49,10 @@ export default function TemplateDetail({
       </div>
       <div className="template-detail-actions">
         <p>
-          Sobre de apertura, fotos, fecha, ubicación y dress code. Pulsa las
-          fotos para cambiarlas y edita cualquier texto.
+          Apertura{" "}
+          {openingPreset(templateOpening(template).style).name.toLowerCase()},
+          fotos, fecha, ubicación y vestimenta. Pulsa las fotos para cambiarlas
+          y edita cualquier texto.
         </p>
         <button className="template-apply" onClick={() => onApply(photos)}>
           <Icon name="check" /> Usar este diseño

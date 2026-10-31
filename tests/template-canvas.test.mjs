@@ -83,7 +83,7 @@ test("a template fills an empty page and preserves other pages, music and photos
   const result = applyTemplateToSection(draft, template, "empty");
   assert.ok(
     result.sections[0].canvas.elements.some(
-      (item) => item.text === draft.title,
+      (item) => item.text?.replace(/\s+/g, " ").trim() === draft.title,
     ),
   );
   assert.ok(

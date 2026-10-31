@@ -1,3 +1,4 @@
+import { coverVariants } from "./template-identity-variants";
 import { stageTemplate } from "./template-stage";
 import { adaptTemplateCanvas } from "./adapt-template-content";
 import { templateArt } from "./template-art-direction";
@@ -24,10 +25,12 @@ export function templateCanvas(
   template: InvitationTemplate,
   content: { title?: string; body?: string; photoKey?: string } = {},
 ): FlyerCanvas {
-  const layout =
-    templateLayouts[
+  const layout = {
+    ...templateLayouts[
       template.layout || (template.kind === "wedding" ? "floral" : "poster")
-    ];
+    ],
+    ...coverVariants[template.id],
+  };
   const elements: FlyerElement[] = [];
   const title =
     content.title ||
@@ -103,10 +106,16 @@ export function templateCanvas(
     eventBound: true,
     bold: template.layout === "poster" || template.layout === "celebration",
   });
+  const optionalPhotoY = Math.max(490, layout.title[1] + layout.title[3] + 40);
   const photo =
     layout.photo ||
     (content.photoKey && template.layout === "editorial"
-      ? [65, 490, 590, 300]
+      ? [
+          65,
+          optionalPhotoY,
+          590,
+          Math.max(100, Math.min(300, 830 - optionalPhotoY)),
+        ]
       : null);
   if (photo)
     elements.unshift(
@@ -129,7 +138,16 @@ export function templateCanvas(
   text(
     "body",
     body,
-    photo && !layout.photo ? [65, 815, 590, 120, 22, "left"] : layout.body,
+    photo && !layout.photo
+      ? [
+          65,
+          photo[1] + photo[3] + 30,
+          590,
+          Math.max(60, 930 - photo[1] - photo[3] - 30),
+          22,
+          "left",
+        ]
+      : layout.body,
   );
   return adaptTemplateCanvas(
     stageTemplate(

@@ -1,5 +1,6 @@
+import { flyerElementStyle } from "@/lib/events/flyer-element-style";
 import Icon from "@/components/icon";
-import { flyerElementStyle, FlyerContent } from "@/components/flyer-surface";
+import { FlyerContent } from "@/components/flyer-surface";
 import { fitInvitationText } from "@/lib/events/fit-invitation-text";
 import { elementValue } from "@/lib/events/element-values";
 import type { FlyerCanvas } from "@/lib/events/flyer";

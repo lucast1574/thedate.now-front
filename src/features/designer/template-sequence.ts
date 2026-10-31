@@ -1,3 +1,5 @@
+import { templateStoryPage } from "./template-story-page";
+import { orderTemplateSections } from "./template-interior-layout";
 import { coupleNames } from "@/lib/events/element-values";
 import { calendarTemplatePage } from "./calendar-template-page";
 import type { DesignSection } from "@/lib/events/types";
@@ -36,48 +38,9 @@ export function templateSequence(
     title: source && wedding ? coupleNames(source) : source?.title,
     body: source?.description,
   });
-  const sample = "template-photo";
-  const photo = sample;
-  const personal = templateText(
-    template,
-    "guest",
-    "Hola, {{nombre_invitado}}",
-    48,
-    100,
-    38,
-    { binding: "guest_name" },
-  );
   const pages = [
     cover,
-    page(wedding ? "Nuestra historia" : "Nos reunimos", 960, [
-      personal,
-      text(
-        "intro",
-        wedding
-          ? "El comienzo de una nueva aventura"
-          : "Los mejores momentos se comparten",
-        160,
-        100,
-        36,
-      ),
-      element("image", {
-        id: "sample-photo",
-        photoKey: photo,
-        x: 70,
-        y: 290,
-        width: 580,
-        height: 440,
-      }),
-      text(
-        "story",
-        wedding
-          ? "Queremos que seas parte de un día que recordaremos siempre."
-          : "Una ocasión para reunirnos, reír y crear nuevos recuerdos.",
-        780,
-        120,
-        28,
-      ),
-    ]),
+    templateStoryPage(template),
     page("Fecha y hora", 640, [
       templateIcon(template, "calendar", 60),
       text(
@@ -173,5 +136,5 @@ export function templateSequence(
       text("closing", "Gracias por ser parte de este momento.", 430, 80, 26),
     ]),
   );
-  return pages;
+  return orderTemplateSections(pages, template);
 }

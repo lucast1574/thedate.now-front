@@ -1,3 +1,5 @@
+import { templateSequence } from "./template-sequence";
+import { invitationTemplates } from "@/lib/events/template-catalog";
 import { adaptTemplateCanvas } from "./adapt-template-content";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -20,7 +22,11 @@ function sectionRole(section: DesignSection) {
   if (elements.some((e) => key(e) === "story")) return "story";
   return undefined;
 }
-function preserveSection(next: DesignSection, previous: DesignSection) {
+function preserveSection(
+  next: DesignSection,
+  previous: DesignSection,
+  defaults?: DesignSection,
+) {
   if (!next.canvas || !previous.canvas)
     return { ...previous, ...next, body: previous.body };
   const used = new Set<string>();
@@ -42,7 +48,16 @@ function preserveSection(next: DesignSection, previous: DesignSection) {
     used.add(source.id);
     const item = {
       ...target,
-      text: source.text,
+      text:
+        source.text ===
+          defaults?.canvas?.elements.find((e) => key(e) === key(source))
+            ?.text ||
+        [
+          "El comienzo de una nueva aventura",
+          "Los mejores momentos se comparten",
+        ].includes(source.text || "")
+          ? target.text
+          : source.text,
       photoKey: source.photoKey,
       locked: source.locked,
       groupId: source.groupId,
@@ -95,7 +110,11 @@ function preserveSection(next: DesignSection, previous: DesignSection) {
     canvas: {
       ...next.canvas,
       height: Math.max(next.canvas.height, previous.canvas.height),
-      elements: [...elements, ...extra],
+      elements: [
+        ...extra.filter((e) => e.type === "image"),
+        ...elements,
+        ...extra.filter((e) => e.type !== "image"),
+      ],
     },
   };
 }
@@ -105,6 +124,11 @@ export function preserveTemplateContent(
 ) {
   const old = draft.sections || [],
     matched = new Set<string>();
+  const priorTemplate = invitationTemplates.find(
+    (t) => t.id === draft.templateId,
+  );
+  const baseline =
+    old.length && priorTemplate ? templateSequence(priorTemplate, draft) : [];
   const next = generated.map((section) => {
     const role = sectionRole(section);
     const previous =
@@ -114,7 +138,11 @@ export function preserveTemplateContent(
         : undefined);
     if (!previous) return section;
     matched.add(previous.id);
-    return preserveSection(section, previous);
+    return preserveSection(
+      section,
+      previous,
+      baseline.find((s) => s.heading === previous.heading),
+    );
   });
   const remaining = old.filter((s) => !matched.has(s.id));
   // New optional pages never displace the customer's own sections at the limit.

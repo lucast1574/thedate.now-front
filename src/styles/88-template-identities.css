@@ -1,0 +1,54 @@
+/* Empty photo spaces carry the invitation's palette instead of masking it with grey. */
+.flyer-surface .template-photo-placeholder {
+  color: var(--photo-placeholder-ink, #766044);
+  background: color-mix(
+    in srgb,
+    var(--photo-placeholder-paper, #fff9ed) 94%,
+    var(--photo-placeholder-ink, #766044)
+  );
+  border: 1px dashed
+    color-mix(in srgb, var(--photo-placeholder-ink, #766044) 28%, transparent);
+}
+.flyer-surface
+  .invitation-photo[data-treatment="cinema"]:has(
+    .template-photo-placeholder
+  )::after {
+  background: linear-gradient(transparent 55%, #0005);
+}
+.flyer-surface
+  .invitation-photo[data-treatment="cinema"]
+  .template-photo-placeholder {
+  background: transparent;
+  border: 0;
+  color: var(--photo-placeholder-ink, #fff9ed);
+}
+.flyer-surface
+  .invitation-photo[data-treatment="cinema"]:has(.template-photo-placeholder) {
+  opacity: 0.65;
+}
+.art-interior {
+  overflow: hidden;
+}
+
+/* Keep the existing motion on the original groups inside the clear-space mask. */
+.invitation .flyer-surface .invitation-artwork > .art-content {
+  animation: none !important;
+}
+.invitation .flyer-surface .art-content > g {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: invitation-botanical-breath 12s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.invitation .flyer-surface[data-art="fiesta"] .art-content > g {
+  animation-name: invitation-celebration-drift;
+  animation-duration: 16s;
+}
+.invitation .flyer-surface[data-scene-active] .art-content > g {
+  animation-play-state: running;
+}
+.invitation [data-scene-active] .art-romance > .art-content > path[stroke],
+.invitation [data-scene-active] .art-editorial > .art-content > path[stroke] {
+  stroke-dasharray: 2600;
+  animation: invitation-frame-trace 3.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
