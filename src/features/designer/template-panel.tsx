@@ -69,7 +69,7 @@ export default function TemplatePanel({
     setMessage(
       styleOnly
         ? "Colores y tipografía actualizados. Puedes deshacer."
-        : "Diseño aplicado conservando tu contenido. Puedes deshacer.",
+        : "Plantilla aplicada sin bloques del diseño anterior. Puedes deshacer.",
     );
     // The generated section IDs are owned by the new draft; activate after render.
     setSelectedId("");

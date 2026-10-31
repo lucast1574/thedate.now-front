@@ -108,7 +108,7 @@ test("switching untouched openings follows the chosen identity and explicit cust
     false,
   );
 });
-test("photo-free covers retain distinct structures and preserved photos never obscure new text layers", () => {
+test("photo-free covers retain distinct structures and old extra layers are removed", () => {
   const covers = new Set();
   for (const t of invitationTemplates.filter(
     (t) => t.kind === "wedding" && t.mode === "flyer",
@@ -144,10 +144,8 @@ test("photo-free covers retain distinct structures and preserved photos never ob
   });
   const target = applyCompleteTemplate(source, pick("wedding-flyer-paris"));
   const e = target.sections[0].canvas.elements;
-  assert.ok(
-    e.findIndex((i) => i.id === "own-photo") <
-      e.findIndex((i) => i.binding === "couple_names"),
-  );
+  assert.ok(!e.some((i) => i.id === "own-photo"));
+  assert.ok(e.some((i) => i.binding === "couple_names"));
 });
 
 test("each product has 24 different cover compositions, beyond palette changes", () => {

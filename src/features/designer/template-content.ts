@@ -27,8 +27,7 @@ function preserveSection(
   previous: DesignSection,
   defaults?: DesignSection,
 ) {
-  if (!next.canvas || !previous.canvas)
-    return { ...previous, ...next, body: previous.body };
+  if (!next.canvas || !previous.canvas) return { ...next, body: previous.body };
   const used = new Set<string>();
   const elements = next.canvas.elements.map((target) => {
     const source =
@@ -59,8 +58,6 @@ function preserveSection(
           ? target.text
           : source.text,
       photoKey: source.photoKey,
-      locked: source.locked,
-      groupId: source.groupId,
       ...(source.binding
         ? { binding: source.binding, eventBound: source.eventBound }
         : {}),
@@ -93,28 +90,13 @@ function preserveSection(
     };
     return item;
   });
-  const extra = previous.canvas.elements.filter(
-    (e) =>
-      !used.has(e.id) &&
-      !key(e).startsWith("motif-") &&
-      !key(e).startsWith("initials"),
-  );
-  if (elements.length + extra.length > 60) return previous;
   return {
     ...next,
-    id: previous.id,
-    heading: previous.heading,
     body: previous.body,
     photoKey: previous.photoKey,
-    guestText: previous.guestText,
     canvas: {
       ...next.canvas,
-      height: Math.max(next.canvas.height, previous.canvas.height),
-      elements: [
-        ...extra.filter((e) => e.type === "image"),
-        ...elements,
-        ...extra.filter((e) => e.type !== "image"),
-      ],
+      elements,
     },
   };
 }
@@ -144,21 +126,8 @@ export function preserveTemplateContent(
       baseline.find((s) => s.heading === previous.heading),
     );
   });
-  const remaining = old.filter((s) => !matched.has(s.id));
-  // New optional pages never displace the customer's own sections at the limit.
-  return [
-    ...next.filter((s) => matched.has(s.id)),
-    ...remaining,
-    ...next.filter((s) => !matched.has(s.id)),
-  ]
-    .slice(0, 20)
-    .map((s) => ({
-      ...s,
-      canvas: s.canvas ? adaptTemplateCanvas(s.canvas) : undefined,
-    }))
-    .sort((a, b) => {
-      const ai = next.findIndex((s) => s.id === a.id),
-        bi = next.findIndex((s) => s.id === b.id);
-      return (ai < 0 ? 100 : ai) - (bi < 0 ? 100 : bi);
-    });
+  return next.map((section) => ({
+    ...section,
+    canvas: section.canvas ? adaptTemplateCanvas(section.canvas) : undefined,
+  }));
 }

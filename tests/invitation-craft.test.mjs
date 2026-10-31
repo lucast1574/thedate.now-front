@@ -79,7 +79,7 @@ test("all 48 designs support photo-free and photographic compositions, and every
     }
   }
 });
-test("switching designs preserves edited text, selected photos, custom sections and opening photos", () => {
+test("switching designs keeps matching personal content and replaces custom sections", () => {
   for (const kind of ["wedding", "general"]) {
     const list = invitationTemplates.filter(
       (t) => t.kind === kind && t.mode === "flyer",
@@ -116,11 +116,13 @@ test("switching designs preserves edited text, selected photos, custom sections 
     const all = next.sections.flatMap((s) => s.canvas.elements);
     assert.ok(all.some((e) => e.text === edited.text));
     assert.ok(
-      next.sections.some((s) => s.heading === "Nuestra historia personalizada"),
+      !next.sections.some(
+        (s) => s.heading === "Nuestra historia personalizada",
+      ),
     );
     assert.ok(all.some((e) => e.photoKey === "chosen.jpg"));
     assert.ok(
-      next.sections.some((s) => s.heading === "Programa personalizado"),
+      !next.sections.some((s) => s.heading === "Programa personalizado"),
     );
     assert.equal(next.opening.backgroundImage.photoKey, "opening.jpg");
   }
@@ -222,7 +224,7 @@ test("copying style never carries content, geometry, grouping or locks", () => {
   assert.equal(target.groupId, undefined);
   assert.equal(target.locked, undefined);
 });
-test("switching at the section limit keeps every user section", () => {
+test("switching at the section limit replaces old sections with the complete template", () => {
   const t = invitationTemplates.find(
     (t) => t.kind === "wedding" && t.mode === "flyer",
   );
@@ -233,9 +235,7 @@ test("switching at the section limit keeps every user section", () => {
     id: `custom-${n}`,
   }));
   const next = applyCompleteTemplate(source, t);
-  assert.equal(next.sections.length, 20);
-  assert.deepEqual(
-    Array.from(next.sections, (s) => s.id),
-    source.sections.map((s) => s.id),
-  );
+  assert.ok(next.sections.length < 20);
+  assert.ok(next.sections.every((s) => !s.id.startsWith("custom-")));
+  assert.equal(next.sections[0].heading, "Portada");
 });

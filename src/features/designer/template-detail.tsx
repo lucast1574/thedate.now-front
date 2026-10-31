@@ -58,7 +58,8 @@ export default function TemplateDetail({
           <Icon name="check" /> Usar este diseño
         </button>
         <p>
-          Tus textos, fotos y datos se conservan. Puedes deshacer el cambio.
+          La plantilla reemplaza todos los bloques. Los textos y fotos con un
+          lugar equivalente se conservan. Puedes deshacer el cambio.
         </p>
         {populated && (
           <button className="template-style-only" onClick={onStyle}>
