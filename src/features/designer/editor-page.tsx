@@ -99,6 +99,7 @@ export default function EditorPage({ id }: { id: string }) {
         </p>
       )}
       <InvitationDesigner
+        canPublish={event.ownerId === userId || userRole === "admin"}
         finishHref={
           event.ownerId === userId || userRole === "admin"
             ? `/manager/${encodeURIComponent(event.id)}`

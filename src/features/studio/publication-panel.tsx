@@ -1,5 +1,6 @@
 import type { Deployment } from "./use-deployment";
 import ActionButton from "@/components/action-button";
+import Link from "next/link";
 import type { Event } from "@/lib/events/types";
 import { invitationHost as host } from "@/lib/events/domains";
 export default function PublicationPanel({
@@ -51,6 +52,17 @@ export default function PublicationPanel({
             </div>
           )}
           {ready && <p className="publication-address">{deployment.host}</p>}
+          {selected.publishedAt &&
+            (selected.designVersion || 0) !==
+              (selected.publishedDesignVersion || 0) && (
+              <p role="status">
+                Tienes un borrador sin publicar. Tus invitados siguen viendo la
+                versión anterior.{" "}
+                <Link href={`/editor/${encodeURIComponent(selected.id)}`}>
+                  Revisar borrador
+                </Link>
+              </p>
+            )}
           {deployment?.error && (
             <p role="alert">
               No pudimos publicar tu invitación. Tus cambios están guardados;

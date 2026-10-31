@@ -28,6 +28,42 @@
     sans-serif;
   margin: 0;
 }
+.design-publication-review {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 16px 24px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  border-top: 1px solid var(--ui-border);
+}
+.design-publication-review p {
+  flex: 1 1 240px;
+  margin: 0;
+  line-height: 1.5;
+}
+.design-publication-review button {
+  min-height: 44px;
+  padding: 12px 20px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--ui-accent);
+  color: var(--ui-surface);
+  cursor: pointer;
+}
+.design-publication-review button:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.design-publication-review button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
 .editor-preview {
   padding: 20px;
   overflow: auto;

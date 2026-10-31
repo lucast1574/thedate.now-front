@@ -1,10 +1,8 @@
 "use client";
-import { validDesignDressColors } from "@/lib/events/dress-code";
-import { validMapLink } from "@/lib/events/location-element";
 import { useState } from "react";
 import { useDesignHistory } from "./use-design-history";
 import { useDesignRecovery } from "./use-design-recovery";
-import { designPayload } from "./design-state";
+import { persistDesign } from "./persist-design";
 import { guestNameElement } from "@/lib/events/guest-name";
 import { blankCanvas } from "./flyer/canvas-model";
 import { api } from "@/lib/api/client";
@@ -19,6 +17,7 @@ export function useInvitationDesign(
   const recovery = useDesignRecovery(event, draft, setDraft, history.dirty);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
+  const [savedVersion, setSavedVersion] = useState(0);
   const sections = draft.sections || [];
   function updateSection(index: number, patch: Partial<DesignSection>) {
     setDraft((current) => ({
@@ -79,38 +78,28 @@ export function useInvitationDesign(
       ],
     }));
   }
-  async function save() {
+  async function commit(publishChanges: boolean) {
     setBusy(true);
     setMessage("");
     try {
-      if (!validDesignDressColors(sections))
-        throw new Error(
-          "Revisa los colores no permitidos del dress code: cada muestra necesita un nombre y un color válido (máximo 8).",
-        );
-      if (
-        sections.some((section) =>
-          section.canvas?.elements.some(
-            (item) =>
-              item.binding === "location" &&
-              !item.eventBound &&
-              item.link &&
-              !validMapLink(item.link),
-          ),
-        )
-      )
-        throw new Error(
-          "Revisa el enlace de Google Maps en la ubicación antes de guardar.",
-        );
-      await api(
-        `/api/backend/events/${draft.id}/design`,
-        "PATCH",
-        designPayload(draft),
+      const version = await persistDesign(
+        draft,
+        Math.max(event.designVersion || 0, savedVersion),
       );
+      setSavedVersion(version || 0);
       await onSaved();
+      if (publishChanges) {
+        await api(`/api/backend/events/${draft.id}/design/publish`, "POST", {
+          expectedVersion: version,
+        });
+        await onSaved();
+      }
       setMessage(
-        draft.publishedAt
-          ? "Cambios publicados. Tus invitados los verán en el mismo enlace; no necesitas reenviar ni pagar de nuevo."
-          : "Diseño guardado.",
+        publishChanges
+          ? "Cambios publicados. Tus invitados los verán en el mismo enlace."
+          : draft.publishedAt
+            ? "Borrador guardado. Tus invitados siguen viendo la versión publicada."
+            : "Diseño guardado.",
       );
       return true;
     } catch (error) {
@@ -120,6 +109,8 @@ export function useInvitationDesign(
       setBusy(false);
     }
   }
+  const save = () => commit(false);
+  const publish = () => commit(true);
   async function upload(file: File) {
     setBusy(true);
     setMessage("");
@@ -185,6 +176,11 @@ export function useInvitationDesign(
     addSection,
     addGuestSection,
     save,
+    publish,
+    unpublishedChanges: Boolean(
+      event.publishedAt &&
+      (event.designVersion || 0) !== (event.publishedDesignVersion || 0),
+    ),
     upload,
     replaceImage,
   };
