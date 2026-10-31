@@ -98,18 +98,22 @@ export default function EditorToolbar({
         <button type="button" aria-pressed={preview} onClick={onPreview}>
           {preview ? "Volver a editar" : "Vista previa"}
         </button>
-        {!editor.draft.isDemo && canPublish && (
+        {!editor.draft.isDemo && (!editor.draft.publishedAt || canPublish) && (
           <button
             type="button"
             className="editor-save editor-finish"
             disabled={editor.busy}
             onClick={async () => {
-              await editor.publish();
+              if (editor.draft.publishedAt) await editor.publish();
+              else if (await editor.save())
+                router.push(
+                  `/manager/${encodeURIComponent(editor.draft.id)}?tab=guests`,
+                );
             }}
           >
             {editor.draft.publishedAt
               ? "Actualizar invitación"
-              : "Publicar invitación"}
+              : "Terminar y continuar"}
             <Icon name="arrow" />
           </button>
         )}

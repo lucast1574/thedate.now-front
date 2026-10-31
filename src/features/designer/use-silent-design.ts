@@ -99,27 +99,12 @@ export function useSilentDesign(
     };
   });
   async function publish() {
+    if (!event.publishedAt) return false;
     if (!(await save())) return false;
     try {
-      await api(
-        `/api/backend/events/${event.id}/${event.publishedAt ? "design/publish" : "publish"}`,
-        "POST",
-        { expectedVersion: version.current },
-      );
-      if (!event.publishedAt) {
-        for (let attempt = 0; attempt < 60; attempt++) {
-          await new Promise((resolve) => window.setTimeout(resolve, 3000));
-          const deployment = await api<{ phase: string; error?: string }>(
-            `/api/backend/events/${event.id}/deployment`,
-          );
-          if (deployment.phase === "ready") return true;
-          if (deployment.phase === "error")
-            throw new Error("No se pudo publicar. Vuelve a intentarlo.");
-        }
-        throw new Error(
-          "La publicación sigue en curso. Puedes continuar editando.",
-        );
-      }
+      await api(`/api/backend/events/${event.id}/design/publish`, "POST", {
+        expectedVersion: version.current,
+      });
       return true;
     } catch (error) {
       onError((error as Error).message);

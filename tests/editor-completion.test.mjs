@@ -17,7 +17,7 @@ function button(node, text) {
     return node;
   return button(node.props?.children, text);
 }
-function toolbar(save, isDemo = false) {
+function toolbar(save, isDemo = false, publishedAt = null, canPublish = true) {
   const calls = [];
   const { default: Toolbar } = loadSource(
     "src/features/designer/editor-toolbar.tsx",
@@ -30,9 +30,9 @@ function toolbar(save, isDemo = false) {
     },
   );
   const tree = Toolbar({
-    canPublish: true,
+    canPublish,
     editor: {
-      draft: { id: "one", title: "My day", isDemo },
+      draft: { id: "one", title: "My day", isDemo, publishedAt },
       busy: false,
       dirty: false,
       save: async () => {
@@ -53,17 +53,34 @@ function toolbar(save, isDemo = false) {
   });
   return { tree, calls };
 }
-test("publishing happens inside the editor without navigation", async () => {
+test("finishing an unpublished invitation saves and opens guests without publishing", async () => {
   const { tree, calls } = toolbar(true);
-  const finish = button(tree, "Publicar invitación");
-  assert.ok(finish);
-  await finish.props.onClick();
-  assert.deepEqual(calls, ["publish"]);
+  await button(tree, "Terminar y continuar").props.onClick();
+  assert.deepEqual(calls, ["save", "/manager/one?tab=guests"]);
+  assert.equal(button(tree, "Publicar invitación"), null);
 });
-test("failed saves keep the user inside the editor", async () => {
+test("failed saving keeps unfinished work in the editor", async () => {
   const { tree, calls } = toolbar(false);
-  await button(tree, "Publicar invitación").props.onClick();
+  await button(tree, "Terminar y continuar").props.onClick();
+  assert.deepEqual(calls, ["save"]);
+});
+test("published invitations update in place without navigation", async () => {
+  const { tree, calls } = toolbar(true, false, "2026-01-01");
+  await button(tree, "Actualizar invitación").props.onClick();
   assert.deepEqual(calls, ["publish"]);
+  assert.equal(button(tree, "Terminar y continuar"), null);
+});
+test("collaborators can continue before publication but cannot publish updates", () => {
+  assert.ok(
+    button(toolbar(true, false, null, false).tree, "Terminar y continuar"),
+  );
+  assert.equal(
+    button(
+      toolbar(true, false, "2026-01-01", false).tree,
+      "Actualizar invitación",
+    ),
+    null,
+  );
 });
 test("demo activation keeps its own flow", () => {
   const { tree } = toolbar(true, true);

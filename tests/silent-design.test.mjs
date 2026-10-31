@@ -121,3 +121,11 @@ test("failed saving retains work and blocks publication", async () => {
     "Keep this work",
   );
 });
+
+test("the editor cannot initiate the first deployment", async () => {
+  const h = harness();
+  h.event.publishedAt = null;
+  const editor = h.render({ ...h.event, title: "Unfinished" });
+  assert.equal(await editor.publish(), false);
+  assert.equal(h.requests.length, 0);
+});
