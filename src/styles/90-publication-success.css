@@ -1,0 +1,154 @@
+.publication-success {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  padding: 0;
+  border: 1px solid var(--ui-border);
+  border-radius: 20px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  font-family: var(--ui-heading-font);
+  outline: none;
+}
+.publication-success::backdrop {
+  background: #151b2859;
+  backdrop-filter: blur(3px);
+}
+.publication-success-content {
+  position: relative;
+  padding: 28px 32px 36px;
+  text-align: center;
+}
+.publication-success-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ui-muted);
+  cursor: pointer;
+}
+.publication-success-close .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+.publication-success-close:hover,
+.publication-success-close:focus-visible {
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+  outline: none;
+  box-shadow: none;
+}
+.publication-success h2 {
+  margin: 0 0 10px;
+  font: var(--ui-heading-weight) 27px/1.15 var(--ui-heading-font);
+  outline: none;
+}
+.publication-success p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ui-muted);
+}
+.publication-success .publication-success-event {
+  margin-bottom: 6px;
+  color: var(--ui-ink);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.publication-success-art {
+  display: block;
+  width: 156px;
+  height: 132px;
+  margin: 0 auto 20px;
+  overflow: visible;
+}
+.publication-success-card {
+  stroke: var(--ui-accent);
+  stroke-width: 1.8;
+  fill: var(--ui-surface);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.publication-success-card-back {
+  fill: var(--ui-soft);
+  transform: rotate(-12deg);
+  animation: publication-card-back 650ms ease-out both;
+}
+.publication-success-card-front {
+  animation: publication-card-front 600ms ease-out both;
+}
+.publication-success-lines {
+  stroke: var(--ui-accent);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.publication-success-seal {
+  fill: var(--ui-accent);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: publication-seal 400ms 300ms ease-out both;
+}
+.publication-success-check {
+  stroke: #fff;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 32;
+  animation: publication-check 450ms 450ms ease-out both;
+}
+@keyframes publication-card-back {
+  from {
+    opacity: 0;
+    transform: translate(14px, 10px) rotate(0);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-12deg);
+  }
+}
+@keyframes publication-card-front {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes publication-seal {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes publication-check {
+  from {
+    stroke-dashoffset: 32;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.workspace-content[tabindex="-1"]:focus,
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .publication-success-art * {
+    animation: none;
+  }
+}

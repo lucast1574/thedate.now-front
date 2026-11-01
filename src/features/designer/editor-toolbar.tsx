@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import Icon from "@/components/icon";
 import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
+import { usePublicationFeedback } from "./publication-feedback";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
   editor,
@@ -17,6 +18,7 @@ export default function EditorToolbar({
   onTemplates: () => void;
 }) {
   const router = useRouter();
+  const updated = usePublicationFeedback();
   return (
     <header className="editor-toolbar">
       <div className="editor-heading">
@@ -104,16 +106,24 @@ export default function EditorToolbar({
             className="editor-save editor-finish"
             disabled={editor.busy}
             onClick={async () => {
-              if (editor.draft.publishedAt) await editor.publish();
-              else if (await editor.save())
+              if (editor.draft.publishedAt) {
+                if (await editor.publish()) {
+                  updated(editor.draft.title);
+                  router.push(`/?event=${encodeURIComponent(editor.draft.id)}`);
+                }
+              } else if (await editor.save())
                 router.push(
                   `/manager/${encodeURIComponent(editor.draft.id)}?tab=guests`,
                 );
             }}
           >
-            {editor.draft.publishedAt
-              ? "Actualizar invitación"
-              : "Terminar y continuar"}
+            {editor.busy
+              ? editor.draft.publishedAt
+                ? "Actualizando…"
+                : "Guardando…"
+              : editor.draft.publishedAt
+                ? "Actualizar invitación"
+                : "Terminar y continuar"}
             <Icon name="arrow" />
           </button>
         )}

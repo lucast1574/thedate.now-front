@@ -1,6 +1,6 @@
 "use client";
 import { useSilentDesign } from "./use-silent-design";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useDesignHistory } from "./use-design-history";
 import { guestNameElement } from "@/lib/events/guest-name";
 import { blankCanvas } from "./flyer/canvas-model";
@@ -13,6 +13,7 @@ export function useInvitationDesign(
   const history = useDesignHistory(event, initialDraft);
   const { draft, setDraft } = history;
   const [busy, setBusy] = useState(false);
+  const publishing = useRef(false);
   const [message, setMessage] = useState("");
   const sections = draft.sections || [];
   function updateSection(index: number, patch: Partial<DesignSection>) {
@@ -132,10 +133,13 @@ export function useInvitationDesign(
   return {
     ...history,
     publish: async () => {
+      if (publishing.current) return false;
+      publishing.current = true;
       setBusy(true);
       try {
-        if (await persistence.publish()) await onSaved();
+        return await persistence.publish();
       } finally {
+        publishing.current = false;
         setBusy(false);
       }
     },

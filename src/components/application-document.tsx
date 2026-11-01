@@ -6,6 +6,7 @@ import {
   Nunito,
 } from "next/font/google";
 import type { Kind } from "@/lib/events/types";
+import PublicationFeedback from "@/features/designer/publication-feedback";
 const serif = Cormorant_Garamond({
   variable: "--font-serif",
   subsets: ["latin"],
@@ -40,7 +41,9 @@ export default function ApplicationDocument({
       data-application={product === "wedding" ? "save-the-date" : "the-date"}
       className={`${serif.variable} ${sans.variable} ${party.variable} ${weddingLogo.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        <PublicationFeedback>{children}</PublicationFeedback>
+      </body>
     </html>
   );
 }
