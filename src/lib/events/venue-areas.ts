@@ -44,10 +44,15 @@ export function moveVenueArea(
   width: number,
   height: number,
 ): VenueArea {
+  const radians = ((area.rotation || 0) * Math.PI) / 180;
+  const cos = Math.abs(Math.cos(radians));
+  const sin = Math.abs(Math.sin(radians));
+  const offsetX = (area.width * cos + area.height * sin - area.width) / 2;
+  const offsetY = (area.width * sin + area.height * cos - area.height) / 2;
   return {
     ...area,
-    x: Math.round(Math.max(0, Math.min(width - area.width, x))),
-    y: Math.round(Math.max(0, Math.min(height - area.height, y))),
+    x: Math.max(offsetX, Math.min(width - area.width - offsetX, x)),
+    y: Math.max(offsetY, Math.min(height - area.height - offsetY, y)),
   };
 }
 
