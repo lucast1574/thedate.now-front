@@ -6,6 +6,13 @@ const choices = [
   ["jewel", "Joyas"],
   ["wave", "Ondas"],
   ["ticket", "Tickets"],
+  ["circle", "Círculos"],
+  ["square", "Cuadrados"],
+  ["arch", "Arcos"],
+  ["diamond", "Rombos"],
+  ["hexagon", "Hexágonos"],
+  ["leaf", "Hojas"],
+  ["splash", "Salpicadura"],
 ] as const;
 export default function DressPalettePicker({
   item,
