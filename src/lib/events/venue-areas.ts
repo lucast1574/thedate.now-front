@@ -43,16 +43,38 @@ export function moveVenueArea(
   y: number,
   width: number,
   height: number,
+  viewport = { width, height },
 ): VenueArea {
-  const radians = ((area.rotation || 0) * Math.PI) / 180;
-  const cos = Math.abs(Math.cos(radians));
-  const sin = Math.abs(Math.sin(radians));
-  const offsetX = (area.width * cos + area.height * sin - area.width) / 2;
-  const offsetY = (area.width * sin + area.height * cos - area.height) / 2;
+  const { offsetX, offsetY } = venueAreaGeometry(area, width, height, viewport);
   return {
     ...area,
     x: Math.max(offsetX, Math.min(width - area.width - offsetX, x)),
     y: Math.max(offsetY, Math.min(height - area.height - offsetY, y)),
+  };
+}
+
+export function venueAreaGeometry(
+  area: VenueArea,
+  width: number,
+  height: number,
+  viewport = { width, height },
+) {
+  const sx = viewport.width / width;
+  const sy = viewport.height / height;
+  const radians = ((area.rotation || 0) * Math.PI) / 180;
+  const cos = Math.abs(Math.cos(radians));
+  const sin = Math.abs(Math.sin(radians));
+  const visualWidth = area.width * sx * cos + area.height * sy * sin;
+  const visualHeight = area.width * sx * sin + area.height * sy * cos;
+  const scale = Math.min(
+    1,
+    viewport.width / visualWidth,
+    viewport.height / visualHeight,
+  );
+  return {
+    scale,
+    offsetX: ((visualWidth * scale) / sx - area.width) / 2,
+    offsetY: ((visualHeight * scale) / sy - area.height) / 2,
   };
 }
 

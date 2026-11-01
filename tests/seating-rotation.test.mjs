@@ -133,3 +133,76 @@ test("rotated venue areas reach each room edge without crossing it", () => {
     }
   }
 });
+
+test("venue bounds follow actual pixel aspect ratio and fit oversized rotated areas", () => {
+  const { moveVenueArea, venueAreaGeometry } = loadSource(
+    "src/lib/events/venue-areas.ts",
+  );
+  for (const viewport of [
+    { width: 1200, height: 360 },
+    { width: 800, height: 850 },
+    { width: 320, height: 500 },
+  ])
+    for (const rotation of [0, 15, 45, 90, -90, 135, 180])
+      for (const [width, height] of [
+        [380, 290],
+        [800, 600],
+      ])
+        for (const x of [-9999, 9999])
+          for (const y of [-9999, 9999]) {
+            const base = {
+              id: "dance",
+              name: "Pista",
+              kind: "dance",
+              x: 0,
+              y: 0,
+              width,
+              height,
+              rotation,
+            };
+            const area = moveVenueArea(base, x, y, 1600, 1000, viewport);
+            const { scale } = venueAreaGeometry(area, 1600, 1000, viewport);
+            const sx = viewport.width / 1600,
+              sy = viewport.height / 1000,
+              angle = (rotation * Math.PI) / 180;
+            const corners = [
+              [-1, -1],
+              [1, -1],
+              [-1, 1],
+              [1, 1],
+            ].map(([i, j]) => {
+              const dx = ((i * width * sx) / 2) * scale,
+                dy = ((j * height * sy) / 2) * scale;
+              return {
+                x:
+                  (area.x + width / 2) * sx +
+                  dx * Math.cos(angle) -
+                  dy * Math.sin(angle),
+                y:
+                  (area.y + height / 2) * sy +
+                  dx * Math.sin(angle) +
+                  dy * Math.cos(angle),
+              };
+            });
+            for (const p of corners) {
+              assert.ok(p.x >= -1e-7 && p.x <= viewport.width + 1e-7);
+              assert.ok(p.y >= -1e-7 && p.y <= viewport.height + 1e-7);
+            }
+            assert.ok(
+              Math.abs(
+                (x < 0
+                  ? Math.min(...corners.map((p) => p.x))
+                  : Math.max(...corners.map((p) => p.x))) -
+                  (x < 0 ? 0 : viewport.width),
+              ) < 1e-7,
+            );
+            assert.ok(
+              Math.abs(
+                (y < 0
+                  ? Math.min(...corners.map((p) => p.y))
+                  : Math.max(...corners.map((p) => p.y))) -
+                  (y < 0 ? 0 : viewport.height),
+              ) < 1e-7,
+            );
+          }
+});

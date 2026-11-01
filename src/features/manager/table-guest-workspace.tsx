@@ -142,6 +142,11 @@ export default function TableGuestWorkspace({
           ) : (
             area && (
               <VenueAreaPopover
+                getViewport={() =>
+                  root.current
+                    ?.querySelector(".venue-areas")
+                    ?.getBoundingClientRect()
+                }
                 area={area}
                 plan={plan}
                 onChange={onChange}

@@ -8,11 +8,13 @@ export default function VenueAreaPopover({
   plan,
   onChange,
   onClose,
+  getViewport,
 }: {
   area: VenueArea;
   plan: SeatingPlan;
   onChange: (plan: SeatingPlan) => void;
   onClose: () => void;
+  getViewport?: () => { width: number; height: number } | undefined;
 }) {
   function patch(fields: Partial<VenueArea>) {
     const next = moveVenueArea(
@@ -21,6 +23,7 @@ export default function VenueAreaPopover({
       area.y,
       plan.width,
       plan.height,
+      getViewport?.(),
     );
     onChange({
       ...plan,
