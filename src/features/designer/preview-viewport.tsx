@@ -8,11 +8,13 @@ export default function PreviewViewport({
   device,
   guestName,
   showOpening = true,
+  onReady,
 }: {
   draft: Event;
   device: "mobile" | "desktop";
   guestName: string;
   showOpening?: boolean;
+  onReady?: () => void;
 }) {
   const stage = useRef<HTMLDivElement>(null);
   const [body, setBody] = useState<HTMLElement | null>(null);
@@ -63,7 +65,10 @@ export default function PreviewViewport({
                   document,
                   draft.kind,
                 );
-                if (frame.isConnected) setBody(ready);
+                if (frame.isConnected) {
+                  setBody(ready);
+                  onReady?.();
+                }
               } catch (err) {
                 if (frame.isConnected) setError((err as Error).message);
               }

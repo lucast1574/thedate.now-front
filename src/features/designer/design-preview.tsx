@@ -15,8 +15,14 @@ export default function DesignPreview({
   const root = useRef<HTMLElement>(null);
   const [downloading, setDownloading] = useState(false),
     [downloadError, setDownloadError] = useState("");
+  const [ready, setReady] = useState(false);
   const [guestName, setGuestName] = useState("María Rojas");
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
+  function chooseDevice(next: "mobile" | "desktop") {
+    if (next === device) return;
+    setReady(false);
+    setDevice(next);
+  }
   return (
     <section
       ref={root}
@@ -27,7 +33,7 @@ export default function DesignPreview({
         {downloadable && (
           <button
             type="button"
-            disabled={downloading}
+            disabled={downloading || !ready}
             onClick={async () => {
               const doc =
                 root.current?.querySelector("iframe")?.contentDocument;
@@ -43,9 +49,12 @@ export default function DesignPreview({
               }
             }}
           >
-            {downloading
-              ? "Preparando descarga…"
-              : "Descargar invitación (.html)"}
+            <Icon name="down" />
+            {!ready
+              ? "Preparando invitación…"
+              : downloading
+                ? "Preparando descarga…"
+                : "Descargar invitación"}
           </button>
         )}
 
@@ -57,14 +66,14 @@ export default function DesignPreview({
           <button
             type="button"
             aria-pressed={device === "mobile"}
-            onClick={() => setDevice("mobile")}
+            onClick={() => chooseDevice("mobile")}
           >
             <Icon name="lucide:smartphone" /> Móvil
           </button>
           <button
             type="button"
             aria-pressed={device === "desktop"}
-            onClick={() => setDevice("desktop")}
+            onClick={() => chooseDevice("desktop")}
           >
             <Icon name="lucide:monitor" /> Escritorio
           </button>
@@ -90,6 +99,7 @@ export default function DesignPreview({
           device={device}
           guestName={downloadable ? "" : guestName}
           showOpening={!downloadable}
+          onReady={() => setReady(true)}
         />
       </div>
       <footer className="preview-caption">

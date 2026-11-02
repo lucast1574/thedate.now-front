@@ -7,13 +7,14 @@ import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import { useEventReadOnly } from "@/features/studio/use-event-read-only";
-import DesignPreview from "./design-preview";
+import InvitationRecord from "./invitation-record";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
   const paymentReturn = useSearchParams().get("payment") === "success";
   const [event, setEvent] = useState<Event | null>(null);
-  const [userId, setUserId] = useState("");
-  const [userRole, setUserRole] = useState<User["role"]>("user");
+  const [user, setUser] = useState<User | null>(null);
+  const userId = user?.id || "",
+    userRole = user?.role || "user";
   const [error, setError] = useState("");
   useEventRecency(userId, event?.kind, event?.id);
   const readOnly = useEventReadOnly(event);
@@ -31,8 +32,7 @@ export default function EditorPage({ id }: { id: string }) {
     ])
       .then(([list, user]) => {
         if (!active) return;
-        setUserId(user.id);
-        setUserRole(user.role);
+        setUser(user);
         const current = list.find((item) => item.id === id);
         if (!current) setError("No tienes acceso a esta invitación.");
         else setEvent(current);
@@ -92,13 +92,7 @@ export default function EditorPage({ id }: { id: string }) {
         </Link>
       </main>
     );
-  if (readOnly)
-    return (
-      <main className="invitation-record">
-        <Link href="/">Mis invitaciones</Link>
-        <DesignPreview draft={event} downloadable />
-      </main>
-    );
+  if (readOnly && user) return <InvitationRecord event={event} user={user} />;
   return (
     <ColorMemoryProvider userId={userId}>
       {paymentReturn && (
