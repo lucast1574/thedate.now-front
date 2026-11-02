@@ -5,7 +5,6 @@ import Icon from "@/components/icon";
 import type { Event, Kind, User } from "@/lib/events/types";
 import { galleryEvents } from "@/lib/events/studio-gallery";
 import DemoCover from "./demo-cover";
-import { defaultDemoCover } from "@/lib/events/thumbnail";
 import InvitationThumbnail from "./invitation-thumbnail";
 import { invitationHost, validInvitationSlug } from "@/lib/events/domains";
 export default function EventGallery({
@@ -106,7 +105,7 @@ export default function EventGallery({
                 href={`/editor/${encodeURIComponent(event.id)}`}
                 aria-label={`${eventReadOnly(event) ? "Ver" : "Editar"} ${event.title}${event.isDemo ? " · Invitación de demo" : ""}`}
               >
-                {defaultDemoCover(event) ? (
+                {event.isDemo ? (
                   <DemoCover event={event} />
                 ) : (
                   <InvitationThumbnail event={event} />
