@@ -1,3 +1,4 @@
+import ManagerRecords from "./manager-records";
 import InvitationDelivery from "./invitation-delivery";
 import GuestWorkspace from "./guest-workspace";
 import SeatingEditor from "./seating-editor";
@@ -13,6 +14,7 @@ export default function ManagerTools({
 }) {
   const { event, guests, plan, user, busy, dirty, stale } = manager;
   if (!event) return null;
+  if (manager.readOnly) return <ManagerRecords manager={manager} tab={tab} />;
   const canSend = user?.role === "admin" || user?.id === event.ownerId;
   return (
     <>

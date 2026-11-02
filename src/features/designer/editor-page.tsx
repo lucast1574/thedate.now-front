@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
+import { useEventReadOnly } from "@/features/studio/use-event-read-only";
+import DesignPreview from "./design-preview";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
   const paymentReturn = useSearchParams().get("payment") === "success";
@@ -14,6 +16,7 @@ export default function EditorPage({ id }: { id: string }) {
   const [userRole, setUserRole] = useState<User["role"]>("user");
   const [error, setError] = useState("");
   useEventRecency(userId, event?.kind, event?.id);
+  const readOnly = useEventReadOnly(event);
   const reload = useCallback(async () => {
     const list = await api<Event[]>("/api/backend/events");
     const current = list.find((item) => item.id === id);
@@ -87,6 +90,13 @@ export default function EditorPage({ id }: { id: string }) {
         <Link href={`/?event=${encodeURIComponent(event.id)}`}>
           Volver a mi invitación
         </Link>
+      </main>
+    );
+  if (readOnly)
+    return (
+      <main className="invitation-record">
+        <Link href="/">Mis invitaciones</Link>
+        <DesignPreview draft={event} downloadable />
       </main>
     );
   return (

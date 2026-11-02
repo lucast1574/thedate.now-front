@@ -7,10 +7,12 @@ export default function PreviewViewport({
   draft,
   device,
   guestName,
+  showOpening = true,
 }: {
   draft: Event;
   device: "mobile" | "desktop";
   guestName: string;
+  showOpening?: boolean;
 }) {
   const stage = useRef<HTMLDivElement>(null);
   const [body, setBody] = useState<HTMLElement | null>(null);
@@ -77,6 +79,7 @@ export default function PreviewViewport({
               >
                 <Invitation
                   guestName={guestName}
+                  showOpening={showOpening}
                   event={draft}
                   preview={Boolean(draft.isDemo)}
                   audioURL={(key) => `/api/audio/${draft.id}/${key}`}

@@ -35,3 +35,7 @@
     600 18px var(--font-sans),
     sans-serif;
 }
+
+.office-general .invitation-thumbnail {
+  background: #e6edfa;
+}

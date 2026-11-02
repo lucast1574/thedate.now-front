@@ -1,5 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { eventReadOnly } from "@/lib/events/event-closure";
+import { useEventReadOnly } from "@/features/studio/use-event-read-only";
 import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, Guest, GuestFields, User } from "@/lib/events/types";
@@ -19,6 +21,7 @@ export function useManager(id: string) {
     [stale, setStale] = useState(false);
   const dirtyRef = useRef(false),
     versionRef = useRef(0);
+  const readOnly = useEventReadOnly(event);
   useEventRecency(user?.id, event?.kind, event?.id);
   const refresh = useCallback(
     async (discard = false) => {
@@ -76,6 +79,7 @@ export function useManager(id: string) {
     return () => window.removeEventListener("beforeunload", warn);
   }, [dirty]);
   function update(next: SeatingPlan) {
+    if (eventReadOnly(event)) return;
     setPlan(next);
     setDirty(true);
     dirtyRef.current = true;
@@ -97,6 +101,7 @@ export function useManager(id: string) {
   }
   const save = () =>
     run(async () => {
+      if (eventReadOnly(event)) return;
       const saved = await api<SeatingPlan>(
         `/api/backend/events/${id}/seating`,
         "PATCH",
@@ -111,12 +116,20 @@ export function useManager(id: string) {
     }, "");
   const add = (fields: GuestFields) =>
     run(async () => {
+      if (eventReadOnly(event)) return;
       await api(`/api/backend/events/${id}/guests`, "POST", fields);
       await refresh();
     }, "Invitado añadido.");
 
-  const autosave = useSeatingAutosave(plan, dirty, busy, stale, save);
+  const autosave = useSeatingAutosave(
+    plan,
+    dirty && !readOnly,
+    busy,
+    stale,
+    save,
+  );
   return {
+    readOnly,
     autosave,
     event,
     events,

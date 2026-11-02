@@ -2,6 +2,7 @@ import { type FormEvent } from "react";
 import Link from "next/link";
 import Alert from "@/components/alert";
 
+import { useEventReadOnly } from "./use-event-read-only";
 import EventForm from "./event-form";
 import PendingPayment from "./pending-payment";
 import type { User } from "@/lib/events/types";
@@ -24,6 +25,7 @@ export default function EventWorkspace({
   save: (e: FormEvent) => Promise<void>;
 }) {
   const { selected } = events;
+  const readOnly = useEventReadOnly(selected);
   const wedding = events.draft.kind === "wedding";
   return (
     <section className="office-main workspace-event">
@@ -31,7 +33,7 @@ export default function EventWorkspace({
         ← Mis invitaciones
       </Link>
       <p className="office-kicker">
-        {selected ? "EDITAR EVENTO" : "NUEVO EVENTO"}
+        {selected ? (readOnly ? "EVENTO" : "EDITAR EVENTO") : "NUEVO EVENTO"}
       </p>
       <h1>
         {selected?.isDemo
@@ -44,7 +46,9 @@ export default function EventWorkspace({
       </h1>
       <p className="office-lead">
         {selected
-          ? "Ajusta los detalles y lleva el control de tus invitados."
+          ? readOnly
+            ? "Consulta los detalles de tu celebración."
+            : "Ajusta los detalles y lleva el control de tus invitados."
           : "Cuéntanos cuándo y dónde. Elige una plantilla y descubre cómo la verán tus invitados."}
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
@@ -62,7 +66,7 @@ export default function EventWorkspace({
             className="workspace-back"
             href={`/editor/${encodeURIComponent(selected.id)}`}
           >
-            Abrir editor de invitación ↗
+            {readOnly ? "Ver invitación ↗" : "Abrir editor de invitación ↗"}
           </Link>
         )}
         {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
@@ -71,7 +75,8 @@ export default function EventWorkspace({
           </Link>
         )}
       </nav>
-      {!selected?.isDemo &&
+      {!readOnly &&
+        !selected?.isDemo &&
         (!selected ||
           selected.ownerId === user.id ||
           user.role === "admin") && (
@@ -84,17 +89,20 @@ export default function EventWorkspace({
             onSubmit={save}
           />
         )}
-      {selected && !selected.isDemo && selected.paymentStatus !== "paid" && (
-        <PendingPayment
-          user={user}
-          event={selected}
-          busy={feedback.busy}
-          enabled={paymentsEnabled}
-          onCheckout={() => {
-            void feedback.run(actions.checkout);
-          }}
-        />
-      )}
+      {!readOnly &&
+        selected &&
+        !selected.isDemo &&
+        selected.paymentStatus !== "paid" && (
+          <PendingPayment
+            user={user}
+            event={selected}
+            busy={feedback.busy}
+            enabled={paymentsEnabled}
+            onCheckout={() => {
+              void feedback.run(actions.checkout);
+            }}
+          />
+        )}
     </section>
   );
 }

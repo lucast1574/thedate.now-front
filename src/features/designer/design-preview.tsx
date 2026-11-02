@@ -1,18 +1,54 @@
 "use client";
-import { useState } from "react";
+import { downloadInvitation } from "./download-invitation";
+import { useRef, useState } from "react";
 import Icon from "@/components/icon";
 import PreviewWatermark from "./preview-watermark";
 import PreviewViewport from "./preview-viewport";
 import type { Event } from "@/lib/events/types";
-export default function DesignPreview({ draft }: { draft: Event }) {
+export default function DesignPreview({
+  draft,
+  downloadable = false,
+}: {
+  draft: Event;
+  downloadable?: boolean;
+}) {
+  const root = useRef<HTMLElement>(null);
+  const [downloading, setDownloading] = useState(false),
+    [downloadError, setDownloadError] = useState("");
   const [guestName, setGuestName] = useState("María Rojas");
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   return (
     <section
+      ref={root}
       className="editor-preview"
       aria-label="Vista previa de la invitación"
     >
       <div className="preview-toolbar">
+        {downloadable && (
+          <button
+            type="button"
+            disabled={downloading}
+            onClick={async () => {
+              const doc =
+                root.current?.querySelector("iframe")?.contentDocument;
+              if (!doc?.querySelector(".invitation")) return;
+              setDownloading(true);
+              setDownloadError("");
+              try {
+                await downloadInvitation(doc, draft.title);
+              } catch (error) {
+                setDownloadError((error as Error).message);
+              } finally {
+                setDownloading(false);
+              }
+            }}
+          >
+            {downloading
+              ? "Preparando descarga…"
+              : "Descargar invitación (.html)"}
+          </button>
+        )}
+
         <div
           className="preview-device-tabs"
           role="group"
@@ -33,23 +69,27 @@ export default function DesignPreview({ draft }: { draft: Event }) {
             <Icon name="lucide:monitor" /> Escritorio
           </button>
         </div>
-        <label className="preview-name">
-          <Icon name="users" />
-          <span>Invitado de ejemplo</span>
-          <input
-            maxLength={200}
-            value={guestName}
-            placeholder="Nombre del invitado"
-            onChange={(e) => setGuestName(e.target.value)}
-          />
-        </label>
+        {!downloadable && (
+          <label className="preview-name">
+            <Icon name="users" />
+            <span>Invitado de ejemplo</span>
+            <input
+              maxLength={200}
+              value={guestName}
+              placeholder="Nombre del invitado"
+              onChange={(e) => setGuestName(e.target.value)}
+            />
+          </label>
+        )}
       </div>
+      {downloadError && <p role="alert">{downloadError}</p>}
       <div className="preview-stage-wrap">
         <PreviewViewport
           key={device}
           draft={draft}
           device={device}
-          guestName={guestName}
+          guestName={downloadable ? "" : guestName}
+          showOpening={!downloadable}
         />
       </div>
       <footer className="preview-caption">

@@ -325,3 +325,9 @@ El catálogo de 48 lienzos usa `template-art-direction.ts` y `InvitationArtwork`
 Las fotos admiten `photoTreatment` (none, soft, fade, arch, cinema) y `photoFit` (contain, cover). El acabado se define por plantilla y puede editarse; cambiar la foto conserva el encuadre y el tratamiento. Las portadas gallery/cinematic usan fotografías a sangre. `InvitationMotion` secuencia entradas por sección y espera a que se retire el sobre; cancela el movimiento cuando cambia prefers-reduced-motion y no añade controles visibles.
 
 Desplegar la API que valida los metadatos de lienzo y foto antes del frontend y de la imagen renderer. No requiere migración de documentos existentes ni modifica los diseños guardados al actualizar el catálogo. El primer despliegue continúa en Invitados; el editor conserva Terminar y continuar / Actualizar invitación.
+
+## Consulta de eventos terminados
+
+`event-closure.ts` compara los días de calendario en la zona del evento; `use-event-read-only` lo actualiza mientras la pantalla permanece abierta. Después del último día, los enlaces privados muestran la invitación y los datos sin acciones de edición o envío y sin mensajes sobre la regla. `ManagerRecords` permite consultar invitados, plano y regalos y mantiene la exportación. `download-invitation.ts` produce una copia HTML visual autónoma del diseño publicado, con CSS, fuentes, imágenes e iconos embebidos; no depende del renderer público ni permite editar el evento.
+
+La selección de colaboración usa `scope=sharing` y descarta demos también en cliente. `91-dialog-placement.css` centra los diálogos nativos en el viewport y mantiene scroll con altura dinámica, incluso después del reset de CSS. El fondo de miniaturas de The Date se define en el stylesheet del producto, independiente de Save the Date.

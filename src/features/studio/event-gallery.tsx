@@ -1,3 +1,4 @@
+import { eventReadOnly } from "@/lib/events/event-closure";
 import { useEventRecency } from "./use-event-recency";
 import Link from "next/link";
 import Icon from "@/components/icon";
@@ -88,7 +89,8 @@ export default function EventGallery({
         <div className="invitation-grid">
           {items.map((event) => (
             <article className="invitation-card" key={event.id}>
-              {!event.isDemo &&
+              {!eventReadOnly(event) &&
+                !event.isDemo &&
                 (event.ownerId === user.id || user.role === "admin") && (
                   <Link
                     className="invitation-quick-edit"
@@ -102,7 +104,7 @@ export default function EventGallery({
               <Link
                 className="invitation-card-preview"
                 href={`/editor/${encodeURIComponent(event.id)}`}
-                aria-label={`Editar ${event.title}`}
+                aria-label={`${eventReadOnly(event) ? "Ver" : "Editar"} ${event.title}`}
               >
                 {defaultDemoCover(event) ? (
                   <DemoCover event={event} />
@@ -146,6 +148,7 @@ export default function EventGallery({
               {!event.isDemo &&
                 event.paymentStatus === "paid" &&
                 event.publishedAt &&
+                !eventReadOnly(event) &&
                 validInvitationSlug(event.slug) && (
                   <a
                     className="invitation-card-public-link"

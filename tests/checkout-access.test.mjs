@@ -13,6 +13,7 @@ test("unpaid setup exposes payment continuation without management or publicatio
     "src/features/studio/event-workspace.tsx",
     {
       mocks: {
+        "./use-event-read-only": { useEventReadOnly: () => false },
         "next/link": { default: "a" },
         "./event-form": { default: "form" },
         "./pending-payment": { default: "payment" },
@@ -49,6 +50,7 @@ test("paid setup keeps a return to editing and management without the old footer
     "src/features/studio/event-workspace.tsx",
     {
       mocks: {
+        "./use-event-read-only": { useEventReadOnly: () => false },
         "next/link": { default: "a" },
         "./event-form": { default: "form" },
       },

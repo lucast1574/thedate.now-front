@@ -1,4 +1,6 @@
 "use client";
+import { useEventReadOnly } from "@/features/studio/use-event-read-only";
+import OwnerGiftCard from "./owner-gift-card";
 import Icon from "@/components/icon";
 import { useState } from "react";
 import type { Event } from "@/lib/events/types";
@@ -10,6 +12,7 @@ import WishlistOwnerHeader from "./wishlist-owner-header";
 import WishlistCollection from "./wishlist-collection";
 import OwnerWishlistPreview from "./owner-wishlist-preview";
 export default function WishlistPanel({ event }: { event: Event }) {
+  const readOnly = useEventReadOnly(event);
   const state = useWishlist(event.id),
     { list, guests } = state.data;
   const [editor, setEditor] = useState<Gift | "new">("new"),
@@ -48,6 +51,27 @@ export default function WishlistPanel({ event }: { event: Event }) {
         >
           Volver a intentar
         </button>
+      </section>
+    );
+  if (readOnly)
+    return (
+      <section className="wishlist-panel wishlist-owner">
+        <h2>Lista de regalos</h2>
+        <div className="wishlist-gift-grid">
+          {list.items.map((gift) => (
+            <OwnerGiftCard
+              key={gift.id}
+              gift={gift}
+              eventId={event.id}
+              name={guests[gift.guestId || ""]}
+              busy={false}
+              readOnly
+              onEdit={() => {}}
+              onRemove={() => {}}
+              onReservation={() => {}}
+            />
+          ))}
+        </div>
       </section>
     );
   return (

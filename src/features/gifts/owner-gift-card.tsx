@@ -8,6 +8,7 @@ export default function OwnerGiftCard({
   eventId,
   name,
   busy,
+  readOnly = false,
   onEdit,
   onRemove,
   onReservation,
@@ -16,6 +17,7 @@ export default function OwnerGiftCard({
   eventId: string;
   name?: string;
   busy: boolean;
+  readOnly?: boolean;
   onEdit: () => void;
   onRemove: () => void;
   onReservation: (action: "release" | "delivered" | "pending") => void;
@@ -68,15 +70,17 @@ export default function OwnerGiftCard({
             </span>
           </div>
         )}
-        <OwnerGiftActions
-          reserved={!!gift.guestId}
-          delivered={gift.delivered}
-          busy={busy}
-          title={gift.title}
-          onEdit={onEdit}
-          onRemove={onRemove}
-          onReservation={onReservation}
-        />
+        {!readOnly && (
+          <OwnerGiftActions
+            reserved={!!gift.guestId}
+            delivered={gift.delivered}
+            busy={busy}
+            title={gift.title}
+            onEdit={onEdit}
+            onRemove={onRemove}
+            onReservation={onReservation}
+          />
+        )}
       </div>
     </article>
   );

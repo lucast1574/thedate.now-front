@@ -5,9 +5,11 @@ import { useCollaborationAccess } from "./use-collaboration-access";
 export default function CoupleAccess({
   eventId,
   wedding,
+  readOnly = false,
 }: {
   eventId: string;
   wedding: boolean;
+  readOnly?: boolean;
 }) {
   const state = useCollaborationAccess(eventId);
   return (
@@ -38,13 +40,15 @@ export default function CoupleAccess({
             <strong>{member.name}</strong>
             <small>{member.email} · Acceso activo</small>
           </span>
-          <button
-            type="button"
-            disabled={state.busy}
-            onClick={() => void state.remove(member.id)}
-          >
-            Retirar acceso
-          </button>
+          {!readOnly && (
+            <button
+              type="button"
+              disabled={state.busy}
+              onClick={() => void state.remove(member.id)}
+            >
+              Retirar acceso
+            </button>
+          )}
         </div>
       ))}
       {state.access?.pending.map((invite) => (
@@ -61,16 +65,18 @@ export default function CoupleAccess({
               · vence {new Date(invite.expiresAt).toLocaleDateString("es-PE")}
             </small>
           </span>
-          <button
-            type="button"
-            disabled={state.busy}
-            onClick={() => void state.remove(invite.id)}
-          >
-            Retirar invitación
-          </button>
+          {!readOnly && (
+            <button
+              type="button"
+              disabled={state.busy}
+              onClick={() => void state.remove(invite.id)}
+            >
+              Retirar invitación
+            </button>
+          )}
         </div>
       ))}
-      {state.remaining > 0 && (
+      {!readOnly && state.remaining > 0 && (
         <form onSubmit={state.invite}>
           <div className="shared-email-grid">
             {[0, 1].slice(0, state.remaining).map((index) => (
@@ -99,13 +105,15 @@ export default function CoupleAccess({
               </label>
             ))}
           </div>
-          <button
-            className="office-button"
-            disabled={state.busy || !state.access?.emailConfigured}
-          >
-            {state.busy ? "Enviando…" : "Enviar invitaciones"}
-            <Icon name="arrow" />
-          </button>
+          {!readOnly && (
+            <button
+              className="office-button"
+              disabled={state.busy || !state.access?.emailConfigured}
+            >
+              {state.busy ? "Enviando…" : "Enviar invitaciones"}
+              <Icon name="arrow" />
+            </button>
+          )}
         </form>
       )}
       {state.access && !state.access.emailConfigured && (
