@@ -1,0 +1,34 @@
+/* Interface colors are independent of saved invitation designs. */
+.office.office-general,
+.editor-general {
+  --ui-accent: #6035a5;
+  --ui-soft: #e9dff7;
+  --ui-surface: #ffffff;
+  --ui-background: #f1f2f6;
+  --ui-border: #c9cbd7;
+  --ui-ink: #242332;
+  --ui-muted: #484b5c;
+  --workspace-accent: var(--ui-accent);
+  --workspace-tint: var(--ui-soft);
+  --workspace-ink: var(--ui-ink);
+  --manager-accent: var(--ui-accent);
+  --studio-sidebar: #e6e5ef;
+  --studio-rail: #eeedf4;
+  --studio-hover: #48247f;
+  --studio-line: #9b84bc;
+  --studio-ground: #dfe2ea;
+  color: var(--ui-ink);
+  background: var(--ui-background);
+}
+.office.office-general .office-kicker {
+  color: #a82b59;
+}
+.office.office-general .gallery-heading h1 em {
+  color: var(--ui-accent);
+}
+.office.office-general .demo-cover-general {
+  background: linear-gradient(135deg, #48247f, #7040ad);
+}
+.office.office-general .demo-cover-general p {
+  color: #ffffff;
+}

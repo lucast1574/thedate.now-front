@@ -1,112 +1,25 @@
-/* Studio chrome has its own palette; invitation canvases retain their colors. */
-.office-wedding,
+/* Interface colors are independent of saved invitation designs. */
+.office.office-wedding,
 .editor-wedding {
-  --ui-accent: #874d34;
-  --ui-soft: #f3e6dc;
+  --ui-accent: #79432d;
+  --ui-soft: #f0e1d5;
   --ui-surface: #ffffff;
-  --ui-background: #f5f5f2;
-  --ui-border: #d8d3cb;
-  --ui-ink: #292724;
-  --ui-muted: #655e57;
+  --ui-background: #f0f1ed;
+  --ui-border: #c9c5bd;
+  --ui-ink: #242320;
+  --ui-muted: #514b45;
   --workspace-accent: var(--ui-accent);
   --workspace-tint: var(--ui-soft);
   --workspace-ink: var(--ui-ink);
+  --manager-accent: var(--ui-accent);
+  --studio-sidebar: #e5e3dc;
+  --studio-rail: #edeae3;
+  --studio-hover: #5d3222;
+  --studio-line: #a88773;
+  --studio-ground: #dedfd9;
   color: var(--ui-ink);
   background: var(--ui-background);
 }
-.office-wedding .workspace-sidebar {
-  background: #eeebe5;
-}
-.office-wedding .workspace-sidebar nav a[aria-current="page"] {
-  color: #ffffff;
-  background: var(--ui-accent);
-  box-shadow: none;
-}
-.office-wedding .workspace-sidebar nav a[aria-current="page"] small {
-  color: inherit;
-}
-.office-wedding .workspace-sidebar nav a:focus-visible {
-  outline: none;
-  box-shadow: none;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.office-wedding .user-avatar {
-  background: var(--ui-soft);
-  color: var(--ui-accent);
-}
-.office-wedding .gallery-create,
-.office-wedding .office-button {
-  color: #ffffff;
-  background: var(--ui-accent);
-}
-.office-wedding .gallery-create:hover,
-.office-wedding .gallery-create:focus-visible,
-.office-wedding .office-button:hover,
-.office-wedding .office-button:focus-visible {
-  outline: none;
-  box-shadow: none;
-  background: #693b29;
-}
-.office-wedding .gallery-heading > div > p:last-child,
-.office-wedding .gallery-section-heading span,
-.office-wedding .invitation-card-meta small,
-.office-wedding .card-manage,
-.office-wedding .invitation-demo-description,
-.office-wedding .invitation-new-card > span,
-.office-wedding .demo-cover-wedding p {
+.office.office-wedding .demo-cover-wedding p {
   color: var(--ui-muted);
-}
-.office-wedding .invitation-card-preview {
-  border-color: var(--ui-border);
-}
-.office-wedding .invitation-new-card {
-  background: var(--ui-surface);
-  color: var(--ui-accent);
-  border-color: #b99b88;
-}
-.office-wedding .invitation-new-card:hover,
-.office-wedding .invitation-new-card:focus-visible {
-  outline: none;
-  box-shadow: none;
-  background: var(--ui-soft);
-}
-.office-wedding .manager-wedding {
-  background: var(--ui-background);
-}
-.office-wedding input,
-.office-wedding textarea {
-  color: var(--ui-ink);
-}
-.canvas-studio.editor-wedding {
-  --editor-ground: #e7e8e3;
-}
-.canvas-studio.editor-wedding .editor-toolbar {
-  background: var(--ui-surface);
-  border-bottom: 1px solid var(--ui-border);
-}
-.canvas-studio.editor-wedding .canvas-rail {
-  background: #f4f1eb;
-}
-.canvas-studio.editor-wedding .canvas-desk {
-  background: var(--editor-ground);
-}
-.canvas-studio.editor-wedding .canvas-context {
-  background: var(--ui-surface);
-  border-bottom: 1px solid var(--ui-border);
-}
-.canvas-studio.editor-wedding .canvas-rail button[aria-pressed="true"] {
-  color: #ffffff;
-  background: var(--ui-accent);
-}
-.canvas-studio.editor-wedding .canvas-rail button:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.canvas-studio.editor-wedding .canvas-section-controls {
-  background: var(--ui-soft);
-}
-.canvas-studio.editor-wedding input,
-.canvas-studio.editor-wedding textarea {
-  color: var(--ui-ink);
 }

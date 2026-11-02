@@ -1,0 +1,142 @@
+/* Shared studio hierarchy; each product supplies its own palette. */
+.office:is(.office-wedding, .office-general) .workspace-sidebar {
+  background: var(--studio-sidebar);
+}
+.office:is(.office-wedding, .office-general) .workspace-sidebar nav a small {
+  color: var(--ui-muted);
+}
+.office:is(.office-wedding, .office-general)
+  .workspace-sidebar
+  nav
+  a[aria-current="page"] {
+  color: #ffffff;
+  background: var(--ui-accent);
+  box-shadow: none;
+}
+.office:is(.office-wedding, .office-general)
+  .workspace-sidebar
+  nav
+  a[aria-current="page"]
+  small {
+  color: inherit;
+}
+.office:is(.office-wedding, .office-general)
+  .workspace-sidebar
+  nav
+  a:focus-visible {
+  outline: none;
+  box-shadow: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.office:is(.office-wedding, .office-general) .user-avatar {
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.office:is(.office-wedding, .office-general) .gallery-create,
+.office:is(.office-wedding, .office-general) .office-button {
+  color: #ffffff;
+  background: var(--ui-accent);
+}
+.office:is(.office-wedding, .office-general) .gallery-create:hover,
+.office:is(.office-wedding, .office-general) .gallery-create:focus-visible,
+.office:is(.office-wedding, .office-general) .office-button:hover,
+.office:is(.office-wedding, .office-general) .office-button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--studio-hover);
+}
+.office:is(.office-wedding, .office-general)
+  .gallery-heading
+  > div
+  > p:last-child,
+.office:is(.office-wedding, .office-general) .gallery-section-heading span,
+.office:is(.office-wedding, .office-general) .invitation-card-meta small,
+.office:is(.office-wedding, .office-general) .card-manage,
+.office:is(.office-wedding, .office-general) .invitation-demo-description,
+.office:is(.office-wedding, .office-general) .invitation-new-card > span {
+  color: var(--ui-muted);
+}
+.office:is(.office-wedding, .office-general) .invitation-card-preview {
+  border-color: var(--ui-border);
+}
+.office:is(.office-wedding, .office-general) .invitation-new-card {
+  background: var(--ui-surface);
+  color: var(--ui-accent);
+  border-color: var(--studio-line);
+}
+.office:is(.office-wedding, .office-general) .invitation-new-card:hover,
+.office:is(.office-wedding, .office-general)
+  .invitation-new-card:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+}
+.office:is(.office-wedding, .office-general)
+  :is(.manager-wedding, .manager-general) {
+  background: var(--ui-background);
+}
+.office:is(.office-wedding, .office-general) input,
+.office:is(.office-wedding, .office-general) textarea {
+  color: var(--ui-ink);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general) {
+  --editor-ground: var(--studio-ground);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .editor-toolbar {
+  background: var(--ui-surface);
+  border-bottom: 1px solid var(--ui-border);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general) .canvas-rail {
+  background: var(--studio-rail);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general) .canvas-desk {
+  background: var(--editor-ground);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-context {
+  background: var(--ui-surface);
+  border-bottom: 1px solid var(--ui-border);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-rail
+  button[aria-pressed="true"] {
+  color: #ffffff;
+  background: var(--ui-accent);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-rail
+  button:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-section-controls {
+  background: var(--ui-soft);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general) input,
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general) textarea {
+  color: var(--ui-ink);
+}
+
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-panel-description,
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-stack-note,
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-panel
+  > header
+  > span,
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-page-name,
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-rail
+  button {
+  color: var(--ui-muted);
+}
+.editor-shell.canvas-studio:is(.editor-wedding, .editor-general)
+  .canvas-rail
+  button[aria-pressed="true"] {
+  color: #ffffff;
+}
