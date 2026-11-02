@@ -23,6 +23,64 @@ export function interiorLayout(
       return { ...e, x: p.align === "left" ? p.inset : e.x };
     return { ...e, x: p.inset, width: 720 - p.inset * 2, align: p.align };
   });
+  if (heading === "Fecha y hora") {
+    return {
+      ...canvas,
+      height: 720,
+      elements: elements.map((e) => {
+        if (e.type === "icon")
+          return { ...e, x: 610, y: 80, width: 42, height: 42 };
+        if (e.binding === "event_date")
+          return {
+            ...e,
+            x: 64,
+            y: 290,
+            width: 592,
+            height: 270,
+            fontSize: 58,
+            align: p.align,
+          };
+        return {
+          ...e,
+          x: 64,
+          y: 140,
+          width: 592,
+          height: 110,
+          fontSize: 42,
+          align: p.align,
+        };
+      }),
+    };
+  }
+  if (heading === "Ubicación") {
+    return {
+      ...canvas,
+      height: 820,
+      elements: elements.map((e) => {
+        if (e.type === "icon")
+          return { ...e, x: 64, y: 80, width: 48, height: 48 };
+        if (e.binding === "location")
+          return {
+            ...e,
+            x: 64,
+            y: 345,
+            width: 592,
+            height: 325,
+            fontSize: 36,
+            align: "left" as const,
+          };
+        return {
+          ...e,
+          x: 64,
+          y: 180,
+          width: 592,
+          height: 125,
+          fontSize: 60,
+          align: "left" as const,
+        };
+      }),
+    };
+  }
   return { ...canvas, elements };
 }
 export function orderTemplateSections(

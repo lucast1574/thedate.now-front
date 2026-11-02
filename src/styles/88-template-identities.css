@@ -1,4 +1,8 @@
 /* Empty photo spaces carry the invitation's palette instead of masking it with grey. */
+.flyer-element[data-element="couple_names"] > span {
+  padding-block: 0.08em;
+  box-sizing: border-box;
+}
 .flyer-surface .template-photo-placeholder {
   color: var(--photo-placeholder-ink, #766044);
   background: color-mix(
@@ -18,13 +22,16 @@
 .flyer-surface
   .invitation-photo[data-treatment="cinema"]
   .template-photo-placeholder {
-  background: transparent;
+  background: #303b39;
   border: 0;
-  color: var(--photo-placeholder-ink, #fff9ed);
+  color: #ffffff;
 }
 .flyer-surface
   .invitation-photo[data-treatment="cinema"]:has(.template-photo-placeholder) {
-  opacity: 0.65;
+  opacity: 1;
+}
+.flyer-surface .invitation-photo[data-treatment="cinema"]::after {
+  background: linear-gradient(#0009, #0001 42%, #000b);
 }
 .art-interior {
   overflow: hidden;

@@ -5,7 +5,7 @@ export function stageTemplate(
   template: InvitationTemplate,
   cover = false,
 ): FlyerCanvas {
-  const height = cover ? 1280 : Math.max(1120, Math.round(canvas.height * 1.3));
+  const height = cover ? 1280 : Math.max(760, Math.round(canvas.height * 1.15));
   const scale = height / canvas.height;
   const staged: FlyerCanvas = {
     ...canvas,
@@ -17,18 +17,13 @@ export function stageTemplate(
         e.type === "text"
           ? small
             ? Math.max(e.fontSize, 24)
-            : Math.max(e.fontSize * (title ? 1.12 : 1.18), title ? 54 : 36)
+            : Math.max(e.fontSize * (title ? 1.12 : 1.08), title ? 54 : 30)
           : e.fontSize;
       return {
         ...e,
         y: Math.round(e.y * scale),
         height: Math.round(e.height * scale),
         fontSize: Math.round(fontSize),
-        ...(e.type === "image" &&
-        cover &&
-        ["cinematic", "landscape"].includes(template.layout || "")
-          ? { x: 0, width: 720, photoTreatment: "cinema" as const }
-          : {}),
       };
     }),
   };
@@ -43,7 +38,7 @@ export function stageTemplate(
       height: 30,
       fontSize: 24,
       font: "sans",
-      color: template.accent,
+      color: template.layout === "cinematic" ? "#ffffff" : template.accent,
       align: "center",
       rotation: 0,
       bold: false,

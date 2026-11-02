@@ -71,7 +71,16 @@ test("all 48 designs support photo-free and photographic compositions, and every
       for (const e of s.canvas.elements.filter((e) => e.type !== "image")) {
         if (
           e.nameFormat !== "initials" &&
-          !(id === "cover" && t.layout === "cinematic")
+          !(
+            id === "cover" &&
+            s.canvas.elements.some(
+              (photo) =>
+                photo.type === "image" &&
+                photo.photoTreatment === "cinema" &&
+                e.y >= photo.y &&
+                e.y + e.height <= photo.y + photo.height,
+            )
+          )
         )
           assert.equal(e.color, "#123456");
         assert.equal(e.font, "script");

@@ -53,6 +53,21 @@ export const identityVariants: Record<string, Partial<TemplateIdentity>> = {
   },
 };
 export const coverVariants: Record<string, Partial<Layout>> = {
+  "wedding-flyer-cinematic": {
+    kicker: [56, 58, 608, 50, 22],
+    title: [40, 620, 640, 185, 100],
+    body: [80, 830, 560, 90, 26],
+  },
+  "general-flyer-gallery": {
+    kicker: [48, 48, 624, 50, 22, "left"],
+    title: [48, 535, 624, 205, 88, "left"],
+    body: [48, 815, 624, 95, 26, "left"],
+  },
+  "general-flyer-landscape": {
+    title: [48, 125, 624, 235, 96, "left"],
+    kicker: [48, 48, 624, 50, 22, "left"],
+    body: [48, 830, 624, 90, 26, "left"],
+  },
   "wedding-flyer-vine": {
     kicker: [95, 120, 530, 60, 18, "left"],
     title: [95, 250, 440, 350, 74, "left"],

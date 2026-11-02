@@ -57,7 +57,13 @@ export function templateCanvas(
         height,
         text: value.slice(0, 2000),
         font: template.font,
-        color: template.layout === "cinematic" ? "#ffffff" : template.accent,
+        color:
+          layout.photoTreatment === "cinema" &&
+          layout.photo &&
+          y >= layout.photo[1] &&
+          y + height <= layout.photo[1] + layout.photo[3]
+            ? "#ffffff"
+            : template.accent,
         fontSize,
         align,
         ...patch,
@@ -94,6 +100,10 @@ export function templateCanvas(
       ? title.toLocaleUpperCase("es")
       : title;
   text("title", heading, layout.title, {
+    font:
+      template.kind === "wedding"
+        ? layout.titleFont || template.font
+        : template.font,
     binding: template.kind === "wedding" ? "couple_names" : "event_title",
     nameFormat:
       template.kind === "wedding"
@@ -123,12 +133,7 @@ export function templateCanvas(
         id: "photo",
         photoKey: content.photoKey || "template-photo",
         photoFit: "cover",
-        photoTreatment:
-          template.layout === "cinematic"
-            ? "cinema"
-            : templateArt(template) === "botanical"
-              ? "soft"
-              : "fade",
+        photoTreatment: layout.photoTreatment || "none",
         x: photo[0],
         y: photo[1],
         width: photo[2],

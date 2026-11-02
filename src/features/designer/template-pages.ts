@@ -32,11 +32,7 @@ export function templatePage(
               ...(item.type === "image"
                 ? {
                     photoFit: item.photoFit || ("cover" as const),
-                    photoTreatment:
-                      item.photoTreatment ||
-                      (templateArt(template) === "botanical"
-                        ? ("soft" as const)
-                        : ("fade" as const)),
+                    photoTreatment: item.photoTreatment || "none",
                   }
                 : {}),
               ...([

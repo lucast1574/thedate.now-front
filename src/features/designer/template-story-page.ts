@@ -31,7 +31,7 @@ export function templateStoryPage(t: InvitationTemplate) {
       y,
       width,
       height,
-      photoTreatment: arch ? "arch" : "fade",
+      photoTreatment: arch ? "arch" : "none",
     });
   const guest = text(
     "guest",

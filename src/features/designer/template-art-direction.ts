@@ -1,6 +1,9 @@
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { FlyerCanvas } from "@/lib/events/flyer";
 export function templateArt(template: InvitationTemplate): FlyerCanvas["art"] {
+  if (template.id === "general-flyer-gala") return "gala";
+  if (template.id === "general-flyer-dinner") return "botanical";
+  if (template.id === "general-flyer-ticket") return "editorial";
   const layout = template.layout || "";
   if (["botanical", "floral", "landscape"].includes(layout)) return "botanical";
   if (["frame", "arch", "ribbon", "seal"].includes(layout)) return "romance";

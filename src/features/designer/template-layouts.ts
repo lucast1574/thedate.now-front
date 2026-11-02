@@ -11,6 +11,8 @@ export type Box = [
 type Motif = [string, number, number, number, number, number?];
 export type Layout = {
   photo?: [number, number, number, number];
+  photoTreatment?: "none" | "cinema";
+  titleFont?: "serif" | "sans" | "script";
   title: Box;
   kicker: Box;
   body: Box;
@@ -25,91 +27,93 @@ export const templateLayouts: Record<
 > = {
   ...extendedLayouts,
   floral: {
-    title: [110, 270, 500, 310, 76],
-    kicker: [110, 170, 500, 50, 18],
-    body: [150, 650, 420, 140, 24],
+    title: [72, 290, 576, 290, 110],
+    titleFont: "script",
+    kicker: [110, 210, 500, 50, 22],
+    body: [120, 650, 480, 140, 28],
     motifs: [
       ["flower", 30, 25, 160, 160, -20],
       ["flower", 530, 735, 150, 150, 160],
       ["leaf", 15, 560, 100, 320],
     ],
-    stacked: true,
+    stacked: false,
   },
   editorial: {
-    title: [65, 160, 590, 300, 94, "left"],
-    kicker: [65, 65, 590, 50, 18, "left"],
-    body: [65, 650, 520, 170, 24, "left"],
+    title: [48, 200, 624, 330, 110, "left"],
+    kicker: [48, 82, 560, 50, 22, "left"],
+    body: [48, 665, 500, 170, 28, "left"],
     motifs: [["sparkle", 510, 520, 120, 120]],
   },
   nocturne: {
-    title: [130, 285, 460, 300, 72],
-    kicker: [130, 170, 460, 50, 18],
-    body: [130, 650, 460, 140, 24],
+    title: [100, 290, 520, 310, 96],
+    kicker: [110, 195, 500, 50, 22],
+    body: [120, 690, 480, 140, 28],
     motifs: [
       ["frame", 45, 45, 630, 870],
       ["star", 320, 70, 80, 80],
       ["star", 320, 800, 80, 80],
     ],
-    stacked: true,
+    stacked: false,
   },
   frame: {
-    title: [125, 270, 470, 310, 72],
-    kicker: [125, 160, 470, 50, 18],
-    body: [130, 650, 460, 140, 24],
+    title: [95, 300, 530, 280, 102],
+    titleFont: "script",
+    kicker: [125, 225, 470, 50, 22],
+    body: [115, 655, 490, 145, 28],
     motifs: [
       ["frame", 42, 42, 636, 876],
       ["heart", 330, 805, 60, 60],
     ],
-    stacked: true,
+    stacked: false,
   },
   monogram: {
-    title: [100, 475, 520, 150, 48],
-    kicker: [100, 95, 520, 50, 18],
-    body: [125, 690, 470, 140, 24],
+    title: [80, 510, 560, 150, 64],
+    kicker: [100, 155, 520, 50, 22],
+    body: [100, 720, 520, 130, 28],
     motifs: [],
     monogram: true,
   },
   botanical: {
-    title: [145, 290, 430, 290, 64],
-    kicker: [145, 190, 430, 50, 18],
-    body: [145, 650, 430, 140, 22],
+    title: [100, 305, 520, 285, 92],
+    kicker: [100, 215, 520, 50, 22],
+    body: [115, 675, 490, 140, 28],
     motifs: [
       ["leaf", 15, 80, 155, 370, -15],
       ["leaf", 550, 540, 155, 370, 165],
     ],
-    stacked: true,
+    stacked: false,
   },
   minimal: {
-    title: [95, 350, 530, 240, 72],
-    kicker: [95, 245, 530, 50, 18],
-    body: [135, 675, 450, 140, 23],
+    title: [64, 290, 592, 290, 98],
+    kicker: [64, 205, 592, 50, 22],
+    body: [110, 650, 500, 140, 28],
     motifs: [["flower", 330, 105, 60, 60]],
   },
   ticket: {
-    title: [100, 260, 520, 300, 88, "left"],
-    kicker: [100, 155, 520, 50, 18, "left"],
-    body: [100, 665, 520, 150, 24, "left"],
+    title: [64, 235, 592, 340, 104, "left"],
+    kicker: [64, 130, 592, 50, 22, "left"],
+    body: [64, 650, 500, 160, 28, "left"],
     motifs: [["frame", 48, 80, 624, 800]],
     uppercase: true,
   },
   poster: {
-    title: [65, 185, 590, 350, 106, "left"],
-    kicker: [65, 65, 590, 50, 18, "left"],
-    body: [65, 650, 500, 170, 26, "left"],
+    title: [48, 210, 624, 360, 118, "left"],
+    kicker: [48, 105, 624, 50, 22, "left"],
+    body: [220, 660, 452, 150, 28, "right"],
     motifs: [["star", 485, 735, 160, 160, 15]],
     uppercase: true,
   },
   arch: {
-    title: [140, 300, 440, 280, 68],
-    kicker: [140, 200, 440, 50, 18],
-    body: [140, 650, 440, 140, 23],
+    title: [110, 320, 500, 275, 90],
+    kicker: [120, 235, 480, 50, 22],
+    body: [120, 670, 480, 140, 28],
     motifs: [["arch", 75, 45, 570, 860]],
-    stacked: true,
+    stacked: false,
   },
   celebration: {
-    title: [85, 285, 550, 300, 90],
-    kicker: [85, 175, 550, 50, 18],
-    body: [110, 650, 500, 140, 25],
+    title: [64, 255, 592, 340, 108],
+    kicker: [64, 165, 592, 50, 22],
+    body: [120, 650, 480, 140, 28],
     motifs: [
       ["star", 50, 45, 160, 160, -12],
       ["sparkle", 500, 40, 130, 130, 15],
@@ -119,9 +123,9 @@ export const templateLayouts: Record<
     uppercase: true,
   },
   sunburst: {
-    title: [100, 380, 520, 260, 80],
-    kicker: [120, 230, 480, 50, 18],
-    body: [120, 705, 480, 140, 24],
+    title: [64, 340, 592, 300, 104],
+    kicker: [100, 245, 520, 50, 22],
+    body: [110, 700, 500, 140, 28],
     motifs: [["sunburst", 170, 35, 380, 380]],
   },
 };
