@@ -1,17 +1,26 @@
+"use client";
+import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon";
 import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
 import type { Event, User } from "@/lib/events/types";
 import { organizationEventDate } from "@/lib/events/organization-events";
+import EventRecordDetails, {
+  recordTab,
+  type RecordTab,
+} from "@/features/manager/records/event-record-details";
 import DesignPreview from "./design-preview";
 
 export default function InvitationRecord({
   event,
   user,
+  initialTab = "invitation",
 }: {
   event: Event;
   user: User;
+  initialTab?: RecordTab;
 }) {
+  const [tab, setTab] = useState(recordTab(initialTab));
   const wedding = event.kind === "wedding";
   return (
     <div
@@ -31,21 +40,27 @@ export default function InvitationRecord({
           <nav aria-label="Datos de la celebración">
             {(
               [
+                ["invitation", "layout", "Invitación"],
                 ["guests", "users", "Invitados"],
                 ["tables", "table", "Mesas"],
                 ["gifts", "lucide:gift", "Regalos"],
               ] as const
-            ).map(([tab, icon, label]) => (
-              <Link
-                key={tab}
-                href={`/manager/${encodeURIComponent(event.id)}?tab=${tab}`}
+            ).map(([value, icon, label]) => (
+              <button
+                type="button"
+                key={value}
+                aria-pressed={tab === value}
+                onClick={() => setTab(value)}
               >
                 <Icon name={icon} /> {label}
-              </Link>
+              </button>
             ))}
           </nav>
         </header>
-        <DesignPreview draft={event} downloadable />
+        <div hidden={tab !== "invitation"}>
+          <DesignPreview draft={event} downloadable />
+        </div>
+        {tab !== "invitation" && <EventRecordDetails event={event} tab={tab} />}
       </main>
     </div>
   );

@@ -7,10 +7,12 @@ import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
 import { useEventReadOnly } from "@/features/studio/use-event-read-only";
+import { recordTab } from "@/features/manager/records/event-record-details";
 import InvitationRecord from "./invitation-record";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
-  const paymentReturn = useSearchParams().get("payment") === "success";
+  const params = useSearchParams();
+  const paymentReturn = params.get("payment") === "success";
   const [event, setEvent] = useState<Event | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const userId = user?.id || "",
@@ -92,7 +94,15 @@ export default function EditorPage({ id }: { id: string }) {
         </Link>
       </main>
     );
-  if (readOnly && user) return <InvitationRecord event={event} user={user} />;
+  if (readOnly && user)
+    return (
+      <InvitationRecord
+        key={`${event.id}-${params.get("tab") || "invitation"}`}
+        event={event}
+        user={user}
+        initialTab={recordTab(params.get("tab"))}
+      />
+    );
   return (
     <ColorMemoryProvider userId={userId}>
       {paymentReturn && (

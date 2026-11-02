@@ -13,7 +13,7 @@ const first = {
   kind: "wedding",
   ownerId: user.id,
   paymentStatus: "paid",
-  startAt: "2026-10-31T23:00:00Z",
+  startAt: "2099-10-31T23:00:00Z",
 };
 const second = { ...first, id: "two", title: "Maria y Luis" };
 const linkMock = {
@@ -52,7 +52,7 @@ test("organization waits for a choice with multiple events and opens a single ev
             ...React,
             useState: () => [[events, "", true][stateIndex++], () => {}],
             useEffect: (effect, deps) => {
-              if (deps.length === 4) effect();
+              if (deps.length === 3) effect();
             },
           },
           "next/link": linkMock,
@@ -171,4 +171,53 @@ test("manager replaces cards with a guarded back link in every section", () => {
       }
     }
   }
+});
+
+test("a single completed event stays in selection and opens the requested record tab in both products", () => {
+  for (const kind of ["general", "wedding"])
+    for (const tool of ["guests", "tables", "gifts"]) {
+      const events = [
+        {
+          ...first,
+          kind,
+          startAt: "2020-01-01T18:00:00Z",
+          timeZone: "America/Bogota",
+        },
+      ];
+      let index = 0;
+      const redirects = [];
+      const Page = loadSource("src/features/manager/organization-page.tsx", {
+        mocks: {
+          react: {
+            ...React,
+            useState: () => [[events, "", true][index++], () => {}],
+            useEffect: (effect, deps) => {
+              if (deps.length === 3) effect();
+            },
+          },
+          "next/link": linkMock,
+          "next/navigation": {
+            useSearchParams: () => new URLSearchParams({ tool }),
+            useRouter: () => ({ replace: (href) => redirects.push(href) }),
+          },
+          "@/features/account/account-shell": {
+            default: ({ children }) => children(user),
+          },
+          "@/features/studio/invitation-thumbnail": { default: () => null },
+        },
+      }).default;
+      const markup = renderToStaticMarkup(
+        React.createElement(Page, {
+          wedding: kind === "wedding",
+          googleEnabled: false,
+        }),
+      );
+      assert.deepEqual(redirects, []);
+      assert.match(markup, /organization-event-card/);
+      assert.ok(markup.includes(`/editor/one?tab=${tool}`));
+      assert.doesNotMatch(
+        markup,
+        /Abriendo tu evento|Gestionar invitados|Organizar mesas/,
+      );
+    }
 });

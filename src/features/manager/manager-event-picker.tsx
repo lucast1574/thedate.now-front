@@ -1,7 +1,11 @@
 import Link from "next/link";
 import Icon from "@/components/icon";
 import InvitationThumbnail from "@/features/studio/invitation-thumbnail";
-import { organizationEventDate } from "@/lib/events/organization-events";
+import { eventReadOnly } from "@/lib/events/event-closure";
+import {
+  organizationEventDate,
+  organizationEventHref,
+} from "@/lib/events/organization-events";
 import type { Event } from "@/lib/events/types";
 
 export default function ManagerEventPicker({
@@ -26,7 +30,15 @@ export default function ManagerEventPicker({
       <header className="organization-selection-heading">
         <h2>{wedding ? "Tus bodas" : "Tus eventos"}</h2>
         <span>
-          {events.length} {wedding ? "bodas" : "eventos"} disponibles
+          {events.length}{" "}
+          {wedding
+            ? events.length === 1
+              ? "boda"
+              : "bodas"
+            : events.length === 1
+              ? "evento"
+              : "eventos"}{" "}
+          {events.length === 1 ? "disponible" : "disponibles"}
         </span>
       </header>
       <section
@@ -37,7 +49,7 @@ export default function ManagerEventPicker({
           <Link
             key={item.id}
             className="organization-event-card"
-            href={`/manager/${encodeURIComponent(item.id)}?tab=${tab}`}
+            href={organizationEventHref(item, tab)}
           >
             <span className="organization-event-thumbnail">
               {item.id === lastOpened && (
@@ -60,7 +72,13 @@ export default function ManagerEventPicker({
               </span>
               <strong>{item.title}</strong>
               <span className="organization-event-action">
-                {label}
+                {eventReadOnly(item)
+                  ? tab === "tables"
+                    ? "Ver mesas"
+                    : tab === "gifts"
+                      ? "Ver regalos"
+                      : "Ver invitados"
+                  : label}
                 <Icon name="arrow" />
               </span>
             </span>

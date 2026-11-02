@@ -4,7 +4,11 @@ import { useSearchParams, useRouter } from "next/navigation";
 import AccountShell from "@/features/account/account-shell";
 import { api } from "@/lib/api/client";
 import type { Event, User } from "@/lib/events/types";
-import { organizationEvents } from "@/lib/events/organization-events";
+import { eventReadOnly } from "@/lib/events/event-closure";
+import {
+  organizationEvents,
+  organizationEventHref,
+} from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
 import { useEventRecency } from "@/features/studio/use-event-recency";
 import { orderEvents } from "@/lib/events/event-order";
@@ -41,11 +45,11 @@ function OrganizationTools({
   }, [wedding, user]);
   const selected =
     events.find((e) => e.id === params.get("event")) ||
-    (events.length === 1 ? events[0] : undefined);
+    (events.length === 1 && !eventReadOnly(events[0]) ? events[0] : undefined);
   useEffect(() => {
     if (selected?.paymentStatus === "paid")
-      router.replace(`/manager/${encodeURIComponent(selected.id)}?tab=${tool}`);
-  }, [selected?.id, selected?.paymentStatus, tool, router]);
+      router.replace(organizationEventHref(selected, tool));
+  }, [selected, tool, router]);
   const hasPaidEvent = events.some(
     (event) => !event.isDemo && event.paymentStatus === "paid",
   );
@@ -61,24 +65,16 @@ function OrganizationTools({
                 : "Invitados y respuestas"}
           </h1>
           <p>
-            {events.length > 1
+            {events.length > 0
               ? wedding
-                ? tool === "tables"
-                  ? "Elige una boda para organizar sus mesas y darle su lugar a cada invitado."
-                  : tool === "gifts"
-                    ? "Elige una boda para preparar su lista de regalos y seguir cada elección."
-                    : "Elige una boda para gestionar sus invitados, enviar invitaciones y seguir sus respuestas."
-                : tool === "tables"
-                  ? "Elige un evento para distribuir a sus invitados y organizar las mesas."
-                  : tool === "gifts"
-                    ? "Elige un evento para preparar y gestionar su lista de regalos."
-                    : "Elige un evento para gestionar sus invitados y seguir cada respuesta."
+                ? "Elige una boda para abrir su información."
+                : "Elige un evento para abrir su información."
               : "Conoce lo que incluye tu evento y abre su espacio de organización."}
           </p>
         </div>
       </header>
       {error && <p role="alert">{error}</p>}
-      {loaded && !error && !selected && events.length > 1 && (
+      {loaded && !error && !selected && events.length > 0 && (
         <ManagerEventPicker
           events={orderEvents(events, lastOpened)}
           wedding={wedding}

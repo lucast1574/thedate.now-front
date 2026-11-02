@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
 import OrganizationPreview from "./organization-preview";
 import WishlistPanel from "@/features/gifts/wishlist-panel";
+import InvitationRecord from "@/features/designer/invitation-record";
 import ManagerTools from "./manager-tools";
 import Alert from "@/components/alert";
 import { useManager } from "./use-manager";
@@ -58,6 +59,15 @@ function ManagerWorkspace({ id }: { id: string }) {
           Continuar con mi invitación
         </Link>
       </main>
+    );
+  if (manager.readOnly && user)
+    return (
+      <InvitationRecord
+        key={`${event.id}-${tab}`}
+        event={event}
+        user={user}
+        initialTab={tab}
+      />
     );
   const allowed = event.paymentStatus === "paid" && !event.isDemo;
   const guard = () =>

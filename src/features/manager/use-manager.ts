@@ -56,7 +56,12 @@ export function useManager(id: string) {
         setEvents(list);
         setEvent(found);
         setUser(current);
-        if (!found.isDemo && found.paymentStatus === "paid") await refresh();
+        if (
+          !found.isDemo &&
+          found.paymentStatus === "paid" &&
+          !eventReadOnly(found)
+        )
+          await refresh();
       })
       .catch((e) => {
         if (active) setError(e.message);
@@ -66,7 +71,9 @@ export function useManager(id: string) {
     };
   }, [id, refresh]);
   useLiveResponses(
-    Boolean(event && !event.isDemo && event.paymentStatus === "paid"),
+    Boolean(
+      event && !readOnly && !event.isDemo && event.paymentStatus === "paid",
+    ),
     refresh,
     setError,
   );

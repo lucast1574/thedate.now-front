@@ -1,3 +1,4 @@
+import { eventReadOnly } from "./event-closure";
 import type { Event, Kind, User } from "./types";
 
 import { orderEvents } from "./event-order";
@@ -22,4 +23,8 @@ export function organizationEventDate(event: Event) {
     year: "numeric",
     timeZone: event.timeZone || "America/Bogota",
   }).format(new Date(event.startAt));
+}
+
+export function organizationEventHref(event: Event, tool: string) {
+  return `/${eventReadOnly(event) ? "editor" : "manager"}/${encodeURIComponent(event.id)}?tab=${tool}`;
 }
