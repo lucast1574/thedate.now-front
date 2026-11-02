@@ -1,3 +1,24 @@
+.invitation-demo-badge {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 24px;
+  background: var(--workspace-tint);
+  color: var(--workspace-accent);
+  font:
+    600 11px/1.2 var(--font-sans),
+    sans-serif;
+  letter-spacing: 0.06em;
+}
+.invitation-demo-badge .ui-icon {
+  width: 14px;
+  height: 14px;
+}
 .demo-cover {
   container-type: inline-size;
   position: absolute;

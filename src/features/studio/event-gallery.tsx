@@ -104,14 +104,30 @@ export default function EventGallery({
               <Link
                 className="invitation-card-preview"
                 href={`/editor/${encodeURIComponent(event.id)}`}
-                aria-label={`${eventReadOnly(event) ? "Ver" : "Editar"} ${event.title}`}
+                aria-label={`${eventReadOnly(event) ? "Ver" : "Editar"} ${event.title}${event.isDemo ? " · Invitación de demo" : ""}`}
               >
                 {defaultDemoCover(event) ? (
                   <DemoCover event={event} />
                 ) : (
                   <InvitationThumbnail event={event} />
                 )}
+                {event.isDemo && (
+                  <span className="invitation-demo-badge">
+                    <Icon name={wedding ? "flower" : "sparkle"} />
+                    Demo
+                  </span>
+                )}
               </Link>
+              {event.isDemo && (
+                <div className="invitation-card-meta">
+                  <div>
+                    <span className="card-status demo">Invitación de demo</span>
+                    <p className="invitation-demo-description">
+                      Prueba el editor con esta invitación de muestra.
+                    </p>
+                  </div>
+                </div>
+              )}
               {!event.isDemo && (
                 <div className="invitation-card-meta">
                   <div>

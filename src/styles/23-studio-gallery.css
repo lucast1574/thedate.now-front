@@ -162,7 +162,13 @@
   color: var(--workspace-accent);
 }
 .card-status.demo {
-  color: #9a8b7a;
+  color: var(--workspace-accent);
+}
+.invitation-demo-description {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #75695e;
 }
 .invitation-card h3 {
   font:
