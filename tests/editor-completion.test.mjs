@@ -68,10 +68,10 @@ test("failed saving keeps unfinished work in the editor", async () => {
   await button(tree, "Terminar y continuar").props.onClick();
   assert.deepEqual(calls, ["save"]);
 });
-test("published invitations leave the editor with success feedback after confirmation", async () => {
+test("published invitations return to My invitations with success feedback", async () => {
   const { tree, calls } = toolbar(true, false, "2026-01-01");
   await button(tree, "Actualizar invitación").props.onClick();
-  assert.deepEqual(calls, ["publish", "updated:My day", "/?event=one"]);
+  assert.deepEqual(calls, ["publish", "updated:My day", "/"]);
   assert.equal(button(tree, "Terminar y continuar"), null);
 });
 

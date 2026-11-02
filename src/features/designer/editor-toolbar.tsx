@@ -109,7 +109,7 @@ export default function EditorToolbar({
               if (editor.draft.publishedAt) {
                 if (await editor.publish()) {
                   updated(editor.draft.title);
-                  router.push(`/?event=${encodeURIComponent(editor.draft.id)}`);
+                  router.push("/");
                 }
               } else if (await editor.save())
                 router.push(
