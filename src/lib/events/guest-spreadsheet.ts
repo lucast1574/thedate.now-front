@@ -1,7 +1,8 @@
 import { collectGuestRows, type GuestRowIssue } from "./guest-rows";
 import { validateWorkbookZip } from "./xlsx-guard";
-export async function readGuestFile(file: File) {
-  const report = await readGuestFileReport(file);
+import type { Kind } from "./types";
+export async function readGuestFile(file: File, kind: Kind = "wedding") {
+  const report = await readGuestFileReport(file, kind);
   if (report.issues.length) {
     const issue = report.issues[0];
     throw new Error(`Revisa la fila ${issue.row}: ${issue.message}`);
@@ -10,7 +11,7 @@ export async function readGuestFile(file: File) {
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
   return report.guests;
 }
-export async function readGuestFileReport(file: File) {
+export async function readGuestFileReport(file: File, kind: Kind = "wedding") {
   if (file.size > 2_000_000) throw new Error("El archivo supera 2 MB.");
   if (!/\.xlsx$/i.test(file.name))
     throw new Error("Selecciona un archivo Excel (.xlsx).");
@@ -105,7 +106,7 @@ export async function readGuestFileReport(file: File) {
       rows.push([]);
     } else rows.push(cells);
   });
-  const report = collectGuestRows(rows);
+  const report = collectGuestRows(rows, kind);
   return {
     guests: report.guests,
     issues: [...issues, ...report.issues].sort((a, b) => a.row - b.row),
@@ -119,13 +120,17 @@ export function downloadFile(data: BlobPart, name: string, type: string) {
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
-export async function downloadGuestTemplate() {
-  const response = await fetch("/templates/plantilla-invitados.xlsx");
+export async function downloadGuestTemplate(kind: Kind = "wedding") {
+  const name =
+    kind === "general"
+      ? "plantilla-invitados-the-date.xlsx"
+      : "plantilla-invitados.xlsx";
+  const response = await fetch(`/templates/${name}`);
   if (!response.ok)
     throw new Error("No pudimos descargar la plantilla. Vuelve a intentarlo.");
   downloadFile(
     await response.arrayBuffer(),
-    "plantilla-invitados.xlsx",
+    name,
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   );
 }

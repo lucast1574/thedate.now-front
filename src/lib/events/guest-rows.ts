@@ -1,4 +1,4 @@
-import type { GuestFields } from "./types";
+import type { GuestFields, Kind } from "./types";
 import type { Gender } from "./seating";
 import { guestCategory } from "./guest-categories";
 import { guestPhone, phoneCountry } from "./guest-phone";
@@ -22,8 +22,11 @@ const gender = (value: string): Gender => {
   if (v === "mujer" || v === "woman") return "woman";
   throw new Error("Usa hombre, mujer o sin especificar en género.");
 };
-export function parseGuestRows(rows: string[][]): GuestFields[] {
-  const report = collectGuestRows(rows);
+export function parseGuestRows(
+  rows: string[][],
+  kind: Kind = "wedding",
+): GuestFields[] {
+  const report = collectGuestRows(rows, kind);
   if (report.issues.length) {
     const issue = report.issues[0];
     throw new Error(`Revisa la fila ${issue.row}: ${issue.message}`);
@@ -32,7 +35,7 @@ export function parseGuestRows(rows: string[][]): GuestFields[] {
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
   return report.guests;
 }
-export function collectGuestRows(rows: string[][]) {
+export function collectGuestRows(rows: string[][], kind: Kind = "wedding") {
   const headerRow = rows.slice(0, 20).findIndex((row) => {
     const labels = row.map((cell) => cell.trim().toLowerCase());
     return (
@@ -123,6 +126,7 @@ export function collectGuestRows(rows: string[][]) {
         gender: gender(field("genero")),
         family: guestCategory(
           field("categoria", "categoría", "familia", "grupo"),
+          kind,
         ),
         companions: names.map((name, i) => ({
           name,

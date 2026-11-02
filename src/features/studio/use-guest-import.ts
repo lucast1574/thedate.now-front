@@ -6,11 +6,13 @@ import {
 } from "@/lib/events/guest-spreadsheet";
 import type { GuestRowIssue } from "@/lib/events/guest-rows";
 import type { GuestImportResult } from "@/lib/events/guest-import-result";
+import type { Kind } from "@/lib/events/types";
 
 export function useGuestImport(
   eventId: string,
   disabled: boolean,
   onImported: () => Promise<void>,
+  kind: Kind = "wedding",
 ) {
   const reading = useRef(false);
   const [notice, setNotice] = useState("");
@@ -43,7 +45,7 @@ export function useGuestImport(
     setFailed(false);
     setFileName(file.name);
     try {
-      const report = await readGuestFileReport(file);
+      const report = await readGuestFileReport(file, kind);
       setIssues(report.issues);
       if (!report.guests.length) {
         reportError(
@@ -81,7 +83,7 @@ export function useGuestImport(
   }
   async function template() {
     try {
-      await downloadGuestTemplate();
+      await downloadGuestTemplate(kind);
     } catch (error) {
       reportError((error as Error).message);
     }

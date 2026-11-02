@@ -73,8 +73,12 @@ export default function GuestPanel({
       <Link className="office-button" href={`/manager/${selected.id}`}>
         Abrir gestor de invitados y plano de mesas ↗
       </Link>
-      <GuestForm busy={busy} onAdd={onAdd} />
-      <GuestImport eventId={selected.id} onImported={onImported} />
+      <GuestForm kind={selected.kind} busy={busy} onAdd={onAdd} />
+      <GuestImport
+        kind={selected.kind}
+        eventId={selected.id}
+        onImported={onImported}
+      />
       <GuestList guests={guests} />
     </>
   );

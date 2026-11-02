@@ -1,3 +1,14 @@
+import type { Kind } from "./types";
+export const generalGuestCategories = [
+  "Familia",
+  "Amigos",
+  "Compañeros de trabajo",
+  "Compañeros de estudios",
+  "Vecinos",
+  "Equipo o club",
+  "Invitados especiales",
+  "Otros",
+];
 export const guestCategories = [
   "Familia del novio",
   "Familia de la novia",
@@ -16,12 +27,16 @@ const key = (value: string) =>
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLocaleLowerCase("es");
-export function guestCategory(value: string) {
+export function guestCategoriesFor(kind: Kind) {
+  return kind === "general" ? generalGuestCategories : guestCategories;
+}
+export function guestCategory(value: string, kind: Kind = "wedding") {
   if (!value.trim()) return "";
-  const category = guestCategories.find((item) => key(item) === key(value));
+  const choices = guestCategoriesFor(kind);
+  const category = choices.find((item) => key(item) === key(value));
   if (!category)
     throw new Error(
-      `Elige una categoría de la plantilla: ${guestCategories.join(", ")}.`,
+      `Elige ${kind === "general" ? "un grupo" : "una categoría"} de la plantilla: ${choices.join(", ")}.`,
     );
   return category;
 }

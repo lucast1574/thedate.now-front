@@ -1,5 +1,5 @@
 import { emptyPlan, type SeatingPlan } from "./seating";
-export const exampleSeatingPlan = (): SeatingPlan => ({
+export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
   ...emptyPlan(),
   tables: [
     {
@@ -31,7 +31,7 @@ export const exampleSeatingPlan = (): SeatingPlan => ({
     },
     {
       id: "d",
-      name: "Familia de Sofía",
+      name: wedding ? "Familia de Sofía" : "Compañeros de estudios",
       shape: "round",
       capacity: 8,
       x: 180,
@@ -40,7 +40,7 @@ export const exampleSeatingPlan = (): SeatingPlan => ({
     },
     {
       id: "e",
-      name: "Familia de Mateo",
+      name: wedding ? "Familia de Mateo" : "Vecinos",
       shape: "round",
       capacity: 8,
       x: 1200,
@@ -49,7 +49,7 @@ export const exampleSeatingPlan = (): SeatingPlan => ({
     },
     {
       id: "f",
-      name: "Compañeros",
+      name: wedding ? "Compañeros" : "Equipo o club",
       shape: "round",
       capacity: 6,
       x: 640,

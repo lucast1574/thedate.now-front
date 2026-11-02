@@ -110,6 +110,7 @@ function ManagerWorkspace({ id }: { id: string }) {
               <WishlistPanel key={event.id} event={event} />
             ) : (
               <OrganizationPreview
+                wedding={event.kind === "wedding"}
                 tool={tab}
                 eventId={event.isDemo ? undefined : event.id}
               />

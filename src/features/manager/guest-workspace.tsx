@@ -27,6 +27,7 @@ export default function GuestWorkspace({
       </header>
       <div className="guest-entry-methods">
         <GuestImport
+          kind={manager.event.kind}
           eventId={manager.event.id}
           disabled={manager.busy}
           onImported={() => manager.refresh()}
@@ -42,7 +43,11 @@ export default function GuestWorkspace({
           <p className="guest-hint">
             Los nuevos invitados se añaden al final de tu lista.
           </p>
-          <GuestForm busy={manager.busy} onAdd={manager.add} />
+          <GuestForm
+            kind={manager.event.kind}
+            busy={manager.busy}
+            onAdd={manager.add}
+          />
         </section>
       </div>
       <aside className="guest-queue-guide">

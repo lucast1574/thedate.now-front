@@ -3,8 +3,8 @@ import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
 import CompanionFields from "@/components/companion-fields";
 import { useState, type FormEvent } from "react";
-import type { GuestFields } from "@/lib/events/types";
-import { guestCategories } from "@/lib/events/guest-categories";
+import type { GuestFields, Kind } from "@/lib/events/types";
+import { guestCategoriesFor } from "@/lib/events/guest-categories";
 import { guestPhone } from "@/lib/events/guest-phone";
 import GuestPhoneField from "./guest-phone-field";
 import type { CountryCode } from "libphonenumber-js";
@@ -20,8 +20,10 @@ const blank = (): GuestFields => ({
 export default function GuestForm({
   busy,
   onAdd,
+  kind = "wedding",
 }: {
   busy: boolean;
+  kind?: Kind;
   onAdd: (fields: GuestFields) => Promise<boolean>;
 }) {
   const [guest, setGuest] = useState(blank);
@@ -92,13 +94,17 @@ export default function GuestForm({
           </Listbox>
         </label>
         <label>
-          Categoría para mesas (opcional)
+          {kind === "general"
+            ? "Grupo para mesas (opcional)"
+            : "Categoría para mesas (opcional)"}
           <Listbox
             value={guest.family}
             onValueChange={(family) => setGuest({ ...guest, family })}
           >
-            <option value="">Sin categoría</option>
-            {guestCategories.map((category) => (
+            <option value="">
+              {kind === "general" ? "Sin grupo" : "Sin categoría"}
+            </option>
+            {guestCategoriesFor(kind).map((category) => (
               <option key={category} value={category}>
                 {category}
               </option>

@@ -3,15 +3,18 @@ import Icon from "@/components/icon";
 import GuestFileDropzone from "./guest-file-dropzone";
 import GuestImportReceipt, { GuestImportReview } from "./guest-import-receipt";
 import { useGuestImport } from "./use-guest-import";
+import type { Kind } from "@/lib/events/types";
 
 export default function GuestImport({
   eventId,
   onImported,
   disabled = false,
+  kind = "wedding",
 }: {
   eventId: string;
   onImported: () => Promise<void>;
   disabled?: boolean;
+  kind?: Kind;
 }) {
   const {
     busy,
@@ -25,7 +28,7 @@ export default function GuestImport({
     read,
     template,
     reportError,
-  } = useGuestImport(eventId, disabled, onImported);
+  } = useGuestImport(eventId, disabled, onImported, kind);
   return (
     <section
       className="guest-import guest-file-card"

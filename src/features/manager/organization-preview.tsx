@@ -34,7 +34,7 @@ export default function OrganizationPreview({
 }) {
   const [selected, setSelected] = useState("");
   const [areas, setAreas] = useState(exampleVenueAreas);
-  const [plan, setPlan] = useState(exampleSeatingPlan);
+  const [plan, setPlan] = useState(() => exampleSeatingPlan(wedding));
   return (
     <section className="organization-preview">
       <header>
