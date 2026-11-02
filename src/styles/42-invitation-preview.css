@@ -128,7 +128,9 @@
   color: var(--preview-accent);
   border: 0;
 }
-.preview-name {
+.preview-toolbar .preview-name {
+  display: flex;
+  flex-direction: row;
   padding: 0;
   gap: 8px;
   font-size: 11px;
