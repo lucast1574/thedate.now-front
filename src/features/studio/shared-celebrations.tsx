@@ -1,6 +1,7 @@
 "use client";
 import { SharingDemo } from "./sharing-demo";
 export { SharingDemo } from "./sharing-demo";
+import { sharingEvents } from "@/lib/events/sharing-events";
 import { useEventReadOnly } from "./use-event-read-only";
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -46,16 +47,7 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
     let active = true;
     api<Event[]>("/api/backend/events?scope=sharing")
       .then((list) => {
-        if (active)
-          setEvents(
-            list.filter(
-              (e) =>
-                e.kind === (wedding ? "wedding" : "general") &&
-                !e.isDemo &&
-                e.paymentStatus === "paid" &&
-                (e.ownerId === user.id || user.role === "admin"),
-            ),
-          );
+        if (active) setEvents(list);
       })
       .catch((e) => {
         if (active) setError(e.message);
@@ -67,7 +59,12 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
       active = false;
     };
   }, [wedding, user.id, user.role]);
-  const event = events.find((e) => e.id === selected) || events[0];
+  const available = sharingEvents(
+    events,
+    wedding ? "wedding" : "general",
+    user,
+  );
+  const event = available.find((e) => e.id === selected) || available[0];
   const readOnly = useEventReadOnly(event);
   return (
     <section className="shared-celebrations">
@@ -109,7 +106,7 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
             <label>
               {wedding ? "Selecciona la boda" : "Selecciona el evento"}
               <Listbox value={event.id} onValueChange={setSelected}>
-                {events.map((e) => (
+                {available.map((e) => (
                   <option key={e.id} value={e.id}>
                     {e.title}
                   </option>

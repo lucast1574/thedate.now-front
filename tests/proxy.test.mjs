@@ -259,3 +259,19 @@ test("guest management forwards authenticated corrections and deletions", async 
     404,
   );
 });
+
+test("sharing scope reaches the backend without forwarding arbitrary query options", async () => {
+  let target;
+  const proxy = proxyFixture("local-test-session", (url) => {
+    target = url;
+    return Response.json([]);
+  });
+  await proxy(
+    new Request(
+      "https://crea.thedate.now/api/backend/events?scope=sharing&ownerId=other",
+    ),
+    ["events"],
+    "GET",
+  );
+  assert.equal(target, "https://api.thedate.now/events?scope=sharing");
+});

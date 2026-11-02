@@ -37,11 +37,11 @@ export async function proxyStudio(
       );
     }
   }
+  const scope = new URL(request.url).searchParams.get("scope");
   const query = joined.includes("support/tickets")
     ? new URL(request.url).search
-    : joined === "events" &&
-        new URL(request.url).searchParams.get("scope") === "organization"
-      ? "?scope=organization"
+    : joined === "events" && (scope === "organization" || scope === "sharing")
+      ? `?scope=${scope}`
       : "";
   const result = await backendFetch(joined + query, {
     method,
