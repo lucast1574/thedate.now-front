@@ -24,9 +24,7 @@ export function interiorLayout(
       return { ...e, x: p.align === "left" ? p.inset : e.x };
     return { ...e, x: p.inset, width: 720 - p.inset * 2, align: p.align };
   });
-  if (["Fecha y hora", "Ubicación"].includes(heading))
-    return collectionInterior({ ...canvas, elements }, t, heading);
-  return { ...canvas, elements };
+  return collectionInterior({ ...canvas, elements }, t, heading);
 }
 export function orderTemplateSections(
   sections: DesignSection[],

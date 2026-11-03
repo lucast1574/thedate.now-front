@@ -11,7 +11,7 @@ export type Box = [
 type Motif = [string, number, number, number, number, number?];
 export type Layout = {
   photo?: [number, number, number, number];
-  photoTreatment?: "none" | "cinema";
+  photoTreatment?: "none" | "cinema" | "arch" | "soft";
   titleFont?: "serif" | "sans" | "script";
   title: Box;
   kicker: Box;

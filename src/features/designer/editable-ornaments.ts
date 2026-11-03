@@ -1,6 +1,15 @@
-import type { FlyerCanvas } from "@/lib/events/flyer";
+import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import { ornaments } from "@/lib/events/ornaments";
 import { element } from "./flyer/canvas-model";
+type Box = { x: number; y: number; width: number; height: number };
+export function intersects(a: Box, b: Box, gap = 12) {
+  return (
+    a.x < b.x + b.width + gap &&
+    a.x + a.width + gap > b.x &&
+    a.y < b.y + b.height + gap &&
+    a.y + a.height + gap > b.y
+  );
+}
 export function editableOrnaments(
   canvas: FlyerCanvas,
   ink?: string,
@@ -14,51 +23,60 @@ export function editableOrnaments(
     "#655440";
   const w = canvas.width,
     h = canvas.height;
-  const cover = canvas.elements.some((item) =>
-    ["couple_names", "event_title"].includes(item.binding || ""),
+  const content = canvas.elements.filter((e) => e.type !== "icon");
+  const cover = content.some((e) =>
+    ["couple_names", "event_title"].includes(e.binding || ""),
   );
-  const arrangements: Record<
-    string,
-    [number, number, number, number, number][]
-  > = {
-    botanical: [
-      [0, 10, 10, 200, 270],
-      [1, w - 160, h - 230, 150, 220],
-    ],
-    romance: [
-      [0, w / 2 - 75, 24, 150, 150],
-      [1, 28, 24, w - 56, h - 48],
-    ],
-    gala: [
-      [0, 16, 30, 130, 155],
-      [0, w - 146, 30, 130, 155],
-    ],
-    editorial: [
-      [0, w - 132, 26, 100, 100],
-      [1, w - 200, h - 135, 170, 100],
-    ],
-    fiesta: [
-      [0, w - 205, 12, 190, 190],
-      [1, 6, h - 225, 180, 210],
-    ],
-    coastal: [
-      [0, w / 2 - 55, 12, 110, 110],
-      [1, 20, h - 105, w - 40, 85],
-    ],
-  };
-  const art = arrangements[canvas.art].map(([index, x, y, width, height], n) =>
-    element("icon", {
-      id: `ornament-${crypto.randomUUID()}`,
-      icon: `art:${family[index].id}`,
-      x,
-      y,
-      width,
-      height,
-      rotation: canvas.art === "botanical" && n === 1 ? 180 : 0,
-      color,
-      opacity: cover ? 0.7 : 0.4,
-    }),
-  );
+  // Decorations are small, proportional accents occupying genuine negative space.
+  // An empty result is intentional for photographic panels; never force a frame over content.
+  const sizes = cover ? [220, 170, 110] : [160, 100];
+  const art: FlyerElement[] = [];
+  const corners = cover
+    ? ["top", "bottom"]
+    : content.some((e) => e.type === "image")
+      ? ["bottom"]
+      : ["top"];
+  for (const [n, corner] of corners.entries()) {
+    for (const size of sizes) {
+      const candidates =
+        corner === "top"
+          ? [
+              { x: 24, y: 24 },
+              { x: w - size - 24, y: 24 },
+              { x: (w - size) / 2, y: 24 },
+            ]
+          : [
+              { x: w - size - 24, y: h - size - 24 },
+              { x: 24, y: h - size - 24 },
+            ];
+      const space = candidates
+        .map((p) => ({ ...p, width: size, height: size }))
+        .find(
+          (box) =>
+            ![...content, ...art].some((item) => intersects(box, item, 18)),
+        );
+      if (!space) continue;
+      const drawing = family[n % family.length];
+      // Cameos/tickets are library frames, not automatic full-page decorations.
+      const icon =
+        drawing.id === "cameo"
+          ? "ribbon"
+          : drawing.id === "ticket"
+            ? "orbit"
+            : drawing.id;
+      art.push(
+        element("icon", {
+          ...space,
+          id: `ornament-${crypto.randomUUID()}`,
+          icon: `art:${icon}`,
+          color,
+          opacity: cover ? 0.8 : 0.65,
+          rotation: n && canvas.art === "botanical" ? 180 : 0,
+        }),
+      );
+      break;
+    }
+  }
   return {
     ...canvas,
     artEditable: true,

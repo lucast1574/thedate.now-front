@@ -164,12 +164,7 @@ export function templateExtraPages(
     ]),
   );
   pages[pages.length - 1].when = "gifts";
-  if (
-    !source?.isVirtual &&
-    ["botanical", "minimal", "landscape", "editorial"].includes(
-      template.layout || "",
-    )
-  ) {
+  if (!source?.isVirtual) {
     pages.push(
       templatePage(template, "El lugar en el mapa", 680, [
         templateText(

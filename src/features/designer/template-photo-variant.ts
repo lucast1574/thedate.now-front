@@ -1,3 +1,5 @@
+import { editableOrnaments } from "./editable-ornaments";
+import { templateCanvas } from "./template-canvas";
 import type { DesignSection } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { templateIdentity } from "./template-identity";
@@ -22,6 +24,34 @@ export function templatePhotoVariant(
         )
       )
         return section;
+      if (section.heading === "Portada" && template) {
+        const layouts = {
+          gallery: "editorial",
+          split: "botanical",
+          ribbon: "frame",
+          typographic: "poster",
+          polaroid: "floral",
+          landscape: "minimal",
+          cinematic: "nocturne",
+          mosaic: "editorial",
+          seal: "arch",
+          waves: "minimal",
+          confetti: "celebration",
+          grid: "ticket",
+        } as const;
+        const layout = layouts[template.layout as keyof typeof layouts];
+        if (layout) {
+          const title = canvas.elements.find((e) => e.id === "title")?.text;
+          const body = canvas.elements.find((e) => e.id === "body")?.text;
+          return {
+            ...section,
+            canvas: templateCanvas(
+              { ...template, id: `${template.id}-paper`, layout },
+              { title, body },
+            ),
+          };
+        }
+      }
       const cover = section.heading === "Portada",
         inset = p?.inset || 100,
         left = p?.align === "left",
@@ -90,6 +120,15 @@ export function templatePhotoVariant(
             };
           return { ...e, color };
         });
-      return { ...section, canvas: { ...canvas, elements } };
+      return {
+        ...section,
+        canvas: canvas.artEditable
+          ? editableOrnaments({
+              ...canvas,
+              artEditable: false,
+              elements: elements.filter((e) => !e.id.startsWith("ornament-")),
+            })
+          : { ...canvas, elements },
+      };
     });
 }

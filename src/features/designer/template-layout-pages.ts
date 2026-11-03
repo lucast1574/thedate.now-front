@@ -3,6 +3,7 @@ import { element } from "./flyer/canvas-model";
 import { templatePage, templateText } from "./template-pages";
 export function templateLayoutPages(template: InvitationTemplate) {
   const layout = template.layout || "";
+  const pages = [];
   const photo = (
     id: string,
     x: number,
@@ -22,9 +23,7 @@ export function templateLayoutPages(template: InvitationTemplate) {
     });
   const heading = (title: string) =>
     templateText(template, "album-title", title, 60, 110, 42);
-  if (
-    ["gallery", "polaroid", "mosaic", "landscape", "waves"].includes(layout)
-  ) {
+  {
     const photos =
       layout === "gallery"
         ? [
@@ -47,7 +46,7 @@ export function templateLayoutPages(template: InvitationTemplate) {
                 photo("panorama-a", 60, 220, 600, 220),
                 photo("panorama-b", 60, 490, 600, 220),
               ];
-    return [
+    pages.push(
       templatePage(template, "Nuestros momentos", 900, [
         heading(
           template.kind === "wedding"
@@ -64,14 +63,14 @@ export function templateLayoutPages(template: InvitationTemplate) {
           24,
         ),
       ]),
-    ];
+    );
   }
-  if (["split", "cinematic", "grid"].includes(layout)) {
+  {
     const labels =
       template.kind === "wedding"
         ? ["El encuentro", "El brindis", "La celebración"]
         : ["La bienvenida", "El gran momento", "Seguimos celebrando"];
-    return [
+    pages.push(
       templatePage(template, "El programa", 860, [
         heading("Así será nuestro día"),
         ...labels.flatMap((label, index) => [
@@ -95,7 +94,7 @@ export function templateLayoutPages(template: InvitationTemplate) {
           ),
         ]),
       ]),
-    ];
+    );
   }
-  return [];
+  return pages;
 }

@@ -1,7 +1,21 @@
 export type OrnamentFamily =
   "botanical" | "romance" | "gala" | "editorial" | "fiesta" | "coastal";
-// Original vector drawings. Coordinates remain independent of the interface icon set.
+// Editable artwork, independent of interface icons. Raster provenance: public/templates/art/SOURCE.txt.
 export const ornaments = [
+  {
+    id: "floral-corner",
+    name: "Rincón de flores",
+    family: "botanical",
+    path: "",
+    asset: "/templates/art/floral-corner.png",
+  },
+  {
+    id: "floral-stem",
+    name: "Ramo de ceremonia",
+    family: "botanical",
+    path: "",
+    asset: "/templates/art/floral-stem.png",
+  },
   {
     id: "olive",
     name: "Rama de olivo",

@@ -1,3 +1,4 @@
+import { collectionRhythm } from "./collection-rhythm";
 import { editableOrnaments } from "./editable-ornaments";
 import { interiorLayout } from "./template-interior-layout";
 import { stageTemplate } from "./template-stage";
@@ -21,41 +22,45 @@ export function templatePage(
     icon: "none",
     canvas: editableOrnaments(
       adaptTemplateCanvas(
-        interiorLayout(
-          stageTemplate(
-            {
-              art: templateArt(template),
-              font: template.font,
-              width: 720,
-              height,
-              background: template.background,
-              elements: elements.map((item) => ({
-                ...item,
-                ...(item.type === "image"
-                  ? {
-                      photoFit: item.photoFit || ("cover" as const),
-                      photoTreatment: item.photoTreatment || "none",
-                    }
-                  : {}),
-                ...([
-                  "editorial",
-                  "split",
-                  "typographic",
-                  "grid",
-                  "cinematic",
-                ].includes(template.layout || "") && item.type === "text"
-                  ? { align: "left" as const }
-                  : {}),
-                id: `${id.slice(0, 8)}-${item.id}`,
-              })),
-            },
+        collectionRhythm(
+          interiorLayout(
+            stageTemplate(
+              {
+                art: templateArt(template),
+                font: template.font,
+                width: 720,
+                height,
+                background: template.background,
+                elements: elements.map((item) => ({
+                  ...item,
+                  ...(item.type === "image"
+                    ? {
+                        photoFit: item.photoFit || ("cover" as const),
+                        photoTreatment: item.photoTreatment || "none",
+                      }
+                    : {}),
+                  ...([
+                    "editorial",
+                    "split",
+                    "typographic",
+                    "grid",
+                    "cinematic",
+                  ].includes(template.layout || "") && item.type === "text"
+                    ? { align: "left" as const }
+                    : {}),
+                  id: `${id.slice(0, 8)}-${item.id}`,
+                })),
+              },
+              template,
+            ),
             template,
+            heading,
           ),
           template,
           heading,
         ),
       ),
-      template.accent,
+      undefined,
     ),
   };
 }

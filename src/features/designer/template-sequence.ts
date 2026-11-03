@@ -1,3 +1,4 @@
+import { templateResponsePage } from "./template-response-page";
 import { templateStoryPage } from "./template-story-page";
 import { orderTemplateSections } from "./template-interior-layout";
 import { coupleNames } from "@/lib/events/element-values";
@@ -121,6 +122,7 @@ export function templateSequence(
   pages.push(...templateExtraPages(template, source));
   pages.push(...templateLayoutPages(template));
   pages.push(calendarTemplatePage(template));
+  pages.push(templateResponsePage(template));
   pages.push(
     page(wedding ? "Con todo nuestro cariño" : "Te esperamos", 560, [
       templateIcon(template, wedding ? "flower" : "sparkle", 70),

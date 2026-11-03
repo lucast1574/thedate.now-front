@@ -44,7 +44,17 @@ test("every canvas template is a complete editable invitation with bounded geome
         (e) => e.type === "image" && e.photoKey.startsWith("template-"),
       ),
     );
-    for (const binding of ["guest_name", "location", "dress_code"])
+    for (const binding of [
+      "guest_name",
+      "location",
+      "dress_code",
+      "restrictions",
+      "gift_link",
+      "calendar_link",
+      "event_date",
+      "rsvp_link",
+      "map",
+    ])
       assert.ok(elements.some((e) => e.binding === binding));
     for (const page of pages)
       for (const el of page.canvas.elements) {

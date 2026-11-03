@@ -154,6 +154,7 @@ export function templateCanvas(
           "left",
         ]
       : layout.body,
+    { font: "sans", lineHeight: 1.45 },
   );
   return editableOrnaments(
     adaptTemplateCanvas(

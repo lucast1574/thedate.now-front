@@ -54,7 +54,34 @@ export function collectionInterior(
   const family = templateArt(template) || "editorial";
   const composition = compositions[family];
   const location = heading === "Ubicación";
-  if (!location && heading !== "Fecha y hora") return canvas;
+  if (!location && heading !== "Fecha y hora") {
+    const simple = [
+      "Lista de regalos",
+      "Para disfrutar juntos",
+      "Solo adultos",
+      "Guarda la fecha",
+      "Con todo nuestro cariño",
+      "Te esperamos",
+    ];
+    if (!simple.includes(heading)) return canvas;
+    const text = canvas.elements.filter((e) => e.type === "text");
+    const left = family === "editorial" || family === "fiesta";
+    const offset = family === "romance" ? 100 : family === "coastal" ? 140 : 75;
+    const rows = text.length;
+    return {
+      ...canvas,
+      height: rows > 2 ? 820 : 720,
+      elements: text.map((e, i) => ({
+        ...e,
+        x: left && i > 0 ? 160 : offset,
+        y: i === 0 ? 100 : i === 1 ? 330 : 640,
+        width: left && i > 0 ? 480 : 720 - offset * 2,
+        height: i === 0 ? 170 : i === 1 ? 230 : 90,
+        fontSize: i === 0 ? (family === "fiesta" ? 66 : 54) : i === 1 ? 30 : 28,
+        align: left ? ("left" as const) : ("center" as const),
+      })),
+    };
+  }
   return {
     ...canvas,
     height: composition.height,
