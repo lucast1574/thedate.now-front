@@ -4,7 +4,7 @@
   --ui-accent: #79432d;
   --ui-soft: #f0e1d5;
   --ui-surface: #ffffff;
-  --ui-background: #f0f1ed;
+  --ui-background: #ffffff;
   --ui-border: #c9c5bd;
   --ui-ink: #242320;
   --ui-muted: #514b45;
@@ -12,8 +12,8 @@
   --workspace-tint: var(--ui-soft);
   --workspace-ink: var(--ui-ink);
   --manager-accent: var(--ui-accent);
-  --studio-sidebar: #e5e3dc;
-  --studio-rail: #edeae3;
+  --studio-sidebar: #ffffff;
+  --studio-rail: #ffffff;
   --studio-hover: #5d3222;
   --studio-line: #a88773;
   --studio-ground: #dedfd9;
