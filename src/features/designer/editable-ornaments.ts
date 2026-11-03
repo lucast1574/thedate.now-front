@@ -29,7 +29,7 @@ export function editableOrnaments(
   );
   // Decorations are small, proportional accents occupying genuine negative space.
   // An empty result is intentional for photographic panels; never force a frame over content.
-  const sizes = cover ? [220, 170, 110] : [160, 100];
+  const sizes = cover ? [220, 170, 110] : [160, 100, 70];
   const art: FlyerElement[] = [];
   const corners = cover
     ? ["top", "bottom"]
@@ -44,6 +44,7 @@ export function editableOrnaments(
               { x: 24, y: 24 },
               { x: w - size - 24, y: 24 },
               { x: (w - size) / 2, y: 24 },
+              ...(!cover ? [{ x: w - size - 24, y: h - size - 24 }] : []),
             ]
           : [
               { x: w - size - 24, y: h - size - 24 },
