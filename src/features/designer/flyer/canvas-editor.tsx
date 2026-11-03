@@ -92,6 +92,7 @@ export default function CanvasEditor({
           <span className="canvas-center-label">Centrado</span>
         )}
         <CanvasItems
+          onChange={onChange}
           canvas={gesture.preview || canvas}
           originalCanvas={canvas}
           selectedIds={selectedIds}

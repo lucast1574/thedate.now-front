@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 import { flyerFonts, type FlyerCanvas, type FlyerElement } from "./flyer";
+import { elementFontFamily } from "./invitation-type";
 export function flyerElementStyle(
   item: FlyerElement,
   canvas: FlyerCanvas,
@@ -11,7 +12,11 @@ export function flyerElementStyle(
     height: `${(item.height / canvas.height) * 100}%`,
     transform: `rotate(${item.rotation}deg)`,
     color: item.color,
-    fontFamily: flyerFonts[item.font],
+    fontFamily: elementFontFamily(item) || flyerFonts[item.font],
+    fontStyle: item.italic ? "italic" : "normal",
+    lineHeight: item.lineHeight ?? 1.2,
+    letterSpacing: `${item.letterSpacing ?? 0}em`,
+    opacity: item.opacity ?? 1,
     fontSize: `${(item.fontSize / canvas.width) * 100}cqw`,
     fontWeight: item.bold ? 700 : 400,
     textAlign: item.align,

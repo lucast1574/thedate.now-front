@@ -1,3 +1,4 @@
+import { ornamentById } from "./ornaments";
 import type { FlyerElement } from "./flyer";
 const labels: Record<NonNullable<FlyerElement["binding"]>, string> = {
   guest_name: "Nombre del invitado",
@@ -14,6 +15,8 @@ const labels: Record<NonNullable<FlyerElement["binding"]>, string> = {
   gift_link: "Lista de regalos",
 };
 export function elementLabel(item: FlyerElement) {
+  const ornament = ornamentById(item.icon);
+  if (ornament) return ornament.name;
   return item.binding
     ? labels[item.binding]
     : item.type === "image"

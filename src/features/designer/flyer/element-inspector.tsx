@@ -1,4 +1,5 @@
 import PhotoPresentationFields from "./photo-presentation-fields";
+import OrnamentAppearance from "./ornament-appearance";
 import GiftLinkInspector from "./gift-link-inspector";
 import { elementLabel } from "@/lib/events/element-label";
 import ActionHintInspector from "./action-hint-inspector";
@@ -79,6 +80,7 @@ export default function ElementInspector({
       {item.type === "image" && (
         <PhotoPresentationFields item={item} onChange={onChange} />
       )}
+      <OrnamentAppearance item={item} onChange={onChange} />
       <EventBindingInspector item={item} onChange={onChange} />
       {["couple_names", "event_title", "event_date"].includes(
         item.binding || "",
@@ -108,7 +110,7 @@ export default function ElementInspector({
       ) : (
         item.type === "text" && (
           <label>
-            Contenido
+            Contenido · también con doble clic en el lienzo
             <textarea
               rows={3}
               maxLength={2000}

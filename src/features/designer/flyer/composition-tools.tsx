@@ -39,7 +39,18 @@ export default function CompositionTools({
       ...canvas,
       elements: canvas.elements.map((e) =>
         ids.includes(e.id) && (includeLocked || !e.locked)
-          ? { ...e, ...patch }
+          ? {
+              ...e,
+              ...patch,
+              ...(e.type !== "text"
+                ? {
+                    typeface: undefined,
+                    italic: undefined,
+                    lineHeight: undefined,
+                    letterSpacing: undefined,
+                  }
+                : {}),
+            }
           : e,
       ),
     });

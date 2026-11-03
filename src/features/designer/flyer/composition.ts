@@ -126,6 +126,10 @@ export function alignSelection(
 }
 export function elementStyle(item: FlyerElement): Partial<FlyerElement> {
   return {
+    typeface: item.typeface,
+    italic: item.italic,
+    lineHeight: item.lineHeight,
+    letterSpacing: item.letterSpacing,
     color: item.color,
     font: item.font,
     fontSize: item.fontSize,

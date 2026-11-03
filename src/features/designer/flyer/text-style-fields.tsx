@@ -1,5 +1,6 @@
 import Icon from "@/components/icon";
-import Listbox from "@/components/listbox";
+import TypefacePicker from "./typeface-picker";
+import TextSpacingFields from "./text-spacing-fields";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function TextStyleFields({
   item,
@@ -12,17 +13,7 @@ export default function TextStyleFields({
     <>
       <label>
         Tipografía
-        <Listbox
-          value={item.font}
-          onValueChange={(font) =>
-            onChange({ font: font as FlyerElement["font"] })
-          }
-        >
-          <option value="serif">Elegante · Serif</option>
-          <option value="sans">Moderna · Sans</option>
-          <option value="script">Manuscrita</option>
-          <option value="mono">Monoespaciada</option>
-        </Listbox>
+        <TypefacePicker item={item} onChange={onChange} />
       </label>
       <div className="inspector-type-size">
         <label>
@@ -48,6 +39,7 @@ export default function TextStyleFields({
           <Icon name="lucide:bold" />
         </button>
       </div>
+      <TextSpacingFields item={item} onChange={onChange} />
       <div
         className="inspector-alignment"
         role="group"

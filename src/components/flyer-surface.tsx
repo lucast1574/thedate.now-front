@@ -125,7 +125,7 @@ export default function FlyerSurface({
       }
     >
       <InvitationArtwork
-        style={canvas.art}
+        style={canvas.artEditable ? undefined : canvas.art}
         canvas={canvas}
         interior={
           !canvas.elements.some(

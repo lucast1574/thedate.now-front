@@ -1,3 +1,4 @@
+import { editableOrnaments } from "./editable-ornaments";
 import { coverVariants } from "./template-identity-variants";
 import { stageTemplate } from "./template-stage";
 import { adaptTemplateCanvas } from "./adapt-template-content";
@@ -154,18 +155,21 @@ export function templateCanvas(
         ]
       : layout.body,
   );
-  return adaptTemplateCanvas(
-    stageTemplate(
-      {
-        art: templateArt(template),
-        font: template.font,
-        width: 720,
-        height: 960,
-        background: template.background,
-        elements,
-      },
-      template,
-      true,
+  return editableOrnaments(
+    adaptTemplateCanvas(
+      stageTemplate(
+        {
+          art: templateArt(template),
+          font: template.font,
+          width: 720,
+          height: 960,
+          background: template.background,
+          elements,
+        },
+        template,
+        true,
+      ),
     ),
+    template.accent,
   );
 }

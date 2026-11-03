@@ -1,0 +1,132 @@
+.ornament-library {
+  margin-block: 24px;
+}
+.ornament-library h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.ornament-library p,
+.photo-focal-fields p,
+.art-layer-control p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ui-ink, #342e38);
+}
+.ornament-search {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+}
+.ornament-search svg {
+  width: 18px;
+  flex: 0 0 18px;
+}
+.ornament-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.ornament-tabs button {
+  flex: 1;
+  font-size: 12px;
+  padding: 9px 6px;
+}
+.ornament-tabs button[aria-pressed="true"] {
+  background: var(--ui-soft);
+  color: var(--editor-accent);
+}
+.ornament-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.ornament-grid button {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: var(--ui-soft, #f6f3ee);
+  color: var(--editor-accent, #71513d);
+  text-align: center;
+}
+.ornament-grid svg {
+  width: 76px;
+  height: 90px;
+}
+.ornament-grid strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.ornament-grid small {
+  font-size: 11px;
+  color: var(--ui-ink, #342e38);
+}
+.ornament-grid button:hover,
+.ornament-grid button:focus-visible {
+  background: color-mix(in srgb, var(--editor-accent) 12%, white);
+  outline: none;
+}
+.art-layer-control {
+  padding: 12px;
+  margin-block: 12px;
+  background: var(--ui-soft);
+}
+.art-layer-control small {
+  display: block;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+.studio-type-detail,
+.photo-focal-fields {
+  border: 0;
+  padding: 0;
+  margin: 16px 0;
+}
+.photo-focal-fields legend {
+  font-size: 14px;
+  font-weight: 600;
+}
+.studio-type-detail label,
+.photo-focal-fields label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.studio-type-detail input,
+.photo-focal-fields input {
+  grid-column: 1 / -1;
+  accent-color: var(--editor-accent);
+  min-height: 36px;
+}
+.studio-type-detail button[aria-pressed="true"] {
+  background: var(--ui-soft);
+  color: var(--editor-accent);
+}
+.canvas-inline-text {
+  position: absolute;
+  inset: 0;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  background: color-mix(in srgb, white 85%, transparent);
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  line-height: inherit;
+  user-select: text;
+  cursor: text;
+  z-index: 5;
+}
+.canvas-inline-text:focus {
+  outline: none;
+  box-shadow: none;
+}
+.studio-type-detail :focus-visible,
+.photo-focal-fields :focus-visible {
+  outline: none;
+  background-color: var(--ui-soft);
+}

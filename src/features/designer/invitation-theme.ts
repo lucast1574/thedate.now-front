@@ -39,6 +39,8 @@ export function updateInvitationTheme(
         ? after.ink
         : item.color,
     font: item.font === before.font ? after.font : item.font,
+    typeface:
+      next.font && next.font !== before.font ? undefined : item.typeface,
   });
   return {
     ...draft,

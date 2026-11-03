@@ -4,7 +4,7 @@ import { elementLabel } from "@/lib/events/element-label";
 import type { FlyerElement } from "@/lib/events/flyer";
 function layerLabel(item: FlyerElement) {
   return (
-    (item.binding && elementLabel(item)) ||
+    ((item.binding || item.icon?.startsWith("art:")) && elementLabel(item)) ||
     (item.type === "text"
       ? item.text?.slice(0, 45) || "Texto"
       : item.type === "image"

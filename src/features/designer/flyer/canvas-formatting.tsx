@@ -1,5 +1,5 @@
 import ColorPicker from "@/components/color-picker";
-import Listbox from "@/components/listbox";
+import TypefacePicker from "./typeface-picker";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function CanvasFormatting({
   item,
@@ -28,18 +28,7 @@ export default function CanvasFormatting({
       )}
       {item.type === "text" && item.locationStyle !== "icon" && (
         <>
-          <Listbox
-            aria-label="Fuente del texto"
-            value={item.font}
-            onValueChange={(font) =>
-              onChange({ font: font as FlyerElement["font"] })
-            }
-          >
-            <option value="serif">Serif</option>
-            <option value="sans">Sans</option>
-            <option value="script">Manuscrita</option>
-            <option value="mono">Mono</option>
-          </Listbox>
+          <TypefacePicker item={item} onChange={onChange} />
           <input
             aria-label="Tamaño de fuente"
             type="number"

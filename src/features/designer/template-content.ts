@@ -58,6 +58,8 @@ function preserveSection(
           ? target.text
           : source.text,
       photoKey: source.photoKey,
+      photoPositionX: source.photoPositionX,
+      photoPositionY: source.photoPositionY,
       ...(source.binding
         ? { binding: source.binding, eventBound: source.eventBound }
         : {}),

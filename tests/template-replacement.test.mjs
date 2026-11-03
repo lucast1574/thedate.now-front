@@ -14,7 +14,9 @@ const structure = (draft) =>
     heading: section.heading,
     height: section.canvas.height,
     elements: Array.from(section.canvas.elements, (element) => ({
-      key: element.id.replace(/^[a-f0-9]{8}-/i, ""),
+      key: element.id.startsWith("ornament-")
+        ? element.icon
+        : element.id.replace(/^[a-f0-9]{8}-/i, ""),
       type: element.type,
       binding: element.binding,
       x: element.x,

@@ -1,6 +1,13 @@
 import type { ImageBackground } from "./background";
 export type DesignMode = "sections" | "flyer";
 export type FlyerElement = {
+  typeface?: "display" | "rounded" | "humanist";
+  italic?: boolean;
+  lineHeight?: number;
+  letterSpacing?: number;
+  photoPositionX?: number;
+  photoPositionY?: number;
+  opacity?: number;
   locked?: boolean;
   groupId?: string;
   eventBound?: boolean;
@@ -84,6 +91,7 @@ export type FlyerElement = {
   align: "left" | "center" | "right";
 };
 export type FlyerCanvas = {
+  artEditable?: boolean;
   font?: FlyerElement["font"];
   art?: "botanical" | "romance" | "gala" | "editorial" | "fiesta" | "coastal";
   backgroundImage?: ImageBackground;

@@ -1,3 +1,4 @@
+import OrnamentLibrary from "./ornament-library";
 import CanvasImages from "./canvas-images";
 import SymbolLibrary from "./symbol-library";
 import Icon from "@/components/icon";
@@ -99,6 +100,7 @@ export default function CanvasToolbox({
             disabled={disabled}
             onAdd={onAdd}
           />
+          <OrnamentLibrary canvas={canvas} disabled={disabled} onAdd={onAdd} />
           <details className="canvas-symbol-disclosure">
             <summary>
               <Icon name="sparkle" />

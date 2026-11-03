@@ -32,7 +32,10 @@ export default function InvitationPhoto({
       ) : (
         <Photo
           src={src}
-          style={{ objectFit: item.photoFit || "contain" }}
+          style={{
+            objectFit: item.photoFit || "contain",
+            objectPosition: `${item.photoPositionX ?? 50}% ${item.photoPositionY ?? 50}%`,
+          }}
           alt="Imagen de la invitación"
           draggable={false}
         />

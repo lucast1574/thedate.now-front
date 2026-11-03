@@ -1,4 +1,5 @@
 import type { CSSProperties } from "react";
+import OrnamentArt from "./ornament-art";
 const paths = {
   lock: "M6 11h12v10H6z M8 11V7a4 4 0 0 1 8 0v4",
   search: "M10.5 3a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15ZM16 16l5 5",
@@ -54,6 +55,7 @@ export default function Icon({
   style?: CSSProperties;
 }) {
   if (name === "none") return null;
+  if (name.startsWith("art:")) return <OrnamentArt name={name} style={style} />;
   return (
     <svg
       className={`ui-icon ${className}`}

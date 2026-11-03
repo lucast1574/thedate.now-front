@@ -12,6 +12,7 @@ const { applyTemplateToSection } = loadSource(
   "src/features/designer/templates.ts",
   { globals: { crypto } },
 );
+const { ornamentById } = loadSource("src/lib/events/ornaments.ts");
 const { sectionIcons } = loadSource("src/lib/events/section-icons.ts");
 
 test("all 48 canvas designs have valid, editable and distinct compositions", () => {
@@ -37,7 +38,11 @@ test("all 48 canvas designs have valid, editable and distinct compositions", () 
       );
       assert.ok(item.fontSize >= 8 && item.fontSize <= 160, template.id);
       assert.match(item.color, /^#[0-9a-f]{6}$/i);
-      if (item.type === "icon") assert.ok(sectionIcons[item.icon], item.icon);
+      if (item.type === "icon")
+        assert.ok(
+          sectionIcons[item.icon] || ornamentById(item.icon),
+          item.icon,
+        );
     }
     signatures.add(JSON.stringify(canvas));
   }

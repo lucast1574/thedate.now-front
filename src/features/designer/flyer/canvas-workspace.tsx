@@ -1,3 +1,4 @@
+import ArtLayerControl from "./art-layer-control";
 import CompositionTools from "./composition-tools";
 import { useCanvasPanel } from "./use-canvas-panel";
 import CanvasRail from "./canvas-rail";
@@ -102,6 +103,9 @@ export default function CanvasWorkspace({
             />
           )}
         <CanvasPanelHeading tool={tool} hidden={inspecting} />
+        {!inspecting && tool === "elements" && (
+          <ArtLayerControl canvas={canvas} onChange={change} />
+        )}
         {(inspecting || tool === "layers") && (
           <CompositionTools
             canvas={canvas}

@@ -77,7 +77,8 @@ test("interior decoration leaves the greeting clear and cover artwork keeps its 
     );
   assert.ok(!render(pages[0]).includes("art-interior"));
   const story = render(pages.find((s) => s.heading === "Nuestra historia"));
-  assert.ok(story.includes("art-interior"));
+  assert.ok(pages.every((page) => page.canvas.artEditable));
+  assert.ok(story.includes('viewBox="0 0 200 200"'));
   assert.ok(!story.includes("translate(360"));
 });
 test("switching untouched openings follows the chosen identity and explicit customization stays", () => {
@@ -173,7 +174,7 @@ test("each product has 24 different cover compositions, beyond palette changes",
   }
 });
 
-test("cover decorations have unique soft clear-space masks for authored text", () => {
+test("legacy cover decorations have unique soft clear-space masks for authored text", () => {
   const a = templateSequence(pick("wedding-flyer-vine"))[0],
     b = templateSequence(pick("wedding-flyer-olive"))[0];
   const html = renderToStaticMarkup(
@@ -183,7 +184,7 @@ test("cover decorations have unique soft clear-space masks for authored text", (
       ...[a, b].map((page, n) =>
         createElement(Surface, {
           key: n,
-          canvas: page.canvas,
+          canvas: { ...page.canvas, artEditable: false },
           photoURL: () => "",
         }),
       ),

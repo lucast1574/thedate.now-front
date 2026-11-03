@@ -1,3 +1,4 @@
+import PhotoFocalFields from "./photo-focal-fields";
 import Listbox from "@/components/listbox";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function PhotoPresentationFields({
@@ -40,6 +41,7 @@ export default function PhotoPresentationFields({
           <option value="cover">Llenar el espacio</option>
         </Listbox>
       </label>
+      <PhotoFocalFields item={item} onChange={onChange} />
     </>
   );
 }

@@ -1,3 +1,6 @@
+import { elementLabel } from "@/lib/events/element-label";
+import { useState } from "react";
+import InlineTextEditor from "./inline-text-editor";
 import { flyerElementStyle } from "@/lib/events/flyer-element-style";
 import Icon from "@/components/icon";
 import { FlyerContent } from "@/components/flyer-surface";
@@ -20,7 +23,9 @@ export default function CanvasItems({
   keyboard,
   event,
   photoURL,
+  onChange,
 }: {
+  onChange: (canvas: FlyerCanvas) => void;
   canvas: FlyerCanvas;
   originalCanvas: FlyerCanvas;
   selectedIds: string[];
@@ -32,6 +37,7 @@ export default function CanvasItems({
   event?: Partial<PublicEvent>;
   photoURL: (key: string) => string;
 }) {
+  const [editing, setEditing] = useState("");
   return (
     <>
       {canvas.elements.map((item, index) => {
@@ -51,7 +57,7 @@ export default function CanvasItems({
             role="button"
             tabIndex={0}
             aria-pressed={selected}
-            aria-label={`${item.binding === "map" ? "Mapa" : item.binding === "couple_names" ? "Nombres de los novios" : item.binding === "event_title" ? "Nombre del evento" : item.binding === "event_date" ? "Fecha y hora" : item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
+            aria-label={`${item.icon?.startsWith("art:") ? elementLabel(item) : item.binding === "map" ? "Mapa" : item.binding === "couple_names" ? "Nombres de los novios" : item.binding === "event_title" ? "Nombre del evento" : item.binding === "event_date" ? "Fecha y hora" : item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
             data-locked={item.locked || undefined}
             data-photo={item.type === "image" || undefined}
             onClick={(e) => {
@@ -85,6 +91,12 @@ export default function CanvasItems({
                 replacement.request(item.id);
               } else keyboard(e, item.id);
             }}
+            onDoubleClick={(e) => {
+              if (item.type === "text" && !item.binding && !item.locked) {
+                e.stopPropagation();
+                setEditing(item.id);
+              }
+            }}
             onContextMenu={(e) => context.open(e, item.id)}
             onPointerDown={(e) => {
               if (e.button !== 0) return;
@@ -97,41 +109,59 @@ export default function CanvasItems({
             onPointerUp={gesture.end}
             onPointerCancel={(e) => gesture.end(e, true)}
           >
-            <FlyerContent item={item} event={event} photoURL={photoURL} />
+            {editing === item.id ? (
+              <InlineTextEditor
+                text={item.text || ""}
+                onClose={() => setEditing("")}
+                onCommit={(text) =>
+                  onChange({
+                    ...originalCanvas,
+                    elements: originalCanvas.elements.map((e) =>
+                      e.id === item.id ? { ...e, text } : e,
+                    ),
+                  })
+                }
+              />
+            ) : (
+              <FlyerContent item={item} event={event} photoURL={photoURL} />
+            )}
             {item.type === "image" && !item.locked && (
               <span className="canvas-photo-hint">
                 <Icon name="image" /> Pulsa para cambiar foto
               </span>
             )}
-            {selected && !item.locked && selectedIds.length === 1 && (
-              <>
-                <button
-                  type="button"
-                  className="canvas-handle canvas-rotate"
-                  aria-label="Rotar elemento"
-                  onPointerDown={(e) => gesture.begin(e, original, "rotate")}
-                  onPointerMove={gesture.move}
-                  onPointerUp={gesture.end}
-                  onPointerCancel={(e) => gesture.end(e, true)}
-                >
-                  <Icon name="refresh" />
-                </button>
-                {(["nw", "ne", "sw", "se"] as const).map((corner) => (
+            {selected &&
+              !item.locked &&
+              selectedIds.length === 1 &&
+              editing !== item.id && (
+                <>
                   <button
-                    key={corner}
                     type="button"
-                    className={`canvas-handle canvas-resize corner-${corner}`}
-                    aria-label="Cambiar tamaño del elemento"
-                    onPointerDown={(e) =>
-                      gesture.begin(e, original, `resize-${corner}`)
-                    }
+                    className="canvas-handle canvas-rotate"
+                    aria-label="Rotar elemento"
+                    onPointerDown={(e) => gesture.begin(e, original, "rotate")}
                     onPointerMove={gesture.move}
                     onPointerUp={gesture.end}
                     onPointerCancel={(e) => gesture.end(e, true)}
-                  ></button>
-                ))}
-              </>
-            )}
+                  >
+                    <Icon name="refresh" />
+                  </button>
+                  {(["nw", "ne", "sw", "se"] as const).map((corner) => (
+                    <button
+                      key={corner}
+                      type="button"
+                      className={`canvas-handle canvas-resize corner-${corner}`}
+                      aria-label="Cambiar tamaño del elemento"
+                      onPointerDown={(e) =>
+                        gesture.begin(e, original, `resize-${corner}`)
+                      }
+                      onPointerMove={gesture.move}
+                      onPointerUp={gesture.end}
+                      onPointerCancel={(e) => gesture.end(e, true)}
+                    ></button>
+                  ))}
+                </>
+              )}
           </div>
         );
       })}
