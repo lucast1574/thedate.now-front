@@ -1,3 +1,4 @@
+import { localPreviewHost } from "@/lib/products/local-preview";
 import { applicationHost, configuredProduct } from "@/lib/products/application";
 import { NextResponse, type NextRequest } from "next/server";
 import { tokenFromPath } from "@/lib/events/personal-links";
@@ -19,7 +20,7 @@ export function proxy(request: NextRequest) {
       "127.0.0.1",
       ...(product === "general" ? ["backoffice.thedate.now"] : []),
     ];
-    if (!allowed.includes(host))
+    if (!allowed.includes(host) && !localPreviewHost(host))
       return new NextResponse("Not found", { status: 404 });
   }
   const target = invitationTarget();

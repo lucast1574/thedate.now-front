@@ -310,7 +310,7 @@ El Dockerfile de The Date empaqueta el build raíz como artefacto `/app/renderer
 
 Las cuentas nuevas usan `user`. Un botón en la galería activa `planner` en bodas u `organizer` en eventos; administración puede asignar los mismos tres roles de su producto, incluido `admin`. `/compartir` ofrece una demo local hasta que exista un evento propio pagado y luego gestiona dos accesos por correo. El servidor verifica rol profesional, propiedad y pago. Los invitados conservan el rol `user` y su pertenencia al evento; tras autenticar con el correo invitado entran al editor.
 
-El editor guarda la demo antes de abrir `/?new=1&demo=<id>`. La activación actualiza ese mismo evento de forma condicional mediante `POST /events/{id}/activate`: no regenera secciones ni cambia las claves de medios. La creación continúa al checkout y Stripe vuelve a `/editor/{id}?payment=success`; el editor consulta la confirmación sin conceder funciones pagadas por el parámetro de URL.
+El editor guarda la demo antes de abrir `/?new=1`. El formulario empieza vacío y crea un evento independiente; los enlaces antiguos con `demo` también descartan los datos de ejemplo. La creación continúa al checkout y Stripe vuelve a `/editor/{id}?payment=success`; el editor consulta la confirmación sin conceder funciones pagadas por el parámetro de URL.
 
 ## Plantillas, composición y secciones diseñadas
 
@@ -337,3 +337,11 @@ La selección de colaboración usa `scope=sharing` y descarta demos también en 
 Los eventos terminados reúnen invitación, invitados, mesas y regalos en pestañas locales de `InvitationRecord`, sin navegar al cambiar de sección. `manager/records` consulta snapshots una vez y presenta listas compactas sin ediciones ni envíos; invitados/mesas conservan la descarga Excel y el plano es una consulta opcional. Los enlaces antiguos de manager abren este mismo componente con la sección elegida.
 
 `organizationEventHref` distingue el espacio de organización de un evento activo y la copia privada de uno terminado. La selección automática de un único evento se mantiene solo para eventos activos: si terminó, se muestra su tarjeta, cuyo enlace abre `/editor/{id}?tab={tool}`. No se muestran avisos sobre la regla de cierre.
+
+## Invitación activa
+
+La sidebar y el editor comparten `InvitationSwitcher` y el Listbox accesible del producto. `use-active-invitation` limita las opciones a eventos propios/compartidos del producto y da prioridad al evento de la URL. `use-event-recency` conserva la selección en sessionStorage por usuario y producto; localStorage sirve como preferencia de entrada sin cambiar otras pestañas. Una única invitación real se selecciona automáticamente aunque exista la demo; el selector solo aparece cuando hay dos o más invitaciones reales. Invitados, Mesas y Regalos enlazan directamente al evento activo y conservan la sección al cambiar; sin selección, varios eventos se eligen en Mis invitaciones. El editor guarda antes de cambiar y el gestor protege los planos pendientes. Las demos siguen apareciendo separadas y no conceden acceso pagado.
+
+## Progreso de preparación
+
+Durante `preparing`, el sondeo de envíos consulta también `/events/{id}/deployment`. `preparation-progress.ts` traduce las fases confirmadas (pending, configured, deploying, verifying, ready) a porcentajes estimados por etapas; no usa un reloj para inventar avance ni completar el proceso. `PreparationProgress` muestra la línea, el porcentaje y un barrido CSS; la verificación activa el segundo paso. El envío conserva su contador real independiente. `prefers-reduced-motion` elimina el barrido y las transiciones; no hay controles de animación. Ambos productos comparten componentes y usan sus tokens visuales.

@@ -3,6 +3,7 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 
 export type Delivery = {
+  deploymentPhase?: string;
   phase:
     | "draft"
     | "preparing"
@@ -36,6 +37,13 @@ export function useInvitationDelivery(
           `/api/backend/events/${eventId}/delivery`,
         );
         if (!active) return;
+        if (value.phase === "preparing") {
+          const deployment = await api<{ phase: string }>(
+            `/api/backend/events/${eventId}/deployment`,
+          ).catch(() => null);
+          if (!active) return;
+          value.deploymentPhase = deployment?.phase;
+        }
         setDelivery(value);
         setError("");
         const signature = JSON.stringify(value);

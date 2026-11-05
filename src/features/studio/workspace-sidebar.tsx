@@ -1,3 +1,8 @@
+"use client";
+import { useRouter } from "next/navigation";
+import InvitationSwitcher from "./invitation-switcher";
+import { useActiveInvitation } from "./use-active-invitation";
+import { organizationEventHref } from "@/lib/events/organization-events";
 import Link from "next/link";
 import ProductAlternative from "./product-alternative";
 import Brand from "@/components/brand";
@@ -5,6 +10,7 @@ import Icon from "@/components/icon";
 import UserAvatar from "@/components/user-avatar";
 import type { User } from "@/lib/events/types";
 export default function WorkspaceSidebar({
+  eventId,
   guard,
   wedding,
   user,
@@ -25,6 +31,16 @@ export default function WorkspaceSidebar({
     | "gifts"
     | "collaboration";
 }) {
+  const router = useRouter();
+  const { events, selected, error } = useActiveInvitation(
+    user,
+    wedding ? "wedding" : "general",
+    eventId,
+  );
+  const toolHref = (tool: string) =>
+    selected && !selected.isDemo && selected.paymentStatus === "paid"
+      ? organizationEventHref(selected, tool)
+      : `/organizar?tool=${tool}`;
   return (
     <aside
       className="workspace-sidebar"
@@ -36,6 +52,23 @@ export default function WorkspaceSidebar({
       <Link className="workspace-brand" href="/">
         <Brand wedding={wedding} />
       </Link>
+      <InvitationSwitcher
+        events={events}
+        selected={selected}
+        error={error}
+        onSelect={(event) => {
+          if (guard && !guard()) return;
+          router.push(
+            ["guests", "tables", "gifts"].includes(active) &&
+              !event.isDemo &&
+              event.paymentStatus === "paid"
+              ? organizationEventHref(event, active)
+              : event.isDemo || event.paymentStatus === "paid"
+                ? `/editor/${encodeURIComponent(event.id)}`
+                : `/?event=${encodeURIComponent(event.id)}`,
+          );
+        }}
+      />
       <p className="workspace-label">{wedding ? "TU ESTUDIO" : "TU ESPACIO"}</p>
       <nav aria-label="Tu espacio">
         <Link href="/" aria-current={active === "events" ? "page" : undefined}>
@@ -56,7 +89,7 @@ export default function WorkspaceSidebar({
         ).map(([key, icon, title, hint]) => (
           <Link
             key={key}
-            href={`/organizar?tool=${key}`}
+            href={toolHref(key)}
             aria-current={active === key ? "page" : undefined}
           >
             <Icon name={icon} />

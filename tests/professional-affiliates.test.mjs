@@ -11,7 +11,19 @@ function nodes(tree) {
 test("affiliate navigation belongs only to the matching professional role", () => {
   const { default: Sidebar } = loadSource(
     "src/features/studio/workspace-sidebar.tsx",
-    { mocks: { "next/link": { default: "a" } } },
+    {
+      mocks: {
+        "next/navigation": { useRouter: () => ({ push: () => {} }) },
+        "./use-active-invitation": {
+          useActiveInvitation: () => ({
+            events: [],
+            selected: undefined,
+            error: "",
+          }),
+        },
+        "next/link": { default: "a" },
+      },
+    },
   );
   for (const wedding of [true, false])
     for (const role of ["user", "planner", "organizer", "admin"]) {

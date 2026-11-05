@@ -27,7 +27,12 @@ test("latest opened takes precedence, then creation date; edits do not reorder e
 test("opened event is remembered across screens, isolated by user and product", () => {
   const storage = new Map();
   const listeners = new Map();
+  const session = new Map();
   const window = {
+    sessionStorage: {
+      getItem: (k) => session.get(k),
+      setItem: (k, v) => session.set(k, v),
+    },
     localStorage: {
       getItem: (k) => storage.get(k),
       setItem: (k, v) => storage.set(k, v),
@@ -64,6 +69,16 @@ test("opened event is remembered across screens, isolated by user and product", 
   assert.equal(useEventRecency("owner", "wedding"), "two");
   assert.equal(useEventRecency("other", "wedding"), "");
   assert.equal(useEventRecency("owner", "general"), "");
+  storage.set("thedate:last-opened:wedding:owner", "another-tab");
+  assert.equal(useEventRecency("owner", "wedding"), "two");
+  session.clear();
+  assert.equal(useEventRecency("owner", "wedding"), "another-tab");
+  window.sessionStorage.getItem = () => {
+    throw Error("blocked");
+  };
+  window.sessionStorage.setItem = () => {
+    throw Error("blocked");
+  };
   window.localStorage.getItem = () => {
     throw Error("blocked");
   };

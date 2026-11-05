@@ -46,7 +46,10 @@ export default function InvitationDelivery({
     eventId,
     onUpdate,
   );
-  const phase = delivery?.phase || "draft";
+  const phase =
+    busy && (!delivery || delivery.phase === "draft")
+      ? "preparing"
+      : delivery?.phase || "draft";
   const total = guestCount ?? delivery?.total ?? 0;
   const [title, description] = phases[phase];
   const working = busy || phase === "preparing" || phase === "sending";

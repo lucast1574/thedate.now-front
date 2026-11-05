@@ -5,7 +5,6 @@ import { useEventRecency } from "@/features/studio/use-event-recency";
 import { api } from "@/lib/api/client";
 import { blankEvent, eventPayload, normalizeEvent } from "@/lib/events/draft";
 import type { Event, Guest, Kind, User } from "@/lib/events/types";
-import { suggestedAddress } from "@/lib/events/event-form";
 import { initialInvitation } from "./initial-invitation";
 
 export function useStudioEvents(
@@ -39,23 +38,14 @@ export function useStudioEvents(
       .then((all) => {
         if (!active) return;
         const list = all.filter((event) => event.kind === portal);
-        const sourceDemo = list.find(
-          (event) =>
-            event.id === demoId && event.isDemo && event.ownerId === user.id,
-        );
-        const demo = list.find((event) => event.id === requested);
+        const selectedEvent =
+          creating || demoId
+            ? undefined
+            : list.find((event) => event.id === requested);
         setEvents(list);
-        setSelected(demo ?? null);
+        setSelected(selectedEvent ?? null);
         setDraft(
-          sourceDemo
-            ? {
-                ...normalizeEvent(sourceDemo),
-                slug: suggestedAddress(sourceDemo.title),
-                isDemo: true,
-              }
-            : demo
-              ? normalizeEvent(demo)
-              : { ...blankEvent(portal), organizer: user.name },
+          selectedEvent ? normalizeEvent(selectedEvent) : blankEvent(portal),
         );
         setGuests([]);
       })
@@ -86,7 +76,7 @@ export function useStudioEvents(
   }
   function createDraft() {
     setSelected(null);
-    setDraft({ ...blankEvent(portal), organizer: user?.name ?? "" });
+    setDraft(blankEvent(portal));
     setGuests([]);
   }
   async function saveEvent() {
@@ -100,11 +90,9 @@ export function useStudioEvents(
       setSelected(list.find((event) => event.id === selected.id) ?? selected);
     } else {
       const created = await api<Event>(
-        draft.isDemo
-          ? `/api/backend/events/${draft.id}/activate`
-          : "/api/backend/events",
+        "/api/backend/events",
         "POST",
-        draft.isDemo ? eventPayload(draft) : initialInvitation(draft),
+        initialInvitation(draft),
       );
       await refreshEvents();
       await select(created);

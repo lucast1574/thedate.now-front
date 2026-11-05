@@ -11,8 +11,6 @@ import {
 } from "@/lib/events/organization-events";
 import OrganizationPreview from "./organization-preview";
 import { useEventRecency } from "@/features/studio/use-event-recency";
-import { orderEvents } from "@/lib/events/event-order";
-import ManagerEventPicker from "./manager-event-picker";
 function OrganizationTools({
   wedding,
   tool,
@@ -44,12 +42,13 @@ function OrganizationTools({
     };
   }, [wedding, user]);
   const selected =
-    events.find((e) => e.id === params.get("event")) ||
+    events.find((e) => e.id === (params.get("event") || lastOpened)) ||
     (events.length === 1 && !eventReadOnly(events[0]) ? events[0] : undefined);
   useEffect(() => {
     if (selected?.paymentStatus === "paid")
       router.replace(organizationEventHref(selected, tool));
-  }, [selected, tool, router]);
+    else if (loaded && events.length > 0 && !error) router.replace("/");
+  }, [selected, tool, router, loaded, events.length, error]);
   const hasPaidEvent = events.some(
     (event) => !event.isDemo && event.paymentStatus === "paid",
   );
@@ -74,14 +73,6 @@ function OrganizationTools({
         </div>
       </header>
       {error && <p role="alert">{error}</p>}
-      {loaded && !error && !selected && events.length > 0 && (
-        <ManagerEventPicker
-          events={orderEvents(events, lastOpened)}
-          wedding={wedding}
-          tab={tool}
-          lastOpened={lastOpened}
-        />
-      )}
       {(selected || !loaded || events.length === 0) && (
         <p role="status">
           {selected

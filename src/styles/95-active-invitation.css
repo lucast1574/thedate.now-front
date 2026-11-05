@@ -1,0 +1,107 @@
+.workspace-sidebar:has(.workspace-invitation) .workspace-brand {
+  margin-bottom: 24px;
+}
+.workspace-invitation {
+  min-width: 0;
+  margin: 0 0 24px;
+}
+.workspace-invitation-label {
+  display: block;
+  margin: 0 0 8px;
+  color: var(--ui-muted);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.workspace-invitation button.custom-listbox {
+  width: 100%;
+  min-width: 0;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--ui-accent) 16%, transparent);
+  border-radius: 10px;
+  color: var(--ui-ink);
+  background: color-mix(in srgb, var(--ui-soft) 28%, var(--ui-surface));
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.workspace-invitation button.custom-listbox > span {
+  overflow: visible;
+  text-overflow: clip;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.workspace-invitation button.custom-listbox:hover,
+.workspace-invitation button.custom-listbox:focus-visible,
+.workspace-invitation button.custom-listbox[aria-expanded="true"] {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+  color: var(--ui-ink);
+}
+@media (max-width: 640px) {
+  .workspace-invitation {
+    margin: 0;
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+  .workspace-sidebar:has(.workspace-invitation) nav {
+    grid-row: 3;
+  }
+  .workspace-sidebar:has(.workspace-invitation) .workspace-brand {
+    margin-bottom: 0;
+  }
+}
+.editor-toolbar .workspace-invitation {
+  margin: 0;
+  width: min(220px, 100%);
+  flex-shrink: 0;
+}
+.invitation-choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+.invitation-choice-text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.invitation-choice-text strong {
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--ui-ink);
+  white-space: normal;
+}
+.invitation-choice-text small {
+  font-size: 11px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--ui-muted);
+}
+.invitation-choice-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  background: var(--ui-soft);
+  color: var(--ui-accent);
+}
+.listbox-menu:has(.invitation-choice) {
+  padding: 6px;
+  border-radius: 12px;
+  font-family: var(--font-sans), Arial, sans-serif;
+}
+.listbox-menu:has(.invitation-choice) .listbox-option {
+  padding: 10px;
+  border-radius: 8px;
+}
+.listbox-menu:has(.invitation-choice) .listbox-option[aria-selected="true"] {
+  background: color-mix(in srgb, var(--ui-soft) 55%, var(--ui-surface));
+}

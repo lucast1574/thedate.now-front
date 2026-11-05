@@ -6,6 +6,14 @@ import { loadSource } from "./support/load-source.cjs";
 
 const Record = loadSource("src/features/designer/invitation-record.tsx", {
   mocks: {
+    "next/navigation": { useRouter: () => ({ push: () => {} }) },
+    "./use-active-invitation": {
+      useActiveInvitation: () => ({
+        events: [],
+        selected: undefined,
+        error: "",
+      }),
+    },
     "next/link": {
       default: ({ children, ...props }) =>
         React.createElement("a", props, children),

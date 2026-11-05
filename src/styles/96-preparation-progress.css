@@ -1,0 +1,103 @@
+.delivery-steps li:not(:last-child)::after {
+  content: none;
+}
+.delivery-steps li > .delivery-connector {
+  position: relative;
+  flex: 1;
+  min-width: 36px;
+  align-self: flex-start;
+  margin-top: 20px;
+  padding: 0;
+  background: transparent;
+}
+.delivery-connector-track {
+  position: relative;
+  height: 2px;
+  overflow: hidden;
+  background: var(--ui-border);
+}
+.delivery-connector-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left;
+  transform: scaleX(var(--connector-progress));
+  background: var(--ui-accent);
+  transition: transform 250ms ease-out;
+}
+.delivery-connector-value {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ui-accent);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.delivery-connector-light {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 30%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--ui-accent),
+    transparent
+  );
+  animation: preparation-travel 2.4s linear infinite;
+}
+@keyframes preparation-travel {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(440%);
+  }
+}
+@media (min-width: 601px) and (max-width: 900px) {
+  .delivery-steps li > .delivery-connector {
+    position: absolute;
+    top: 0;
+    left: 54px;
+    right: 0;
+  }
+}
+@media (max-width: 600px) {
+  .delivery-steps li > .delivery-connector {
+    position: absolute;
+    top: 42px;
+    bottom: 2px;
+    left: 20px;
+    width: 2px;
+    min-width: 0;
+    margin: 0;
+  }
+  .delivery-connector-track {
+    width: 2px;
+    height: 100%;
+  }
+  .delivery-connector-fill {
+    transform: scaleY(var(--connector-progress));
+    transform-origin: top;
+  }
+  .delivery-connector:not([data-active="true"]) .delivery-connector-fill {
+    opacity: 0.35;
+  }
+  .delivery-connector-value {
+    left: 8px;
+    top: 0;
+    bottom: auto;
+    transform: none;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .delivery-connector-fill {
+    transition: none;
+  }
+  .delivery-connector-light {
+    animation: none;
+    display: none;
+  }
+}

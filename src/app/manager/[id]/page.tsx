@@ -1,3 +1,4 @@
+import { localPreviewHost } from "@/lib/products/local-preview";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import ManagerPage from "@/features/manager/manager-page";
@@ -13,12 +14,13 @@ export default async function Page({
     .replace(/\.$/, "");
   if (
     invitationTarget() ||
-    ![
-      "crea.thedate.now",
-      "studio.save.thedate.now",
-      "localhost",
-      "127.0.0.1",
-    ].includes(host)
+    (!localPreviewHost(host) &&
+      ![
+        "crea.thedate.now",
+        "studio.save.thedate.now",
+        "localhost",
+        "127.0.0.1",
+      ].includes(host))
   )
     notFound();
   return <ManagerPage id={(await params).id} />;

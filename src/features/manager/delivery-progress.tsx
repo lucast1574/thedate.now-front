@@ -1,3 +1,4 @@
+import PreparationProgress from "./preparation-progress";
 import Icon from "@/components/icon";
 import type { Delivery } from "./use-invitation-delivery";
 
@@ -8,7 +9,9 @@ export default function DeliveryProgress({
   delivery: Delivery | null;
   phase: Delivery["phase"];
 }) {
-  const ready = !["draft", "preparing", "error"].includes(phase);
+  const verified = delivery?.deploymentPhase === "ready";
+  const verifying = delivery?.deploymentPhase === "verifying";
+  const ready = verified || !["draft", "preparing", "error"].includes(phase);
   const sent = delivery?.sent ?? 0,
     total = delivery?.total ?? 0;
   const percentage =
@@ -18,12 +21,13 @@ export default function DeliveryProgress({
   const steps = [
     {
       title: "Preparamos la web",
-      description: ready
-        ? "Tu invitación está publicada"
-        : "Le damos vida a tu diseño",
+      description:
+        ready || verifying
+          ? "Tu invitación está publicada"
+          : "Le damos vida a tu diseño",
       icon: "mail",
-      done: ready,
-      active: phase === "preparing",
+      done: ready || verifying,
+      active: phase === "preparing" && !verifying && !ready,
     },
     {
       title: "Comprobamos el enlace",
@@ -32,7 +36,7 @@ export default function DeliveryProgress({
         : "Antes de enviar el primer mensaje",
       icon: "external",
       done: ready,
-      active: false,
+      active: phase === "preparing" && verifying,
     },
     {
       title: "Enviamos por WhatsApp",
@@ -64,6 +68,13 @@ export default function DeliveryProgress({
               <strong>{step.title}</strong>
               <p>{step.description}</p>
             </div>
+            {index < 2 && (
+              <PreparationProgress
+                phase={ready ? "ready" : delivery?.deploymentPhase}
+                segment={index}
+                visible={phase !== "draft" && phase !== "error"}
+              />
+            )}
           </li>
         ))}
       </ol>

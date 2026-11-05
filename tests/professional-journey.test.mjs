@@ -5,6 +5,18 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { loadSource } from "./support/load-source.cjs";
 const { default: Sidebar } = loadSource(
   "src/features/studio/workspace-sidebar.tsx",
+  {
+    mocks: {
+      "next/navigation": { useRouter: () => ({ push: () => {} }) },
+      "./use-active-invitation": {
+        useActiveInvitation: () => ({
+          events: [],
+          selected: undefined,
+          error: "",
+        }),
+      },
+    },
+  },
 );
 const { default: EventForm } = loadSource(
   "src/features/studio/event-form.tsx",

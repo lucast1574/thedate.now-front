@@ -26,7 +26,12 @@ export default function InvitationRecord({
     <div
       className={`office workspace ${wedding ? "office-wedding" : "office-general"}`}
     >
-      <WorkspaceSidebar wedding={wedding} user={user} active="events" />
+      <WorkspaceSidebar
+        wedding={wedding}
+        user={user}
+        active="events"
+        eventId={event.id}
+      />
       <main className="workspace-content invitation-record">
         <header className="invitation-record-header">
           <Link className="invitation-record-back" href="/">

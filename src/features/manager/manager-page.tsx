@@ -8,8 +8,6 @@ import InvitationRecord from "@/features/designer/invitation-record";
 import ManagerTools from "./manager-tools";
 import Alert from "@/components/alert";
 import { useManager } from "./use-manager";
-import Icon from "@/components/icon";
-import { organizationEvents } from "@/lib/events/organization-events";
 import GuestSummary from "./guest-summary";
 export default function ManagerPage({ id }: { id: string }) {
   return <ManagerWorkspace key={id} id={id} />;
@@ -40,7 +38,7 @@ function ManagerWorkspace({ id }: { id: string }) {
         "Prepara los regalos de tu celebración y consulta las elecciones de tus invitados.",
     },
   }[tab];
-  const { event, events, guests, user, error, dirty, stale } = manager;
+  const { event, guests, user, error, dirty, stale } = manager;
   if (!event)
     return (
       <main className="editor-loading">
@@ -97,18 +95,6 @@ function ManagerWorkspace({ id }: { id: string }) {
         </header>
         {!event.isDemo && user && (
           <div className="manager-event-navigation">
-            {organizationEvents(events, event.kind, user).length > 1 && (
-              <Link
-                className="manager-event-back"
-                href={`/organizar?tool=${tab}`}
-                onClick={(e) => {
-                  if (!guard()) e.preventDefault();
-                }}
-              >
-                <Icon name="chevron" />
-                {event.kind === "wedding" ? "Mis bodas" : "Mis eventos"}
-              </Link>
-            )}
             <p className="manager-event-context">{event.title}</p>
           </div>
         )}

@@ -52,7 +52,7 @@ test("organization waits for a choice with multiple events and opens a single ev
             ...React,
             useState: () => [[events, "", true][stateIndex++], () => {}],
             useEffect: (effect, deps) => {
-              if (deps.length === 3) effect();
+              if (deps.length >= 3) effect();
             },
           },
           "next/link": linkMock,
@@ -74,12 +74,13 @@ test("organization waits for a choice with multiple events and opens a single ev
       );
       assert.deepEqual(
         redirects,
-        events.length === 1 ? [`/manager/one?tab=${tool}`] : [],
+        events.length === 1
+          ? [`/manager/one?tab=${tool}`]
+          : events.length > 1
+            ? ["/"]
+            : [],
       );
-      assert.equal(
-        markup.includes("organization-event-card"),
-        events.length > 1,
-      );
+      assert.equal(markup.includes("organization-event-card"), false);
       assert.equal(markup.includes("Preview"), events.length === 0);
     }
   }
@@ -120,15 +121,14 @@ test("event cards use a short local date without payment status or URL", () => {
   assert.equal(organizationEventDate({ startAt: "" }), "Fecha por confirmar");
 });
 
-test("manager replaces cards with a guarded back link in every section", () => {
+test("manager uses the sidebar switcher and guards unsaved seating changes", () => {
   for (const tab of ["guests", "tables", "gifts"]) {
     for (const count of [1, 2]) {
-      let backLink;
+      let sidebar;
       const Page = loadSource("src/features/manager/manager-page.tsx", {
         mocks: {
           "next/link": {
             default: (props) => {
-              if (props.className === "manager-event-back") backLink = props;
               return React.createElement("a", props, props.children);
             },
           },
@@ -144,7 +144,12 @@ test("manager replaces cards with a guarded back link in every section", () => {
               dirty: true,
             }),
           },
-          "@/features/studio/workspace-sidebar": { default: () => null },
+          "@/features/studio/workspace-sidebar": {
+            default: (props) => {
+              sidebar = props;
+              return null;
+            },
+          },
           "./manager-tools": {
             default: () => React.createElement("div", null, "Tools"),
           },
@@ -158,22 +163,14 @@ test("manager replaces cards with a guarded back link in every section", () => {
       );
       assert.match(markup, /Tools/);
       assert.doesNotMatch(markup, /organization-event-card/);
-      assert.equal(Boolean(backLink), count > 1);
-      if (backLink) {
-        assert.equal(backLink.href, `/organizar?tool=${tab}`);
-        let prevented = false;
-        backLink.onClick({
-          preventDefault() {
-            prevented = true;
-          },
-        });
-        assert.equal(prevented, true);
-      }
+      assert.equal(sidebar.eventId, first.id);
+      assert.equal(sidebar.active, tab);
+      assert.equal(sidebar.guard(), false);
     }
   }
 });
 
-test("a single completed event stays in selection and opens the requested record tab in both products", () => {
+test("a completed event without a prior selection returns to My invitations in both products", () => {
   for (const kind of ["general", "wedding"])
     for (const tool of ["guests", "tables", "gifts"]) {
       const events = [
@@ -192,7 +189,7 @@ test("a single completed event stays in selection and opens the requested record
             ...React,
             useState: () => [[events, "", true][index++], () => {}],
             useEffect: (effect, deps) => {
-              if (deps.length === 3) effect();
+              if (deps.length >= 3) effect();
             },
           },
           "next/link": linkMock,
@@ -212,9 +209,9 @@ test("a single completed event stays in selection and opens the requested record
           googleEnabled: false,
         }),
       );
-      assert.deepEqual(redirects, []);
-      assert.match(markup, /organization-event-card/);
-      assert.ok(markup.includes(`/editor/one?tab=${tool}`));
+      assert.deepEqual(redirects, ["/"]);
+      assert.doesNotMatch(markup, /organization-event-card/);
+
       assert.doesNotMatch(
         markup,
         /Abriendo tu evento|Gestionar invitados|Organizar mesas/,
