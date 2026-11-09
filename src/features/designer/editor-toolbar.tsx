@@ -1,5 +1,3 @@
-import type { User } from "@/lib/events/types";
-import EditorInvitationSwitcher from "./editor-invitation-switcher";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/icon";
 import Link from "next/link";
@@ -7,14 +5,12 @@ import type { useInvitationDesign } from "./use-invitation-design";
 import { usePublicationFeedback } from "./publication-feedback";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
-  user,
   editor,
   canPublish,
   preview,
   onPreview,
   onTemplates,
 }: {
-  user?: User;
   canPublish: boolean;
   editor: Editor;
   preview: boolean;
@@ -53,13 +49,6 @@ export default function EditorToolbar({
           />
         </h1>
       </div>
-      {user && (
-        <EditorInvitationSwitcher
-          user={user}
-          event={editor.draft}
-          save={editor.save}
-        />
-      )}
       <div className="editor-toolbar-actions">
         {editor.draft.isDemo && (
           <button

@@ -54,11 +54,6 @@
     margin-bottom: 0;
   }
 }
-.editor-toolbar .workspace-invitation {
-  margin: 0;
-  width: min(220px, 100%);
-  flex-shrink: 0;
-}
 .invitation-choice {
   display: flex;
   align-items: center;

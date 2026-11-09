@@ -36,5 +36,8 @@ export async function GET(request: Request) {
   url.searchParams.set("response_type", "code");
   url.searchParams.set("scope", "openid email profile");
   url.searchParams.set("state", state);
+  const email = new URL(request.url).searchParams.get("email") ?? "";
+  if (email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    url.searchParams.set("login_hint", email);
   return Response.redirect(url, 302);
 }

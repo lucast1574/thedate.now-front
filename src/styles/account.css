@@ -154,22 +154,45 @@
   line-height: 1.6;
 }
 .join-intro {
-  max-width: 740px;
+  max-width: 480px;
   margin: 0 auto;
   padding: 60px 24px;
 }
-.join-intro > h1 {
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  letter-spacing: -0.04em;
-}
-.join-intro > p {
+.join-intro > .join-summary {
+  font-size: 16px;
   line-height: 1.8;
+  margin: 0 0 28px;
+  overflow-wrap: anywhere;
 }
-.join-intro .auth-panel {
-  margin: 30px 0;
+.join-intro .auth-panel.invitation-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
   width: 100%;
   padding: 0;
   max-width: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.invitation-auth .google-button,
+.invitation-auth .plain-button,
+.invitation-auth .office-button {
+  margin: 0;
+  min-height: 46px;
+}
+.invitation-auth input[readonly] {
+  background: var(--ui-soft);
+}
+.invitation-auth :is(button, a):focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.invitation-auth input:focus-visible {
+  background: var(--ui-soft);
 }
 .office-header nav {
   display: flex;

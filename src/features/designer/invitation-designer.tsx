@@ -1,6 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import type { Event, User } from "@/lib/events/types";
+import type { Event } from "@/lib/events/types";
 import PreviewModal from "./preview-modal";
 import EditorToolbar from "./editor-toolbar";
 import { initialCanvasTool } from "./flyer/canvas-tools";
@@ -8,12 +8,10 @@ import CanvasWorkspace from "./flyer/canvas-workspace";
 import { blankCanvas, flyerSections } from "./flyer/canvas-model";
 import { useInvitationDesign } from "./use-invitation-design";
 export default function InvitationDesigner({
-  user,
   event,
   onSaved,
   canPublish = true,
 }: {
-  user?: User;
   canPublish?: boolean;
   event: Event;
   onSaved: () => Promise<void>;
@@ -44,7 +42,6 @@ export default function InvitationDesigner({
       className={`editor-shell canvas-studio ${event.kind === "wedding" ? "editor-wedding" : "editor-general"}`}
     >
       <EditorToolbar
-        user={user}
         canPublish={canPublish}
         editor={editor}
         preview={preview}

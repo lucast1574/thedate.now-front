@@ -100,24 +100,15 @@ export default function Join({
           <Brand wedding={wedding} />
         </a>
       </header>
-      <section className="join-intro">
-        <p className="office-kicker">UNA INVITACIÓN PARA CREAR JUNTOS</p>
-        <h1>
-          {accepted
-            ? "Ya eres parte."
-            : wedding
-              ? "Su historia, en sus manos."
-              : "Hagamos que suceda."}
-        </h1>
+      <section className="join-intro" aria-label="Invitación para colaborar">
         {invite && (
-          <p>
+          <p className="join-summary">
             Te invitaron a colaborar en <strong>{invite.eventTitle}</strong> con{" "}
             <strong>{invite.email}</strong>. Tendrás acceso al diseño, invitados
-            y mesas de este evento. Tu cuenta también te permite crear tus
-            propios eventos.
+            y mesas de este evento.
           </p>
         )}
-        <Alert>{message}</Alert>
+        {(!invite || user) && <Alert>{message}</Alert>}
         {accepted && (
           <a
             className="office-button"
@@ -130,6 +121,7 @@ export default function Join({
           !accepted &&
           (!user ? (
             <AuthPanel
+              context="invitation"
               key={invite.email}
               wedding={wedding}
               googleEnabled={googleEnabled}
