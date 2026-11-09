@@ -7,12 +7,12 @@
 .office-general .gallery-heading h1 em {
   font-style: normal;
   font-weight: 700;
-  color: #8b55db;
+  color: var(--ui-accent);
 }
 .office-general .gallery-create {
-  background: #7850bb;
+  background: var(--ui-accent);
   border-radius: 30px;
-  box-shadow: 0 8px 20px #7952c820;
+  box-shadow: none;
 }
 .office-general .invitation-card-preview {
   border-radius: 20px;
@@ -26,9 +26,9 @@
 }
 .office-general .invitation-new-card {
   border-radius: 20px;
-  border-color: #cdb6eb;
-  color: #9871c1;
-  background: linear-gradient(135deg, #f4edfd, #faf8ff);
+  border-color: var(--ui-accent);
+  color: var(--ui-accent);
+  background: var(--ui-surface);
 }
 .office-general .invitation-new-card strong {
   font:

@@ -94,7 +94,7 @@ test("auto seating keeps households, counts +1, groups families and observes afo
     2,
   );
 });
-test("door export has one row per confirmed person, table names and no secret links", () => {
+test("door export includes every invited person regardless of response and no secret links", () => {
   const guests = [
     guest("a", { invitationUrl: "secret-url" }),
     guest("b", { response: "not_going" }),
@@ -103,13 +103,12 @@ test("door export has one row per confirmed person, table names and no secret li
   const plan = emptyPlan();
   plan.tables = [newTable(0, 4, "round", "t")];
   plan.assignments = { "a~0": "t", "a~1": "t" };
-  const rows = doorRows(guests, plan, true);
-  assert.equal(rows.length, 2);
-  assert.equal(rows[0][6], "Mesa 1");
-  assert.equal(rows[1][3], "Acompañante");
+  const rows = doorRows(guests, plan);
+  assert.equal(rows.length, 6);
+  assert.equal(rows.filter((row) => row[2] === "Mesa 1").length, 2);
+  assert.ok(rows.every((row) => row.length === 3));
   assert.equal(JSON.stringify(rows).includes("secret-url"), false);
   assert.equal(JSON.stringify(rows).includes("+519"), false);
-  assert.equal(doorRows(guests, plan, false).length, 4);
 });
 test("Excel guard rejects junk and oversized ZIP metadata before decompression", () => {
   assert.throws(() => validateWorkbookZip(new ArrayBuffer(5)), /Excel/);

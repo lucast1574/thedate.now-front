@@ -6,13 +6,13 @@
 }
 .office-general .office-kicker,
 .office-general .plain-button {
-  color: #bf4d75;
+  color: var(--ui-accent);
 }
 .office-general .office-button {
-  background: #604b9b;
+  background: var(--ui-accent);
 }
 .office-general .office-button:hover {
-  background: #df527d;
+  background: #204da6;
 }
 .office-general .auth-panel {
   border-radius: 20px;

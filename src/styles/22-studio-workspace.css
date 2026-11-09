@@ -1,8 +1,8 @@
 /* Shared navigation, with a warm wedding studio and a lively event space. */
 .workspace {
-  --workspace-accent: #98664f;
-  --workspace-tint: #eee4d8;
-  --workspace-ink: #302b26;
+  --workspace-accent: var(--ui-accent);
+  --workspace-tint: var(--ui-soft);
+  --workspace-ink: var(--ui-ink);
   display: grid;
   grid-template-columns: 242px minmax(0, 1fr);
   min-height: 100dvh;
@@ -17,7 +17,7 @@
   flex-direction: column;
   padding: 38px 22px 24px;
   border-right: 1px solid var(--ui-border);
-  background: var(--ui-soft);
+  background: var(--ui-surface);
 }
 .workspace-brand {
   display: block;
@@ -49,7 +49,7 @@
 }
 .workspace-sidebar nav a:hover,
 .workspace-sidebar nav a[aria-current="page"] {
-  background: var(--ui-surface);
+  background: var(--ui-soft);
   color: var(--workspace-ink);
   box-shadow: 0 3px 14px #58433105;
 }

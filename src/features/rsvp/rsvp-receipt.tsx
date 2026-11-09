@@ -76,14 +76,16 @@ export default function RSVPReceipt({
             celebración.
           </p>
         )}
-        <Link
-          className={
-            response === "maybe" ? "rsvp-secondary-link" : "office-button"
-          }
-          href={invitationHref}
-        >
-          Ver invitación
-        </Link>
+        {attending && (
+          <Link
+            className={
+              response === "maybe" ? "rsvp-secondary-link" : "office-button"
+            }
+            href={invitationHref}
+          >
+            Ver invitación
+          </Link>
+        )}
       </section>
     </main>
   );

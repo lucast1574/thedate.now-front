@@ -314,3 +314,74 @@ test("retail store labels cover LATAM without matching unrelated hosts", () => {
   ])
     assert.equal(giftStore(url), label);
 });
+
+test("lost reservation and release responses reconcile without submitting twice", async () => {
+  for (const release of [false, true]) {
+    const h = hooks();
+    const initial = exampleWishlist(false);
+    initial.items[0].mine = release;
+    initial.items[0].reserved = release;
+    const latest = {
+      ...initial,
+      version: 3,
+      items: initial.items.map((item, i) =>
+        i === 0 ? { ...item, mine: !release, reserved: !release } : item,
+      ),
+    };
+    const calls = [];
+    const { useGuestWishlist: guestHook } = loadSource(
+      "src/features/gifts/use-guest-wishlist.ts",
+      {
+        mocks: {
+          react: h.react,
+          "@/lib/api/client": {
+            api: async (_path, method = "GET") => {
+              calls.push(method);
+              if (method === "POST") throw new Error("Connection lost");
+              return latest;
+            },
+          },
+        },
+      },
+    );
+    const render = () => {
+      h.reset();
+      return guestHook("token", initial);
+    };
+    assert.equal(await render().choose(initial.items[0].id, release), true);
+    assert.deepEqual(calls, ["POST", "GET"]);
+    assert.equal(render().error, "");
+    assert.ok(render().notice);
+    assert.equal(render().busy, false);
+    assert.equal(render().data.items[0].mine, !release);
+  }
+});
+
+test("unavailable reconciliation leaves a recoverable error and releases the submit lock", async () => {
+  const h = hooks();
+  const initial = exampleWishlist(false);
+  let calls = 0;
+  const { useGuestWishlist: guestHook } = loadSource(
+    "src/features/gifts/use-guest-wishlist.ts",
+    {
+      mocks: {
+        react: h.react,
+        "@/lib/api/client": {
+          api: async () => {
+            calls++;
+            throw new Error("Sin conexion");
+          },
+        },
+      },
+    },
+  );
+  const render = () => {
+    h.reset();
+    return guestHook("token", initial);
+  };
+  assert.equal(await render().choose(initial.items[0].id), false);
+  assert.equal(calls, 2);
+  assert.equal(render().busy, false);
+  assert.equal(render().notice, "");
+  assert.match(render().error, /Sin conexion/);
+});

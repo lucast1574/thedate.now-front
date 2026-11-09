@@ -24,7 +24,7 @@
   font-size: 11px;
   letter-spacing: 0;
   text-transform: none;
-  color: #79818d;
+  color: var(--ui-muted);
 }
 .editor-general .canvas-rail-brand {
   font:

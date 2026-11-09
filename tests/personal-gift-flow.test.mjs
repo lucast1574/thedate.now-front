@@ -112,3 +112,68 @@ test("saving a from-scratch gift element supplies its own destination without as
   assert.equal(saved.color, item.color);
   assert.equal(item.link, undefined);
 });
+
+test("legacy gift links preserve the intended gift through a single redirect", async () => {
+  const { default: Page } = loadSource("src/app/regalos/[token]/page.tsx", {
+    globals: { URLSearchParams },
+    mocks: {
+      "@/lib/api/gift-scope": {
+        scopedWishlist: async () => ({ guestName: "Ana" }),
+      },
+      "next/navigation": {
+        redirect: (url) => {
+          throw new Error(url);
+        },
+        notFound: () => {
+          throw new Error("404");
+        },
+      },
+    },
+  });
+  const token = "a".repeat(48);
+  for (const elegir of [undefined, "coffee", "gift&other=value"]) {
+    const suffix = elegir ? `?${new URLSearchParams({ elegir })}` : "";
+    await assert.rejects(
+      Page({
+        params: Promise.resolve({ token }),
+        searchParams: Promise.resolve({ elegir }),
+      }),
+      (error) =>
+        error.message === `${personalPath(token, "Ana")}/regalos${suffix}`,
+    );
+  }
+});
+
+test("WhatsApp gift links do not reopen a reservation when a choice already exists", () => {
+  const View = loadSource("src/features/gifts/guest-wishlist-view.tsx").default;
+  const html = renderToStaticMarkup(
+    createElement(View, {
+      data: {
+        event: { kind: "wedding", title: "Celebracion" },
+        guestName: "Ana",
+        version: 1,
+        items: [
+          {
+            id: "chosen",
+            title: "Elegido",
+            url: "https://shop.example/a",
+            mine: true,
+            reserved: true,
+          },
+          {
+            id: "other",
+            title: "Otro",
+            url: "https://shop.example/b",
+            mine: false,
+            reserved: false,
+          },
+        ],
+      },
+      initialGiftId: "other",
+      imageSource: () => undefined,
+      onChoose: async () => true,
+    }),
+  );
+  assert.match(html, /Tu elección está reservada/);
+  assert.doesNotMatch(html, /<dialog/);
+});

@@ -40,7 +40,7 @@
   font-family: var(--font-party), sans-serif;
 }
 .manager-general {
-  background: linear-gradient(145deg, #f3effd, #f7f9fd);
+  background: var(--ui-background);
   color: #302440;
 }
 .manager-general .manager-header h1,

@@ -1,4 +1,9 @@
 /* Interface colors are independent of saved invitation designs. */
+.office.office-wedding .wishlist-start {
+  background: #f3f4f2;
+  border-color: #d7dbd5;
+}
+
 .office.office-wedding,
 .editor-wedding {
   --ui-accent: #79432d;

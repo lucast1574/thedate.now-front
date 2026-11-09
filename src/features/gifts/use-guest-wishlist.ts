@@ -11,6 +11,7 @@ export function useGuestWishlist(token: string, initial: GuestWishlist) {
   const refresh = useCallback(async () => {
     const next = await api<GuestWishlist>(`/api/gifts/${token}`);
     setData((current) => (next.version >= current.version ? next : current));
+    return next;
   }, [token]);
   useEffect(() => {
     const update = () => {
@@ -31,21 +32,25 @@ export function useGuestWishlist(token: string, initial: GuestWishlist) {
     setBusy(true);
     setError("");
     setNotice("");
+    const successNotice = release
+      ? "Tu elección se liberó. Ya puedes escoger otro regalo."
+      : "Este regalo quedó reservado para ti. ¡Gracias por ser parte!";
     try {
       const next = await api<GuestWishlist>(`/api/gifts/${token}`, "POST", {
         giftId,
         release,
       });
       setData((current) => (next.version >= current.version ? next : current));
-      setNotice(
-        release
-          ? "Tu elección se liberó. Ya puedes escoger otro regalo."
-          : "Este regalo quedó reservado para ti. ¡Gracias por ser parte!",
-      );
+      setNotice(successNotice);
       return true;
     } catch (e) {
+      const latest = await refresh().catch(() => null);
+      const item = latest?.items.find((item) => item.id === giftId);
+      if (item && (release ? !item.mine : item.mine)) {
+        setNotice(successNotice);
+        return true;
+      }
       setError((e as Error).message);
-      await refresh().catch(() => {});
       return false;
     } finally {
       setBusy(false);

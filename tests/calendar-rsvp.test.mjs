@@ -72,6 +72,19 @@ test("invitation links preserve the design and response links isolate the form",
       },
     ).default;
     const html = renderToStaticMarkup(await Page({ token: "a".repeat(48) }));
+    if (response === "not_going") {
+      const answer = renderToStaticMarkup(
+        await Page({ token: "a".repeat(48), answer: true }),
+      );
+      for (const receipt of [html, answer]) {
+        assert.match(receipt, /No podré asistir/);
+        assert.doesNotMatch(
+          receipt,
+          /Full invitation|Companions|Ver invitación|Lista de regalos/,
+        );
+      }
+      continue;
+    }
     assert.match(html, /Full invitation/);
     assert.doesNotMatch(html, /Companions|confirmacion|personal-confirm-link/);
     const answer = renderToStaticMarkup(

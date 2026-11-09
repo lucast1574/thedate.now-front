@@ -5,15 +5,15 @@
   background: var(--ui-background);
 }
 .office-general .workspace-sidebar {
-  background: #eef2f8;
+  background: var(--ui-surface);
   border-color: #e0e6ef;
 }
 .office-general .workspace-sidebar nav a small {
-  color: #7d8797;
+  color: var(--ui-muted);
 }
 .office-general .workspace-sidebar nav a:hover,
 .office-general .workspace-sidebar nav a[aria-current="page"] {
-  background: white;
+  background: var(--ui-soft);
   box-shadow: none;
 }
 .office-general .organization-heading h1 {

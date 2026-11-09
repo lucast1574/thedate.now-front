@@ -3,6 +3,7 @@ import Icon from "@/components/icon";
 import Link from "next/link";
 import type { useInvitationDesign } from "./use-invitation-design";
 import { usePublicationFeedback } from "./publication-feedback";
+import { invitationTitle } from "@/lib/events/invitation-title";
 type Editor = ReturnType<typeof useInvitationDesign>;
 export default function EditorToolbar({
   editor,
@@ -40,6 +41,16 @@ export default function EditorToolbar({
             maxLength={120}
             value={editor.draft.title}
             placeholder="Tu invitación"
+            onBlur={() =>
+              editor.setDraft((current) => ({
+                ...current,
+                title: invitationTitle(
+                  current.kind,
+                  current.title,
+                  current.celebration,
+                ),
+              }))
+            }
             onChange={(e) =>
               editor.setDraft((current) => ({
                 ...current,

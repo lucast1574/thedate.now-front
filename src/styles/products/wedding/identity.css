@@ -1,11 +1,11 @@
 :root[data-product="wedding"] {
-  --ui-accent: #89664b;
+  --ui-accent: #7d4934;
   --ui-soft: #f3ede5;
-  --ui-surface: #fffdfa;
-  --ui-background: #f6f2e9;
+  --ui-surface: #ffffff;
+  --ui-background: #ffffff;
   --ui-border: #e3d9cd;
-  --ui-ink: #332d28;
-  --ui-muted: #8e8072;
+  --ui-ink: #292420;
+  --ui-muted: #6c6057;
   --ui-heading-font: var(--font-serif), Georgia, serif;
   --ui-heading-weight: 500;
   --ink: var(--ui-ink);

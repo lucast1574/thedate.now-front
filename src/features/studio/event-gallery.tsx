@@ -1,4 +1,6 @@
 import { eventReadOnly } from "@/lib/events/event-closure";
+import { useState } from "react";
+import GalleryHistory from "./gallery-history";
 import { useEventRecency } from "./use-event-recency";
 import Link from "next/link";
 import Icon from "@/components/icon";
@@ -21,9 +23,12 @@ export default function EventGallery({
   onCreate: () => void;
 }) {
   const lastOpened = useEventRecency(user.id, portal);
+  const [history, setHistory] = useState(false);
   const all = galleryEvents(events, user, portal, lastOpened),
-    pending = all.filter((e) => !e.isDemo && e.paymentStatus !== "paid"),
-    items = all.filter((e) => e.isDemo || e.paymentStatus === "paid"),
+    closedCount = all.filter((e) => !e.isDemo && eventReadOnly(e)).length,
+    visible = all.filter((e) => eventReadOnly(e) === history),
+    pending = visible.filter((e) => !e.isDemo && e.paymentStatus !== "paid"),
+    items = visible.filter((e) => e.isDemo || e.paymentStatus === "paid"),
     wedding = portal === "wedding";
   return (
     <section className="workspace-gallery">
@@ -73,15 +78,13 @@ export default function EventGallery({
           ))}
         </section>
       )}
-      <div className="gallery-section-heading">
-        <h2>Mis invitaciones</h2>
-        <span>
-          {loading
-            ? "Cargando…"
-            : `${items.length} ${items.length === 1 ? "invitación" : "invitaciones"}`}{" "}
-          · Recientes primero
-        </span>
-      </div>
+      <GalleryHistory
+        history={history}
+        count={items.length}
+        closedCount={closedCount}
+        loading={loading}
+        onToggle={() => setHistory(!history)}
+      />
       {loading ? (
         <p role="status">Preparando tu galería…</p>
       ) : (
@@ -131,7 +134,11 @@ export default function EventGallery({
                 <div className="invitation-card-meta">
                   <div>
                     <span className="card-status">
-                      {event.publishedAt ? "Publicada" : "Borrador"}
+                      {history
+                        ? "Terminada"
+                        : event.publishedAt
+                          ? "Publicada"
+                          : "Borrador"}
                       {event.ownerId !== user.id ? " · Compartida" : ""}
                     </span>
                     <h3>
@@ -151,11 +158,11 @@ export default function EventGallery({
                   {!event.isDemo && (
                     <Link
                       className="card-manage"
-                      href={`/manager/${encodeURIComponent(event.id)}`}
-                      aria-label={`Gestionar ${event.title}`}
+                      href={`/${history ? "editor" : "manager"}/${encodeURIComponent(event.id)}`}
+                      aria-label={`${history ? "Consultar" : "Gestionar"} ${event.title}`}
                     >
                       <Icon name="users" />
-                      Gestionar
+                      {history ? "Consultar" : "Gestionar"}
                     </Link>
                   )}
                 </div>

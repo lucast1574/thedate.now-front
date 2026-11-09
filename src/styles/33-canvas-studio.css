@@ -1,7 +1,7 @@
 /* The invitation is the focal sheet; a compact rail and 272px toolbox serve it. */
 .canvas-studio {
   --editor-accent: var(--ui-accent);
-  --editor-ground: var(--ui-soft);
+  --editor-ground: var(--ui-surface);
   --editor-ink: var(--ui-ink);
   height: 100dvh;
   min-height: 600px;

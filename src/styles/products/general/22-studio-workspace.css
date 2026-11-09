@@ -1,12 +1,12 @@
 .workspace.office-general {
-  --workspace-accent: #7952c8;
-  --workspace-tint: #eee7fa;
-  --workspace-ink: #292336;
-  background: #faf8ff;
+  --workspace-accent: var(--ui-accent);
+  --workspace-tint: var(--ui-soft);
+  --workspace-ink: var(--ui-ink);
+  background: var(--ui-background);
 }
 .office-general .workspace-sidebar {
-  background: #f1ecf9;
-  border-color: #e5def0;
+  background: var(--ui-surface);
+  border-color: var(--ui-border);
 }
 .office-general .workspace-sidebar nav a {
   border-radius: 12px;

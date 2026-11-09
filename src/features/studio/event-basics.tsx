@@ -8,6 +8,7 @@ import TimePicker from "@/components/time-picker";
 import SubdomainField from "./subdomain-field";
 import { browserTimeZone } from "@/lib/events/draft";
 import { suggestedAddress } from "@/lib/events/event-form";
+import { invitationTitle } from "@/lib/events/invitation-title";
 export default function EventBasics({
   draft,
   setDraft,
@@ -37,6 +38,16 @@ export default function EventBasics({
           required
           maxLength={160}
           value={draft.title}
+          onBlur={() =>
+            setDraft((current) => ({
+              ...current,
+              title: invitationTitle(
+                current.kind,
+                current.title,
+                current.celebration,
+              ),
+            }))
+          }
           onChange={(e) =>
             setDraft({
               ...draft,

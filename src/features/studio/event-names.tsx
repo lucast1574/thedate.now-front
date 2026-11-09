@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import { defaultCelebration } from "@/lib/events/celebration";
+import { capitalizedNames } from "@/lib/events/invitation-title";
 export default function EventNames({
   draft,
   setDraft,
@@ -18,6 +19,15 @@ export default function EventNames({
             maxLength={60}
             value={draft.celebration?.[key] || ""}
             placeholder={n ? "Mateo" : "Sofía"}
+            onBlur={() =>
+              setDraft((current) => ({
+                ...current,
+                celebration: {
+                  ...(current.celebration || defaultCelebration(true)),
+                  [key]: capitalizedNames(current.celebration?.[key] || ""),
+                },
+              }))
+            }
             onChange={(e) =>
               setDraft((current) => ({
                 ...current,

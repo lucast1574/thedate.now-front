@@ -24,7 +24,7 @@ export default function DoorExportButton({
     ? "Recarga el plano para incluir los cambios nuevos antes de exportar."
     : dirty
       ? "Estamos guardando el plano. La descarga se habilitará al terminar."
-      : "Personas confirmadas con su familia y mesa; incluye una hoja de respuestas para revisión.";
+      : "Una hoja lista para imprimir con todos los invitados agrupados por mesa.";
   return (
     <div className="seating-export-action">
       <button

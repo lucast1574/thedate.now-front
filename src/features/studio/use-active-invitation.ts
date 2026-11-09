@@ -5,6 +5,7 @@ import { api } from "@/lib/api/client";
 import { galleryEvents } from "@/lib/events/studio-gallery";
 import type { Event, Kind, User } from "@/lib/events/types";
 import { useEventRecency } from "./use-event-recency";
+import { eventReadOnly } from "@/lib/events/event-closure";
 
 export function useActiveInvitation(user: User, kind: Kind, eventId?: string) {
   const params = useParams();
@@ -30,12 +31,20 @@ export function useActiveInvitation(user: User, kind: Kind, eventId?: string) {
       active = false;
     };
   }, [user, kind]);
-  const real = events.filter((event) => !event.isDemo);
+  useEffect(() => {
+    const timer = window.setInterval(
+      () => setEvents((current) => [...current]),
+      60000,
+    );
+    return () => window.clearInterval(timer);
+  }, []);
+  const available = events.filter((event) => !eventReadOnly(event));
+  const real = available.filter((event) => !event.isDemo);
   const selected = explicit
-    ? events.find((event) => event.id === explicit)
+    ? available.find((event) => event.id === explicit)
     : real.length === 1
       ? real[0]
-      : events.find((event) => event.id === remembered);
+      : available.find((event) => event.id === remembered);
   useEventRecency(user.id, kind, selected?.id);
-  return { events, selected, error };
+  return { events: available, selected, error };
 }

@@ -2,6 +2,7 @@ import Icon from "@/components/icon";
 import { organizationEventDate } from "@/lib/events/organization-events";
 import Listbox from "@/components/listbox";
 import type { Event } from "@/lib/events/types";
+import { eventReadOnly } from "@/lib/events/event-closure";
 export default function InvitationSwitcher({
   events,
   selected,
@@ -13,7 +14,9 @@ export default function InvitationSwitcher({
   error?: string;
   onSelect: (event: Event) => void;
 }) {
-  const invitations = events.filter((event) => !event.isDemo);
+  const invitations = events.filter(
+    (event) => !event.isDemo && !eventReadOnly(event),
+  );
   if (invitations.length < 2) return null;
   return (
     <div className="workspace-invitation">

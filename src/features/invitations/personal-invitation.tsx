@@ -11,6 +11,8 @@ import InvitationBrand from "./invitation-brand";
 import LiveInvitation from "./live-invitation";
 import RSVPTheme from "@/features/rsvp/rsvp-theme";
 import RSVPForm from "@/features/rsvp/rsvp-form";
+import RSVPReceipt from "@/features/rsvp/rsvp-receipt";
+import type { RSVPDetails } from "@/features/rsvp/types";
 export default async function PersonalInvitation({
   token,
   answer = false,
@@ -23,7 +25,7 @@ export default async function PersonalInvitation({
   if (!validInviteToken(token)) notFound();
   const response = await backendFetch(`public/rsvp/${token}`);
   if (!response?.ok) notFound();
-  const data = (await response.json()) as {
+  const data = (await response.json()) as RSVPDetails & {
     event: PublicEvent;
     guestName: string;
     response?: string;
@@ -44,6 +46,8 @@ export default async function PersonalInvitation({
     notFound();
   const path = personalPath(token, data.guestName);
   if (legacy) redirect(`${path}${answer ? "/respuesta" : ""}`);
+  if (data.response === "not_going")
+    return <RSVPReceipt details={data} response="not_going" companions={[]} />;
   if (answer)
     return (
       <RSVPTheme event={data.event}>

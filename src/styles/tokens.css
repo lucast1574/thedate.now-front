@@ -2,10 +2,10 @@
   --ui-accent: #2860cf;
   --ui-soft: #edf2fb;
   --ui-surface: #ffffff;
-  --ui-background: #f5f6f8;
+  --ui-background: #ffffff;
   --ui-border: #dce2eb;
   --ui-ink: #252d3b;
-  --ui-muted: #758092;
+  --ui-muted: #566174;
   --ui-heading-font: var(--font-sans), Arial, sans-serif;
   --ui-heading-weight: 700;
 }

@@ -10,6 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Organización del repositorio
 
+- Lucas pide llevar siempre los cambios autorizados hasta producción: validar, hacer commit y push a `main`, esperar los despliegues de ambos estudios y verificar su salud. Si cambia la invitación pública, publicar también el renderizador y comprobar la actualización de las invitaciones existentes. No dar por terminada la tarea solo con archivos locales o un push; informar cualquier bloqueo real.
+
 - Empieza por `docs/frontend-map.md`; lee después solo los archivos del área que vas a modificar.
 - Mantén los puntos de entrada de las dos aplicaciones en `apps/the-date/src/app` y `apps/save-the-date/src/app`. Delega en las mismas implementaciones de `src/app`, funcionalidades de `src/features`, widgets de `src/components` y lógica de `src/lib`. No dupliques funciones por producto; solo cambia identidad y plantillas. `src/app` también conserva el renderizador independiente de invitaciones.
 - Divide por responsabilidad; no concentres sesión, formularios, peticiones y renderizado en un solo componente.

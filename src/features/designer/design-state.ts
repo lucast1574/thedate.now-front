@@ -1,6 +1,7 @@
 import { protectedGuestText } from "@/lib/events/guest-name";
 import { resolveTemplateId } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
+import { invitationTitle } from "@/lib/events/invitation-title";
 export function designPayload(draft: DesignEvent) {
   return {
     backgroundImage: draft.backgroundImage ?? null,
@@ -8,7 +9,10 @@ export function designPayload(draft: DesignEvent) {
     opening: draft.opening ?? null,
     celebration: draft.celebration ?? null,
     music: draft.music ?? null,
-    title: draft.title,
+    title:
+      typeof draft.title === "string"
+        ? invitationTitle(draft.kind, draft.title, draft.celebration)
+        : draft.title,
     description: draft.description,
     template: draft.template,
     templateId: resolveTemplateId(

@@ -174,7 +174,7 @@
 }
 .auto-proposal {
   width: min(660px, calc(100vw - 32px));
-  max-height: 85vh;
+  max-height: min(85vh, calc(100dvh - 32px));
   overflow: auto;
   margin: auto;
   border: 1px solid #dedbd3;

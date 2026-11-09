@@ -33,7 +33,9 @@ export default function GuestWishlistView({
     const item = data.items.find(
       (item) => item.id === initialGiftId && !item.reserved,
     );
-    return item && data.guestName ? { item, release: false } : null;
+    return item && data.guestName && !data.items.some((gift) => gift.mine)
+      ? { item, release: false }
+      : null;
   });
   const [filter, setFilter] = useState("all");
   const mine = data.items.find((item) => item.mine);
