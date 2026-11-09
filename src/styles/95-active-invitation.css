@@ -1,3 +1,50 @@
+.canvas-studio .editor-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 320px) minmax(0, 1fr);
+  align-items: center;
+}
+.canvas-studio .editor-heading {
+  display: contents;
+}
+.editor-toolbar .editor-heading .editor-back-link {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+.canvas-studio .editor-heading h1 {
+  grid-column: 2;
+  grid-row: 1;
+  width: 100%;
+  max-width: none;
+  text-align: center;
+}
+.canvas-studio .editor-heading h1 input {
+  width: 100%;
+  text-align: center;
+}
+.canvas-studio .editor-toolbar-actions {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+}
+@media (max-width: 1200px) {
+  .canvas-studio .editor-toolbar-actions {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: stretch;
+    justify-content: center;
+  }
+}
+@media (max-width: 700px) {
+  .canvas-studio .editor-toolbar {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 10px;
+  }
+  .editor-toolbar .editor-heading .editor-back-link span {
+    display: none;
+  }
+}
+
 .workspace-sidebar:has(.workspace-invitation) .workspace-brand {
   margin-bottom: 24px;
 }
