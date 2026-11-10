@@ -369,6 +369,35 @@
   margin: 0 0 8px;
   font-size: 16px;
 }
+.account-deletion-compact {
+  display: block;
+  margin-top: 64px;
+  padding-top: 16px;
+}
+.account-delete-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--ui-muted);
+  font:
+    400 11px var(--font-sans),
+    sans-serif;
+  cursor: pointer;
+}
+.account-delete-link:hover,
+.account-delete-link:focus-visible {
+  color: var(--ui-danger);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  outline: none;
+}
+.account-delete-link:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
 .account-deletion p,
 .account-confirmation p,
 .account-deletion-intro p {

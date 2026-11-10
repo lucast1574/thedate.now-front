@@ -4,25 +4,29 @@ import { useAccountDeletion } from "./use-account-deletion";
 
 export default function AccountDeletion({
   disabled = false,
+  compact = false,
 }: {
   disabled?: boolean;
+  compact?: boolean;
 }) {
   const deletion = useAccountDeletion();
   return (
     <section
-      className="account-deletion"
-      aria-labelledby="delete-account-title"
+      className={`account-deletion${compact ? " account-deletion-compact" : ""}`}
+      aria-label="Eliminar cuenta"
     >
-      <div>
-        <h2 id="delete-account-title">Eliminar cuenta</h2>
-        <p>
-          Borra tu cuenta y los datos asociados de este producto de forma
-          permanente. Esta acción no se puede deshacer.
-        </p>
-      </div>
+      {!compact && (
+        <div>
+          <h2>Eliminar cuenta</h2>
+          <p>
+            Borra tu cuenta y los datos asociados de este producto de forma
+            permanente. Esta acción no se puede deshacer.
+          </p>
+        </div>
+      )}
       <button
         type="button"
-        className="account-delete-button"
+        className={compact ? "account-delete-link" : "account-delete-button"}
         disabled={disabled || deletion.busy}
         onClick={() => deletion.setOpen(true)}
       >

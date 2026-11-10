@@ -130,7 +130,7 @@ export default function ProfileForm({
           Cerrar sesión
         </button>
       </div>
-      <AccountDeletion disabled={busy} />
+      <AccountDeletion disabled={busy} compact />
     </section>
   );
 }
