@@ -1,5 +1,5 @@
 import "server-only";
-import { sessionToken } from "@/lib/auth/session";
+import { sessionToken, clearSession } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
 import { readRequestText, RequestBodyTooLarge } from "./request-body";
 const allowedPath =
@@ -52,6 +52,8 @@ export async function proxyStudio(
     body,
   });
   const response = forwardJSON(result);
+  if (joined === "profile" && method === "DELETE" && result?.ok)
+    await clearSession();
   response.headers.set("Cache-Control", "private, no-store");
   return response;
 }

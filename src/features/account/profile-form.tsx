@@ -4,6 +4,7 @@ import Alert from "@/components/alert";
 import { api } from "@/lib/api/client";
 import type { User } from "@/lib/events/types";
 import { profilePhoto } from "./profile-photo";
+import AccountDeletion from "./account-deletion";
 export default function ProfileForm({
   user,
   onSaved,
@@ -129,6 +130,7 @@ export default function ProfileForm({
           Cerrar sesión
         </button>
       </div>
+      <AccountDeletion disabled={busy} />
     </section>
   );
 }

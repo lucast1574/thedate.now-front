@@ -1,6 +1,6 @@
 export function safeContinuation(value: string | null | undefined) {
   return value &&
-    /^\/(?:join\/[a-f0-9]{48}|admin|affiliates|profile|organizar|compartir)$/.test(
+    /^\/(?:join\/[a-f0-9]{48}|admin|affiliates|profile|delete-account|organizar|compartir)$/.test(
       value,
     )
     ? value
