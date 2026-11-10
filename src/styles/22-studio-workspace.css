@@ -369,10 +369,21 @@
   margin: 0 0 8px;
   font-size: 16px;
 }
+.profile-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+.profile-layout > .profile-page {
+  flex: 1;
+  width: 100%;
+  margin: 0 auto;
+}
 .account-deletion-compact {
   display: block;
-  margin-top: 64px;
-  padding-top: 16px;
+  margin: 0;
+  padding: 16px 24px 20px;
+  border: 0;
 }
 .account-delete-link {
   display: inline-flex;
