@@ -43,11 +43,10 @@ for (const kind of ["general", "wedding"]) {
       ["future"],
     );
   });
-  test(`${kind}: the gallery separates ended invitations from active work`, () => {
-    for (const history of [false, true]) {
+  test(`${kind}: the gallery shows active and ended invitations together`, () => {
+    {
       const Gallery = loadSource("src/features/studio/event-gallery.tsx", {
         mocks: {
-          react: { ...React, useState: () => [history, () => {}] },
           "next/link": {
             default: ({ children, ...props }) =>
               React.createElement("a", props, children),
@@ -66,12 +65,16 @@ for (const kind of ["general", "wedding"]) {
           onCreate() {},
         }),
       );
-      assert.ok(markup.includes(history ? past.title : future.title));
-      assert.ok(!markup.includes(history ? future.title : past.title));
-      assert.match(
-        markup,
-        history ? /Volver a activas/ : /Ver terminadas \(1\)/,
+      assert.ok(markup.includes(past.title));
+      assert.ok(markup.includes(future.title));
+      assert.match(markup, /Mis invitaciones/);
+      assert.match(markup, /Terminada/);
+      assert.match(markup, /aria-label="Consultar Celebración pasada"/);
+      assert.match(markup, /aria-label="Gestionar Celebración futura"/);
+      assert.ok(
+        !markup.includes('aria-label="Editar datos de Celebración pasada"'),
       );
+      assert.ok(!markup.includes("Ver terminadas"));
     }
   });
 }
