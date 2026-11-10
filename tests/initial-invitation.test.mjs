@@ -17,6 +17,37 @@ const { applyCompleteTemplate } = loadSource(
   { globals: { crypto } },
 );
 
+test("starting without a template persists a genuinely empty editable canvas in both products", () => {
+  const { blankInvitation } = loadSource(
+    "src/features/studio/blank-invitation.ts",
+  );
+  const { designPayload } = loadSource("src/features/designer/design-state.ts");
+  for (const kind of ["general", "wedding"]) {
+    const source = {
+      ...blankEvent(kind),
+      title: "Mi celebración",
+      slug: "mi-celebracion",
+      startAt: "2027-06-19T18:00:00Z",
+      organizer: "Lucas",
+      location: "Lima",
+      mapUrl: "https://maps.google.com/?q=Lima",
+      opening: { enabled: true },
+    };
+    const draft = blankInvitation(source);
+    const payload = initialInvitation(draft);
+    assert.equal(payload.templateId, `${kind}-blank`);
+    assert.equal(payload.designMode, "flyer");
+    assert.equal(payload.initialDesign.opening, null);
+    assert.equal(payload.initialDesign.sections.length, 1);
+    assert.equal(payload.initialDesign.sections[0].canvas.elements.length, 0);
+    assert.equal(payload.initialDesign.sections[0].body, "");
+    assert.equal(payload.organizer, source.organizer);
+    assert.equal(payload.startAt, source.startAt.replace("Z", ".000Z"));
+    assert.equal(designPayload(draft).templateId, `${kind}-blank`);
+    assert.equal(source.templateId.includes("blank"), false);
+  }
+});
+
 test("every initial canvas template saves the preview with current features atomically", () => {
   for (const template of invitationTemplates.filter(
     (t) => t.mode === "flyer",

@@ -1,0 +1,109 @@
+.invitation-start-choice {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.simple-event-form .invitation-start-choice button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 18px;
+  text-align: left;
+  border: 1px solid var(--form-line);
+  border-radius: 12px;
+  background: var(--ui-surface);
+  color: var(--ui-ink);
+  outline: none;
+}
+.simple-event-form .invitation-start-choice button[aria-pressed="true"] {
+  background: var(--form-tint);
+  border-color: var(--form-accent);
+}
+.simple-event-form .invitation-start-choice button:hover,
+.simple-event-form .invitation-start-choice button:focus-visible {
+  background: var(--form-tint);
+  color: var(--form-accent);
+}
+.invitation-start-choice svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--form-accent);
+}
+.invitation-start-choice strong,
+.invitation-start-choice small {
+  display: block;
+}
+.invitation-start-choice strong {
+  font-size: 13px;
+  line-height: 1.4;
+}
+.invitation-start-choice small {
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 4px;
+  color: var(--ui-muted);
+}
+.invitation-start-indicator {
+  width: 18px;
+  min-width: 18px;
+  margin-left: auto;
+}
+.invitation-start-indicator svg {
+  width: 18px;
+  height: 18px;
+}
+.invitation-blank-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 28px;
+  background: var(--form-tint);
+  border-radius: 12px;
+}
+.invitation-blank-paper {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 80px;
+  height: 108px;
+  border: 1px solid var(--form-line);
+  border-radius: 3px;
+  background: var(--ui-surface);
+  color: var(--form-accent);
+}
+.invitation-blank-paper svg {
+  width: 20px;
+  height: 20px;
+}
+.invitation-blank-summary h3 {
+  margin: 0 0 8px;
+  font-size: 16px;
+}
+.invitation-blank-summary p {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 13px;
+  line-height: 1.7;
+  max-width: 48ch;
+}
+@media (max-width: 600px) {
+  .invitation-start-choice {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .simple-event-form .invitation-start-choice button {
+    padding: 14px;
+  }
+  .invitation-blank-summary {
+    padding: 20px 16px;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .invitation-blank-paper {
+    width: 52px;
+    height: 74px;
+  }
+}

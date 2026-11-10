@@ -53,6 +53,8 @@ export function resolveTemplateId(
   mode: DesignMode = "sections",
   id?: string,
 ) {
+  if (mode === "flyer" && style === "classic" && id === `${kind}-blank`)
+    return id;
   return (
     invitationTemplates.find(
       (t) =>

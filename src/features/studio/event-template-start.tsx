@@ -8,6 +8,8 @@ import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { Event } from "@/lib/events/types";
 import EventOpeningFields from "./event-opening-fields";
 import { templateOpening } from "@/features/designer/template-extras";
+import { blankInvitation, isBlankInvitation } from "./blank-invitation";
+import InvitationStartChoice from "./invitation-start-choice";
 
 export default function EventTemplateStart({
   draft,
@@ -18,6 +20,10 @@ export default function EventTemplateStart({
 }) {
   const [preview, setPreview] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [previousTemplateId, setPreviousTemplateId] = useState(
+    draft.templateId,
+  );
+  const blank = isBlankInvitation(draft);
   const templates = invitationTemplates.filter(
     (t) => t.kind === draft.kind && t.mode === "flyer",
   );
@@ -29,6 +35,7 @@ export default function EventTemplateStart({
       ? [...templates.slice(0, 3), template]
       : templates.slice(0, 4);
   const designed = useMemo(() => {
+    if (isBlankInvitation(draft)) return blankInvitation(draft);
     const selected = invitationTemplates.find(
       (item) =>
         item.id === draft.templateId &&
@@ -39,6 +46,23 @@ export default function EventTemplateStart({
       ? { ...draft, ...applyCompleteTemplate(draft, selected) }
       : draft;
   }, [draft]);
+  function chooseStart(nextBlank: boolean) {
+    if (nextBlank === blank) return;
+    if (nextBlank) setPreviousTemplateId(draft.templateId);
+    const previous =
+      templates.find((item) => item.id === previousTemplateId) || templates[0];
+    setDraft((current) =>
+      nextBlank
+        ? blankInvitation(current)
+        : {
+            ...current,
+            templateId: previous.id,
+            template: previous.style,
+            accentColor: previous.accent,
+            opening: null,
+          },
+    );
+  }
   return (
     <section
       className="event-template-picker"
@@ -48,10 +72,7 @@ export default function EventTemplateStart({
         <div>
           <span className="form-eyebrow">03 / TU INVITACIÓN</span>
           <h2 id="initial-style-title">Un estilo que se sienta tuyo</h2>
-          <p>
-            Plantillas completas, apertura animada y detalles editables en el
-            lienzo.
-          </p>
+          <p>Elige un diseño o empieza con un lienzo en blanco.</p>
         </div>
         <button
           type="button"
@@ -61,68 +82,88 @@ export default function EventTemplateStart({
           <Icon name="eye" /> Ver invitación
         </button>
       </header>
-      <div
-        className="event-template-grid"
-        role="group"
-        aria-label="Plantilla inicial"
-      >
-        {(showAll ? templates : featured).map((item) => (
+      <InvitationStartChoice blank={blank} onChange={chooseStart} />
+      {blank ? (
+        <div className="invitation-blank-summary">
+          <span className="invitation-blank-paper" aria-hidden="true">
+            <Icon name="plus" />
+          </span>
+          <div>
+            <h3>Tu invitación empieza contigo.</h3>
+            <p>
+              Añade textos, fotos y detalles a tu ritmo en el editor. También
+              podrás elegir una plantilla más adelante.
+            </p>
+          </div>
+        </div>
+      ) : (
+        <>
+          <div
+            className="event-template-grid"
+            role="group"
+            aria-label="Plantilla inicial"
+          >
+            {(showAll ? templates : featured).map((item) => (
+              <button
+                type="button"
+                key={item.id}
+                aria-pressed={template?.id === item.id}
+                onClick={() =>
+                  setDraft((current) => ({
+                    ...current,
+                    templateId: item.id,
+                    template: item.style,
+                    designMode: "flyer",
+                    accentColor: item.accent,
+                  }))
+                }
+              >
+                <span className="event-template-art" aria-hidden="true" inert>
+                  <FlyerSurface
+                    canvas={templateCanvas(item, {
+                      title: draft.title,
+                      body: draft.description,
+                    })}
+                    photoURL={() => ""}
+                    label={item.name}
+                  />
+                </span>
+                <span className="event-template-caption">
+                  <strong>{item.name}</strong>
+                  <small>{item.category}</small>
+                  {template?.id === item.id && <Icon name="check" />}
+                </span>
+              </button>
+            ))}
+          </div>
           <button
             type="button"
-            key={item.id}
-            aria-pressed={template?.id === item.id}
-            onClick={() =>
-              setDraft((current) => ({
-                ...current,
-                templateId: item.id,
-                template: item.style,
-                designMode: "flyer",
-                accentColor: item.accent,
-              }))
-            }
+            className="form-template-more"
+            onClick={() => setShowAll(!showAll)}
           >
-            <span className="event-template-art" aria-hidden="true" inert>
-              <FlyerSurface
-                canvas={templateCanvas(item, {
-                  title: draft.title,
-                  body: draft.description,
-                })}
-                photoURL={() => ""}
-                label={item.name}
-              />
-            </span>
-            <span className="event-template-caption">
-              <strong>{item.name}</strong>
-              <small>{item.category}</small>
-              {template?.id === item.id && <Icon name="check" />}
-            </span>
+            {showAll
+              ? "Mostrar menos"
+              : `Explorar los ${templates.length} estilos`}{" "}
+            <Icon name="chevron" />
           </button>
-        ))}
-      </div>
-      <button
-        type="button"
-        className="form-template-more"
-        onClick={() => setShowAll(!showAll)}
-      >
-        {showAll ? "Mostrar menos" : `Explorar los ${templates.length} estilos`}{" "}
-        <Icon name="chevron" />
-      </button>
-      {template && (
-        <>
-          <p className="event-template-selected">
-            <Icon name="check" /> {template.name} · {designed.sections?.length}{" "}
-            secciones listas para personalizar
-          </p>
-          <EventOpeningFields
-            draft={draft}
-            setDraft={setDraft}
-            opening={opening!}
-            palette={
-              opening?.paletteMode === "design"
-                ? templateOpening(template)
-                : opening!
-            }
-          />
+          {template && (
+            <>
+              <p className="event-template-selected">
+                <Icon name="check" /> {template.name} ·{" "}
+                {designed.sections?.length} secciones listas para personalizar
+              </p>
+              <EventOpeningFields
+                draft={draft}
+                setDraft={setDraft}
+                opening={opening!}
+                palette={
+                  opening?.paletteMode === "design"
+                    ? templateOpening(template)
+                    : opening!
+                }
+              />
+            </>
+          )}
         </>
       )}
       <p className="event-template-footnote">
