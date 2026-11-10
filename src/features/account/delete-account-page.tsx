@@ -41,6 +41,24 @@ export default function DeleteAccountPage({
           </p>
         )}
         {completed && <Link href="/">Volver al inicio</Link>}
+        {!completed && (
+          <p>
+            Tu acceso se revoca al confirmar. El borrado comienza de inmediato y
+            continúa automáticamente si un servicio no responde. Las copias de
+            seguridad siguen su ciclo de rotación y los registros del proveedor
+            de pagos, sus obligaciones de conservación. Consulta la{" "}
+            <a
+              href={
+                wedding
+                  ? "https://save.thedate.now/privacidad"
+                  : "https://thedate.now/privacidad"
+              }
+            >
+              política de privacidad
+            </a>
+            .
+          </p>
+        )}
       </section>
       {!completed && (
         <AccountShell
