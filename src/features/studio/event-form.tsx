@@ -16,12 +16,14 @@ export default function EventForm({
   setDraft,
   selected,
   busy,
+  courtesy = false,
   onSubmit,
 }: {
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
   selected: Event | null;
   busy: boolean;
+  courtesy?: boolean;
   onSubmit: (e: FormEvent) => void;
 }) {
   return (
@@ -117,10 +119,16 @@ export default function EventForm({
         <p>
           {selected
             ? "Tus cambios se guardarán en este evento."
-            : "Tu diseño se conserva al continuar. Activa tu evento con un único pago."}
+            : courtesy
+              ? "Tienes una cortesía: esta invitación será gratis. Se consume una sola vez."
+              : "Tu diseño se conserva al continuar. Activa tu evento con un único pago."}
         </p>
         <ActionButton className="office-button" disabled={busy}>
-          {selected ? "Guardar cambios" : "Continuar al pago"}{" "}
+          {selected
+            ? "Guardar cambios"
+            : courtesy
+              ? "Crear mi invitación gratis"
+              : "Continuar al pago"}{" "}
           <Icon name="arrow" />
         </ActionButton>
       </div>

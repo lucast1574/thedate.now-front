@@ -3,7 +3,7 @@ import { sessionToken, clearSession } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
 import { readRequestText, RequestBodyTooLarge } from "./request-body";
 const allowedPath =
-  /^(?:profile(?:\/professional)?|support\/tickets|events(?:\/[a-z0-9-]+(?:\/(?:wishlist(?:\/(?:metadata|reservations\/[a-zA-Z0-9-]+))?|guests(?:\/(?:import|[a-z0-9-]+))?|seating|activate|checkout|publish|deployment|delivery(?:\/retry)?|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design(?:\/publish)?))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:support\/tickets(?:\/[a-z0-9-]+)?|overview|users(?:\/[a-z0-9-]+\/(?:role|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
+  /^(?:profile(?:\/professional)?|support\/tickets|events(?:\/[a-z0-9-]+(?:\/(?:wishlist(?:\/(?:metadata|reservations\/[a-zA-Z0-9-]+))?|guests(?:\/(?:import|[a-z0-9-]+))?|seating|activate|checkout|publish|deployment|delivery(?:\/retry)?|send-invitations|couple-invitations|couple-accounts|collaborators(?:\/[a-z0-9-]+)?|design(?:\/publish)?))?)?|maps\/resolve|templates|affiliates(?:\/(?:join|withdrawals))?|admin\/(?:support\/tickets(?:\/[a-z0-9-]+)?|overview|users(?:\/[a-z0-9-]+\/(?:role|events|withdrawals\/[a-z0-9-]+))?|withdrawals|events\/[a-z0-9-]+\/courtesy))$/;
 
 export async function proxyStudio(
   request: Request,
@@ -37,12 +37,15 @@ export async function proxyStudio(
       );
     }
   }
-  const scope = new URL(request.url).searchParams.get("scope");
+  const params = new URL(request.url).searchParams;
+  const scope = params.get("scope");
   const query = joined.includes("support/tickets")
     ? new URL(request.url).search
-    : joined === "events" && (scope === "organization" || scope === "sharing")
-      ? `?scope=${scope}`
-      : "";
+    : joined === "admin/users" && params.has("email")
+      ? `?${new URLSearchParams({ email: params.get("email") || "" })}`
+      : joined === "events" && (scope === "organization" || scope === "sharing")
+        ? `?scope=${scope}`
+        : "";
   const result = await backendFetch(joined + query, {
     method,
     headers: {

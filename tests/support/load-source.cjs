@@ -49,6 +49,7 @@ function loadSource(
         exports: sourceModule.exports,
         require: resolve,
         URL,
+        URLSearchParams,
         Request,
         Response,
         Headers,

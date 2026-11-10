@@ -1,4 +1,4 @@
-import type { Event, User } from "@/lib/events/types";
+import type { User } from "@/lib/events/types";
 export type Revenue = {
   events: number;
   courtesies: number;
@@ -31,7 +31,6 @@ export type Payout = {
 export type AdminData = {
   overview: Overview;
   users: User[];
-  events: Event[];
   payouts: Payout[];
 };
 export type Affiliate = {

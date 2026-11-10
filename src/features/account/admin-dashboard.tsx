@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
-import type { User, Event } from "@/lib/events/types";
+import type { User } from "@/lib/events/types";
 import type { AdminData, Overview, Payout } from "@/lib/account/types";
 import Alert from "@/components/alert";
 import AdminRevenue from "./admin-revenue";
@@ -10,13 +10,12 @@ import AdminCourtesies from "./admin-courtesies";
 import AdminPayouts from "./admin-payouts";
 import SupportBoard from "@/features/support/support-board";
 async function fetchAdmin() {
-  const [overview, users, events, payouts] = await Promise.all([
+  const [overview, users, payouts] = await Promise.all([
     api<Overview>("/api/backend/admin/overview"),
     api<User[]>("/api/backend/admin/users"),
-    api<Event[]>("/api/backend/events"),
     api<Payout[]>("/api/backend/admin/withdrawals"),
   ]);
-  return { overview, users, events, payouts };
+  return { overview, users, payouts };
 }
 export default function AdminDashboard({
   user,
@@ -71,7 +70,7 @@ export default function AdminDashboard({
       {data ? (
         <>
           <AdminRevenue overview={data.overview} />
-          <AdminCourtesies events={data.events} busy={busy} run={run} />
+          <AdminCourtesies busy={busy} run={run} />
           <AdminUsers
             wedding={wedding}
             users={data.users}

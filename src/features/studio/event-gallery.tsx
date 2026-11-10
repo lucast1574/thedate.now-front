@@ -1,3 +1,5 @@
+import CourtesyNotice from "./courtesy-notice";
+import { hasInvitationCourtesy } from "@/lib/events/courtesy";
 import { eventReadOnly } from "@/lib/events/event-closure";
 import { useState } from "react";
 import GalleryHistory from "./gallery-history";
@@ -78,6 +80,7 @@ export default function EventGallery({
           ))}
         </section>
       )}
+      {hasInvitationCourtesy(events, user.id) && <CourtesyNotice />}
       <GalleryHistory
         history={history}
         count={items.length}

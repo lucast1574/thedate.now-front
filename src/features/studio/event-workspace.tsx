@@ -1,4 +1,5 @@
 import { type FormEvent } from "react";
+import { hasInvitationCourtesy } from "@/lib/events/courtesy";
 import Link from "next/link";
 import Alert from "@/components/alert";
 
@@ -81,6 +82,7 @@ export default function EventWorkspace({
           selected.ownerId === user.id ||
           user.role === "admin") && (
           <EventForm
+            courtesy={hasInvitationCourtesy(events.events, user.id)}
             key={selected?.id ?? "new"}
             draft={events.draft}
             setDraft={events.setDraft}

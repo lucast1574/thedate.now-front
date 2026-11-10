@@ -28,7 +28,7 @@ test("unpaid setup exposes payment continuation without management or publicatio
   };
   const tree = Workspace({
     user: { id: "owner", role: "user" },
-    events: { selected: event, draft: event },
+    events: { selected: event, draft: event, events: [event] },
     actions: {},
     feedback: {},
     paymentsEnabled: true,
@@ -65,7 +65,7 @@ test("paid setup keeps a return to editing and management without the old footer
   const all = nodes(
     Workspace({
       user: { id: "owner", role: "user" },
-      events: { selected: event, draft: event },
+      events: { selected: event, draft: event, events: [event] },
       actions: {},
       feedback: {},
       paymentsEnabled: true,

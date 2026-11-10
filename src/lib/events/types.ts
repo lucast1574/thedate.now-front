@@ -57,6 +57,7 @@ export type Event = DesignEvent & {
   capacityUnlimited?: boolean;
   maybeHoldHours: number;
   paymentStatus: string;
+  paymentSource?: string;
   publishedAt: string | null;
   updatedAt?: string;
   createdAt?: string;

@@ -25,6 +25,31 @@ function request(method = "GET", origin = "https://crea.thedate.now") {
   });
 }
 
+test("admin courtesy lookup forwards only the exact email and permits account events", async () => {
+  const targets = [];
+  const proxy = proxyFixture("local-test-session", (url) => {
+    targets.push(url);
+    return Response.json([]);
+  });
+  await proxy(
+    new Request(
+      "https://crea.thedate.now/api/backend/admin/users?email=tester%40example.test&role=admin",
+    ),
+    ["admin", "users"],
+    "GET",
+  );
+  const response = await proxy(
+    request(),
+    ["admin", "users", "tester-id", "events"],
+    "GET",
+  );
+  assert.equal(response.status, 200);
+  assert.deepEqual(targets, [
+    "https://api.thedate.now/admin/users?email=tester%40example.test",
+    "https://api.thedate.now/admin/users/tester-id/events",
+  ]);
+});
+
 test("organization scope reaches the backend without forwarding arbitrary query options", async () => {
   let target;
   const proxy = proxyFixture("local-test-session", (url) => {
