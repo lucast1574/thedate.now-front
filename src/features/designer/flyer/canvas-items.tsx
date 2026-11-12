@@ -62,29 +62,37 @@ export default function CanvasItems({
             data-photo={item.type === "image" || undefined}
             onClick={(e) => {
               e.stopPropagation();
-              if ((e.target as HTMLElement).closest("a")) e.preventDefault();
+              const target = e.target as HTMLElement;
+              if (target.closest("a")) e.preventDefault();
               if (e.shiftKey || !selected) onSelect(item.id, e.shiftKey);
-              const imageTarget =
-                item.type === "image" ||
-                (item.binding === "dress_code" &&
-                  (e.target as HTMLElement).closest("[data-dress-image]"));
               if (
-                imageTarget &&
-                !item.locked &&
-                !e.shiftKey &&
-                selectedIds.length <= 1 &&
-                !gesture.wasDragged() &&
-                !(e.target as HTMLElement).closest(".canvas-handle")
+                item.locked ||
+                e.shiftKey ||
+                selectedIds.length > 1 ||
+                gesture.wasDragged() ||
+                target.closest(".canvas-handle") ||
+                target.closest(".canvas-photo-hint")
               )
+                return;
+              const hasPhoto =
+                !!item.photoKey && item.photoKey !== "template-photo";
+              const isPlaceholderImage = item.type === "image" && !hasPhoto;
+              const isDressImage =
+                item.binding === "dress_code" &&
+                !!target.closest("[data-dress-image]");
+              if (isPlaceholderImage || isDressImage)
                 replacement.request(item.id);
             }}
             onFocus={(e) => {
               if (e.currentTarget.matches(":focus-visible")) onSelect(item.id);
             }}
             onKeyDown={(e) => {
+              const hasPhoto =
+                !!item.photoKey && item.photoKey !== "template-photo";
               if (
                 !item.locked &&
                 item.type === "image" &&
+                !hasPhoto &&
                 (e.key === "Enter" || e.key === " ")
               ) {
                 e.preventDefault();
@@ -125,11 +133,22 @@ export default function CanvasItems({
             ) : (
               <FlyerContent item={item} event={event} photoURL={photoURL} />
             )}
-            {item.type === "image" && !item.locked && (
-              <span className="canvas-photo-hint">
-                <Icon name="image" /> Pulsa para cambiar foto
-              </span>
-            )}
+            {item.type === "image" &&
+              !item.locked &&
+              item.photoKey &&
+              item.photoKey !== "template-photo" && (
+                <button
+                  type="button"
+                  className="canvas-photo-hint"
+                  onPointerDown={(e) => e.stopPropagation()}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    replacement.request(item.id);
+                  }}
+                >
+                  <Icon name="image" /> Pulsa para cambiar foto
+                </button>
+              )}
             {selected &&
               !item.locked &&
               selectedIds.length === 1 &&

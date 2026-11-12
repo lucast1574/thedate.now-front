@@ -254,3 +254,81 @@ test("inspector action icons exist in the local symbol sprite", () => {
       assert.ok(catalog[match[1]], match[1]);
   }
 });
+
+test("canvas photo hint button appears only for actual uploaded photos, and placeholders keep standard prompt", () => {
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const { createElement } = require("react");
+  const CanvasItems = loadSource(
+    "src/features/designer/flyer/canvas-items.tsx",
+  ).default;
+  const dummyProps = {
+    originalCanvas: { elements: [] },
+    selectedIds: [],
+    onSelect: () => {},
+    gesture: {
+      begin: () => {},
+      move: () => {},
+      end: () => {},
+      wasDragged: () => false,
+    },
+    replacement: { request: () => {} },
+    context: { open: () => {} },
+    keyboard: () => {},
+    photoURL: (key) => `/photos/${key}`,
+    onChange: () => {},
+  };
+
+  const photoElem = element("image", {
+    id: "p1",
+    photoKey: "custom-buzz.jpg",
+  });
+  const htmlPhoto = renderToStaticMarkup(
+    createElement(CanvasItems, {
+      ...dummyProps,
+      canvas: { ...canvas, elements: [photoElem] },
+      originalCanvas: { ...canvas, elements: [photoElem] },
+    }),
+  );
+  assert.match(htmlPhoto, /canvas-photo-hint/);
+  assert.match(htmlPhoto, /Pulsa para cambiar foto/);
+
+  const placeholderElem = element("image", {
+    id: "p2",
+    photoKey: "template-photo",
+  });
+  const htmlPlaceholder = renderToStaticMarkup(
+    createElement(CanvasItems, {
+      ...dummyProps,
+      canvas: { ...canvas, elements: [placeholderElem] },
+      originalCanvas: { ...canvas, elements: [placeholderElem] },
+    }),
+  );
+  assert.ok(!htmlPlaceholder.includes("canvas-photo-hint"));
+  assert.match(htmlPlaceholder, /Pon tu foto aquí/);
+});
+
+test("guest queue notice dialog explains automatic delivery or waiting list based on spots", () => {
+  const { renderToStaticMarkup } = require("react-dom/server");
+  const { createElement } = require("react");
+  const GuestQueueNoticeDialog = loadSource(
+    "src/features/manager/guest-queue-notice-dialog.tsx",
+  ).default;
+
+  const withSpots = renderToStaticMarkup(
+    createElement(GuestQueueNoticeDialog, {
+      hasSpots: true,
+      onClose: () => {},
+    }),
+  );
+  assert.match(withSpots, /Invitación en camino/);
+  assert.match(withSpots, /automáticamente por WhatsApp/);
+
+  const withoutSpots = renderToStaticMarkup(
+    createElement(GuestQueueNoticeDialog, {
+      hasSpots: false,
+      onClose: () => {},
+    }),
+  );
+  assert.match(withoutSpots, /En lista de espera automática/);
+  assert.match(withoutSpots, /liberen cupos/);
+});

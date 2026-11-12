@@ -1,7 +1,10 @@
+import { useState } from "react";
 import GuestForm from "@/features/studio/guest-form";
 import GuestImport from "@/features/studio/guest-import";
 import Icon from "@/components/icon";
 import GuestRoster from "./guest-roster";
+import GuestQueueNoticeDialog from "./guest-queue-notice-dialog";
+import { guestStats } from "@/lib/events/attendees";
 import type { useManager } from "./use-manager";
 
 export default function GuestWorkspace({
@@ -9,7 +12,36 @@ export default function GuestWorkspace({
 }: {
   manager: ReturnType<typeof useManager>;
 }) {
+  const [queueNotice, setQueueNotice] = useState<{
+    open: boolean;
+    hasSpots: boolean;
+  }>({
+    open: false,
+    hasSpots: true,
+  });
+
   if (!manager.event) return null;
+
+  function checkAndNotify() {
+    if (!manager.event?.publishedAt) return;
+    const hasActiveSends = Boolean(
+      manager.event.invitationsEnabled ||
+      manager.guests.some((g) => g.sentAt || g.sendState === "sent"),
+    );
+    if (!hasActiveSends) return;
+
+    const stats = guestStats(manager.guests, Date.now());
+    const awaiting = manager.guests
+      .filter((g) => g.invitationHeld)
+      .reduce((sum, g) => sum + g.seats, 0);
+    const used = stats.confirmed + stats.held + awaiting;
+    const hasSpots =
+      Boolean(manager.event.capacityUnlimited) ||
+      manager.event.capacity - used > 0;
+
+    setQueueNotice({ open: true, hasSpots });
+  }
+
   return (
     <section
       className="guest-workspace"
@@ -30,7 +62,10 @@ export default function GuestWorkspace({
           kind={manager.event.kind}
           eventId={manager.event.id}
           disabled={manager.busy}
-          onImported={() => manager.refresh()}
+          onImported={async () => {
+            await manager.refresh();
+            checkAndNotify();
+          }}
         />
         <section className="guest-manual-card">
           <div className="guest-method-heading">
@@ -46,7 +81,11 @@ export default function GuestWorkspace({
           <GuestForm
             kind={manager.event.kind}
             busy={manager.busy}
-            onAdd={manager.add}
+            onAdd={async (fields) => {
+              const ok = await manager.add(fields);
+              if (ok) checkAndNotify();
+              return ok;
+            }}
           />
         </section>
       </div>
@@ -74,6 +113,12 @@ export default function GuestWorkspace({
         onUpdated={() => manager.refresh()}
         blocked={manager.busy || manager.dirty}
       />
+      {queueNotice.open && (
+        <GuestQueueNoticeDialog
+          hasSpots={queueNotice.hasSpots}
+          onClose={() => setQueueNotice({ open: false, hasSpots: true })}
+        />
+      )}
     </section>
   );
 }

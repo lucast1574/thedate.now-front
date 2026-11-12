@@ -76,8 +76,9 @@
   translate: -50% 0;
   width: max-content !important;
   max-width: 95%;
-  padding: 8px 10px;
+  padding: 8px 12px;
   border-radius: 20px;
+  border: 0;
   background: #fffdf6e8;
   color: var(--ui-ink);
   font:
@@ -86,7 +87,20 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+.canvas-photo-hint:hover {
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+.canvas-photo-hint:active {
+  transform: scale(0.98);
 }
 .canvas-photo-hint .ui-icon {
   width: 14px;
