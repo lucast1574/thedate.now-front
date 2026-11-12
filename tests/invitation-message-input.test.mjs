@@ -3,57 +3,47 @@ import assert from "node:assert/strict";
 import { loadSource } from "./support/load-source.cjs";
 const {
   ensureInvitationLink,
+  cleanInvitationMessage,
   protectInvitationEdit,
   moveInvitationLink,
   invitationMessagePreview,
 } = loadSource("src/lib/events/invitation-message.ts");
-test("the invitation always has exactly one link and keeps its chosen position", () => {
-  assert.equal(ensureInvitationLink("Hola"), "Hola\n\n{{link}}");
+
+test("invitation message cleans legacy link placeholders so only author text remains", () => {
+  assert.equal(cleanInvitationMessage("Hola\n\n{{link}}"), "Hola");
   assert.equal(
-    ensureInvitationLink("Antes {{enlace}} después"),
-    "Antes {{link}} después",
+    cleanInvitationMessage("Antes {{enlace}} después"),
+    "Antes  después",
   );
-  assert.equal(ensureInvitationLink("A {{link}} B {{link}}"), "A {{link}} B ");
-  assert.equal(ensureInvitationLink(""), "{{link}}");
-  assert.equal(ensureInvitationLink("a".repeat(4000)).length, 4000);
-  assert.match(ensureInvitationLink("a".repeat(4000)), /\{\{link\}\}$/);
-});
-test("deleting all text or part of the link cannot remove the link", () => {
-  const value = "Hola {{link}} gracias";
-  assert.equal(protectInvitationEdit(value, "").value, "{{link}}");
-  assert.equal(
-    protectInvitationEdit(value, "Hola {{lin}} gracias").value,
-    value,
-  );
-  assert.equal(protectInvitationEdit(value, "Hola  gracias").value, value);
-  assert.equal(
-    protectInvitationEdit(value, "Nuevo texto").value,
-    "Nuevo texto{{link}}",
-  );
-  assert.equal(protectInvitationEdit(value, value + "{{link}}").value, value);
-});
-test("the link moves to the cursor and allows text on both sides", () => {
-  const initial = "Antes. Después. {{link}}";
-  const moved = moveInvitationLink(initial, 7);
-  assert.equal(moved.value, "Antes. {{link}}Después. ");
-  assert.equal(moved.caret, 15);
-  assert.equal(
-    moveInvitationLink(moved.value, moved.value.length).value,
-    "Antes. Después. {{link}}",
-  );
-  assert.equal(
-    protectInvitationEdit("Hola {{link}}", "Hola {{link}} ¡Te esperamos!")
-      .value,
-    "Hola {{link}} ¡Te esperamos!",
-  );
+  assert.equal(cleanInvitationMessage("A {{link}} B {{link}}"), "A  B");
+  assert.equal(cleanInvitationMessage("{{link}}"), "");
+  assert.equal(ensureInvitationLink("Hola {{link}}"), "Hola");
 });
 
-test("links stay clickable when neighboring text has no separating spaces", () => {
+test("editing text cleans tokens without enforcing link tokens in the field", () => {
+  const value = "Hola gracias";
+  assert.equal(protectInvitationEdit(value, "Hola").value, "Hola");
+  assert.equal(protectInvitationEdit(value, "Hola {{link}}").value, "Hola");
+  assert.equal(moveInvitationLink("Hola {{link}}", 0).value, "Hola");
+});
+
+test("invitation message preview prefixes the personal link once at the top without duplicate in body", () => {
   assert.equal(
     invitationMessagePreview(
-      "Antes{{link}}Después",
+      "¡Te esperamos!\nConoce los detalles.",
       "https://example.test/personal",
     ),
-    "Abre tu invitación:\nhttps://example.test/personal\n\nAntes https://example.test/personal Después",
+    "Abre tu invitación:\nhttps://example.test/personal\n\n¡Te esperamos!\nConoce los detalles.",
+  );
+  assert.equal(
+    invitationMessagePreview(
+      "Antes {{link}} Después",
+      "https://example.test/personal",
+    ),
+    "Abre tu invitación:\nhttps://example.test/personal\n\nAntes  Después",
+  );
+  assert.equal(
+    invitationMessagePreview("", "https://example.test/personal"),
+    "Abre tu invitación:\nhttps://example.test/personal",
   );
 });

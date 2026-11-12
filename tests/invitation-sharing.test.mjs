@@ -81,3 +81,29 @@ test("the share cover renders a readable PNG even without uploaded photos", asyn
   assert.equal(png.readUInt32BE(16), 1200);
   assert.equal(png.readUInt32BE(20), 630);
 });
+
+test("guest invitation route exports generateMetadata that resolves published event OpenGraph card", async () => {
+  const { generateMetadata } = loadSource("src/app/para/[guest]/page.tsx", {
+    mocks: {
+      "next/headers": {
+        headers: async () => new Map([["host", "celebracion.thedate.now"]]),
+      },
+      "@/features/invitations/share-metadata": {
+        shareEvent: async (host) =>
+          host === "celebracion.thedate.now" ? event : null,
+        shareMetadata: (e) => ({
+          title: `${e.title} | The Date`,
+          openGraph: {
+            title: `${e.title} | The Date`,
+            images: [{ url: "https://example.test/og.png" }],
+          },
+        }),
+      },
+      "@/features/invitations/personal-invitation": () => null,
+      "@/lib/events/personal-links": { personalToken: () => "token" },
+    },
+  });
+  const meta = await generateMetadata();
+  assert.equal(meta.title, "Acción de Gracias | The Date");
+  assert.equal(meta.openGraph.images[0].url, "https://example.test/og.png");
+});
