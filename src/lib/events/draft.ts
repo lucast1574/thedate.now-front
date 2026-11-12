@@ -2,6 +2,7 @@ import { ensureInvitationLink } from "./invitation-message";
 import { defaultInvitationMessage } from "./event-form";
 import { defaultCelebration } from "./celebration";
 import { resolveTemplateId } from "./template-catalog";
+import { invitationTitle } from "./invitation-title";
 import type { Event, Kind } from "./types";
 export function browserTimeZone() {
   return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -60,7 +61,10 @@ export function eventPayload(event: Event) {
     kind: event.kind,
     celebration: event.celebration || undefined,
     slug: event.slug,
-    title: event.title,
+    title:
+      typeof event.title === "string"
+        ? invitationTitle(event.kind, event.title, event.celebration)
+        : event.title,
     description: event.description,
     invitationMessage: ensureInvitationLink(
       event.invitationMessage ?? defaultInvitationMessage,

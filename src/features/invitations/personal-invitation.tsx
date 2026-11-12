@@ -53,7 +53,9 @@ export default async function PersonalInvitation({
       <RSVPTheme event={data.event}>
         <nav className="guest-page-navigation">
           <a href={path}>Ver invitación</a>
-          <a href={`${path}/regalos`}>Lista de regalos</a>
+          {data.event.celebration?.giftsEnabled !== false && (
+            <a href={`${path}/regalos`}>Lista de regalos</a>
+          )}
         </nav>
         {data.finalized ||
         ["going", "not_going", "maybe"].includes(data.response || "") ? (
@@ -84,7 +86,11 @@ export default async function PersonalInvitation({
         showBrand={false}
         event={data.event}
         guestName={data.guestName}
-        giftURL={`${path}/regalos`}
+        giftURL={
+          data.event.celebration?.giftsEnabled === false
+            ? undefined
+            : `${path}/regalos`
+        }
       />
       <InvitationBrand event={data.event} />
     </>

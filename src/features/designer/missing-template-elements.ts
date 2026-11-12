@@ -21,7 +21,7 @@ export function addMissingTemplateElements(
     "event_date",
     "location",
     "dress_code",
-    "gift_link",
+    ...(draft.celebration?.giftsEnabled !== false ? ["gift_link"] : []),
     "calendar_link",
     "restrictions",
   ]);

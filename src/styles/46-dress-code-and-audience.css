@@ -113,6 +113,34 @@
   flex-shrink: 0;
   margin-top: 3px;
 }
+.simple-event-form .event-gift-option {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+}
+.simple-event-form .event-gift-option input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  cursor: pointer;
+}
+.simple-event-form .event-gift-option > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ui-ink);
+}
+.simple-event-form .event-gift-option small {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--ui-muted);
+}
 .event-audience > small {
   font-size: 11px;
   line-height: 1.5;

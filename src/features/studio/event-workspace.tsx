@@ -88,6 +88,7 @@ export default function EventWorkspace({
             setDraft={events.setDraft}
             selected={selected}
             busy={feedback.busy}
+            error={feedback.error}
             onSubmit={save}
           />
         )}

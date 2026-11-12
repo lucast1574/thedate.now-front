@@ -44,8 +44,12 @@ export function useStudioEvents(
             : list.find((event) => event.id === requested);
         setEvents(list);
         setSelected(selectedEvent ?? null);
-        setDraft(
-          selectedEvent ? normalizeEvent(selectedEvent) : blankEvent(portal),
+        setDraft((current) =>
+          selectedEvent
+            ? normalizeEvent(selectedEvent)
+            : creating
+              ? current
+              : blankEvent(portal),
         );
         setGuests([]);
       })

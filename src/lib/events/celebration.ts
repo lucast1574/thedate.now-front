@@ -25,8 +25,10 @@ export type Celebration = {
   whatsappNotice: boolean;
   dressCode: string;
   dressNote: string;
+  giftsEnabled?: boolean;
 };
 export const defaultCelebration = (wedding: boolean): Celebration => ({
+  giftsEnabled: true,
   adultsOnly: false,
   adultsMessage:
     "Celebraremos este día solo entre adultos. Gracias por acompañarnos y por tu comprensión.",

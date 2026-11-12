@@ -129,41 +129,43 @@ export function templateExtraPages(
     );
   }
   for (const page of pages) page.when = "restrictions";
-  pages.push(
-    templatePage(template, "Lista de regalos", 560, [
-      templateText(
-        template,
-        "gifts-title",
-        "Un detalle con cariño",
-        80,
-        100,
-        44,
-      ),
-      templateText(
-        template,
-        "gifts-note",
-        "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás algunas ideas.",
-        220,
-        130,
-        28,
-      ),
-      templateText(
-        template,
-        "gifts-link",
-        "Ver lista de regalos",
-        410,
-        80,
-        30,
-        {
-          binding: "gift_link",
-          link: "/regalos",
-          actionHint: true,
-          hintText: "Ver regalos",
-        },
-      ),
-    ]),
-  );
-  pages[pages.length - 1].when = "gifts";
+  if (source?.celebration?.giftsEnabled !== false) {
+    pages.push(
+      templatePage(template, "Lista de regalos", 560, [
+        templateText(
+          template,
+          "gifts-title",
+          "Un detalle con cariño",
+          80,
+          100,
+          44,
+        ),
+        templateText(
+          template,
+          "gifts-note",
+          "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás algunas ideas.",
+          220,
+          130,
+          28,
+        ),
+        templateText(
+          template,
+          "gifts-link",
+          "Ver lista de regalos",
+          410,
+          80,
+          30,
+          {
+            binding: "gift_link",
+            link: "/regalos",
+            actionHint: true,
+            hintText: "Ver regalos",
+          },
+        ),
+      ]),
+    );
+    pages[pages.length - 1].when = "gifts";
+  }
   if (!source?.isVirtual) {
     pages.push(
       templatePage(template, "El lugar en el mapa", 680, [

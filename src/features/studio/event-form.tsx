@@ -1,8 +1,10 @@
 import DemoContinuation from "./demo-continuation";
 import ActionButton from "@/components/action-button";
+import Alert from "@/components/alert";
 import Icon from "@/components/icon";
 import type { Dispatch, SetStateAction, FormEvent } from "react";
 import type { Event } from "@/lib/events/types";
+import { defaultCelebration } from "@/lib/events/celebration";
 import EventAudience from "./event-audience";
 import EventBasics from "./event-basics";
 import EventLocationFields from "./event-location-fields";
@@ -16,6 +18,7 @@ export default function EventForm({
   setDraft,
   selected,
   busy,
+  error,
   courtesy = false,
   onSubmit,
 }: {
@@ -23,6 +26,7 @@ export default function EventForm({
   setDraft: Dispatch<SetStateAction<Event>>;
   selected: Event | null;
   busy: boolean;
+  error?: string;
   courtesy?: boolean;
   onSubmit: (e: FormEvent) => void;
 }) {
@@ -113,8 +117,31 @@ export default function EventForm({
             />
           </label>
           <GuestHoldField draft={draft} setDraft={setDraft} />
+          <label className="event-gift-option">
+            <input
+              type="checkbox"
+              checked={draft.celebration?.giftsEnabled !== false}
+              onChange={(e) =>
+                setDraft((current) => ({
+                  ...current,
+                  celebration: {
+                    ...(current.celebration ||
+                      defaultCelebration(current.kind === "wedding")),
+                    giftsEnabled: e.target.checked,
+                  },
+                }))
+              }
+            />
+            <span>
+              Incluir lista de regalos en la invitación
+              <small>
+                Desactívalo si este evento no tendrá regalos ni lista de deseos.
+              </small>
+            </span>
+          </label>
         </div>
       </details>
+      <Alert>{error}</Alert>
       <div className="event-form-submit">
         <p>
           {selected

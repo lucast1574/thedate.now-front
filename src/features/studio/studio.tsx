@@ -45,17 +45,27 @@ export default function Studio({
     e.preventDefault();
     await feedback.run(
       async () => {
-        const created = await events.saveEvent();
-        if (!created) {
-          events.createDraft();
-          router.push("/");
-          return;
+        try {
+          const created = await events.saveEvent();
+          if (!created) {
+            events.createDraft();
+            router.push("/");
+            return;
+          }
+          if (created.paymentStatus === "paid") {
+            router.push(`/editor/${created.id}`);
+            return;
+          }
+          router.push(`/?event=${created.id}`);
+        } catch (err) {
+          if (err instanceof Error && err.message === "Sign in required") {
+            session.setUser(null);
+            throw new Error(
+              "Tu sesión ha vencido. Inicia sesión para guardar tu invitación.",
+            );
+          }
+          throw err;
         }
-        if (created.paymentStatus === "paid") {
-          router.push(`/editor/${created.id}`);
-          return;
-        }
-        router.push(`/?event=${created.id}`);
       },
       events.selected
         ? "Cambios guardados."

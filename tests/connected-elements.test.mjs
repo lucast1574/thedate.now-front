@@ -112,6 +112,21 @@ test("bound values follow event edits while existing independent designs stay un
     ),
     true,
   );
+  assert.equal(
+    visibleInvitationSection(
+      { when: "gifts" },
+      { ...source, celebration: { giftsEnabled: false } },
+    ),
+    false,
+  );
+  const withoutGifts = templateSequence(
+    invitationTemplates.find((t) => t.mode === "flyer"),
+    { ...source, celebration: { giftsEnabled: false } },
+  );
+  assert.equal(
+    withoutGifts.some((p) => p.when === "gifts"),
+    false,
+  );
 });
 test("adding missing elements preserves personalized sections and is idempotent", () => {
   const original = {

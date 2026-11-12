@@ -55,7 +55,10 @@ export async function proxyStudio(
     body,
   });
   const response = forwardJSON(result);
-  if (joined === "profile" && method === "DELETE" && result?.ok)
+  if (
+    result?.status === 401 ||
+    (joined === "profile" && method === "DELETE" && result?.ok)
+  )
     await clearSession();
   response.headers.set("Cache-Control", "private, no-store");
   return response;
