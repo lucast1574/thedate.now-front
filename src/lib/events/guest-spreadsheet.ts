@@ -27,7 +27,7 @@ export async function readGuestFileReport(file: File, kind: Kind = "wedding") {
     );
   }
   const sheet = book.worksheets[0];
-  if (!sheet || sheet.rowCount > 520 || sheet.columnCount > 30)
+  if (!sheet || sheet.rowCount > 10_000 || sheet.columnCount > 30)
     throw new Error(
       "Usa la primera hoja con hasta 500 invitados y 30 columnas.",
     );

@@ -69,10 +69,7 @@ test("distributed workbook inherits first country without trusting formula cache
   const sheet = book.worksheets[0];
   assert.equal(book.worksheets[1].state, "hidden");
   assert.equal(book.worksheets[1].rowCount, 22);
-  assert.equal(
-    sheet.getCell("D11").dataValidation.formulae[0],
-    "PaisesTelefonicos",
-  );
+  assert.equal(sheet.getCell("D11").dataValidation.formulae[0], "$J$2:$AD$2");
   sheet.getCell("B11").value = "Ana";
   sheet.getCell("D5").value = "España (+34)";
   sheet.getCell("E11").value = "612345678";

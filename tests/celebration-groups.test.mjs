@@ -47,10 +47,7 @@ test("The Date Excel preserves country inheritance and +1 while importing its ow
   assert.equal(sheet.getCell("B10").fill.fgColor.argb, "FF2860CF");
   assert.equal(sheet.views[0].ySplit, 10);
   assert.equal(book.worksheets[1].state, "hidden");
-  assert.equal(
-    sheet.getCell("D5").dataValidation.formulae[0],
-    "PaisesTelefonicos",
-  );
+  assert.equal(sheet.getCell("D5").dataValidation.formulae[0], "$J$2:$AD$2");
   assert.equal(sheet.getCell("D510").formula, 'IF($B510="","",$D$5)');
   assert.ok(sheet.getCell("G5").formula.includes("_xlfn.IMAGE"));
   const options = sheet

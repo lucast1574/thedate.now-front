@@ -52,7 +52,11 @@ export function phoneCountry(value: string): CountryCode | undefined {
 }
 
 export function guestPhone(value: string, country?: CountryCode): string {
-  const text = value.trim();
+  const text = value
+    .normalize("NFKC")
+    .replace(/\p{Cf}/gu, "")
+    .replace(/[\u2010-\u2015\u2212]/g, "-")
+    .trim();
   if (!text) throw new Error("WhatsApp: falta el número.");
   if (!/^\+?[\d\s().-]+$/.test(text))
     throw new Error(
