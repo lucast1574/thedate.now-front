@@ -9,6 +9,7 @@ export type RSVPDetails = {
   response: string;
   maybeReason?: string;
   maybeExpiresAt?: string;
+  maybeEnabled?: boolean;
   eventTitle: string;
   kind: string;
   slug: string;

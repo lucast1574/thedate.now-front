@@ -1,4 +1,5 @@
 import "server-only";
+import { giftListEnabled } from "@/lib/events/event-options";
 import { headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { backendFetch, validInviteToken } from "@/lib/api/server";
@@ -53,7 +54,7 @@ export default async function PersonalInvitation({
       <RSVPTheme event={data.event}>
         <nav className="guest-page-navigation">
           <a href={path}>Ver invitación</a>
-          {data.event.celebration?.giftsEnabled !== false && (
+          {giftListEnabled(data.event) && (
             <a href={`${path}/regalos`}>Lista de regalos</a>
           )}
         </nav>
@@ -66,8 +67,10 @@ export default async function PersonalInvitation({
               <p className="eyebrow">TU RESPUESTA</p>
               <h1>Primero, responde en WhatsApp.</h1>
               <p>
-                Elige Sí, No o Tal vez en la encuesta que te enviamos. Después
-                podrás completar tus datos desde este enlace.
+                Elige{" "}
+                {data.maybeEnabled === false ? "Sí o No" : "Sí, No o Tal vez"}{" "}
+                en la encuesta que te enviamos. Después podrás completar tus
+                datos desde este enlace.
               </p>
               <a className="office-button" href={path}>
                 Ver invitación
@@ -86,11 +89,8 @@ export default async function PersonalInvitation({
         showBrand={false}
         event={data.event}
         guestName={data.guestName}
-        giftURL={
-          data.event.celebration?.giftsEnabled === false
-            ? undefined
-            : `${path}/regalos`
-        }
+        responseURL={`${path}/respuesta`}
+        giftURL={giftListEnabled(data.event) ? `${path}/regalos` : undefined}
       />
       <InvitationBrand event={data.event} />
     </>

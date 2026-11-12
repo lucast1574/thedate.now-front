@@ -347,3 +347,9 @@ La sidebar y el editor comparten `InvitationSwitcher` y el Listbox accesible del
 ## Progreso de preparación
 
 Durante `preparing`, el sondeo de envíos consulta también `/events/{id}/deployment`. `preparation-progress.ts` traduce las fases confirmadas (pending, configured, deploying, verifying, ready) a porcentajes estimados por etapas; no usa un reloj para inventar avance ni completar el proceso. `PreparationProgress` muestra la línea, el porcentaje y un barrido CSS; la verificación activa el segundo paso. El envío conserva su contador real independiente. `prefers-reduced-motion` elimina el barrido y las transiciones; no hay controles de animación. Ambos productos comparten componentes y usan sus tokens visuales.
+
+## Opciones de confirmación y regalos
+
+`EventOptionChoice` comparte las tarjetas de selección de `EventMaybeChoice` y `EventGiftsChoice`. Los eventos nuevos comienzan con Sí/No; los existentes sin `maybeEnabled` conservan Tal vez y su plazo guardado. Desactivar Tal vez oculta el plazo y la respuesta pública, sin modificar reservas anteriores. El cliente reacciona al rechazo `maybe_disabled` si la opción cambia mientras un invitado tiene la página abierta.
+
+`giftListEnabled` combina la elección del organizador con la disponibilidad pública de productos. La invitación oculta navegación y bindings de regalos cuando está desactivada o vacía. `responseURL` es independiente de `giftURL`, para conservar el registro de acompañantes sin enlazar una lista inexistente. Desactivar regalos conserva los productos y reservas guardados.

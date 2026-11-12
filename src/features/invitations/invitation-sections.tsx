@@ -16,12 +16,14 @@ export default function InvitationSections({
   photoURL,
   guestName,
   giftURL,
+  responseURL,
   backgroundImage,
   event,
 }: {
   event?: import("@/lib/events/types").PublicEvent;
   guestName?: string;
   giftURL?: string;
+  responseURL?: string;
   backgroundImage?: ImageBackground | null;
   sections?: DesignSection[];
   kind: "wedding" | "general";
@@ -45,6 +47,7 @@ export default function InvitationSections({
             key={section.id}
             guestName={guestName}
             giftURL={giftURL}
+            responseURL={responseURL}
             event={event}
             backgroundSlice={sectionBackground(visible, index, backgroundImage)}
             canvas={section.canvas}

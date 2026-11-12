@@ -25,7 +25,11 @@ export function useRSVP(token: string) {
           setSaved(Boolean(data.finalized) && data.response !== "maybe");
           setCompanions(data.companions || []);
           if (["going", "not_going", "maybe"].includes(data.response))
-            setResponse(data.response);
+            setResponse(
+              data.response === "maybe" && data.maybeEnabled === false
+                ? "going"
+                : data.response,
+            );
           setReason(data.maybeReason ?? "");
         }
       })
@@ -53,6 +57,12 @@ export function useRSVP(token: string) {
     }).catch(() => null);
     if (!result?.ok) {
       const data = await result?.json().catch(() => ({}));
+      if (data?.code === "maybe_disabled") {
+        setDetails((previous) =>
+          previous ? { ...previous, maybeEnabled: false } : previous,
+        );
+        setResponse("going");
+      }
       if (data?.error === "Response already completed") setSaved(true);
       else
         setError(

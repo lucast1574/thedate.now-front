@@ -11,7 +11,7 @@ import EventCapacity from "./event-capacity";
 import EventTemplateStart from "./event-template-start";
 import EventMessageFields from "./event-message-fields";
 import EventDressFields from "./event-dress-fields";
-import GuestHoldField from "./guest-hold-field";
+import EventMaybeChoice from "./event-maybe-choice";
 import EventGiftsChoice from "./event-gifts-choice";
 export default function EventForm({
   draft,
@@ -101,7 +101,9 @@ export default function EventForm({
           <Icon name="layout" />
           <span>
             Organización y confirmaciones
-            <small>Quién organiza y cuánto dura una respuesta «Tal vez».</small>
+            <small>
+              Configura las respuestas de tus invitados y los regalos.
+            </small>
           </span>
           <Icon name="chevron" />
         </summary>
@@ -116,7 +118,7 @@ export default function EventForm({
               }
             />
           </label>
-          <GuestHoldField draft={draft} setDraft={setDraft} />
+          <EventMaybeChoice draft={draft} setDraft={setDraft} />
           <EventGiftsChoice draft={draft} setDraft={setDraft} />
         </div>
       </details>

@@ -105,8 +105,14 @@ test("only an authored gift element preserves the selected personal destination"
           giftURL: "/regalos/personal-code",
         }),
       );
-      assert.equal(html.includes("Lista de regalos"), authored);
-      assert.equal(html.includes('href="/regalos/personal-code"'), authored);
+      assert.equal(
+        html.includes("Lista de regalos"),
+        authored && wishlistEnabled,
+      );
+      assert.equal(
+        html.includes('href="/regalos/personal-code"'),
+        authored && wishlistEnabled,
+      );
     }
 });
 test("brand credit can follow the RSVP form without appearing twice", () => {

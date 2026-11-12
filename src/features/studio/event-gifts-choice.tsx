@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
-import Icon from "@/components/icon";
 import { defaultCelebration } from "@/lib/events/celebration";
 import type { Event } from "@/lib/events/types";
+import EventOptionChoice from "./event-option-choice";
 
 export default function EventGiftsChoice({
   draft,
@@ -10,74 +10,37 @@ export default function EventGiftsChoice({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
-  const giftsEnabled = draft.celebration?.giftsEnabled !== false;
-
-  function setEnabled(enabled: boolean) {
-    setDraft((current) => ({
-      ...current,
-      celebration: {
-        ...(current.celebration ||
-          defaultCelebration(current.kind === "wedding")),
-        giftsEnabled: enabled,
-      },
-    }));
-  }
-
   return (
-    <fieldset className="event-gifts-choice">
-      <legend>¿Incluir lista de regalos?</legend>
-      <div
-        className="gift-radio-group"
-        role="radiogroup"
-        aria-label="Lista de regalos"
-      >
-        <label
-          className={`gift-radio-card ${giftsEnabled ? "is-selected" : ""}`}
-        >
-          <input
-            type="radio"
-            name="event-gifts-enabled"
-            checked={giftsEnabled}
-            onChange={() => setEnabled(true)}
-          />
-          <span className="custom-radio-indicator" aria-hidden="true">
-            <span className="custom-radio-dot" />
-          </span>
-          <div className="gift-radio-body">
-            <span className="gift-radio-heading">
-              <Icon name="lucide:gift" />
-              <strong>Con lista de regalos</strong>
-            </span>
-            <small>
-              Tus invitados podrán ver la lista de deseos o tus datos para
-              regalos.
-            </small>
-          </div>
-        </label>
-
-        <label
-          className={`gift-radio-card ${!giftsEnabled ? "is-selected" : ""}`}
-        >
-          <input
-            type="radio"
-            name="event-gifts-enabled"
-            checked={!giftsEnabled}
-            onChange={() => setEnabled(false)}
-          />
-          <span className="custom-radio-indicator" aria-hidden="true">
-            <span className="custom-radio-dot" />
-          </span>
-          <div className="gift-radio-body">
-            <span className="gift-radio-heading">
-              <Icon name="lucide:ban" />
-              <strong>Sin lista de regalos</strong>
-            </span>
-            <small>
-              No se mostrará sección de regalos ni enlace en la invitación.
-            </small>
-          </div>
-        </label>
-      </div>
-    </fieldset>
+    <EventOptionChoice
+      legend="¿Incluir lista de regalos?"
+      name="event-gifts-enabled"
+      value={draft.celebration?.giftsEnabled !== false}
+      onChange={(enabled) =>
+        setDraft((current) => ({
+          ...current,
+          celebration: {
+            ...(current.celebration ||
+              defaultCelebration(current.kind === "wedding")),
+            giftsEnabled: enabled,
+          },
+        }))
+      }
+      choices={[
+        {
+          value: true,
+          title: "Con lista de regalos",
+          description:
+            "Tus invitados podrán ver la lista de deseos o tus datos para regalos.",
+          icon: "lucide:gift",
+        },
+        {
+          value: false,
+          title: "Sin lista de regalos",
+          description:
+            "No se mostrará sección de regalos ni se enviará el enlace de la lista.",
+          icon: "lucide:ban",
+        },
+      ]}
+    />
   );
 }

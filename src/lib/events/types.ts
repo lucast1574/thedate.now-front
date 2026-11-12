@@ -56,6 +56,7 @@ export type Event = DesignEvent & {
   capacity: number;
   capacityUnlimited?: boolean;
   maybeHoldHours: number;
+  maybeEnabled?: boolean;
   paymentStatus: string;
   paymentSource?: string;
   publishedAt: string | null;
@@ -88,6 +89,7 @@ export type PublicEvent = Pick<
   | "opening"
   | "celebration"
   | "wishlistEnabled"
+  | "maybeEnabled"
 >;
 export type Guest = {
   queuePosition?: number;

@@ -9,6 +9,7 @@ import type { PublicEvent } from "@/lib/events/types";
 import InvitationSections from "./invitation-sections";
 export default function Invitation({
   giftURL,
+  responseURL,
   showBrand = true,
   showOpening = true,
   event,
@@ -18,6 +19,7 @@ export default function Invitation({
   guestName,
 }: {
   giftURL?: string;
+  responseURL?: string;
   showBrand?: boolean;
   showOpening?: boolean;
   event: PublicEvent;
@@ -84,6 +86,7 @@ export default function Invitation({
           event={event}
           guestName={guestName}
           giftURL={giftURL}
+          responseURL={responseURL}
           backgroundImage={event.backgroundImage}
           sections={event.sections}
           kind={event.kind}

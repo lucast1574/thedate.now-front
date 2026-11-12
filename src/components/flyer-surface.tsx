@@ -1,3 +1,4 @@
+import { giftListEnabled } from "@/lib/events/event-options";
 import { flyerElementStyle } from "@/lib/events/flyer-element-style";
 import { fitDressCanvas } from "@/lib/events/dress-layout";
 import InvitationPhoto from "./invitation-photo";
@@ -22,10 +23,12 @@ export function FlyerContent({
   photoURL,
   guestName,
   giftURL,
+  responseURL,
   event,
 }: {
   event?: Partial<PublicEvent>;
   giftURL?: string;
+  responseURL?: string;
   guestName?: string;
   item: FlyerElement;
   photoURL: (key: string) => string;
@@ -34,12 +37,11 @@ export function FlyerContent({
   if (item.binding === "map") return <InvitationMap item={item} />;
   if (item.type === "image")
     return <InvitationPhoto item={item} photoURL={photoURL} />;
+  const responseHref =
+    responseURL || giftURL?.replace(/\/regalos$/, "/respuesta");
   if (item.binding === "rsvp_link")
-    return giftURL ? (
-      <a
-        className="flyer-rsvp-link"
-        href={giftURL.replace(/\/regalos$/, "/respuesta")}
-      >
+    return responseHref ? (
+      <a className="flyer-rsvp-link" href={responseHref}>
         <Icon name="mail" />
         {item.text || "Confirmar asistencia"}
         <Icon name="arrow" />
@@ -52,7 +54,9 @@ export function FlyerContent({
   if (item.binding === "calendar_link")
     return <FlyerCalendarLink item={item} event={event} />;
   if (item.binding === "gift_link")
-    return <FlyerGiftLink item={item} giftURL={giftURL} />;
+    return giftListEnabled(event) ? (
+      <FlyerGiftLink item={item} giftURL={giftURL} />
+    ) : null;
   if (item.binding === "dress_code")
     return <FlyerDressCode item={item} photoURL={photoURL} />;
   if (item.binding === "restrictions") return <FlyerRestrictions item={item} />;
@@ -87,6 +91,7 @@ export default function FlyerSurface({
   children,
   guestName,
   giftURL,
+  responseURL,
   event,
   backgroundSlice,
   label = "Sección de la invitación",
@@ -95,6 +100,7 @@ export default function FlyerSurface({
   canvas: FlyerCanvas;
   guestName?: string;
   giftURL?: string;
+  responseURL?: string;
   backgroundSlice?: BackgroundSlice;
   photoURL: (key: string) => string;
   children?: ReactNode;
@@ -104,7 +110,9 @@ export default function FlyerSurface({
     ? authoredCanvas
     : fitDressCanvas({
         ...authoredCanvas,
-        elements: authoredCanvas.elements.map((e) => elementValue(e, event)),
+        elements: authoredCanvas.elements
+          .filter((e) => e.binding !== "gift_link" || giftListEnabled(event))
+          .map((e) => elementValue(e, event)),
       });
   return (
     <div
@@ -175,6 +183,7 @@ export default function FlyerSurface({
               photoURL={photoURL}
               guestName={guestName}
               giftURL={giftURL}
+              responseURL={responseURL}
               event={event}
             />
           </div>

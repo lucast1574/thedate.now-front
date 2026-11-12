@@ -39,6 +39,17 @@ export default function WishlistPanel({ event }: { event: Event }) {
     });
     if (saved && editor !== "new" && editor.id === gift.id) resetEditor();
   }
+  if (event.celebration?.giftsEnabled === false)
+    return (
+      <section className="wishlist-panel wishlist-owner">
+        <h2>La lista de regalos está desactivada</h2>
+        <p>
+          Conservamos tus regalos y sus reservas. Tus invitados no verán la
+          lista ni recibirán su enlace. Puedes activarla desde los datos de esta
+          invitación.
+        </p>
+      </section>
+    );
   if (state.loading) return <p role="status">Cargando tu lista de regalos…</p>;
   if (!state.ready)
     return (

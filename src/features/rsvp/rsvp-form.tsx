@@ -92,6 +92,7 @@ export default function RSVPForm({ token }: { token: string }) {
               details.response === "maybe" ||
               !details.response ? (
                 <ResponseFields
+                  maybeEnabled={details.maybeEnabled !== false}
                   response={response}
                   reason={reason}
                   onResponse={setResponse}
