@@ -108,13 +108,13 @@ export default function EditorToolbar({
         <button type="button" aria-pressed={preview} onClick={onPreview}>
           {preview ? "Volver a editar" : "Vista previa"}
         </button>
-        {!editor.draft.isDemo && (!editor.draft.publishedAt || canPublish) && (
+        {!editor.draft.isDemo && (!editor.isPublished || canPublish) && (
           <button
             type="button"
             className="editor-save editor-finish"
             disabled={editor.busy}
             onClick={async () => {
-              if (editor.draft.publishedAt) {
+              if (editor.isPublished) {
                 if (await editor.publish()) {
                   updated(editor.draft.title);
                   router.push("/");
@@ -126,11 +126,11 @@ export default function EditorToolbar({
             }}
           >
             {editor.busy
-              ? editor.draft.publishedAt
+              ? editor.isPublished
                 ? "Actualizando…"
                 : "Guardando…"
-              : editor.draft.publishedAt
-                ? "Actualizar invitación"
+              : editor.isPublished
+                ? "Actualizar y continuar"
                 : "Terminar y continuar"}
             <Icon name="arrow" />
           </button>

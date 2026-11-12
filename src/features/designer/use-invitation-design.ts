@@ -132,6 +132,7 @@ export function useInvitationDesign(
   }
   return {
     ...history,
+    isPublished: Boolean(event.publishedAt),
     publish: async () => {
       if (publishing.current) return false;
       publishing.current = true;

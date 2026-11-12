@@ -1,6 +1,7 @@
 import Icon from "@/components/icon";
 import TypefacePicker from "./typeface-picker";
 import TextSpacingFields from "./text-spacing-fields";
+import TextAlignment from "./text-alignment";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function TextStyleFields({
   item,
@@ -40,29 +41,7 @@ export default function TextStyleFields({
         </button>
       </div>
       <TextSpacingFields item={item} onChange={onChange} />
-      <div
-        className="inspector-alignment"
-        role="group"
-        aria-label="Alineación del texto"
-      >
-        {(
-          [
-            ["left", "Izquierda", "lucide:text-align-start"],
-            ["center", "Centro", "lucide:text-align-center"],
-            ["right", "Derecha", "lucide:text-align-end"],
-          ] as const
-        ).map(([align, label, icon]) => (
-          <button
-            key={align}
-            title={label}
-            aria-label={`Alinear ${label.toLowerCase()}`}
-            aria-pressed={item.align === align}
-            onClick={() => onChange({ align })}
-          >
-            <Icon name={icon} />
-          </button>
-        ))}
-      </div>
+      <TextAlignment item={item} onChange={onChange} />
     </>
   );
 }

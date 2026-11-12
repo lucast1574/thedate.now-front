@@ -1,5 +1,8 @@
 import ColorPicker from "@/components/color-picker";
 import TypefacePicker from "./typeface-picker";
+import Icon from "@/components/icon";
+import TextAlignment from "./text-alignment";
+import TextSpacingFields from "./text-spacing-fields";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function CanvasFormatting({
   item,
@@ -42,12 +45,25 @@ export default function CanvasFormatting({
             }
           />
           <button
+            type="button"
+            title="Negrita"
             aria-label="Negrita"
             aria-pressed={item.bold}
             onClick={() => onChange({ bold: !item.bold })}
           >
-            <b>B</b>
+            <Icon name="lucide:bold" />
           </button>
+          <button
+            type="button"
+            title="Cursiva"
+            aria-label="Cursiva"
+            aria-pressed={!!item.italic}
+            onClick={() => onChange({ italic: !item.italic })}
+          >
+            <Icon name="lucide:italic" />
+          </button>
+          <TextAlignment item={item} onChange={onChange} />
+          <TextSpacingFields compact item={item} onChange={onChange} />
         </>
       )}
     </div>

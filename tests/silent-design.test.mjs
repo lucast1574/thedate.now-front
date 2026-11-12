@@ -110,6 +110,43 @@ test("a local recovery resumes silently only for the matching server version", (
   );
 });
 
+test("local recovery keeps draft edits but uses current publication and permissions", () => {
+  const stored = {
+    version: 4,
+    draft: {
+      id: "one",
+      title: "Unfinished",
+      publishedAt: null,
+      isDemo: true,
+      paymentStatus: "demo",
+      ownerId: "old-owner",
+      photoKeys: ["draft.jpg"],
+    },
+  };
+  const { restoreDesign } = loadSource(
+    "src/features/designer/silent-recovery.ts",
+    { globals: { localStorage: { getItem: () => JSON.stringify(stored) } } },
+  );
+  const event = {
+    id: "one",
+    title: "Server",
+    designVersion: 4,
+    publishedAt: "2026-11-12T19:16:02Z",
+    isDemo: false,
+    paymentStatus: "paid",
+    ownerId: "owner",
+    photoKeys: ["server.jpg"],
+  };
+  const restored = restoreDesign(event, event);
+  assert.equal(restored.title, "Unfinished");
+  assert.equal(restored.publishedAt, event.publishedAt);
+  assert.equal(restored.isDemo, false);
+  assert.equal(restored.paymentStatus, "paid");
+  assert.equal(restored.ownerId, "owner");
+  assert.equal(restored.designVersion, 4);
+  assert.deepEqual([...restored.photoKeys], ["server.jpg", "draft.jpg"]);
+});
+
 test("failed saving retains work and blocks publication", async () => {
   const h = harness(true);
   const editor = h.render({ ...h.event, title: "Keep this work" });

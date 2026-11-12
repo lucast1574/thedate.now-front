@@ -34,6 +34,7 @@ test("dedicated invitation runtime exposes public routes and denies account rout
   for (const path of [
     "/",
     "/api/invitation-health",
+    "/api/invitation-preview",
     "/fonts/invitation-serif.woff2",
     "/fonts/invitation-sans.woff2",
     "/fonts/invitation-script.woff2",
@@ -117,6 +118,7 @@ test("designer refresh merges saved changes without discarding an unsaved sectio
     template: "classic",
     accentColor: "#abcdef",
     photoKeys: [],
+    publishedAt: null,
     sections: [{ id: "section", body: "old" }],
   };
   const current = {
@@ -127,9 +129,11 @@ test("designer refresh merges saved changes without discarding an unsaved sectio
   const merged = mergeDesign(current, baseline, {
     ...baseline,
     title: "Saved from event form",
+    publishedAt: "2026-11-12T19:16:02Z",
     photoKeys: ["new.jpg"],
   });
   assert.equal(merged.title, "Saved from event form");
   assert.equal(merged.sections[0].body, "unsaved edit");
   assert.equal(merged.photoKeys.length, 1);
+  assert.equal(merged.publishedAt, "2026-11-12T19:16:02Z");
 });

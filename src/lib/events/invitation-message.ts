@@ -76,7 +76,7 @@ export function moveInvitationLink(value: string, position: number) {
 }
 
 export function invitationMessagePreview(message: string, link: string) {
-  return message.replace(invitationLinkToken, (_token, index: number) => {
+  const text = message.replace(invitationLinkToken, (_token, index: number) => {
     const before = message.slice(0, index),
       after = message.slice(index + invitationLinkToken.length);
     return (
@@ -85,4 +85,7 @@ export function invitationMessagePreview(message: string, link: string) {
       (/^[\p{L}\p{N}]/u.test(after) ? " " : "")
     );
   });
+  return text.trimStart().startsWith(link)
+    ? `Abre tu invitación:\n${text.trim()}`
+    : `Abre tu invitación:\n${link}\n\n${text.trim()}`;
 }

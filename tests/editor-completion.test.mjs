@@ -36,6 +36,7 @@ function toolbar(save, isDemo = false, publishedAt = null, canPublish = true) {
   const tree = Toolbar({
     canPublish,
     editor: {
+      isPublished: Boolean(publishedAt),
       draft: { id: "one", title: "My day", isDemo, publishedAt },
       busy: false,
       dirty: false,
@@ -70,14 +71,14 @@ test("failed saving keeps unfinished work in the editor", async () => {
 });
 test("published invitations return to My invitations with success feedback", async () => {
   const { tree, calls } = toolbar(true, false, "2026-01-01");
-  await button(tree, "Actualizar invitación").props.onClick();
+  await button(tree, "Actualizar y continuar").props.onClick();
   assert.deepEqual(calls, ["publish", "updated:My day", "/"]);
   assert.equal(button(tree, "Terminar y continuar"), null);
 });
 
 test("failed publication stays in the editor without success feedback", async () => {
   const { tree, calls } = toolbar(false, false, "2026-01-01");
-  await button(tree, "Actualizar invitación").props.onClick();
+  await button(tree, "Actualizar y continuar").props.onClick();
   assert.deepEqual(calls, ["publish"]);
 });
 test("collaborators can continue before publication but cannot publish updates", () => {
@@ -87,7 +88,7 @@ test("collaborators can continue before publication but cannot publish updates",
   assert.equal(
     button(
       toolbar(true, false, "2026-01-01", false).tree,
-      "Actualizar invitación",
+      "Actualizar y continuar",
     ),
     null,
   );

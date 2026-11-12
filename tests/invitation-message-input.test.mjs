@@ -54,6 +54,6 @@ test("links stay clickable when neighboring text has no separating spaces", () =
       "Antes{{link}}Después",
       "https://example.test/personal",
     ),
-    "Antes https://example.test/personal Después",
+    "Abre tu invitación:\nhttps://example.test/personal\n\nAntes https://example.test/personal Después",
   );
 });

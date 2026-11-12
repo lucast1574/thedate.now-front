@@ -444,6 +444,8 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
+  flex-wrap: wrap;
+  padding-block: 8px;
 }
 .canvas-formatting > span {
   margin-right: 8px;
@@ -464,6 +466,45 @@
 }
 .canvas-formatting button {
   min-height: 30px;
+}
+.canvas-formatting .inspector-alignment {
+  display: flex;
+  gap: 4px;
+  margin: 0 0 0 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--ui-border);
+}
+.canvas-formatting .inspector-alignment button {
+  width: 32px;
+  padding: 6px;
+}
+.canvas-formatting button:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+  color: var(--editor-accent);
+}
+.canvas-text-spacing {
+  display: flex;
+  gap: 12px;
+  margin-left: 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--ui-border);
+}
+.canvas-text-spacing label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 10px;
+}
+.canvas-text-spacing input {
+  width: 72px;
+  min-height: 28px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 4px;
+  background: var(--ui-soft);
+  font-size: 12px;
 }
 @media (max-width: 700px) {
   .canvas-context {

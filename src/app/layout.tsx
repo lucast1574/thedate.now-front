@@ -3,12 +3,18 @@ import { headers } from "next/headers";
 import "./globals.css";
 import ApplicationDocument from "@/components/application-document";
 import { applicationProduct } from "@/lib/products/application";
+import {
+  shareEvent,
+  shareMetadata,
+} from "@/features/invitations/share-metadata";
 export async function generateMetadata(): Promise<Metadata> {
   const host = ((await headers()).get("host") ?? "")
     .toLowerCase()
     .replace(/:\d+$/, "")
     .replace(/\.$/, "");
   const wedding = applicationProduct(host) === "wedding";
+  const event = await shareEvent(host);
+  if (event) return shareMetadata(event);
   return {
     title:
       host === "studio.save.thedate.now"

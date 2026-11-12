@@ -5,7 +5,7 @@ export function mergeDesign(
   baseline: DesignEvent,
   incoming: DesignEvent,
 ): DesignEvent {
-  const merged = { ...current };
+  const merged = { ...incoming };
   for (const field of [
     "music",
     "opening",
@@ -19,8 +19,8 @@ export function mergeDesign(
     "sections",
     "designMode",
   ] as const) {
-    if (JSON.stringify(current[field]) === JSON.stringify(baseline[field]))
-      Object.assign(merged, { [field]: incoming[field] });
+    if (JSON.stringify(current[field]) !== JSON.stringify(baseline[field]))
+      Object.assign(merged, { [field]: current[field] });
   }
   merged.photoKeys = [
     ...new Set([...(incoming.photoKeys ?? []), ...(current.photoKeys ?? [])]),
