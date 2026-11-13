@@ -27,23 +27,23 @@ test("editing text cleans tokens without enforcing link tokens in the field", ()
   assert.equal(moveInvitationLink("Hola {{link}}", 0).value, "Hola");
 });
 
-test("invitation message preview prefixes the personal link once at the top without duplicate in body", () => {
+test("invitation message preview prefixes personal link and appends poll instruction", () => {
   assert.equal(
     invitationMessagePreview(
       "¡Te esperamos!\nConoce los detalles.",
       "https://example.test/personal",
     ),
-    "Abre tu invitación:\nhttps://example.test/personal\n\n¡Te esperamos!\nConoce los detalles.",
+    "Abre tu invitación:\nhttps://example.test/personal\n\n¡Te esperamos!\nConoce los detalles.\n\n👇 Por favor, responde en la encuesta de aquí abajo para confirmar tu asistencia.",
   );
   assert.equal(
     invitationMessagePreview(
-      "Antes {{link}} Después",
+      "Antes {{link}} Después en la encuesta",
       "https://example.test/personal",
     ),
-    "Abre tu invitación:\nhttps://example.test/personal\n\nAntes  Después",
+    "Abre tu invitación:\nhttps://example.test/personal\n\nAntes  Después en la encuesta",
   );
   assert.equal(
     invitationMessagePreview("", "https://example.test/personal"),
-    "Abre tu invitación:\nhttps://example.test/personal",
+    "Abre tu invitación:\nhttps://example.test/personal\n\n👇 Por favor, responde en la encuesta de aquí abajo para confirmar tu asistencia.",
   );
 });

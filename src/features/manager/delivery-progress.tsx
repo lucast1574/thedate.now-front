@@ -43,10 +43,14 @@ export default function DeliveryProgress({
       description:
         phase === "complete"
           ? "Todos los mensajes enviados"
-          : "Un enlace personal para cada invitado",
+          : phase === "waiting" && sent > 0
+            ? `${sent} de ${total} enviadas (esperando cupos)`
+            : phase === "attention" && sent > 0
+              ? `${sent} de ${total} invitaciones enviadas`
+              : "Un enlace personal para cada invitado",
       icon: "users",
-      done: phase === "complete",
-      active: phase === "sending",
+      done: phase === "complete" || (phase === "attention" && sent > 0),
+      active: phase === "sending" || phase === "waiting",
     },
   ];
   return (

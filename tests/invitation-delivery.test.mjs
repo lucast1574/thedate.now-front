@@ -37,7 +37,7 @@ test("preparing website announces progress and cannot start another send", () =>
 });
 test("waiting explains automatic advancement without offering duplicate sends", () => {
   const html = renderDelivery("waiting");
-  assert.match(html, /siguiente invitación/);
+  assert.match(html, /límite de aforo/);
   assert.doesNotMatch(html, /<button/);
   assert.match(html, /continúan/);
 });
@@ -90,10 +90,16 @@ test("roster defaults to invitation priority instead of surname and hides unsent
   assert.match(html, /Esperando su turno/);
 });
 
-test("only rejected deliveries offer a safe retry, including while others are sending", () => {
-  assert.match(renderDelivery("attention", 4, 2), /Reintentar envíos fallidos/);
-  assert.match(renderDelivery("sending", 4, 1), /Reintentar envíos fallidos/);
-  assert.doesNotMatch(renderDelivery("attention", 4, 0, 2), /<button/);
+test("rejected or uncertain deliveries offer a safe retry, including while others are sending", () => {
+  assert.match(
+    renderDelivery("attention", 4, 2),
+    /Reintentar envíos pendientes/,
+  );
+  assert.match(renderDelivery("sending", 4, 1), /Reintentar envíos pendientes/);
+  assert.match(
+    renderDelivery("attention", 4, 0, 2),
+    /Reintentar envíos pendientes/,
+  );
 });
 
 test("dispatch progress reflects confirmed sends and keeps preparation at zero", () => {

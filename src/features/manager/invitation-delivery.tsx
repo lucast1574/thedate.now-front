@@ -18,15 +18,15 @@ const phases = {
   ],
   waiting: [
     "Tu lista sigue avanzando",
-    "Los siguientes invitados esperan su turno. Cuando alguien diga que no o libere cupos, enviaremos la siguiente invitación que corresponda.",
+    "Los siguientes invitados esperan su turno por límite de aforo. Cuando alguien decline o amplíes la capacidad del evento, se enviarán automáticamente.",
   ],
   complete: [
     "Invitaciones enviadas",
     "Puedes seguir las respuestas aquí. Los nuevos invitados se añaden al final y se enviarán automáticamente cuando haya cupo.",
   ],
   attention: [
-    "Algunos envíos necesitan revisión",
-    "Los mensajes con resultado incierto no se repiten automáticamente para evitar que alguien reciba la invitación dos veces.",
+    "Envíos completados con observaciones",
+    "Tus invitaciones disponibles ya fueron enviadas por WhatsApp. Algunos números necesitan revisión o no pudieron entregarse.",
   ],
   error: [
     "No pudimos preparar la invitación",
@@ -80,18 +80,20 @@ export default function InvitationDelivery({
       <DeliveryProgress delivery={delivery} phase={phase} />
       {(phase === "draft" ||
         phase === "error" ||
-        (delivery?.failed ?? 0) > 0) && (
+        (delivery?.failed ?? 0) + (delivery?.uncertain ?? 0) > 0) && (
         <button
           type="button"
           className="office-button"
           disabled={busy || !total}
-          onClick={() => void start((delivery?.failed ?? 0) > 0)}
+          onClick={() =>
+            void start((delivery?.failed ?? 0) + (delivery?.uncertain ?? 0) > 0)
+          }
         >
           <Icon name="mail" />
           {busy
             ? "Preparando…"
-            : (delivery?.failed ?? 0) > 0
-              ? "Reintentar envíos fallidos"
+            : (delivery?.failed ?? 0) + (delivery?.uncertain ?? 0) > 0
+              ? "Reintentar envíos pendientes"
               : phase === "error"
                 ? "Volver a intentar"
                 : "Enviar invitaciones"}

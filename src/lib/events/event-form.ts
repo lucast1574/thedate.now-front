@@ -10,4 +10,4 @@ export function suggestedAddress(title: string) {
 }
 
 export const defaultInvitationMessage =
-  "¡Queremos celebrar este momento contigo!\nConoce todos los detalles y confirma tu asistencia.";
+  "¡Queremos celebrar este momento contigo!\nConoce todos los detalles y confirma tu asistencia.\n\n👇 Por favor, responde en la encuesta de aquí abajo para confirmar tu asistencia.";
