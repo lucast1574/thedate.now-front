@@ -41,6 +41,7 @@
   flex-direction: row !important;
   align-items: flex-start;
   gap: 10px;
+  margin-top: 16px;
 }
 .event-audience .audience-whatsapp input {
   width: 16px;
