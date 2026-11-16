@@ -70,12 +70,7 @@ export function useManager(id: string) {
         setEvents(list);
         setEvent(found);
         setUser(current);
-        if (
-          !found.isDemo &&
-          found.paymentStatus === "paid" &&
-          !eventReadOnly(found)
-        )
-          await refresh();
+        if (!found.isDemo && found.paymentStatus === "paid") await refresh();
       })
       .catch((e) => {
         if (active) setError(e.message);

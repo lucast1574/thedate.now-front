@@ -25,7 +25,9 @@ function ManagerWorkspace({ id }: { id: string }) {
         ? "tables"
         : requested === "gifts"
           ? "gifts"
-          : "guests";
+          : requested === "messages" || requested === "payments"
+            ? requested
+            : "guests";
   const section = {
     guests: {
       title: i18n("Invitados y respuestas"),
@@ -43,6 +45,18 @@ function ManagerWorkspace({ id }: { id: string }) {
       title: i18n("Lista de regalos"),
       description: i18n(
         "Prepara los regalos de tu celebración y consulta las elecciones de tus invitados.",
+      ),
+    },
+    messages: {
+      title: i18n("Mensajes"),
+      description: i18n(
+        "Lee y responde lo que envían tus invitados por WhatsApp.",
+      ),
+    },
+    payments: {
+      title: i18n("Pagos de tus invitados"),
+      description: i18n(
+        "Registra los abonos y consulta cuánto falta por recibir.",
       ),
     },
   }[tab];
@@ -66,7 +80,7 @@ function ManagerWorkspace({ id }: { id: string }) {
         </Link>
       </main>
     );
-  if (manager.readOnly && user)
+  if (manager.readOnly && user && tab !== "messages" && tab !== "payments")
     return (
       <InvitationRecord
         key={`${event.id}-${tab}`}
@@ -112,7 +126,9 @@ function ManagerWorkspace({ id }: { id: string }) {
         <Alert variant="success">{manager.notice}</Alert>
         {!allowed ? (
           <>
-            {tab === "gifts" ? (
+            {tab === "messages" || tab === "payments" ? (
+              <p>{i18n("Activa tu evento para usar estas herramientas.")}</p>
+            ) : tab === "gifts" ? (
               <WishlistPanel key={event.id} event={event} />
             ) : (
               <OrganizationPreview

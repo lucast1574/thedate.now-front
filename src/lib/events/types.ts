@@ -1,4 +1,5 @@
 import type { ImageBackground } from "./background";
+import type { Admission } from "./admission";
 import type { Opening, Celebration } from "./celebration";
 import type { InvitationMusic } from "./music";
 import type { Gender, Person } from "./seating";
@@ -36,6 +37,8 @@ export type DesignEvent = {
   isDemo?: boolean;
 };
 export type Event = DesignEvent & {
+  admission?: Admission;
+  guestPaymentCount?: number;
   addressChangedAfterPayment?: boolean;
   invitationsEnabled?: boolean;
   invitationMessage?: string;

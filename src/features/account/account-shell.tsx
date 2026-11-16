@@ -36,6 +36,8 @@ export default function AccountShell({
     | "guests"
     | "tables"
     | "gifts"
+    | "messages"
+    | "payments"
     | "collaboration";
 }) {
   const i18n = useTranslator();

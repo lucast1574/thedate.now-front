@@ -31,5 +31,5 @@ export function organizationEventDate(
 }
 
 export function organizationEventHref(event: Event, tool: string) {
-  return `/${eventReadOnly(event) ? "editor" : "manager"}/${encodeURIComponent(event.id)}?tab=${tool}`;
+  return `/${eventReadOnly(event) && tool !== "messages" && tool !== "payments" ? "editor" : "manager"}/${encodeURIComponent(event.id)}?tab=${tool}`;
 }

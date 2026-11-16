@@ -21,6 +21,8 @@ src/
     designer/    Editor, secciones, vista previa y guardado del diseño
     invitations/ Invitación pública y carga de datos en el servidor
     rsvp/        Formulario y lógica de confirmación de asistencia
+    messages/    Bandeja privada de WhatsApp, adjuntos y respuestas mediante Wazend
+    payments/    Registro manual de abonos de invitados, solo en The Date
     couples/     Aceptación de acceso a un evento por correo
     account/     Administración compartida, cortesías y afiliados
   lib/

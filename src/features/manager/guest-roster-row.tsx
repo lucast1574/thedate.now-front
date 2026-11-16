@@ -9,6 +9,7 @@ import type { Guest } from "@/lib/events/types";
 import type { SeatingPlan } from "@/lib/events/seating";
 import PersonGlyph from "@/components/person-glyph";
 import GuestActions from "./guest-actions";
+import Link from "next/link";
 export default function GuestRosterRow({
   g,
   index,
@@ -39,6 +40,14 @@ export default function GuestRosterRow({
           <span className="guest-queue-position">{index + 1}</span>
         )}
         <strong>{fullName(g)}</strong>
+        {eventId && (
+          <Link
+            className="guest-message-link"
+            href={`/manager/${eventId}?tab=messages&guest=${g.id}`}
+          >
+            {i18n("Ver mensajes")}
+          </Link>
+        )}
         {g.family && <small>{g.family}</small>}
         <ul className="party-names">
           {attendees([g], i18n).map((p) => (

@@ -14,6 +14,7 @@ import EventMessageFields from "./event-message-fields";
 import EventDressFields from "./event-dress-fields";
 import EventMaybeChoice from "./event-maybe-choice";
 import EventGiftsChoice from "./event-gifts-choice";
+import EventAdmission from "./event-admission";
 export default function EventForm({
   draft,
   setDraft,
@@ -94,6 +95,7 @@ export default function EventForm({
         </div>
       </section>
       <EventDressFields draft={draft} setDraft={setDraft} />
+      <EventAdmission draft={draft} setDraft={setDraft} />
       <EventMessageFields draft={draft} setDraft={setDraft} />
       {!selected &&
         (draft.isDemo ? (

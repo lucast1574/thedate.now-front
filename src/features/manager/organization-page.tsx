@@ -114,7 +114,13 @@ export default function OrganizationPage({
 }) {
   const params = useSearchParams(),
     value = params.get("tool"),
-    tool = value === "tables" || value === "gifts" ? value : "guests";
+    tool =
+      value === "tables" ||
+      value === "gifts" ||
+      value === "messages" ||
+      (!wedding && value === "payments")
+        ? value
+        : "guests";
   return (
     <AccountShell
       wedding={wedding}

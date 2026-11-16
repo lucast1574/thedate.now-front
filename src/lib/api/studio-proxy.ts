@@ -13,7 +13,9 @@ export async function proxyStudio(
   i18n: Translator = spanishTranslator,
 ) {
   const joined = path.join("/");
-  if (!allowedPath.test(joined))
+  const inboxPath =
+    /^events\/[a-z0-9-]+\/(?:conversations(?:\/[a-z0-9-]+)?|guest-payments)$/;
+  if (!allowedPath.test(joined) && !inboxPath.test(joined))
     return Response.json({ error: i18n("Not found") }, { status: 404 });
   if (method !== "GET" && invalidOrigin(request))
     return Response.json({ error: i18n("Invalid origin") }, { status: 403 });
@@ -41,13 +43,17 @@ export async function proxyStudio(
   }
   const params = new URL(request.url).searchParams;
   const scope = params.get("scope");
-  const query = joined.includes("support/tickets")
-    ? new URL(request.url).search
-    : joined === "admin/users" && params.has("email")
-      ? `?${new URLSearchParams({ email: params.get("email") || "" })}`
-      : joined === "events" && (scope === "organization" || scope === "sharing")
-        ? `?scope=${scope}`
-        : "";
+  const query =
+    inboxPath.test(joined) && method === "GET" && params.has("before")
+      ? `?${new URLSearchParams({ before: params.get("before") || "" })}`
+      : joined.includes("support/tickets")
+        ? new URL(request.url).search
+        : joined === "admin/users" && params.has("email")
+          ? `?${new URLSearchParams({ email: params.get("email") || "" })}`
+          : joined === "events" &&
+              (scope === "organization" || scope === "sharing")
+            ? `?scope=${scope}`
+            : "";
   const result = await backendFetch(joined + query, {
     method,
     headers: {

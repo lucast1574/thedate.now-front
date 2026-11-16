@@ -69,6 +69,7 @@ export function eventPayload(
   const virtual = event.isVirtual;
   return {
     kind: event.kind,
+    admission: event.kind === "general" ? event.admission : undefined,
     celebration: event.celebration || undefined,
     slug: event.slug,
     title:

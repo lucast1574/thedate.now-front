@@ -31,6 +31,8 @@ export default function WorkspaceSidebar({
     | "guests"
     | "tables"
     | "gifts"
+    | "messages"
+    | "payments"
     | "collaboration";
 }) {
   const i18n = useTranslator();
@@ -63,10 +65,17 @@ export default function WorkspaceSidebar({
         onSelect={(event) => {
           if (guard && !guard()) return;
           router.push(
-            ["guests", "tables", "gifts"].includes(active) &&
+            ["guests", "tables", "gifts", "messages", "payments"].includes(
+              active,
+            ) &&
               !event.isDemo &&
               event.paymentStatus === "paid"
-              ? organizationEventHref(event, active)
+              ? organizationEventHref(
+                  event,
+                  active === "payments" && event.kind === "wedding"
+                    ? "messages"
+                    : active,
+                )
               : event.isDemo || event.paymentStatus === "paid"
                 ? `/editor/${encodeURIComponent(event.id)}`
                 : `/?event=${encodeURIComponent(event.id)}`,
@@ -84,6 +93,12 @@ export default function WorkspaceSidebar({
         {(
           [
             ["guests", "users", i18n("Invitados"), i18n("Lista y respuestas")],
+            [
+              "messages",
+              "lucide:messages-square",
+              i18n("Mensajes"),
+              i18n("Lo que escriben tus invitados"),
+            ],
             ["tables", "table", i18n("Mesas"), i18n("Distribución del evento")],
             [
               "gifts",
@@ -105,6 +120,20 @@ export default function WorkspaceSidebar({
             </span>
           </Link>
         ))}
+        {!wedding &&
+          selected?.admission?.enabled &&
+          (user.role === "admin" || selected.ownerId === user.id) && (
+            <Link
+              href={toolHref("payments")}
+              aria-current={active === "payments" ? "page" : undefined}
+            >
+              <Icon name="lucide:banknote" />
+              <span>
+                {i18n("Pagos de invitados")}
+                <small>{i18n("Abonos y saldo pendiente")}</small>
+              </span>
+            </Link>
+          )}
         {(user.role === "admin" ||
           user.role === (wedding ? "planner" : "organizer")) && (
           <Link
