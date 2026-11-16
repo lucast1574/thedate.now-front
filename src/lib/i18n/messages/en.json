@@ -2448,5 +2448,6 @@
   "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Checks up to 50 recent messages sent after this invitation.",
   "Actualizando mensajes…": "Updating messages…",
   "La actualización se reintentará automáticamente.": "Updates will retry automatically.",
-  "Los mensajes se actualizan automáticamente.": "Messages update automatically."
+  "Los mensajes se actualizan automáticamente.": "Messages update automatically.",
+  "Enter para enviar · Shift + Enter para añadir una línea": "Enter to send · Shift + Enter for a new line"
 }

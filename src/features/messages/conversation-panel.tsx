@@ -8,6 +8,8 @@ import PaymentForm from "@/features/payments/payment-form";
 import { useGuestPayments } from "@/features/payments/use-guest-payments";
 import MessageMedia from "./message-media";
 import ConversationSync from "./conversation-sync";
+import ConversationComposer from "./conversation-composer";
+import Icon from "@/components/icon";
 import type { InboxMessage } from "./types";
 import type { useInbox } from "./use-inbox";
 export default function ConversationPanel({
@@ -53,9 +55,13 @@ export default function ConversationPanel({
           <span>{responseLabel(guest, now, i18n)}</span>
           <button
             type="button"
+            className={
+              current?.pending ? "office-button inbox-attend" : undefined
+            }
             disabled={inbox.busy || !current}
             onClick={() => void inbox.attend(Boolean(current?.pending))}
           >
+            {current?.pending && <Icon name="lucide:check-check" />}
             {current?.pending
               ? i18n("Marcar atendido")
               : i18n("Marcar pendiente")}
@@ -135,33 +141,13 @@ export default function ConversationPanel({
               onUpdated={onGuestUpdated}
             />
           </details>
-          <form
-            className="inbox-composer"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              if (await inbox.send(text.trim())) setText("");
-            }}
-          >
-            <label>
-              {i18n("Respuesta por WhatsApp")}
-              <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                required
-                maxLength={4000}
-                disabled={inbox.busy}
-              />
-            </label>
-            <div>
-              <small>{i18n("Para {v0}", { v0: fullName(guest) })}</small>
-              <button
-                className="office-button"
-                disabled={inbox.busy || !text.trim()}
-              >
-                {inbox.busy ? i18n("Enviando…") : i18n("Enviar respuesta")}
-              </button>
-            </div>
-          </form>
+          <ConversationComposer
+            recipient={fullName(guest)}
+            busy={inbox.busy}
+            send={inbox.send}
+            text={text}
+            onTextChange={setText}
+          />
         </>
       )}
       {ledger.error && <p role="alert">{ledger.error}</p>}

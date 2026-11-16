@@ -95,3 +95,31 @@
   opacity: 0.55;
   cursor: default;
 }
+.messages-workspace .inbox-attend {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: var(--ui-accent);
+  color: #fff;
+  border: 1px solid var(--ui-accent);
+}
+.messages-workspace .inbox-attend:hover,
+.messages-workspace .inbox-attend:focus-visible {
+  background: color-mix(in srgb, var(--ui-accent) 85%, #000);
+  color: #fff;
+}
+.inbox-attend .ui-icon {
+  width: 16px;
+  height: 16px;
+}
+.inbox-composer-hint {
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+@media (hover: none) and (pointer: coarse) {
+  .inbox-composer-hint {
+    display: none;
+  }
+}
