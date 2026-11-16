@@ -2445,5 +2445,8 @@
   "Recuperar mensajes recientes": "Recuperar mensagens recentes",
   "Consultando WhatsApp…": "Consultando o WhatsApp…",
   "Se añadieron {v0} mensajes. Solo se recuperan los que pueden identificarse con este evento.": "Foram adicionadas {v0} mensagens. São recuperadas apenas as que podem ser associadas a este evento.",
-  "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Consulta até 50 mensagens recentes posteriores ao envio deste convite."
+  "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Consulta até 50 mensagens recentes posteriores ao envio deste convite.",
+  "Actualizando mensajes…": "Atualizando mensagens…",
+  "La actualización se reintentará automáticamente.": "A atualização será tentada novamente automaticamente.",
+  "Los mensajes se actualizan automáticamente.": "As mensagens são atualizadas automaticamente."
 }

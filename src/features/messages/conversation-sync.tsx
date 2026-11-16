@@ -1,64 +1,79 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslator } from "@/lib/i18n/react";
 import { api } from "@/lib/api/client";
-export default function ConversationHistory({
+
+export default function ConversationSync({
   eventId,
   guestId,
-  disabled,
-  onImported,
+  sent,
+  onSynced,
 }: {
   eventId: string;
   guestId: string;
-  disabled: boolean;
-  onImported: () => void;
+  sent: boolean;
+  onSynced: () => void;
 }) {
-  const i18n = useTranslator(),
-    [busy, setBusy] = useState(false),
-    [notice, setNotice] = useState(""),
-    [error, setError] = useState("");
-  async function recover() {
-    if (busy) return;
-    setBusy(true);
-    setError("");
-    setNotice("");
-    try {
-      const result = await api<{ added: number }>(
-        `/api/backend/events/${eventId}/conversations/${guestId}/history`,
-        "POST",
-        {},
-        i18n,
-      );
-      setNotice(
-        i18n(
-          "Se añadieron {v0} mensajes. Solo se recuperan los que pueden identificarse con este evento.",
-          { v0: String(result.added) },
-        ),
-      );
-      onImported();
-    } catch (e) {
-      setError((e as Error).message);
-    } finally {
-      setBusy(false);
+  const i18n = useTranslator();
+  const [state, setState] = useState<"syncing" | "ready" | "retry">("syncing");
+  const synced = useRef(onSynced);
+  useEffect(() => {
+    synced.current = onSynced;
+  }, [onSynced]);
+  useEffect(() => {
+    if (!sent) return;
+    let active = true,
+      running = false,
+      lastAttempt = 0;
+    async function sync() {
+      if (
+        !active ||
+        running ||
+        document.hidden ||
+        Date.now() - lastAttempt < 45000
+      )
+        return;
+      running = true;
+      lastAttempt = Date.now();
+      setState("syncing");
+      try {
+        await api(
+          `/api/backend/events/${eventId}/conversations/${guestId}/history`,
+          "POST",
+          {},
+          i18n,
+        );
+        if (active) {
+          setState("ready");
+          synced.current();
+        }
+      } catch {
+        if (active) setState("retry");
+      } finally {
+        running = false;
+      }
     }
-  }
+    void sync();
+    const timer = window.setInterval(() => void sync(), 60000);
+    const resume = () => {
+      if (!document.hidden) void sync();
+    };
+    window.addEventListener("focus", resume);
+    document.addEventListener("visibilitychange", resume);
+    return () => {
+      active = false;
+      window.clearInterval(timer);
+      window.removeEventListener("focus", resume);
+      document.removeEventListener("visibilitychange", resume);
+    };
+  }, [eventId, guestId, sent, i18n]);
+  if (!sent) return null;
   return (
-    <div className="inbox-history">
-      <button
-        type="button"
-        disabled={disabled || busy}
-        onClick={() => void recover()}
-      >
-        {busy
-          ? i18n("Consultando WhatsApp…")
-          : i18n("Recuperar mensajes recientes")}
-      </button>
-      <small>
-        {i18n(
-          "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.",
-        )}
-      </small>
-      {notice && <p role="status">{notice}</p>}
-      {error && <p role="alert">{error}</p>}
-    </div>
+    <span className="inbox-sync" role="status" aria-live="polite">
+      {state === "syncing"
+        ? i18n("Actualizando mensajes…")
+        : state === "retry"
+          ? i18n("La actualización se reintentará automáticamente.")
+          : i18n("Los mensajes se actualizan automáticamente.")}
+    </span>
   );
 }

@@ -2445,5 +2445,8 @@
   "Recuperar mensajes recientes": "Retrieve recent messages",
   "Consultando WhatsApp…": "Checking WhatsApp…",
   "Se añadieron {v0} mensajes. Solo se recuperan los que pueden identificarse con este evento.": "Added {v0} messages. Only messages that can be associated with this event are retrieved.",
-  "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Checks up to 50 recent messages sent after this invitation."
+  "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Checks up to 50 recent messages sent after this invitation.",
+  "Actualizando mensajes…": "Updating messages…",
+  "La actualización se reintentará automáticamente.": "Updates will retry automatically.",
+  "Los mensajes se actualizan automáticamente.": "Messages update automatically."
 }

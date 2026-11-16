@@ -7,22 +7,12 @@
   font-size: 14px;
   font-weight: 600;
 }
-.inbox-history {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  flex-wrap: wrap;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--ui-border);
-}
-.inbox-history small {
+.inbox-sync {
+  display: block;
+  margin-top: 8px;
   color: var(--ui-muted);
-  flex: 1 1 200px;
-}
-.inbox-history p {
-  margin: 0;
-  width: 100%;
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.5;
 }
 .inbox-composer textarea,
 .payment-fields input:not([type="checkbox"]),
