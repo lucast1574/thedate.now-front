@@ -14,7 +14,7 @@ export async function proxyStudio(
 ) {
   const joined = path.join("/");
   const inboxPath =
-    /^events\/[a-z0-9-]+\/(?:conversations(?:\/[a-z0-9-]+)?|guest-payments)$/;
+    /^events\/[a-z0-9-]+\/(?:conversations(?:\/[a-z0-9-]+(?:\/history)?)?|guest-payments)$/;
   if (!allowedPath.test(joined) && !inboxPath.test(joined))
     return Response.json({ error: i18n("Not found") }, { status: 404 });
   if (method !== "GET" && invalidOrigin(request))

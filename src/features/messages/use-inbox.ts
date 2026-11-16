@@ -13,6 +13,7 @@ export function useInbox(eventId: string, initialGuest?: string) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [revision, setRevision] = useState(0);
   const running = useRef(false),
     selected = useRef(initialGuest || "");
   const request = useRef<{ id: string; text: string; guest: string } | null>(
@@ -96,7 +97,7 @@ export function useInbox(eventId: string, initialGuest?: string) {
       active = false;
       window.clearInterval(timer);
     };
-  }, [base, guestId, i18n, refresh]);
+  }, [base, guestId, i18n, refresh, revision]);
   async function run(action: () => Promise<void>) {
     if (running.current) return;
     running.current = true;
@@ -183,5 +184,6 @@ export function useInbox(eventId: string, initialGuest?: string) {
     busy,
     loading,
     error,
+    reload: () => setRevision((v) => v + 1),
   };
 }

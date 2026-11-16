@@ -2441,5 +2441,9 @@
   "Pesos colombianos": "Pesos colombianos",
   "Euros": "Euros",
   "Pesos chilenos": "Pesos chilenos",
-  "Pesos argentinos": "Pesos argentinos"
+  "Pesos argentinos": "Pesos argentinos",
+  "Recuperar mensajes recientes": "Recuperar mensajes recientes",
+  "Consultando WhatsApp…": "Consultando WhatsApp…",
+  "Se añadieron {v0} mensajes. Solo se recuperan los que pueden identificarse con este evento.": "Se añadieron {v0} mensajes. Solo se recuperan los que pueden identificarse con este evento.",
+  "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación.": "Consulta hasta 50 mensajes recientes posteriores al envío de esta invitación."
 }

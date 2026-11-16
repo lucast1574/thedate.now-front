@@ -1,0 +1,104 @@
+.payment-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 20px 0;
+  border-block: 1px solid var(--ui-border);
+}
+.payment-overview dt {
+  font-size: 13px;
+  color: var(--ui-muted);
+}
+.payment-overview dd {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 8px 0 0;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.payment-guest {
+  padding: 24px;
+  background: var(--ui-surface);
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+}
+.payment-guest p {
+  margin: 8px 0;
+}
+.payment-guest small {
+  color: var(--ui-accent);
+}
+.payment-guest-actions {
+  display: grid;
+  gap: 16px;
+}
+.payment-guest a {
+  color: var(--ui-accent);
+}
+.guest-payment-form {
+  display: grid;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  background: var(--ui-surface);
+  min-width: 0;
+}
+.inbox-conversation > .guest-payment-form {
+  border: 0;
+  border-radius: 0;
+}
+.guest-payment-form header p {
+  margin: 6px 0 0;
+  color: var(--ui-muted);
+}
+.guest-payment-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.payment-fields {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.payment-balance {
+  display: grid;
+  gap: 12px;
+  background: var(--ui-soft);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0;
+}
+.payment-balance > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.payment-balance dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+.office .payment-fields label.payment-verification {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: start;
+  font-weight: 400;
+}
+.payment-verification input {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 2px 0;
+  accent-color: var(--ui-accent);
+}
+.payment-fields small,
+.payment-manual-note {
+  color: var(--ui-muted);
+}

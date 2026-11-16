@@ -1,0 +1,107 @@
+.inbox-composer label,
+.payment-fields label,
+.admission-fields label {
+  display: grid;
+  gap: 8px;
+  color: var(--ui-ink);
+  font-size: 14px;
+  font-weight: 600;
+}
+.inbox-history {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--ui-border);
+}
+.inbox-history small {
+  color: var(--ui-muted);
+  flex: 1 1 200px;
+}
+.inbox-history p {
+  margin: 0;
+  width: 100%;
+  font-size: 13px;
+}
+.inbox-composer textarea,
+.payment-fields input:not([type="checkbox"]),
+.admission-fields input,
+.admission-fields textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--ui-border);
+  background: var(--ui-background);
+  color: var(--ui-ink);
+  border-radius: 8px;
+  font: inherit;
+}
+.inbox-composer textarea,
+.admission-fields textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.inbox-response-actions {
+  padding: 0 24px 20px;
+}
+.inbox-response-actions summary {
+  color: var(--ui-muted);
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+.inbox-empty,
+.inbox-select-empty,
+.payments-empty {
+  padding: 32px 24px;
+  display: grid;
+  gap: 16px;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  min-width: 0;
+}
+.inbox-select-empty {
+  min-height: 300px;
+  background: var(--ui-soft);
+  border-radius: 12px;
+}
+.inbox-empty p,
+.inbox-select-empty p {
+  margin: 0;
+  color: var(--ui-muted);
+}
+.inbox-mobile-back {
+  display: none;
+}
+.messages-workspace button:not(.office-button),
+.payments-workspace button:not(.office-button) {
+  padding: 10px 14px;
+  border: 1px solid var(--ui-border);
+  border-radius: 8px;
+  color: var(--ui-ink);
+  background: var(--ui-surface);
+  font: inherit;
+  min-height: 42px;
+}
+.messages-workspace button:hover,
+.payments-workspace button:hover {
+  background: var(--ui-soft);
+}
+.messages-workspace button:focus-visible,
+.payments-workspace button:focus-visible,
+.messages-workspace a:focus-visible,
+.payments-workspace a:focus-visible,
+.messages-workspace textarea:focus-visible,
+.payment-fields input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  background: var(--ui-soft);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.messages-workspace button:disabled,
+.payments-workspace button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}

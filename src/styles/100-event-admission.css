@@ -1,0 +1,88 @@
+.event-admission .admission-mode {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  min-width: 0;
+}
+.admission-fields-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.admission-preview {
+  display: grid;
+  gap: 12px;
+  padding: 20px;
+  background: var(--ui-soft);
+  border-radius: 12px;
+}
+.admission-preview p {
+  margin: 0;
+}
+.event-admission:has(.admission-fields) {
+  gap: 24px;
+}
+@media (max-width: 1200px) {
+  .guest-payment-grid {
+    grid-template-columns: 1fr;
+  }
+  .admission-fields-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admission-fields-row > label:last-child {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 760px) {
+  .inbox-layout {
+    grid-template-columns: 1fr;
+  }
+  .inbox-layout.has-conversation > .inbox-list {
+    display: none;
+  }
+  .inbox-layout:not(.has-conversation) > .inbox-select-empty {
+    display: none;
+  }
+  .inbox-mobile-back {
+    display: block;
+  }
+  .inbox-person,
+  .inbox-thread,
+  .inbox-composer,
+  .guest-payment-form,
+  .payment-guest {
+    padding: 20px;
+  }
+  .inbox-bubble {
+    max-width: 100%;
+  }
+  .payment-overview {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .payment-overview > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .payment-overview dd {
+    font-size: 22px;
+    margin: 0;
+  }
+  .admission-fields-row {
+    grid-template-columns: 1fr;
+  }
+  .admission-fields-row > label:last-child {
+    grid-column: auto;
+  }
+  .payment-fields input,
+  .inbox-composer textarea {
+    font-size: 16px;
+  }
+  .messages-workspace button:not(.office-button),
+  .payments-workspace button:not(.office-button) {
+    min-height: 44px;
+  }
+}

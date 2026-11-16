@@ -7,6 +7,7 @@ import GuestActions from "@/features/manager/guest-actions";
 import PaymentForm from "@/features/payments/payment-form";
 import { useGuestPayments } from "@/features/payments/use-guest-payments";
 import MessageMedia from "./message-media";
+import ConversationHistory from "./conversation-history";
 import type { InboxMessage } from "./types";
 import type { useInbox } from "./use-inbox";
 export default function ConversationPanel({
@@ -55,6 +56,12 @@ export default function ConversationPanel({
           </button>
         </div>
       </header>
+      <ConversationHistory
+        eventId={event.id}
+        guestId={guest.id}
+        disabled={inbox.busy}
+        onImported={inbox.reload}
+      />
       {receipt ? (
         <PaymentForm
           key={receipt.id}
