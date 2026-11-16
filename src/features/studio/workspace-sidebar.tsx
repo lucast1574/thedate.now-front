@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useRouter } from "next/navigation";
 import InvitationSwitcher from "./invitation-switcher";
 import { useActiveInvitation } from "./use-active-invitation";
@@ -31,6 +33,8 @@ export default function WorkspaceSidebar({
     | "gifts"
     | "collaboration";
 }) {
+  const i18n = useTranslator();
+
   const router = useRouter();
   const { events, selected, error } = useActiveInvitation(
     user,
@@ -69,21 +73,23 @@ export default function WorkspaceSidebar({
           );
         }}
       />
-      <p className="workspace-label">{wedding ? "TU ESTUDIO" : "TU ESPACIO"}</p>
-      <nav aria-label="Tu espacio">
+      <p className="workspace-label">
+        {wedding ? i18n("TU ESTUDIO") : i18n("TU ESPACIO")}
+      </p>
+      <nav aria-label={i18n("Tu espacio")}>
         <Link href="/" aria-current={active === "events" ? "page" : undefined}>
           <Icon name="layout" />
-          Mis invitaciones
+          {i18n("Mis invitaciones")}
         </Link>
         {(
           [
-            ["guests", "users", "Invitados", "Lista y respuestas"],
-            ["tables", "table", "Mesas", "Distribución del evento"],
+            ["guests", "users", i18n("Invitados"), i18n("Lista y respuestas")],
+            ["tables", "table", i18n("Mesas"), i18n("Distribución del evento")],
             [
               "gifts",
               "lucide:gift",
-              "Lista de regalos",
-              "Quién regala cada detalle",
+              i18n("Lista de regalos"),
+              i18n("Quién regala cada detalle"),
             ],
           ] as const
         ).map(([key, icon, title, hint]) => (
@@ -107,11 +113,11 @@ export default function WorkspaceSidebar({
           >
             <Icon name="users" />
             <span>
-              Celebraciones compartidas
+              {i18n("Celebraciones compartidas")}{" "}
               <small>
                 {wedding
-                  ? "Diseña con tus parejas"
-                  : "Crea junto a tus clientes"}
+                  ? i18n("Diseña con tus parejas")
+                  : i18n("Crea junto a tus clientes")}
               </small>
             </span>
           </Link>
@@ -122,7 +128,7 @@ export default function WorkspaceSidebar({
             aria-current={active === "affiliates" ? "page" : undefined}
           >
             <Icon name="sparkle" />
-            Afiliados
+            {i18n("Afiliados")}
           </Link>
         )}
         <Link
@@ -130,7 +136,7 @@ export default function WorkspaceSidebar({
           aria-current={active === "support" ? "page" : undefined}
         >
           <Icon name="ticket" />
-          Soporte
+          {i18n("Soporte")}
         </Link>
         {user.role === "admin" && (
           <Link
@@ -138,7 +144,7 @@ export default function WorkspaceSidebar({
             aria-current={active === "admin" ? "page" : undefined}
           >
             <Icon name="table" />
-            Administración
+            {i18n("Administración")}
           </Link>
         )}
       </nav>
@@ -147,13 +153,13 @@ export default function WorkspaceSidebar({
         <Link
           className="workspace-user"
           href="/profile"
-          aria-label="Mi perfil"
+          aria-label={i18n("Mi perfil")}
           aria-current={active === "profile" ? "page" : undefined}
         >
           <UserAvatar user={user} />
           <span>
             <strong>{user.name}</strong>
-            <small>Mi perfil</small>
+            <small>{i18n("Mi perfil")}</small>
           </span>
         </Link>
       </div>

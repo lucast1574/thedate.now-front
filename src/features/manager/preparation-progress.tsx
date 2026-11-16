@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { CSSProperties } from "react";
 import { preparationProgress } from "@/lib/events/preparation-progress";
 
@@ -10,7 +11,9 @@ export default function PreparationProgress({
   segment: number;
   visible: boolean;
 }) {
-  const { percent, label } = preparationProgress(phase);
+  const i18n = useTranslator();
+
+  const { percent, label } = preparationProgress(phase, i18n);
   const fill = visible
     ? segment === 0
       ? Math.min(100, percent / 0.7)
@@ -21,7 +24,10 @@ export default function PreparationProgress({
   return (
     <div className="delivery-connector" data-active={active}>
       {active && (
-        <span className="delivery-connector-value" title="Avance estimado">
+        <span
+          className="delivery-connector-value"
+          title={i18n("Avance estimado")}
+        >
           {percent}%
         </span>
       )}
@@ -30,7 +36,7 @@ export default function PreparationProgress({
         role={visible ? "progressbar" : undefined}
         aria-label={
           visible
-            ? `${segment === 0 ? "Publicación" : "Comprobación del enlace"}: avance estimado`
+            ? `${segment === 0 ? i18n("Publicación") : i18n("Comprobación del enlace")}: avance estimado`
             : undefined
         }
         aria-valuemin={visible ? 0 : undefined}

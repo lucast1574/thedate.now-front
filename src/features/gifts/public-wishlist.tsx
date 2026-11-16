@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon";
@@ -11,11 +13,13 @@ export default function PublicWishlist({
 }: {
   initial: GuestWishlist;
 }) {
+  const i18n = useTranslator();
+
   const [data, setData] = useState(initial),
     [selection, setSelection] = useState<GuestGift | null>(null);
   useEffect(() => {
     const update = () =>
-      void api<GuestWishlist>("/api/gift-catalog")
+      void api<GuestWishlist>("/api/gift-catalog", undefined, undefined, i18n)
         .then((next) =>
           setData((current) =>
             next.version >= current.version ? next : current,
@@ -28,7 +32,7 @@ export default function PublicWishlist({
       window.clearInterval(timer);
       window.removeEventListener("focus", update);
     };
-  }, []);
+  }, [i18n]);
   return (
     <main
       className={`gift-page ${initial.event.kind === "wedding" ? "gifts-wedding" : "gifts-general"}`}
@@ -36,7 +40,7 @@ export default function PublicWishlist({
       <nav>
         <Link href="/">
           <Icon name="undo" />
-          Ver invitación
+          {i18n("Ver invitación")}
         </Link>
         <span>
           {initial.event.kind === "wedding" ? "Save the Date" : "The Date"}

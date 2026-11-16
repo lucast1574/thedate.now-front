@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import DressAttireIllustration from "./dress-attire-illustration";
 import Icon from "./icon";
 import Photo from "./photo";
@@ -12,6 +13,8 @@ export default function FlyerDressCode({
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
+  const i18n = useTranslator();
+
   const parts = dressParts(item.dressStyle);
   const key = item.dressPhotoKey || "template-photo";
   return (
@@ -36,14 +39,14 @@ export default function FlyerDressCode({
         <span className="dress-composition-image" data-dress-image="true">
           <Photo
             src={templatePhotoURL(key) || photoURL(key)}
-            alt="Referencia de vestimenta"
+            alt={i18n("Referencia de vestimenta")}
             draggable={false}
           />
         </span>
       )}
       {parts.includes("text") && (
         <span className="dress-composition-text">
-          <strong>{(item.text || "Dress code").split("\n")[0]}</strong>
+          <strong>{(item.text || i18n("Dress code")).split("\n")[0]}</strong>
           {(item.text || "").split("\n").slice(1).join("\n") && (
             <span>{item.text!.split("\n").slice(1).join("\n")}</span>
           )}

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import CelebrationElements from "./celebration-elements";
 import Icon from "@/components/icon";
 import { guestNameElement } from "@/lib/events/guest-name";
@@ -18,9 +19,11 @@ export default function CanvasEventTools({
   disabled: boolean;
   onAdd: (item: FlyerElement) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <>
-      <h3>Elementos de tu invitación</h3>
+      <h3>{i18n("Elementos de tu invitación")}</h3>
       <LinkedEventElements
         event={event}
         draft={draft}
@@ -42,8 +45,8 @@ export default function CanvasEventTools({
         >
           <Icon name="users" />
           <span>
-            Nombre del invitado
-            <small>Personalizado para cada persona</small>
+            {i18n("Nombre del invitado")}{" "}
+            <small>{i18n("Personalizado para cada persona")}</small>
           </span>
           <Icon name="plus" />
         </button>
@@ -51,28 +54,33 @@ export default function CanvasEventTools({
           disabled={disabled}
           onClick={() =>
             onAdd(
-              element("text", {
-                font: event.kind === "general" ? "sans" : "serif",
-                binding: "location",
-                eventBound: true,
-                actionHint: true,
-                locationStyle: "address",
-                address: event.location || "",
-                link: event.mapUrl || "",
-                text: "Cómo llegar",
-                x: 60,
-                y: 120,
-                width: canvas.width - 120,
-                height: 120,
-                fontSize: 28,
-                color: draft.accentColor,
-              }),
+              element(
+                "text",
+                {
+                  font: event.kind === "general" ? "sans" : "serif",
+                  binding: "location",
+                  eventBound: true,
+                  actionHint: true,
+                  locationStyle: "address",
+                  address: event.location || "",
+                  link: event.mapUrl || "",
+                  text: i18n("Cómo llegar"),
+                  x: 60,
+                  y: 120,
+                  width: canvas.width - 120,
+                  height: 120,
+                  fontSize: 28,
+                  color: draft.accentColor,
+                },
+                i18n,
+              ),
             )
           }
         >
           <Icon name="external" />
           <span>
-            Ubicación<small>Nombre y dirección del lugar</small>
+            {i18n("Ubicación")}
+            <small>{i18n("Nombre y dirección del lugar")}</small>
           </span>
           <Icon name="plus" />
         </button>
@@ -80,23 +88,27 @@ export default function CanvasEventTools({
           disabled={disabled}
           onClick={() =>
             onAdd(
-              element("text", {
-                binding: "event_date",
-                eventBound: true,
-                text: "{{fecha_hora}}",
-                color: draft.accentColor,
-                fontSize: 30,
-              }),
+              element(
+                "text",
+                {
+                  binding: "event_date",
+                  eventBound: true,
+                  text: i18n("{{fecha_hora}}"),
+                  color: draft.accentColor,
+                  fontSize: 30,
+                },
+                i18n,
+              ),
             )
           }
         >
           <Icon name="calendar" />
           <span>
-            Fecha y hora
+            {i18n("Fecha y hora")}{" "}
             <small>
               {event.kind === "general"
-                ? "Cuándo nos vemos"
-                : "El día que van a recordar"}
+                ? i18n("Cuándo nos vemos")
+                : i18n("El día que van a recordar")}
             </small>
           </span>
           <Icon name="plus" />

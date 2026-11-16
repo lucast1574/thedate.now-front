@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api/client";
@@ -14,13 +16,15 @@ export default function AffiliateDashboard({
   user: User;
   wedding: boolean;
 }) {
+  const i18n = useTranslator();
+
   const [data, setData] = useState<Affiliate | null>(null),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
   useEffect(() => {
     let active = true;
-    api<Affiliate>("/api/backend/affiliates")
+    api<Affiliate>("/api/backend/affiliates", undefined, undefined, i18n)
       .then((d) => {
         if (active) setData(d);
       })
@@ -30,13 +34,20 @@ export default function AffiliateDashboard({
     return () => {
       active = false;
     };
-  }, []);
+  }, [i18n]);
   async function run(action: () => Promise<unknown>, message: string) {
     setBusy(true);
     setError("");
     try {
       await action();
-      setData(await api<Affiliate>("/api/backend/affiliates"));
+      setData(
+        await api<Affiliate>(
+          "/api/backend/affiliates",
+          undefined,
+          undefined,
+          i18n,
+        ),
+      );
       setNotice(message);
     } catch (e) {
       setError((e as Error).message);
@@ -53,17 +64,18 @@ export default function AffiliateDashboard({
       <header className="partner-heading">
         <div>
           <p className="office-kicker">
-            {wedding ? "WEDDING PLANNERS" : "ORGANIZADORES"}
+            {wedding ? "WEDDING PLANNERS" : i18n("ORGANIZADORES")}
           </p>
-          <h1>Tu saldo profesional</h1>
+          <h1>{i18n("Tu saldo profesional")}</h1>
           <p>
-            Todo lo que ganas con {wedding ? "tus bodas" : "tus eventos"}, en un
-            solo lugar.
+            {i18n("Todo lo que ganas con")}{" "}
+            {wedding ? i18n("tus bodas") : i18n("tus eventos")}
+            {i18n(", en un solo lugar.")}
           </p>
         </div>
         <Link href="/?new=1" className="office-button">
           <Icon name="plus" />
-          {wedding ? "Crear boda" : "Crear evento"}
+          {wedding ? i18n("Crear boda") : i18n("Crear evento")}
         </Link>
       </header>
       <Alert>{error}</Alert>
@@ -75,77 +87,90 @@ export default function AffiliateDashboard({
             disabled={busy}
             onClick={() => void run(async () => {}, "")}
           >
-            {busy ? "Cargando…" : "Reintentar"}
+            {busy ? i18n("Cargando…") : i18n("Reintentar")}
           </button>
         ) : (
-          <p role="status">Cargando tu saldo…</p>
+          <p role="status">{i18n("Cargando tu saldo…")}</p>
         )
       ) : (
         <>
           <div className="partner-balances">
             <article className="partner-available">
-              <span>Disponible para ti</span>
-              <strong>{money(data.availableCents)}</strong>
+              <span>{i18n("Disponible para ti")}</span>
+              <strong>{money(data.availableCents, i18n.locale)}</strong>
               <p>
-                Puedes retirarlo o usarlo en{" "}
-                {wedding ? "tu próxima boda" : "tu próximo evento"}.
+                {i18n("Puedes retirarlo o usarlo en")}{" "}
+                {wedding ? i18n("tu próxima boda") : i18n("tu próximo evento")}.
               </p>
               {data.availableCents >= 1000 ? (
                 <a href="#retiro" className="office-button">
-                  Retirar saldo
-                  <Icon name="arrow" />
+                  {i18n("Retirar saldo")} <Icon name="arrow" />
                 </a>
               ) : (
-                <small>Los retiros se habilitan desde US$10.</small>
+                <small>{i18n("Los retiros se habilitan desde US$10.")}</small>
               )}
             </article>
             <article className="partner-pending">
-              <span>En espera</span>
-              <strong>{money(data.pendingCents || 0)}</strong>
+              <span>{i18n("En espera")}</span>
+              <strong>{money(data.pendingCents || 0, i18n.locale)}</strong>
               <p>
                 {next
-                  ? `Próximo saldo disponible el ${new Date(next.availableAt).toLocaleDateString("es", { day: "numeric", month: "long" })}.`
-                  : "No tienes comisiones pendientes."}
+                  ? i18n("Próximo saldo disponible el {v0}.", {
+                      v0: new Date(next.availableAt).toLocaleDateString(
+                        i18n.locale,
+                        {
+                          day: "numeric",
+                          month: "long",
+                        },
+                      ),
+                    })
+                  : i18n("No tienes comisiones pendientes.")}
               </p>
               <small>
                 <Icon name="clock" />
-                Cada comisión se libera 7 días después del pago.
+                {i18n("Cada comisión se libera 7 días después del pago.")}
               </small>
             </article>
           </div>
           <section
             className="partner-benefit"
-            aria-label="Cómo ganas comisiones"
+            aria-label={i18n("Cómo ganas comisiones")}
           >
             <div className="partner-benefit-amount">
               <Icon name="sparkle" />
               <strong>{wedding ? "US$5" : "US$2"}</strong>
-              <span>para ti por cada {wedding ? "boda" : "evento"}</span>
+              <span>
+                {i18n("para ti por cada")}{" "}
+                {wedding ? i18n("boda") : i18n("evento")}
+              </span>
             </div>
             <div>
-              <h2>Tú creas, tú pagas, tú gestionas.</h2>
+              <h2>{i18n("Tú creas, tú pagas, tú gestionas.")}</h2>
               <p>
-                Paga {wedding ? "US$20 por boda" : "US$10 por evento"} desde tu
-                cuenta y añade a {wedding ? "la pareja" : "tus clientes"} para
-                colaborar. Tu comisión es privada.
+                {i18n("Paga")}{" "}
+                {wedding ? i18n("US$20 por boda") : i18n("US$10 por evento")}{" "}
+                {i18n("desde tu cuenta y añade a")}{" "}
+                {wedding ? i18n("la pareja") : i18n("tus clientes")}{" "}
+                {i18n("para colaborar. Tu comisión es privada.")}
               </p>
               <small>
-                Solo pagos reales con Stripe. Sin comisión en pagos con saldo,
-                pruebas o cortesías; las devoluciones ajustan el beneficio.
+                {i18n(
+                  "Solo pagos reales con Stripe. Sin comisión en pagos con saldo, pruebas o cortesías; las devoluciones ajustan el beneficio.",
+                )}
               </small>
             </div>
           </section>
           <div className="partner-section-heading">
-            <h2>Tu actividad</h2>
+            <h2>{i18n("Tu actividad")}</h2>
             <span>
               {data.managedEvents || 0}{" "}
               {wedding
                 ? data.managedEvents === 1
-                  ? "boda gestionada"
-                  : "bodas gestionadas"
+                  ? i18n("boda gestionada")
+                  : i18n("bodas gestionadas")
                 : data.managedEvents === 1
-                  ? "evento gestionado"
-                  : "eventos gestionados"}
+                  ? i18n("evento gestionado")
+                  : i18n("eventos gestionados")}
             </span>
           </div>
           <AffiliateActivity data={data} wedding={wedding} />

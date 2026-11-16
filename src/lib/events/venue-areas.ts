@@ -1,3 +1,8 @@
+import {
+  type Translator,
+  spanishTranslator,
+  localized,
+} from "@/lib/i18n/translator";
 export type VenueArea = {
   id: string;
   name: string;
@@ -8,10 +13,12 @@ export type VenueArea = {
   height: number;
   rotation?: number;
 };
-export const exampleVenueAreas = (): VenueArea[] => [
+export const exampleVenueAreas = (
+  i18n: Translator = spanishTranslator,
+): VenueArea[] => [
   {
     id: "area-snacks",
-    name: "Mesa de bocaditos",
+    name: i18n("Mesa de bocaditos"),
     kind: "snacks",
     x: 110,
     y: 90,
@@ -20,7 +27,7 @@ export const exampleVenueAreas = (): VenueArea[] => [
   },
   {
     id: "area-bar",
-    name: "Bar",
+    name: i18n("Bar"),
     kind: "bar",
     x: 1250,
     y: 90,
@@ -29,7 +36,7 @@ export const exampleVenueAreas = (): VenueArea[] => [
   },
   {
     id: "area-dance",
-    name: "Pista de baile",
+    name: i18n("Pista de baile"),
     kind: "dance",
     x: 610,
     y: 370,
@@ -78,23 +85,37 @@ export function venueAreaGeometry(
   };
 }
 
-export const venueAreaKinds: {
-  kind: VenueArea["kind"];
-  name: string;
-  width: number;
-  height: number;
-}[] = [
-  { kind: "stage", name: "Escenario", width: 420, height: 140 },
-  { kind: "dance", name: "Pista de baile", width: 380, height: 290 },
-  { kind: "snacks", name: "Mesa de bocaditos", width: 280, height: 120 },
-  { kind: "bar", name: "Bar", width: 210, height: 120 },
-  { kind: "lounge", name: "Zona de descanso", width: 320, height: 180 },
-  { kind: "photo", name: "Zona de fotos", width: 240, height: 180 },
-  { kind: "entrance", name: "Entrada", width: 180, height: 100 },
-];
-export function newVenueArea(kind: VenueArea["kind"], id: string): VenueArea {
+export const venueAreaKinds = localized(
+  (
+    i18n: Translator,
+  ): {
+    kind: VenueArea["kind"];
+    name: string;
+    width: number;
+    height: number;
+  }[] => [
+    { kind: "stage", name: i18n("Escenario"), width: 420, height: 140 },
+    { kind: "dance", name: i18n("Pista de baile"), width: 380, height: 290 },
+    {
+      kind: "snacks",
+      name: i18n("Mesa de bocaditos"),
+      width: 280,
+      height: 120,
+    },
+    { kind: "bar", name: i18n("Bar"), width: 210, height: 120 },
+    { kind: "lounge", name: i18n("Zona de descanso"), width: 320, height: 180 },
+    { kind: "photo", name: i18n("Zona de fotos"), width: 240, height: 180 },
+    { kind: "entrance", name: i18n("Entrada"), width: 180, height: 100 },
+  ],
+);
+export function newVenueArea(
+  kind: VenueArea["kind"],
+  id: string,
+  i18n: Translator = spanishTranslator,
+): VenueArea {
   const preset =
-    venueAreaKinds.find((item) => item.kind === kind) || venueAreaKinds[0];
+    venueAreaKinds(i18n).find((item) => item.kind === kind) ||
+    venueAreaKinds(i18n)[0];
   return {
     ...preset,
     id,

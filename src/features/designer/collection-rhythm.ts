@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { FlyerCanvas } from "@/lib/events/flyer";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
@@ -14,8 +15,9 @@ export function collectionRhythm(
   canvas: FlyerCanvas,
   t: InvitationTemplate,
   heading: string,
+  i18n: Translator = spanishTranslator,
 ): FlyerCanvas {
-  const original = invitationTemplates.find((item) => item.id === t.id);
+  const original = invitationTemplates(i18n).find((item) => item.id === t.id);
   if (
     original &&
     (original.background !== t.background || original.accent !== t.accent)
@@ -24,14 +26,14 @@ export function collectionRhythm(
   const family = templateArt(t) || "editorial";
   const reverse =
     family === "gala"
-      ? ["Fecha y hora", "Lista de regalos"]
+      ? [i18n("Fecha y hora"), i18n("Lista de regalos")]
       : family === "fiesta"
-        ? ["Fecha y hora", "Te esperamos"]
+        ? [i18n("Fecha y hora"), i18n("Te esperamos")]
         : family === "editorial"
-          ? ["Ubicación", "Guarda la fecha"]
+          ? [i18n("Ubicación"), i18n("Guarda la fecha")]
           : family === "coastal"
-            ? ["Fecha y hora", "Con todo nuestro cariño"]
-            : ["Guarda la fecha", "Con todo nuestro cariño"];
+            ? [i18n("Fecha y hora"), i18n("Con todo nuestro cariño")]
+            : [i18n("Guarda la fecha"), i18n("Con todo nuestro cariño")];
   const inverted = reverse.includes(heading);
   const titlePattern = /title|intro|thanks|save-date|heading/;
   const elements = canvas.elements.map((e) => {

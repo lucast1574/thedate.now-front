@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { type FormEvent } from "react";
 import { hasInvitationCourtesy } from "@/lib/events/courtesy";
 import Link from "next/link";
@@ -25,54 +26,64 @@ export default function EventWorkspace({
   paymentsEnabled: boolean;
   save: (e: FormEvent) => Promise<void>;
 }) {
+  const i18n = useTranslator();
+
   const { selected } = events;
   const readOnly = useEventReadOnly(selected);
   const wedding = events.draft.kind === "wedding";
   return (
     <section className="office-main workspace-event">
       <Link className="workspace-back" href="/">
-        ← Mis invitaciones
+        {i18n("← Mis invitaciones")}
       </Link>
       <p className="office-kicker">
-        {selected ? (readOnly ? "EVENTO" : "EDITAR EVENTO") : "NUEVO EVENTO"}
+        {selected
+          ? readOnly
+            ? i18n("EVENTO")
+            : i18n("EDITAR EVENTO")
+          : i18n("NUEVO EVENTO")}
       </p>
       <h1>
         {selected?.isDemo
-          ? "Tu invitación de muestra"
+          ? i18n("Tu invitación de muestra")
           : selected
             ? selected.title
             : wedding
-              ? "Vamos a crear su invitación."
-              : "Prepara tu próxima celebración."}
+              ? i18n("Vamos a crear su invitación.")
+              : i18n("Prepara tu próxima celebración.")}
       </h1>
       <p className="office-lead">
         {selected
           ? readOnly
-            ? "Consulta los detalles de tu celebración."
-            : "Ajusta los detalles y lleva el control de tus invitados."
-          : "Cuéntanos cuándo y dónde. Elige una plantilla y descubre cómo la verán tus invitados."}
+            ? i18n("Consulta los detalles de tu celebración.")
+            : i18n("Ajusta los detalles y lleva el control de tus invitados.")
+          : i18n(
+              "Cuéntanos cuándo y dónde. Elige una plantilla y descubre cómo la verán tus invitados.",
+            )}
       </p>
       <Alert variant="success">{feedback.notice}</Alert>
       <Alert>{feedback.error}</Alert>
       {selected?.addressChangedAfterPayment && !selected.publishedAt && (
         <p role="status">
-          El nombre anterior se reservó con otro pago. Tu evento ya está pagado
-          y tiene un enlace alternativo; puedes cambiarlo aquí antes de
-          publicar.
+          {i18n(
+            "El nombre anterior se reservó con otro pago. Tu evento ya está pagado y tiene un enlace alternativo; puedes cambiarlo aquí antes de publicar.",
+          )}
         </p>
       )}
-      <nav className="action-row" aria-label="Accesos de la invitación">
+      <nav className="action-row" aria-label={i18n("Accesos de la invitación")}>
         {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
           <Link
             className="workspace-back"
             href={`/editor/${encodeURIComponent(selected.id)}`}
           >
-            {readOnly ? "Ver invitación ↗" : "Abrir editor de invitación ↗"}
+            {readOnly
+              ? i18n("Ver invitación ↗")
+              : i18n("Abrir editor de invitación ↗")}
           </Link>
         )}
         {selected && (selected.isDemo || selected.paymentStatus === "paid") && (
           <Link className="workspace-back" href={`/manager/${selected.id}`}>
-            Invitados, mesas y regalos ↗
+            {i18n("Invitados, mesas y regalos ↗")}
           </Link>
         )}
       </nav>

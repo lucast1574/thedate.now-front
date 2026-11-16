@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import DressPalettePicker from "./dress-palette-picker";
 import Icon from "@/components/icon";
 import Listbox from "@/components/listbox";
@@ -23,6 +24,8 @@ export default function DressCodeInspector({
   onReplace?: () => void;
   photoURL: (key: string) => string;
 }) {
+  const i18n = useTranslator();
+
   const parts = dressParts(item.dressStyle);
   function toggle(part: DressPart) {
     const dressStyle = toggleDressPart(item.dressStyle, part);
@@ -48,18 +51,18 @@ export default function DressCodeInspector({
   return (
     <section className="dress-code-inspector">
       <div className="location-presentation">
-        <h4>Elementos visibles</h4>
-        <p>Combina icono, imagen y texto, como en Ubicación.</p>
+        <h4>{i18n("Elementos visibles")}</h4>
+        <p>{i18n("Combina icono, imagen y texto, como en Ubicación.")}</p>
         <div
           className="location-part-options"
           role="group"
-          aria-label="Elementos del dress code"
+          aria-label={i18n("Elementos del dress code")}
         >
           {(
             [
-              ["icon", "Icono", "lucide:shirt"],
-              ["image", "Imagen", "image"],
-              ["text", "Texto", "lucide:type"],
+              ["icon", i18n("Icono"), "lucide:shirt"],
+              ["image", i18n("Imagen"), "image"],
+              ["text", i18n("Texto"), "lucide:type"],
             ] as const
           ).map(([part, label, icon]) => (
             <button
@@ -77,14 +80,14 @@ export default function DressCodeInspector({
         </div>
         <div
           className="location-mini-preview dress-mini-preview"
-          aria-label="Vista previa del dress code"
+          aria-label={i18n("Vista previa del dress code")}
         >
           <FlyerDressCode item={item} photoURL={photoURL} />
         </div>
       </div>
       {parts.includes("text") && (
         <label>
-          Texto de vestimenta
+          {i18n("Texto de vestimenta")}{" "}
           <textarea
             rows={3}
             maxLength={2000}
@@ -95,7 +98,7 @@ export default function DressCodeInspector({
       )}
       {parts.includes("icon") && (
         <details className="symbol-replace">
-          <summary>Cambiar icono de vestimenta</summary>
+          <summary>{i18n("Cambiar icono de vestimenta")}</summary>
           <SymbolLibrary onPick={(dressIcon) => onChange({ dressIcon })} />
         </details>
       )}
@@ -104,23 +107,23 @@ export default function DressCodeInspector({
       {parts.includes("image") && (
         <>
           <label>
-            Imagen de vestimenta
+            {i18n("Imagen de vestimenta")}{" "}
             <Listbox
-              aria-label="Imagen de vestimenta"
+              aria-label={i18n("Imagen de vestimenta")}
               value={item.dressPhotoKey || "template-photo"}
               onValueChange={(dressPhotoKey) => onChange({ dressPhotoKey })}
             >
-              <option value="template-photo">Pon tu foto aquí</option>
+              <option value="template-photo">{i18n("Pon tu foto aquí")}</option>
               {photos.map((key, n) => (
                 <option key={key} value={key}>
-                  Imagen {n + 1}
+                  {i18n("Imagen")} {n + 1}
                 </option>
               ))}
             </Listbox>
           </label>
           {onReplace && (
             <button className="inspector-secondary-action" onClick={onReplace}>
-              <Icon name="image" /> Subir imagen de vestimenta
+              <Icon name="image" /> {i18n("Subir imagen de vestimenta")}
             </button>
           )}
         </>

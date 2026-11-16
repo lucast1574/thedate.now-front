@@ -1,13 +1,17 @@
+import { getTranslator } from "@/lib/i18n/server";
 import { applicationProduct } from "@/lib/products/application";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { googleEnabled } from "@/lib/auth/google";
 import SupportPage from "@/features/support/support-page";
 
-export const metadata = {
-  title: "Soporte",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata() {
+  const i18n = await getTranslator();
+  return {
+    title: i18n("Soporte"),
+    robots: { index: false, follow: false },
+  };
+}
 export default async function Page() {
   const host = ((await headers()).get("host") ?? "")
     .toLowerCase()

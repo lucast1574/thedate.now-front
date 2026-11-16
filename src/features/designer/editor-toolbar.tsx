@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/icon";
 import Link from "next/link";
@@ -18,6 +19,8 @@ export default function EditorToolbar({
   onPreview: () => void;
   onTemplates: () => void;
 }) {
+  const i18n = useTranslator();
+
   const router = useRouter();
   const updated = usePublicationFeedback();
   return (
@@ -26,21 +29,21 @@ export default function EditorToolbar({
         <Link
           href="/"
           className="editor-back-link"
-          aria-label="Volver al estudio"
+          aria-label={i18n("Volver al estudio")}
           onClick={async (e) => {
             e.preventDefault();
             if (await editor.save()) router.push("/");
           }}
         >
           <Icon name="chevron" />
-          <span>Estudio</span>
+          <span>{i18n("Estudio")}</span>
         </Link>
         <h1>
           <input
-            aria-label="Nombre de la invitación"
+            aria-label={i18n("Nombre de la invitación")}
             maxLength={120}
             value={editor.draft.title}
-            placeholder="Tu invitación"
+            placeholder={i18n("Tu invitación")}
             onBlur={() =>
               editor.setDraft((current) => ({
                 ...current,
@@ -70,14 +73,14 @@ export default function EditorToolbar({
               if (await editor.save()) router.push("/?new=1");
             }}
           >
-            Activar mi invitación <Icon name="arrow" />
+            {i18n("Activar mi invitación")} <Icon name="arrow" />
           </button>
         )}
         <button
           type="button"
           disabled={!editor.canUndo || editor.busy}
           onClick={editor.undo}
-          aria-label="Deshacer"
+          aria-label={i18n("Deshacer")}
         >
           <Icon name="undo" />
         </button>
@@ -85,15 +88,15 @@ export default function EditorToolbar({
           type="button"
           disabled={!editor.canRedo || editor.busy}
           onClick={editor.redo}
-          aria-label="Rehacer"
+          aria-label={i18n("Rehacer")}
         >
           <Icon name="redo" />
         </button>
         <button type="button" onClick={onTemplates}>
-          <Icon name="layout" /> Plantillas
+          <Icon name="layout" /> {i18n("Plantillas")}
         </button>
         <label className="editor-upload">
-          <Icon name="image" /> Imagen
+          <Icon name="image" /> {i18n("Imagen")}{" "}
           <input
             type="file"
             accept="image/jpeg,image/png,image/webp"
@@ -106,7 +109,7 @@ export default function EditorToolbar({
           />
         </label>
         <button type="button" aria-pressed={preview} onClick={onPreview}>
-          {preview ? "Volver a editar" : "Vista previa"}
+          {preview ? i18n("Volver a editar") : i18n("Vista previa")}
         </button>
         {!editor.draft.isDemo && (!editor.isPublished || canPublish) && (
           <button
@@ -127,11 +130,11 @@ export default function EditorToolbar({
           >
             {editor.busy
               ? editor.isPublished
-                ? "Actualizando…"
-                : "Guardando…"
+                ? i18n("Actualizando…")
+                : i18n("Guardando…")
               : editor.isPublished
-                ? "Actualizar y continuar"
-                : "Terminar y continuar"}
+                ? i18n("Actualizar y continuar")
+                : i18n("Terminar y continuar")}
             <Icon name="arrow" />
           </button>
         )}

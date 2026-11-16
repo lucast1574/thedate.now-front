@@ -75,7 +75,7 @@ test("all template dress pages stay within the persisted canvas limits with eigh
     { globals: { crypto } },
   );
   const { blankEvent } = loadSource("src/lib/events/draft.ts");
-  for (const t of invitationTemplates.filter((t) => t.mode === "flyer")) {
+  for (const t of invitationTemplates().filter((t) => t.mode === "flyer")) {
     const source = blankEvent(t.kind);
     source.celebration.dressNote =
       "Celebra con nosotros con un look cómodo y especial. ".repeat(6);
@@ -105,10 +105,10 @@ test("an explicit palette survives switching to another invitation template", ()
     { globals: { crypto } },
   );
   const { blankEvent } = loadSource("src/lib/events/draft.ts");
-  const first = invitationTemplates.find(
+  const first = invitationTemplates().find(
       (t) => t.id === "wedding-flyer-floral",
     ),
-    second = invitationTemplates.find((t) => t.id === "wedding-flyer-rose");
+    second = invitationTemplates().find((t) => t.id === "wedding-flyer-rose");
   const draft = applyCompleteTemplate(blankEvent("wedding"), first);
   draft.sections
     .flatMap((s) => s.canvas.elements)

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef } from "react";
 import type { PointerEvent } from "react";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
@@ -22,6 +23,8 @@ export default function SeatingCanvas({
   areas?: VenueArea[];
   onMoveArea?: (id: string, x: number, y: number) => void;
 }) {
+  const i18n = useTranslator();
+
   const board = useRef<HTMLDivElement>(null);
   const drag = useRef<{
     id: string;
@@ -61,10 +64,12 @@ export default function SeatingCanvas({
         className="seating-board"
         ref={board}
         role="group"
-        aria-label="Lienzo del salón. Arrastra mesas o usa las flechas del teclado."
+        aria-label={i18n(
+          "Lienzo del salón. Arrastra mesas o usa las flechas del teclado.",
+        )}
       >
         <div className="venue-label">
-          SALÓN · 1600 × 1000 · distribución orientativa
+          {i18n("SALÓN · 1600 × 1000 · distribución orientativa")}
         </div>
         {onMoveArea && (
           <VenueAreas
@@ -139,7 +144,7 @@ export default function SeatingCanvas({
         })}
         {!plan.tables.length && (
           <p className="canvas-empty">
-            Añade tu primera mesa o genera una propuesta por familias.
+            {i18n("Añade tu primera mesa o genera una propuesta por familias.")}
           </p>
         )}
       </div>

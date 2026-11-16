@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { SharingDemo } from "./sharing-demo";
 export { SharingDemo } from "./sharing-demo";
 import { sharingEvents } from "@/lib/events/sharing-events";
@@ -39,13 +41,20 @@ export default function SharedCelebrations({
   );
 }
 function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
+  const i18n = useTranslator();
+
   const [events, setEvents] = useState<Event[]>([]),
     [selected, setSelected] = useState(""),
     [loaded, setLoaded] = useState(false),
     [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    api<Event[]>("/api/backend/events?scope=sharing")
+    api<Event[]>(
+      "/api/backend/events?scope=sharing",
+      undefined,
+      undefined,
+      i18n,
+    )
       .then((list) => {
         if (active) setEvents(list);
       })
@@ -58,7 +67,7 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
     return () => {
       active = false;
     };
-  }, [wedding, user.id, user.role]);
+  }, [wedding, user.id, user.role, i18n]);
   const available = sharingEvents(
     events,
     wedding ? "wedding" : "general",
@@ -69,22 +78,26 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
   return (
     <section className="shared-celebrations">
       <header className="shared-heading">
-        <p className="office-kicker">TU ESPACIO PROFESIONAL</p>
+        <p className="office-kicker">{i18n("TU ESPACIO PROFESIONAL")}</p>
         <h1>
           {wedding
-            ? "Su historia. Un mismo equipo."
-            : "Grandes planes, en equipo."}
+            ? i18n("Su historia. Un mismo equipo.")
+            : i18n("Grandes planes, en equipo.")}
         </h1>
         <p>
           {wedding
-            ? "Conecta cada boda con sus protagonistas. Tú coordinas; ellos aportan su historia."
-            : "Asigna cada celebración a sus protagonistas y organizad juntos cada detalle."}
+            ? i18n(
+                "Conecta cada boda con sus protagonistas. Tú coordinas; ellos aportan su historia.",
+              )
+            : i18n(
+                "Asigna cada celebración a sus protagonistas y organizad juntos cada detalle.",
+              )}
         </p>
       </header>
       <div className="shared-journey">
         {[
-          ["check", "1 · Elige una celebración pagada"],
-          ["users", "2 · Añade sus dos correos"],
+          ["check", i18n("1 · Elige una celebración pagada")],
+          ["users", i18n("2 · Añade sus dos correos")],
           ["heart", "3 · Planificad juntos"],
         ].map(([icon, label]) => (
           <span key={label}>
@@ -95,16 +108,18 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
       </div>
       <Alert>{error}</Alert>
       {!loaded ? (
-        <p role="status">Preparando tus celebraciones…</p>
+        <p role="status">{i18n("Preparando tus celebraciones…")}</p>
       ) : event ? (
         <div className="shared-workbench">
           <aside className="shared-event-card">
             <span className="shared-paid">
               <Icon name="check" />
-              Lista para compartir
+              {i18n("Lista para compartir")}
             </span>
             <label>
-              {wedding ? "Selecciona la boda" : "Selecciona el evento"}
+              {wedding
+                ? i18n("Selecciona la boda")
+                : i18n("Selecciona el evento")}
               <Listbox value={event.id} onValueChange={setSelected}>
                 {available.map((e) => (
                   <option key={e.id} value={e.id}>
@@ -116,11 +131,12 @@ function SharedWorkspace({ user, wedding }: { user: User; wedding: boolean }) {
             <h2>{event.title}</h2>
             <p>{event.location}</p>
             <Link href={`/editor/${event.id}`}>
-              Abrir su invitación <Icon name="external" />
+              {i18n("Abrir su invitación")} <Icon name="external" />
             </Link>
             <small>
-              Cada celebración conserva su propio equipo. Puedes gestionar
-              tantas bodas o eventos como necesites.
+              {i18n(
+                "Cada celebración conserva su propio equipo. Puedes gestionar tantas bodas o eventos como necesites.",
+              )}
             </small>
           </aside>
           <CoupleAccess

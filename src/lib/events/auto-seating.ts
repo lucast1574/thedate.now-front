@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { attendees, fullName } from "./attendees";
 import type { Event, Guest } from "./types";
 import type { Attendee, SeatingPlan, SeatingTable } from "./seating";
@@ -25,10 +26,11 @@ export function newTable(
   capacity: number,
   shape: SeatingTable["shape"],
   id: string,
+  i18n: Translator = spanishTranslator,
 ): SeatingTable {
   return {
     id,
-    name: `Mesa ${index + 1}`,
+    name: i18n("Mesa {v0}", { v0: index + 1 }),
     shape,
     capacity,
     x: 50 + (index % 5) * 300,
@@ -41,6 +43,7 @@ export function proposeSeating(
   current: SeatingPlan,
   event: Pick<Event, "capacity" | "capacityUnlimited">,
   defaultCapacity: number,
+  i18n: Translator = spanishTranslator,
 ) {
   const eligible = guests
     .filter((g) => g.response === "going")
@@ -48,10 +51,12 @@ export function proposeSeating(
   const groups = new Map<string, Attendee[][]>();
   for (const guest of eligible) {
     const group = groups.get(familyKey(guest)) || [];
-    group.push(attendees([guest]).filter((person) => person.registered));
+    group.push(attendees([guest], i18n).filter((person) => person.registered));
     groups.set(familyKey(guest), group);
   }
-  const people = attendees(eligible).filter((person) => person.registered);
+  const people = attendees(eligible, i18n).filter(
+    (person) => person.registered,
+  );
   const limit = event.capacityUnlimited ? 5000 : Math.min(event.capacity, 5000);
   const tables = current.tables.map((t) => ({ ...t }));
   const allowed = new Set(people.map((p) => p.id));
@@ -104,7 +109,9 @@ export function proposeSeating(
       let index = tables.length;
       while (
         tables.some(
-          (t) => t.id === `auto-${index + 1}` || t.name === `Mesa ${index + 1}`,
+          (t) =>
+            t.id === `auto-${index + 1}` ||
+            new RegExp(`^(?:mesa|table) ${index + 1}$`, "i").test(t.name),
         )
       )
         index++;
@@ -113,6 +120,7 @@ export function proposeSeating(
         Math.max(defaultCapacity, party.length),
         "round",
         `auto-${index + 1}`,
+        i18n,
       );
       tables.push(table);
     }

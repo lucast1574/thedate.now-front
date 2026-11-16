@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { blankCanvas } from "@/features/designer/flyer/canvas-model";
 import type { Event } from "@/lib/events/types";
 
@@ -5,7 +6,10 @@ export function isBlankInvitation(draft: Event) {
   return draft.templateId === `${draft.kind}-blank`;
 }
 
-export function blankInvitation(draft: Event): Event {
+export function blankInvitation(
+  draft: Event,
+  i18n: Translator = spanishTranslator,
+): Event {
   return {
     ...draft,
     template: "classic",
@@ -16,7 +20,7 @@ export function blankInvitation(draft: Event): Event {
       {
         id: "blank-canvas",
         icon: "none",
-        heading: "Sección 1",
+        heading: i18n("Sección 1"),
         body: "",
         canvas: blankCanvas(draft.accentColor, draft.kind),
       },

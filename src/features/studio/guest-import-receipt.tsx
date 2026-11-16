@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import {
   guestImportSummary,
@@ -9,9 +10,11 @@ export default function GuestImportReceipt({
 }: {
   result: GuestImportResult;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="guest-import-receipt" role="status">
-      <p>{guestImportSummary(result)}</p>
+      <p>{guestImportSummary(result, i18n)}</p>
       <a
         className="guest-complete-hint"
         href="#guest-list"
@@ -29,21 +32,23 @@ export default function GuestImportReceipt({
           list.focus({ preventScroll: true });
         }}
       >
-        Ver tus invitados en la lista de abajo <Icon name="down" />
+        {i18n("Ver tus invitados en la lista de abajo")} <Icon name="down" />
       </a>
     </div>
   );
 }
 
 export function GuestImportReview({ result }: { result: GuestImportResult }) {
+  const i18n = useTranslator();
+
   return (
     !!result.review?.length && (
       <div
         className="guest-import-issues"
         role="region"
-        aria-label="Cambios por revisar"
+        aria-label={i18n("Cambios por revisar")}
       >
-        <h4>Acompañantes por revisar</h4>
+        <h4>{i18n("Acompañantes por revisar")}</h4>
         <ul>
           {result.review.map((item) => (
             <li key={item.phone}>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import OrnamentLibrary from "./ornament-library";
 import CanvasImages from "./canvas-images";
 import SymbolLibrary from "./symbol-library";
@@ -27,19 +28,25 @@ export default function CanvasToolbox({
   busy: boolean;
   onPhotos: () => void;
 }) {
+  const i18n = useTranslator();
+
   function text(value: string, size = 36) {
     onAdd(
-      element("text", {
-        text: value,
-        x: 60,
-        y: 80,
-        width: canvas.width - 120,
-        height: 160,
-        fontSize: size,
-        font: event.kind === "general" ? "sans" : "serif",
-        bold: event.kind === "general" && size > 40,
-        color: draft.accentColor,
-      }),
+      element(
+        "text",
+        {
+          text: value,
+          x: 60,
+          y: 80,
+          width: canvas.width - 120,
+          height: 160,
+          fontSize: size,
+          font: event.kind === "general" ? "sans" : "serif",
+          bold: event.kind === "general" && size > 40,
+          color: draft.accentColor,
+        },
+        i18n,
+      ),
     );
   }
   if (photosOnly)
@@ -63,33 +70,33 @@ export default function CanvasToolbox({
               onClick={() =>
                 text(
                   event.kind === "general"
-                    ? "¡Tenemos un plan!"
-                    : "Un día inolvidable",
+                    ? i18n("¡Tenemos un plan!")
+                    : i18n("Un día inolvidable"),
                   56,
                 )
               }
             >
-              Añadir un título
+              {i18n("Añadir un título")}
             </button>
             <button
               disabled={disabled}
               onClick={() =>
                 text(
                   event.kind === "general"
-                    ? "Nos vemos para celebrar."
-                    : "Escribe tu historia aquí",
+                    ? i18n("Nos vemos para celebrar.")
+                    : i18n("Escribe tu historia aquí"),
                   28,
                 )
               }
             >
-              Añadir un texto
+              {i18n("Añadir un texto")}
             </button>
           </div>
           <button className="canvas-photo-shortcut" onClick={onPhotos}>
             <Icon name="image" />
             <span>
-              Añadir una foto
-              <small>Sube una imagen o elige una de las tuyas</small>
+              {i18n("Añadir una foto")}{" "}
+              <small>{i18n("Sube una imagen o elige una de las tuyas")}</small>
             </span>
             <Icon name="chevron" />
           </button>
@@ -104,7 +111,7 @@ export default function CanvasToolbox({
           <details className="canvas-symbol-disclosure">
             <summary>
               <Icon name="sparkle" />
-              <span>Símbolos y adornos</span>
+              <span>{i18n("Símbolos y adornos")}</span>
               <Icon name="chevron" />
             </summary>
             <SymbolLibrary
@@ -112,14 +119,18 @@ export default function CanvasToolbox({
               disabled={disabled}
               onPick={(icon) =>
                 onAdd(
-                  element("icon", {
-                    icon,
-                    x: (canvas.width - 120) / 2,
-                    y: (canvas.height - 120) / 2,
-                    width: 120,
-                    height: 120,
-                    color: draft.accentColor,
-                  }),
+                  element(
+                    "icon",
+                    {
+                      icon,
+                      x: (canvas.width - 120) / 2,
+                      y: (canvas.height - 120) / 2,
+                      width: 120,
+                      height: 120,
+                      color: draft.accentColor,
+                    },
+                    i18n,
+                  ),
                 )
               }
             />

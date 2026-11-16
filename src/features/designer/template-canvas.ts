@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { editableOrnaments } from "./editable-ornaments";
 import { coverVariants } from "./template-identity-variants";
 import { stageTemplate } from "./template-stage";
@@ -25,6 +26,7 @@ function tint(accent: string, background: string) {
 export function templateCanvas(
   template: InvitationTemplate,
   content: { title?: string; body?: string; photoKey?: string } = {},
+  i18n: Translator = spanishTranslator,
 ): FlyerCanvas {
   const layout = {
     ...templateLayouts[
@@ -35,12 +37,12 @@ export function templateCanvas(
   const elements: FlyerElement[] = [];
   const title =
     content.title ||
-    (template.kind === "wedding" ? "Ana & Luis" : "Celebremos juntos");
+    (template.kind === "wedding" ? "Ana & Luis" : i18n("Celebremos juntos"));
   const body =
     content.body ||
     (template.kind === "wedding"
-      ? "Un día para celebrar nuestra historia contigo."
-      : "Una fecha para encontrarnos y celebrar lo que nos une.");
+      ? i18n("Un día para celebrar nuestra historia contigo.")
+      : i18n("Una fecha para encontrarnos y celebrar lo que nos une."));
   function text(
     id: string,
     value: string,
@@ -50,25 +52,29 @@ export function templateCanvas(
     const [x, y, width, height, size, align = "center"] = box;
     const fontSize = size;
     elements.push(
-      element("text", {
-        id,
-        x,
-        y,
-        width,
-        height,
-        text: value.slice(0, 2000),
-        font: template.font,
-        color:
-          layout.photoTreatment === "cinema" &&
-          layout.photo &&
-          y >= layout.photo[1] &&
-          y + height <= layout.photo[1] + layout.photo[3]
-            ? "#ffffff"
-            : template.accent,
-        fontSize,
-        align,
-        ...patch,
-      }),
+      element(
+        "text",
+        {
+          id,
+          x,
+          y,
+          width,
+          height,
+          text: value.slice(0, 2000),
+          font: template.font,
+          color:
+            layout.photoTreatment === "cinema" &&
+            layout.photo &&
+            y >= layout.photo[1] &&
+            y + height <= layout.photo[1] + layout.photo[3]
+              ? "#ffffff"
+              : template.accent,
+          fontSize,
+          align,
+          ...patch,
+        },
+        i18n,
+      ),
     );
   }
   if (layout.monogram) {
@@ -91,7 +97,7 @@ export function templateCanvas(
   }
   text(
     "kicker",
-    template.kind === "wedding" ? "NOS CASAMOS" : "ESTÁS INVITADO",
+    template.kind === "wedding" ? i18n("NOS CASAMOS") : i18n("ESTÁS INVITADO"),
     layout.kicker,
     { font: "sans" },
   );
@@ -130,16 +136,20 @@ export function templateCanvas(
       : null);
   if (photo)
     elements.unshift(
-      element("image", {
-        id: "photo",
-        photoKey: content.photoKey || "template-photo",
-        photoFit: "cover",
-        photoTreatment: layout.photoTreatment || "none",
-        x: photo[0],
-        y: photo[1],
-        width: photo[2],
-        height: photo[3],
-      }),
+      element(
+        "image",
+        {
+          id: "photo",
+          photoKey: content.photoKey || "template-photo",
+          photoFit: "cover",
+          photoTreatment: layout.photoTreatment || "none",
+          x: photo[0],
+          y: photo[1],
+          width: photo[2],
+          height: photo[3],
+        },
+        i18n,
+      ),
     );
   text(
     "body",
@@ -172,5 +182,6 @@ export function templateCanvas(
       ),
     ),
     template.accent,
+    i18n,
   );
 }

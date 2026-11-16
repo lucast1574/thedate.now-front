@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 export default function ProductAlternative({
   wedding,
@@ -6,12 +7,16 @@ export default function ProductAlternative({
   wedding: boolean;
   footer?: boolean;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div
       className={`workspace-alternative ${footer ? "workspace-mobile-alternative" : ""}`}
     >
       <span>
-        {wedding ? "¿Otra ocasión para celebrar?" : "¿Preparando una boda?"}
+        {wedding
+          ? i18n("¿Otra ocasión para celebrar?")
+          : i18n("¿Preparando una boda?")}
       </span>
       <a
         href={
@@ -20,7 +25,7 @@ export default function ProductAlternative({
             : "https://studio.save.thedate.now"
         }
       >
-        {wedding ? "Descubre The Date" : "Descubre Save the Date"}
+        {wedding ? i18n("Descubre The Date") : i18n("Descubre Save the Date")}
         <Icon name="external" />
       </a>
     </div>

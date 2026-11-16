@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Event, User } from "@/lib/events/types";
 import { useState } from "react";
 import { api } from "@/lib/api/client";
@@ -15,6 +16,8 @@ export default function PendingPayment({
   enabled: boolean;
   onCheckout: () => void;
 }) {
+  const i18n = useTranslator();
+
   const professional =
     event.kind === "wedding"
       ? user.role === "planner"
@@ -30,6 +33,7 @@ export default function PendingPayment({
         `/api/backend/events/${event.id}/checkout`,
         "POST",
         { mode },
+        i18n,
       );
       window.location.href = result.url;
     } catch (err) {
@@ -40,26 +44,30 @@ export default function PendingPayment({
   }
   return (
     <section className="demo-continuity-note">
-      <h2>Continúa con tu invitación</h2>
+      <h2>{i18n("Continúa con tu invitación")}</h2>
       <p>
-        Tu diseño y tus datos están guardados. Completa el pago para activar tu
-        evento y seguir en el editor.
+        {i18n(
+          "Tu diseño y tus datos están guardados. Completa el pago para activar tu evento y seguir en el editor.",
+        )}
       </p>
       <ActionButton
         className="office-button"
         disabled={busy || working || !enabled}
         onClick={onCheckout}
       >
-        {enabled ? `Pagar el evento · USD ${price}` : "Pagos en preparación"}
+        {enabled
+          ? i18n("Pagar el evento · USD {v0}", { v0: price })
+          : i18n("Pagos en preparación")}
       </ActionButton>
       {professional && event.ownerId === user.id && (
         <p>
-          Recibes{" "}
+          {i18n("Recibes")}{" "}
           {event.kind === "wedding"
-            ? "US$5 por esta boda"
-            : "US$2 por este evento"}{" "}
-          en tu saldo profesional después de 7 días del pago. Este beneficio es
-          privado de tu cuenta.
+            ? i18n("US$5 por esta boda")
+            : i18n("US$2 por este evento")}{" "}
+          {i18n(
+            "en tu saldo profesional después de 7 días del pago. Este beneficio es privado de tu cuenta.",
+          )}
         </p>
       )}
       <button
@@ -67,7 +75,7 @@ export default function PendingPayment({
         disabled={busy || working || !enabled}
         onClick={() => void pay("balance")}
       >
-        Pagar el evento completo con mi saldo
+        {i18n("Pagar el evento completo con mi saldo")}
       </button>
       {event.paymentStatus === "balance_pending" && (
         <button
@@ -75,7 +83,7 @@ export default function PendingPayment({
           disabled={busy || working}
           onClick={() => void pay("cancel_balance")}
         >
-          Cancelar intento de saldo y elegir otro pago
+          {i18n("Cancelar intento de saldo y elegir otro pago")}
         </button>
       )}
       {error && <p role="alert">{error}</p>}

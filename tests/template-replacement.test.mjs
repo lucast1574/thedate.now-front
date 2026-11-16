@@ -28,7 +28,7 @@ const structure = (draft) =>
 
 test("repeated template changes use exactly the selected pages and layers for both products and photo variants", () => {
   for (const kind of ["wedding", "general"]) {
-    const catalog = invitationTemplates.filter(
+    const catalog = invitationTemplates().filter(
       (template) => template.kind === kind && template.mode === "flyer",
     );
     let draft = blankEvent(kind);
@@ -46,7 +46,7 @@ test("repeated template changes use exactly the selected pages and layers for bo
 });
 
 test("old extra layers, enlarged pages and unmatched sections do not leak into the selected design", () => {
-  const catalog = invitationTemplates.filter(
+  const catalog = invitationTemplates().filter(
     (template) => template.kind === "wedding" && template.mode === "flyer",
   );
   const draft = applyCompleteTemplate(blankEvent("wedding"), catalog[0]);

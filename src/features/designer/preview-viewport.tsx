@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Invitation from "@/features/invitations/invitation";
@@ -16,6 +17,8 @@ export default function PreviewViewport({
   showOpening?: boolean;
   onReady?: () => void;
 }) {
+  const i18n = useTranslator();
+
   const stage = useRef<HTMLDivElement>(null);
   const [body, setBody] = useState<HTMLElement | null>(null);
   const [error, setError] = useState("");
@@ -50,11 +53,9 @@ export default function PreviewViewport({
           }}
         >
           <iframe
-            title="Vista previa real de tu invitación"
+            title={i18n("Vista previa real de tu invitación")}
             sandbox="allow-same-origin allow-modals"
-            srcDoc={
-              '<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vista previa</title></head><body></body></html>'
-            }
+            srcDoc={`<!doctype html><html lang="${i18n.locale}"><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>${i18n("Vista previa")}</title></head><body></body></html>`}
             onLoad={async (e) => {
               const frame = e.currentTarget;
               const doc = frame.contentDocument;
@@ -64,6 +65,7 @@ export default function PreviewViewport({
                   doc,
                   document,
                   draft.kind,
+                  i18n,
                 );
                 if (frame.isConnected) {
                   setBody(ready);

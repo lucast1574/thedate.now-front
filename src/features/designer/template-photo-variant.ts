@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { editableOrnaments } from "./editable-ornaments";
 import { templateCanvas } from "./template-canvas";
 import type { DesignSection } from "@/lib/events/types";
@@ -8,9 +9,10 @@ export function templatePhotoVariant(
   photos: boolean,
   ink = "#555555",
   template?: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
 ) {
   if (photos) return pages;
-  const p = template ? templateIdentity(template) : undefined;
+  const p = template ? templateIdentity(template, i18n) : undefined;
   return pages
     .filter(
       (s) => !s.heading.includes("momentos") && !s.heading.includes("imágenes"),
@@ -48,6 +50,7 @@ export function templatePhotoVariant(
             canvas: templateCanvas(
               { ...template, id: `${template.id}-paper`, layout },
               { title, body },
+              i18n,
             ),
           };
         }
@@ -123,11 +126,15 @@ export function templatePhotoVariant(
       return {
         ...section,
         canvas: canvas.artEditable
-          ? editableOrnaments({
-              ...canvas,
-              artEditable: false,
-              elements: elements.filter((e) => !e.id.startsWith("ornament-")),
-            })
+          ? editableOrnaments(
+              {
+                ...canvas,
+                artEditable: false,
+                elements: elements.filter((e) => !e.id.startsWith("ornament-")),
+              },
+              undefined,
+              i18n,
+            )
           : { ...canvas, elements },
       };
     });

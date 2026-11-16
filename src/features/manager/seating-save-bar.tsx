@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useInlineConfirmation } from "@/components/use-inline-confirmation";
 import type { useSeatingAutosave } from "./use-seating-autosave";
 import Icon from "@/components/icon";
@@ -14,6 +15,8 @@ export default function SeatingSaveBar({
   autosave: ReturnType<typeof useSeatingAutosave>;
   onReload: () => void;
 }) {
+  const i18n = useTranslator();
+
   const { saving, failed, retry } = autosave;
   const {
     open: confirmReload,
@@ -33,36 +36,40 @@ export default function SeatingSaveBar({
         <div>
           <strong>
             {stale
-              ? "Hay nuevas respuestas"
+              ? i18n("Hay nuevas respuestas")
               : dirty
                 ? failed
-                  ? "No pudimos guardar los cambios"
+                  ? i18n("No pudimos guardar los cambios")
                   : saving
-                    ? "Guardando…"
-                    : "Guardando cambios automáticamente…"
-                : "Cambios guardados"}
+                    ? i18n("Guardando…")
+                    : i18n("Guardando cambios automáticamente…")
+                : i18n("Cambios guardados")}
           </strong>
           <small>
             {stale
-              ? "Recarga el plano para incorporar los cambios antes de guardar o descargar."
+              ? i18n(
+                  "Recarga el plano para incorporar los cambios antes de guardar o descargar.",
+                )
               : dirty
                 ? failed
-                  ? "Tus cambios siguen aquí. Revisa tu conexión y vuelve a intentarlo."
-                  : "Puedes seguir organizando; guardamos por ti."
-                : "El plano y las mesas están al día."}
+                  ? i18n(
+                      "Tus cambios siguen aquí. Revisa tu conexión y vuelve a intentarlo.",
+                    )
+                  : i18n("Puedes seguir organizando; guardamos por ti.")
+                : i18n("El plano y las mesas están al día.")}
           </small>
         </div>
       </div>
       {confirmReload ? (
         <div className="seating-reload-confirm">
-          <span>¿Descartar los cambios sin guardar?</span>
+          <span>{i18n("¿Descartar los cambios sin guardar?")}</span>
           <button
             type="button"
             disabled={busy}
             ref={cancel}
             onClick={() => setConfirmReload(false)}
           >
-            Cancelar
+            {i18n("Cancelar")}
           </button>
           <button
             type="button"
@@ -72,7 +79,7 @@ export default function SeatingSaveBar({
               onReload();
             }}
           >
-            Descartar y recargar
+            {i18n("Descartar y recargar")}
           </button>
         </div>
       ) : (
@@ -85,7 +92,7 @@ export default function SeatingSaveBar({
               onClick={() => (dirty ? setConfirmReload(true) : onReload())}
             >
               <Icon name="refresh" />
-              Recargar plano
+              {i18n("Recargar plano")}
             </button>
           )}
           {failed && !stale && (
@@ -96,7 +103,7 @@ export default function SeatingSaveBar({
               onClick={retry}
             >
               <Icon name="check" />
-              Reintentar guardado
+              {i18n("Reintentar guardado")}
             </button>
           )}
         </div>

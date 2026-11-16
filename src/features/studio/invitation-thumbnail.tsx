@@ -1,9 +1,12 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import { thumbnailFit } from "@/lib/events/thumbnail";
 import { createPortal } from "react-dom";
 import Invitation from "@/features/invitations/invitation";
 import type { Event } from "@/lib/events/types";
 export default function InvitationThumbnail({ event }: { event: Event }) {
+  const i18n = useTranslator();
+
   const ref = useRef<HTMLDivElement>(null),
     [visible, setVisible] = useState(false),
     [size, setSize] = useState({ width: 390, height: 292.5 }),
@@ -55,7 +58,7 @@ export default function InvitationThumbnail({ event }: { event: Event }) {
       {visible && (
         <iframe
           tabIndex={-1}
-          title={`Miniatura de ${event.title}`}
+          title={i18n("Miniatura de {v0}", { v0: event.title })}
           sandbox="allow-same-origin"
           style={{
             width: 390,
@@ -63,9 +66,7 @@ export default function InvitationThumbnail({ event }: { event: Event }) {
             left: fit.left,
             transform: `scale(${fit.scale})`,
           }}
-          srcDoc={
-            '<!doctype html><html lang="es"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body></body></html>'
-          }
+          srcDoc={`<!doctype html><html lang="${i18n.locale}"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body></body></html>`}
           onLoad={(e) => {
             const doc = e.currentTarget.contentDocument;
             if (!doc) return;

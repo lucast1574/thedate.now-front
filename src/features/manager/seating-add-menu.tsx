@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import Listbox from "@/components/listbox";
 import { venueAreaKinds } from "@/lib/events/venue-areas";
@@ -25,11 +26,13 @@ export default function SeatingAddMenu({
   onChange: (plan: SeatingPlan) => void;
   onSelect: (id: string) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="seating-add-control">
       <Listbox
         value="add"
-        aria-label="Añadir al plano"
+        aria-label={i18n("Añadir al plano")}
         menuMinWidth={250}
         renderLabel={(option, trigger) =>
           trigger ? (
@@ -43,7 +46,7 @@ export default function SeatingAddMenu({
         }
         onValueChange={(value) => {
           const id = crypto.randomUUID();
-          const next = addSeatingItem(plan, value as SeatingAddition, id);
+          const next = addSeatingItem(plan, value as SeatingAddition, id, i18n);
           if (next) {
             onChange(next);
             onSelect(id);
@@ -51,10 +54,10 @@ export default function SeatingAddMenu({
         }}
       >
         <option value="add" disabled>
-          Añadir al plano
+          {i18n("Añadir al plano")}
         </option>
-        <option value="table">Mesa circular · 10 asientos</option>
-        {venueAreaKinds.map((item) => (
+        <option value="table">{i18n("Mesa circular · 10 asientos")}</option>
+        {venueAreaKinds(i18n).map((item) => (
           <option
             key={item.kind}
             value={item.kind}

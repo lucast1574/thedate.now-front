@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { GuestGift } from "@/lib/events/wishlist";
 import { giftStore } from "@/lib/events/gift-store";
@@ -15,6 +16,8 @@ export default function GuestGiftCard({
   hasChoice: boolean;
   onChoose: (item: GuestGift, release?: boolean) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <article
       className={`gift-card ${item.mine ? "is-mine" : item.reserved ? "is-reserved" : ""}`}
@@ -25,7 +28,10 @@ export default function GuestGiftCard({
         rel="noopener noreferrer"
         referrerPolicy="no-referrer"
         className="gift-product-link"
-        aria-label={`Ver ${item.title} en ${giftStore(item.url)}`}
+        aria-label={i18n("Ver {v0} en {v1}", {
+          v0: item.title,
+          v1: giftStore(item.url),
+        })}
       >
         <GiftImage src={image} title={item.title} />
       </a>
@@ -35,11 +41,11 @@ export default function GuestGiftCard({
           <span className={`gift-status ${item.mine ? "is-mine" : ""}`}>
             {item.mine
               ? item.delivered
-                ? "Recibido"
-                : "Tu elección"
+                ? i18n("Recibido")
+                : i18n("Tu elección")
               : item.reserved
-                ? "Reservado"
-                : "Disponible"}
+                ? i18n("Reservado")
+                : i18n("Disponible")}
           </span>
         </div>
         <h2>{item.title}</h2>
@@ -51,7 +57,7 @@ export default function GuestGiftCard({
           rel="noopener noreferrer"
           referrerPolicy="no-referrer"
         >
-          Ver producto en la tienda <Icon name="external" />
+          {i18n("Ver producto en la tienda")} <Icon name="external" />
         </a>
         {item.mine ? (
           <button
@@ -60,8 +66,8 @@ export default function GuestGiftCard({
             onClick={() => onChoose(item, true)}
           >
             {item.delivered
-              ? "Gracias, regalo recibido"
-              : "Cambiar mi elección"}
+              ? i18n("Gracias, regalo recibido")
+              : i18n("Cambiar mi elección")}
           </button>
         ) : (
           <button
@@ -70,10 +76,10 @@ export default function GuestGiftCard({
             onClick={() => onChoose(item)}
           >
             {item.reserved
-              ? "Otro invitado lo eligió"
+              ? i18n("Otro invitado lo eligió")
               : hasChoice
-                ? "Ya tienes un regalo elegido"
-                : "Quiero regalarlo"}
+                ? i18n("Ya tienes un regalo elegido")
+                : i18n("Quiero regalarlo")}
           </button>
         )}
       </div>

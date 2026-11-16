@@ -1,6 +1,9 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function FlyerRestrictions({ item }: { item: FlyerElement }) {
+  const i18n = useTranslator();
+
   const style = item.restrictionStyle || "icon-text";
   return (
     <span
@@ -15,7 +18,8 @@ export default function FlyerRestrictions({ item }: { item: FlyerElement }) {
       )}
       {style !== "icon" && (
         <span>
-          {item.text || "Ten en cuenta estas indicaciones antes de asistir."}
+          {item.text ||
+            i18n("Ten en cuenta estas indicaciones antes de asistir.")}
         </span>
       )}
     </span>

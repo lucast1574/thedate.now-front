@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import type { User } from "@/lib/events/types";
@@ -19,6 +21,8 @@ export default function AffiliatePage({
 }
 
 function AffiliateAccess({ user, wedding }: { user: User; wedding: boolean }) {
+  const i18n = useTranslator();
+
   const router = useRouter();
   const allowed = user.role === (wedding ? "planner" : "organizer");
   useEffect(() => {
@@ -27,6 +31,6 @@ function AffiliateAccess({ user, wedding }: { user: User; wedding: boolean }) {
   return allowed ? (
     <AffiliateDashboard user={user} wedding={wedding} />
   ) : (
-    <p className="account-loading">Volviendo a tus invitaciones…</p>
+    <p className="account-loading">{i18n("Volviendo a tus invitaciones…")}</p>
   );
 }

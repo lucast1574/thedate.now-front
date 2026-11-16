@@ -1,10 +1,14 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 export type InvitationMusic = {
   // Spotify is retained only to read older saved designs, never to play/add it.
   source: "mp3" | "spotify" | "youtube";
   value: string;
   title: string;
 };
-export function musicFromLink(input: string): InvitationMusic | null {
+export function musicFromLink(
+  input: string,
+  i18n: Translator = spanishTranslator,
+): InvitationMusic | null {
   try {
     const url = new URL(input.trim());
     if (url.protocol !== "https:" || url.username || url.password || url.port)
@@ -18,7 +22,7 @@ export function musicFromLink(input: string): InvitationMusic | null {
           ? url.searchParams.get("v")
           : null;
     if (id && /^[A-Za-z0-9_-]{11}$/.test(id))
-      return { source: "youtube", value: id, title: "Nuestra música" };
+      return { source: "youtube", value: id, title: i18n("Nuestra música") };
   } catch {}
   return null;
 }

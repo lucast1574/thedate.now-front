@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useEventRecency } from "@/features/studio/use-event-recency";
@@ -12,29 +14,31 @@ export function useStudioEvents(
   user: User | null,
   onError: (message: string) => void,
 ) {
+  const i18n = useTranslator();
+
   const requested = useSearchParams().get("event");
   const demoId = useSearchParams().get("demo");
   const creating = useSearchParams().get("new") === "1";
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [selected, setSelected] = useState<Event | null>(null);
-  const [draft, setDraft] = useState<Event>(() => blankEvent(portal));
+  const [draft, setDraft] = useState<Event>(() => blankEvent(portal, i18n));
   const [guests, setGuests] = useState<Guest[]>([]);
 
   useEventRecency(user?.id, portal, selected?.id);
 
   const refreshEvents = useCallback(async () => {
-    const list = (await api<Event[]>("/api/backend/events")).filter(
-      (event) => event.kind === portal,
-    );
+    const list = (
+      await api<Event[]>("/api/backend/events", undefined, undefined, i18n)
+    ).filter((event) => event.kind === portal);
     setEvents(list);
     return list;
-  }, [portal]);
+  }, [portal, i18n]);
 
   useEffect(() => {
     if (!user) return;
     let active = true;
-    api<Event[]>("/api/backend/events")
+    api<Event[]>("/api/backend/events", undefined, undefined, i18n)
       .then((all) => {
         if (!active) return;
         const list = all.filter((event) => event.kind === portal);
@@ -49,7 +53,7 @@ export function useStudioEvents(
             ? normalizeEvent(selectedEvent)
             : creating
               ? current
-              : blankEvent(portal),
+              : blankEvent(portal, i18n),
         );
         setGuests([]);
       })
@@ -62,10 +66,17 @@ export function useStudioEvents(
     return () => {
       active = false;
     };
-  }, [user, portal, requested, creating, demoId, onError]);
+  }, [user, portal, requested, creating, demoId, onError, i18n]);
 
   async function refreshGuests(event: Event) {
-    setGuests(await api<Guest[]>(`/api/backend/events/${event.id}/guests`));
+    setGuests(
+      await api<Guest[]>(
+        `/api/backend/events/${event.id}/guests`,
+        undefined,
+        undefined,
+        i18n,
+      ),
+    );
   }
   async function select(event: Event) {
     setSelected(event);
@@ -80,7 +91,7 @@ export function useStudioEvents(
   }
   function createDraft() {
     setSelected(null);
-    setDraft(blankEvent(portal));
+    setDraft(blankEvent(portal, i18n));
     setGuests([]);
   }
   async function saveEvent() {
@@ -88,7 +99,8 @@ export function useStudioEvents(
       await api(
         `/api/backend/events/${selected.id}`,
         "PATCH",
-        eventPayload(draft),
+        eventPayload(draft, i18n),
+        i18n,
       );
       const list = await refreshEvents();
       setSelected(list.find((event) => event.id === selected.id) ?? selected);
@@ -96,7 +108,8 @@ export function useStudioEvents(
       const created = await api<Event>(
         "/api/backend/events",
         "POST",
-        initialInvitation(draft),
+        initialInvitation(draft, i18n),
+        i18n,
       );
       await refreshEvents();
       await select(created);

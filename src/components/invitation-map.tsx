@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useRef, useState } from "react";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { validMapCoordinates } from "@/lib/events/map-element";
@@ -7,6 +9,8 @@ import Icon from "./icon";
 import ElementActionHint from "./element-action-hint";
 let protocolReady = false;
 export default function InvitationMap({ item }: { item: FlyerElement }) {
+  const i18n = useTranslator();
+
   const root = useRef<HTMLDivElement>(null);
   const [failed, setFailed] = useState(false);
   const {
@@ -37,7 +41,8 @@ export default function InvitationMap({ item }: { item: FlyerElement }) {
                 referrerPolicy: "origin",
               },
             );
-            if (!response.ok) throw new Error("No se pudo cargar el mapa");
+            if (!response.ok)
+              throw new Error(i18n("No se pudo cargar el mapa"));
             return {
               data: await response.arrayBuffer(),
               cacheControl: response.headers.get("cache-control") || undefined,
@@ -74,7 +79,7 @@ export default function InvitationMap({ item }: { item: FlyerElement }) {
       observer.disconnect();
       map?.remove();
     };
-  }, [valid, lat, lon, zoom, style, item.color]);
+  }, [valid, lat, lon, zoom, style, item.color, i18n]);
   const href = valid
     ? `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=${zoom}/${lat}/${lon}`
     : undefined;
@@ -96,8 +101,8 @@ export default function InvitationMap({ item }: { item: FlyerElement }) {
           <span className="invitation-map-placeholder">
             <Icon name="lucide:map-pinned" />
             {valid
-              ? "Puedes abrir la ubicación en el mapa"
-              : "Configura la ubicación del mapa"}
+              ? i18n("Puedes abrir la ubicación en el mapa")
+              : i18n("Configura la ubicación del mapa")}
           </span>
         )}
       </div>
@@ -107,9 +112,9 @@ export default function InvitationMap({ item }: { item: FlyerElement }) {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Abrir ubicación en OpenStreetMap"
+          aria-label={i18n("Abrir ubicación en OpenStreetMap")}
         >
-          <ElementActionHint item={item} label="Cómo llegar" />
+          <ElementActionHint item={item} label={i18n("Cómo llegar")} />
         </a>
       )}
       <a
@@ -118,7 +123,7 @@ export default function InvitationMap({ item }: { item: FlyerElement }) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        © OpenStreetMap contributors
+        {i18n("© OpenStreetMap contributors")}
       </a>
     </div>
   );

@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useMemo, useState } from "react";
 import type { Event } from "@/lib/events/types";
 import PreviewModal from "./preview-modal";
@@ -16,23 +18,25 @@ export default function InvitationDesigner({
   event: Event;
   onSaved: () => Promise<void>;
 }) {
+  const i18n = useTranslator();
+
   const source = useMemo(
     () => ({
       ...event,
       designMode: "flyer" as const,
       sections: event.sections?.length
-        ? flyerSections(event)
+        ? flyerSections(event, i18n)
         : [
             {
               id: `${event.id}-canvas`,
               icon: "none",
-              heading: "Sección 1",
+              heading: i18n("Sección 1"),
               body: "",
               canvas: blankCanvas(event.accentColor, event.kind),
             },
           ],
     }),
-    [event],
+    [event, i18n],
   );
   const editor = useInvitationDesign(event, onSaved, source);
   const [preview, setPreview] = useState(false);

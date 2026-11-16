@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { elementLabel } from "@/lib/events/element-label";
 import { useState } from "react";
 import InlineTextEditor from "./inline-text-editor";
@@ -37,6 +38,8 @@ export default function CanvasItems({
   event?: Partial<PublicEvent>;
   photoURL: (key: string) => string;
 }) {
+  const i18n = useTranslator();
+
   const [editing, setEditing] = useState("");
   return (
     <>
@@ -50,14 +53,14 @@ export default function CanvasItems({
             style={flyerElementStyle(
               {
                 ...item,
-                fontSize: fitInvitationText(elementValue(item, event)),
+                fontSize: fitInvitationText(elementValue(item, event, i18n)),
               },
               canvas,
             )}
             role="button"
             tabIndex={0}
             aria-pressed={selected}
-            aria-label={`${item.icon?.startsWith("art:") ? elementLabel(item) : item.binding === "map" ? "Mapa" : item.binding === "couple_names" ? "Nombres de los novios" : item.binding === "event_title" ? "Nombre del evento" : item.binding === "event_date" ? "Fecha y hora" : item.binding === "guest_name" ? "Nombre del invitado" : item.binding === "location" ? "Ubicación" : item.type === "text" ? item.text?.slice(0, 45) || "Texto" : item.type === "image" ? "Imagen" : "Símbolo"}, capa ${index + 1}`}
+            aria-label={`${item.icon?.startsWith("art:") ? elementLabel(item, i18n) : item.binding === "map" ? i18n("Mapa") : item.binding === "couple_names" ? i18n("Nombres de los novios") : item.binding === "event_title" ? i18n("Nombre del evento") : item.binding === "event_date" ? i18n("Fecha y hora") : item.binding === "guest_name" ? i18n("Nombre del invitado") : item.binding === "location" ? i18n("Ubicación") : item.type === "text" ? item.text?.slice(0, 45) || i18n("Texto") : item.type === "image" ? i18n("Imagen") : i18n("Símbolo")}, capa ${index + 1}`}
             data-locked={item.locked || undefined}
             data-photo={item.type === "image" || undefined}
             onClick={(e) => {
@@ -146,7 +149,7 @@ export default function CanvasItems({
                     replacement.request(item.id);
                   }}
                 >
-                  <Icon name="image" /> Pulsa para cambiar foto
+                  <Icon name="image" /> {i18n("Pulsa para cambiar foto")}
                 </button>
               )}
             {selected &&
@@ -157,7 +160,7 @@ export default function CanvasItems({
                   <button
                     type="button"
                     className="canvas-handle canvas-rotate"
-                    aria-label="Rotar elemento"
+                    aria-label={i18n("Rotar elemento")}
                     onPointerDown={(e) => gesture.begin(e, original, "rotate")}
                     onPointerMove={gesture.move}
                     onPointerUp={gesture.end}
@@ -170,7 +173,7 @@ export default function CanvasItems({
                       key={corner}
                       type="button"
                       className={`canvas-handle canvas-resize corner-${corner}`}
-                      aria-label="Cambiar tamaño del elemento"
+                      aria-label={i18n("Cambiar tamaño del elemento")}
                       onPointerDown={(e) =>
                         gesture.begin(e, original, `resize-${corner}`)
                       }

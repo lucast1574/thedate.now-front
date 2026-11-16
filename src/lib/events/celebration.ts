@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { ImageBackground } from "./background";
 export type Opening = {
   backgroundImage?: ImageBackground;
@@ -27,19 +28,24 @@ export type Celebration = {
   dressNote: string;
   giftsEnabled?: boolean;
 };
-export const defaultCelebration = (wedding: boolean): Celebration => ({
+export const defaultCelebration = (
+  wedding: boolean,
+  i18n: Translator = spanishTranslator,
+): Celebration => ({
   giftsEnabled: true,
   adultsOnly: false,
-  adultsMessage:
+  adultsMessage: i18n(
     "Celebraremos este día solo entre adultos. Gracias por acompañarnos y por tu comprensión.",
+  ),
   whatsappNotice: false,
-  dressCode: wedding ? "Elegante" : "A tu estilo",
-  dressNote: "Elige un look cómodo para celebrar con nosotros.",
+  dressCode: wedding ? i18n("Elegante") : i18n("A tu estilo"),
+  dressNote: i18n("Elige un look cómodo para celebrar con nosotros."),
 });
 export const defaultOpening = (
   wedding: boolean,
   color?: string,
   ink?: string,
+  i18n: Translator = spanishTranslator,
 ): Opening => ({
   enabled: true,
   paletteMode: "design",
@@ -47,7 +53,7 @@ export const defaultOpening = (
   color: color || (wedding ? "#F4EBDF" : "#EDE6FA"),
   ink: ink || (wedding ? "#766044" : "#463466"),
   message: wedding
-    ? "Nuestra historia tiene un nuevo capítulo. Ábrelo con nosotros."
-    : "Tenemos algo especial para celebrar contigo.",
-  buttonLabel: "Abrir invitación",
+    ? i18n("Nuestra historia tiene un nuevo capítulo. Ábrelo con nosotros.")
+    : i18n("Tenemos algo especial para celebrar contigo."),
+  buttonLabel: i18n("Abrir invitación"),
 });

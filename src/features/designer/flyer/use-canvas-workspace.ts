@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { selectionIds } from "./composition";
 import { invitationTheme } from "../invitation-theme";
 import { useCanvasShortcuts } from "./use-canvas-shortcuts";
@@ -9,6 +10,8 @@ import { blankCanvas, clamp, sectionCanvas } from "./canvas-model";
 export function useCanvasWorkspace(
   editor: ReturnType<typeof useInvitationDesign>,
 ) {
+  const i18n = useTranslator();
+
   const { draft, sections } = editor;
   const [activeId, setActiveId] = useState(sections[0]?.id || "");
   const [selection, setSelection] = useState<string[]>([]);
@@ -17,7 +20,7 @@ export function useCanvasWorkspace(
   function canvasForSelection() {
     const section = sections.find((s) => s.id === activeId) || sections[0];
     return section
-      ? sectionCanvas(section, draft)
+      ? sectionCanvas(section, draft, i18n)
       : blankCanvas(draft.accentColor, draft.kind);
   }
   function select(id: string, multiple = false) {
@@ -41,7 +44,7 @@ export function useCanvasWorkspace(
   );
   const active = sections[index];
   const canvas = active
-    ? sectionCanvas(active, draft)
+    ? sectionCanvas(active, draft, i18n)
     : blankCanvas(draft.accentColor, draft.kind);
   const selected = canvas.elements.find((el) => el.id === selectedId);
   function change(next: FlyerCanvas) {
@@ -60,8 +63,8 @@ export function useCanvasWorkspace(
             photoFit: "cover" as const,
           }
         : {}),
-      font: inherit ? invitationTheme(draft).font : item.font,
-      color: inherit ? invitationTheme(draft).ink : item.color,
+      font: inherit ? invitationTheme(draft, i18n).font : item.font,
+      color: inherit ? invitationTheme(draft, i18n).ink : item.color,
       width: Math.min(item.width, canvas.width),
       height: Math.min(item.height, canvas.height),
     };
@@ -110,7 +113,7 @@ export function useCanvasWorkspace(
         {
           id,
           icon: "none",
-          heading: `Sección ${sections.length + 1}`,
+          heading: i18n("Sección {v0}", { v0: sections.length + 1 }),
           body: "",
           canvas: blankCanvas(current.accentColor, current.kind),
         },

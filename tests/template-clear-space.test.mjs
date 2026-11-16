@@ -18,7 +18,7 @@ const { intersects } = loadSource(
   options,
 );
 test("all catalog pages reserve separate space for photographs, text and automatic ornaments", () => {
-  for (const t of invitationTemplates.filter((t) => t.mode === "flyer")) {
+  for (const t of invitationTemplates().filter((t) => t.mode === "flyer")) {
     for (const photos of [true, false]) {
       const pages = templatePhotoVariant(
         templateSequence(t),

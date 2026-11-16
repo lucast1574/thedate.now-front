@@ -41,7 +41,7 @@ test("completion excludes pending even legacy option and keeps manual choices", 
     guest("maybe", "Amigos", { response: "maybe" }),
     guest("c", "Familia de la novia"),
   ];
-  const result = proposeSeating(guests, plan, { capacity: 50 }, 10, true).plan;
+  const result = proposeSeating(guests, plan, { capacity: 50 }, 10).plan;
   assert.equal(result.assignments["a~0"], "manual");
   assert.equal(result.assignments["pending~0"], undefined);
   assert.equal(result.assignments["maybe~0"], undefined);

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useInlineConfirmation } from "@/components/use-inline-confirmation";
 export default function GiftFormActions({
   busy,
@@ -12,6 +13,8 @@ export default function GiftFormActions({
   dirty: boolean;
   onCancel: () => void;
 }) {
+  const i18n = useTranslator();
+
   const { open, setOpen, trigger, cancel } = useInlineConfirmation();
   return (
     <div
@@ -24,9 +27,9 @@ export default function GiftFormActions({
         <div
           className="gift-form-discard"
           role="group"
-          aria-label="Descartar edición del regalo"
+          aria-label={i18n("Descartar edición del regalo")}
         >
-          <p>¿Descartar los cambios de este regalo?</p>
+          <p>{i18n("¿Descartar los cambios de este regalo?")}</p>
           <button
             type="button"
             className="gift-secondary"
@@ -34,7 +37,7 @@ export default function GiftFormActions({
             disabled={busy}
             onClick={() => setOpen(false)}
           >
-            Seguir editando
+            {i18n("Seguir editando")}
           </button>
           <button
             type="button"
@@ -45,7 +48,7 @@ export default function GiftFormActions({
               onCancel();
             }}
           >
-            Descartar
+            {i18n("Descartar")}
           </button>
         </div>
       ) : (
@@ -57,7 +60,7 @@ export default function GiftFormActions({
             disabled={busy || (!dirty && !editing)}
             onClick={() => (dirty ? setOpen(true) : onCancel())}
           >
-            {editing ? "Cancelar edición" : "Limpiar"}
+            {editing ? i18n("Cancelar edición") : i18n("Limpiar")}
           </button>
           <button
             type="submit"
@@ -65,10 +68,10 @@ export default function GiftFormActions({
             disabled={busy || fetching}
           >
             {busy
-              ? "Guardando…"
+              ? i18n("Guardando…")
               : editing
-                ? "Guardar cambios"
-                : "Añadir a la lista"}
+                ? i18n("Guardar cambios")
+                : i18n("Añadir a la lista")}
           </button>
         </>
       )}

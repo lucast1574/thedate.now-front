@@ -44,7 +44,7 @@ test("demo tables and editable venue presets fit the room without consuming atte
       table.x >= 0 && table.x <= 1360 && table.y >= 0 && table.y <= 800,
     );
   }
-  for (const preset of venueAreaKinds) {
+  for (const preset of venueAreaKinds()) {
     const area = newVenueArea(preset.kind, `area-${preset.kind}`);
     assert.ok(
       area.x >= 0 &&
@@ -54,5 +54,5 @@ test("demo tables and editable venue presets fit the room without consuming atte
     );
     assert.equal(area.capacity, undefined);
   }
-  assert.ok(venueAreaKinds.some((item) => item.kind === "stage"));
+  assert.ok(venueAreaKinds().some((item) => item.kind === "stage"));
 });

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import {
@@ -14,6 +15,8 @@ export function useGuestImport(
   onImported: () => Promise<void>,
   kind: Kind = "wedding",
 ) {
+  const i18n = useTranslator();
+
   const reading = useRef(false);
   const [notice, setNotice] = useState("");
   const [issues, setIssues] = useState<GuestRowIssue[]>([]);
@@ -45,13 +48,17 @@ export function useGuestImport(
     setFailed(false);
     setFileName(file.name);
     try {
-      const report = await readGuestFileReport(file, kind);
+      const report = await readGuestFileReport(file, kind, i18n);
       setIssues(report.issues);
       if (!report.guests.length) {
         reportError(
           report.issues.length
-            ? "No añadimos invitados. Corrige las filas indicadas y vuelve a subir el archivo."
-            : "El archivo no tiene invitados. Completa la plantilla y vuelve a subirla.",
+            ? i18n(
+                "No añadimos invitados. Corrige las filas indicadas y vuelve a subir el archivo.",
+              )
+            : i18n(
+                "El archivo no tiene invitados. Completa la plantilla y vuelve a subirla.",
+              ),
         );
         return;
       }
@@ -59,18 +66,23 @@ export function useGuestImport(
         `/api/backend/events/${eventId}/guests/import`,
         "POST",
         { guests: report.guests },
+        i18n,
       );
       setReceipt(result);
       setFileName("");
       if (report.issues.length)
         setNotice(
-          "Corrige las filas indicadas y vuelve a subir el Excel. Los invitados guardados no se duplicarán.",
+          i18n(
+            "Corrige las filas indicadas y vuelve a subir el Excel. Los invitados guardados no se duplicarán.",
+          ),
         );
       try {
         await onImported();
       } catch {
         setNotice(
-          "La lista quedó guardada, pero no pudimos refrescarla. Recarga la página para verla.",
+          i18n(
+            "La lista quedó guardada, pero no pudimos refrescarla. Recarga la página para verla.",
+          ),
         );
       }
       setComplete(true);

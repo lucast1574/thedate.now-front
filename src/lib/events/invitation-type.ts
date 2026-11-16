@@ -1,15 +1,30 @@
+import {
+  type Translator,
+  localized,
+  spanishTranslator,
+} from "@/lib/i18n/translator";
 import { flyerFonts, type FlyerElement } from "./flyer";
-export const invitationTypefaces = [
-  { value: "serif", label: "Cormorant · Editorial", font: "serif" },
-  { value: "sans", label: "Manrope · Contemporánea", font: "sans" },
-  { value: "script", label: "Italianno · Caligrafía", font: "script" },
-  { value: "display", label: "Bodoni · Alta costura", font: "serif" },
-  { value: "rounded", label: "Nunito · Celebración", font: "sans" },
-  { value: "humanist", label: "DM Sans · Esencial", font: "sans" },
-  { value: "mono", label: "Monoespaciada · Ticket", font: "mono" },
-] as const;
-export function typefacePatch(value: string): Partial<FlyerElement> {
-  const option = invitationTypefaces.find((face) => face.value === value);
+export const invitationTypefaces = localized(
+  (i18n: Translator) =>
+    [
+      { value: "serif", label: i18n("Cormorant · Editorial"), font: "serif" },
+      { value: "sans", label: i18n("Manrope · Contemporánea"), font: "sans" },
+      {
+        value: "script",
+        label: i18n("Italianno · Caligrafía"),
+        font: "script",
+      },
+      { value: "display", label: i18n("Bodoni · Alta costura"), font: "serif" },
+      { value: "rounded", label: i18n("Nunito · Celebración"), font: "sans" },
+      { value: "humanist", label: i18n("DM Sans · Esencial"), font: "sans" },
+      { value: "mono", label: i18n("Monoespaciada · Ticket"), font: "mono" },
+    ] as const,
+);
+export function typefacePatch(
+  value: string,
+  i18n: Translator = spanishTranslator,
+): Partial<FlyerElement> {
+  const option = invitationTypefaces(i18n).find((face) => face.value === value);
   if (!option) return {};
   return {
     font: option.font,

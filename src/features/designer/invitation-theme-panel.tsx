@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import type { useInvitationDesign } from "./use-invitation-design";
@@ -8,44 +9,47 @@ export default function InvitationThemePanel({
 }: {
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
-  const theme = invitationTheme(editor.draft);
+  const i18n = useTranslator();
+
+  const theme = invitationTheme(editor.draft, i18n);
   const set = (next: Parameters<typeof updateInvitationTheme>[1]) =>
-    editor.setDraft((current) => updateInvitationTheme(current, next));
+    editor.setDraft((current) => updateInvitationTheme(current, next, i18n));
   return (
     <details className="invitation-theme-panel">
-      <summary>Estilo de toda la invitación</summary>
+      <summary>{i18n("Estilo de toda la invitación")}</summary>
       <p>
-        Cambia el conjunto. Los colores y las fuentes que hayas personalizado se
-        conservan.
+        {i18n(
+          "Cambia el conjunto. Los colores y las fuentes que hayas personalizado se conservan.",
+        )}
       </p>
       <label>
-        Color del diseño
+        {i18n("Color del diseño")}{" "}
         <ColorPicker value={theme.ink} onChange={(ink) => set({ ink })} />
       </label>
       <label>
-        Color del papel
+        {i18n("Color del papel")}{" "}
         <ColorPicker
           value={theme.background}
           onChange={(background) => set({ background })}
         />
       </label>
       <label>
-        Tipografía
+        {i18n("Tipografía")}{" "}
         <Listbox
-          aria-label="Tipografía de toda la invitación"
+          aria-label={i18n("Tipografía de toda la invitación")}
           value={theme.font}
           onValueChange={(font) => set({ font: font as FlyerElement["font"] })}
         >
-          <option value="serif">Editorial</option>
-          <option value="sans">Contemporánea</option>
-          <option value="script">Caligráfica</option>
-          <option value="mono">Máquina de escribir</option>
+          <option value="serif">{i18n("Editorial")}</option>
+          <option value="sans">{i18n("Contemporánea")}</option>
+          <option value="script">{i18n("Caligráfica")}</option>
+          <option value="mono">{i18n("Máquina de escribir")}</option>
         </Listbox>
       </label>
       <label>
-        Ornamentación
+        {i18n("Ornamentación")}{" "}
         <Listbox
-          aria-label="Ornamentación de la invitación"
+          aria-label={i18n("Ornamentación de la invitación")}
           value={editor.sections[0]?.canvas?.art || ""}
           onValueChange={(art) =>
             editor.setDraft((current) => ({
@@ -62,13 +66,13 @@ export default function InvitationThemePanel({
             }))
           }
         >
-          <option value="">Sin ornamentos</option>
-          <option value="botanical">Jardín botánico</option>
-          <option value="romance">Arco romántico</option>
-          <option value="gala">Noche de gala</option>
-          <option value="editorial">Editorial</option>
-          <option value="fiesta">Celebración</option>
-          <option value="coastal">Brisa del mar</option>
+          <option value="">{i18n("Sin ornamentos")}</option>
+          <option value="botanical">{i18n("Jardín botánico")}</option>
+          <option value="romance">{i18n("Arco romántico")}</option>
+          <option value="gala">{i18n("Noche de gala")}</option>
+          <option value="editorial">{i18n("Editorial")}</option>
+          <option value="fiesta">{i18n("Celebración")}</option>
+          <option value="coastal">{i18n("Brisa del mar")}</option>
         </Listbox>
       </label>
     </details>

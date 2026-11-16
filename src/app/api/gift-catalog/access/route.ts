@@ -1,18 +1,24 @@
+import { getTranslator } from "@/lib/i18n/server";
 import { giftCatalogTarget, publicGiftCatalog } from "@/lib/api/gift-catalog";
 import { backendFetch, forwardJSON, invalidOrigin } from "@/lib/api/server";
 import { readRequestText } from "@/lib/api/request-body";
 export async function POST(request: Request) {
+  const i18n = await getTranslator();
+
   if (invalidOrigin(request))
-    return Response.json({ error: "Origen inválido" }, { status: 403 });
+    return Response.json({ error: i18n("Origen inválido") }, { status: 403 });
   const target = await giftCatalogTarget();
   if (!target || !(await publicGiftCatalog()))
-    return Response.json({ error: "Lista no disponible" }, { status: 404 });
+    return Response.json(
+      { error: i18n("Lista no disponible") },
+      { status: 404 },
+    );
   let body: string;
   try {
     body = await readRequestText(request, 4096);
   } catch {
     return Response.json(
-      { error: "Solicitud demasiado grande" },
+      { error: i18n("Solicitud demasiado grande") },
       { status: 413 },
     );
   }

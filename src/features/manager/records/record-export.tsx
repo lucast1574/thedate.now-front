@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import { exportDoorWorkbook } from "@/lib/events/door-export";
@@ -13,6 +14,8 @@ export default function RecordExport({
   guests: Guest[];
   plan: SeatingPlan;
 }) {
+  const i18n = useTranslator();
+
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   return (
@@ -24,7 +27,7 @@ export default function RecordExport({
           setBusy(true);
           setError("");
           try {
-            await exportDoorWorkbook(event, guests, plan);
+            await exportDoorWorkbook(event, guests, plan, i18n);
           } catch (error) {
             setError((error as Error).message);
           } finally {
@@ -33,7 +36,7 @@ export default function RecordExport({
         }}
       >
         <Icon name="down" />
-        {busy ? "Preparando…" : "Descargar Excel"}
+        {busy ? i18n("Preparando…") : i18n("Descargar Excel")}
       </button>
       {error && <p role="alert">{error}</p>}
     </div>

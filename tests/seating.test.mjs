@@ -74,23 +74,18 @@ test("auto seating keeps households, counts +1, groups families and observes afo
     newTable(0, 4, "round", "one"),
     newTable(1, 4, "rectangle", "two"),
   ];
-  const result = proposeSeating(guests, plan, { capacity: 4 }, 4, false);
+  const result = proposeSeating(guests, plan, { capacity: 4 }, 4);
   assert.equal(Object.keys(result.plan.assignments).length, 4);
   assert.equal(result.plan.assignments["a~0"], result.plan.assignments["b~1"]);
   assert.equal(result.plan.assignments["c~0"], undefined);
   assert.equal(Object.keys(plan.assignments).length, 0);
-  const limited = proposeSeating(guests, plan, { capacity: 3 }, 4, false);
+  const limited = proposeSeating(guests, plan, { capacity: 3 }, 4);
   assert.equal(Object.keys(limited.plan.assignments).length, 2);
   assert.equal(limited.unassigned.length, 2);
   const tooSmall = { ...plan, tables: [newTable(0, 1, "round", "tiny")] };
   assert.equal(
-    proposeSeating(
-      [guest("a")],
-      tooSmall,
-      { capacityUnlimited: true },
-      4,
-      false,
-    ).plan.tables.length,
+    proposeSeating([guest("a")], tooSmall, { capacityUnlimited: true }, 4).plan
+      .tables.length,
     2,
   );
 });

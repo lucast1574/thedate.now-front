@@ -1,5 +1,6 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { openingPreset } from "@/lib/events/opening-presets";
-import { templateOpening } from "./template-extras";
+import { templateOpening } from "./template-opening";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import FlyerSurface from "@/components/flyer-surface";
@@ -21,49 +22,58 @@ export default function TemplateDetail({
   onStyle: () => void;
   canAdd: boolean;
 }) {
+  const i18n = useTranslator();
+
   const [photos, setPhotos] = useState(true);
-  const pages = applyCompleteTemplate(draft, template, photos).sections || [];
+  const pages =
+    applyCompleteTemplate(draft, template, photos, i18n).sections || [];
   const populated = draft.sections?.some((s) => s.canvas?.elements.length);
   return (
     <section className="template-detail">
       <button type="button" className="template-back" onClick={onBack}>
-        <Icon name="undo" /> Todos los diseños
+        <Icon name="undo" /> {i18n("Todos los diseños")}
       </button>
       <div className="template-detail-caption">
         <span>
-          {template.category} · {pages.length} secciones editables
+          {i18n(template.category || "Otros")} · {pages.length}{" "}
+          {i18n("secciones editables")}
         </span>
         <h3>{template.name}</h3>
         <p>{template.tagline}</p>
       </div>
       <div
         className="template-photo-choices"
-        aria-label="Espacios de fotografía"
+        aria-label={i18n("Espacios de fotografía")}
       >
         <button aria-pressed={photos} onClick={() => setPhotos(true)}>
-          Con fotos
+          {i18n("Con fotos")}
         </button>
         <button aria-pressed={!photos} onClick={() => setPhotos(false)}>
-          Sin espacios de foto
+          {i18n("Sin espacios de foto")}
         </button>
       </div>
       <div className="template-detail-actions">
         <p>
-          Apertura{" "}
-          {openingPreset(templateOpening(template).style).name.toLowerCase()},
-          fotos, fecha, ubicación y vestimenta. Pulsa las fotos para cambiarlas
-          y edita cualquier texto.
+          {i18n("Apertura")}{" "}
+          {openingPreset(
+            templateOpening(template, i18n).style,
+            i18n,
+          ).name.toLowerCase()}
+          {i18n(
+            ", fotos, fecha, ubicación y vestimenta. Pulsa las fotos para cambiarlas y edita cualquier texto.",
+          )}
         </p>
         <button className="template-apply" onClick={() => onApply(photos)}>
-          <Icon name="check" /> Usar este diseño
+          <Icon name="check" /> {i18n("Usar este diseño")}
         </button>
         <p>
-          La plantilla reemplaza todos los bloques. Los textos y fotos con un
-          lugar equivalente se conservan. Puedes deshacer el cambio.
+          {i18n(
+            "La plantilla reemplaza todos los bloques. Los textos y fotos con un lugar equivalente se conservan. Puedes deshacer el cambio.",
+          )}
         </p>
         {populated && (
           <button className="template-style-only" onClick={onStyle}>
-            Solo colores y tipografía
+            {i18n("Solo colores y tipografía")}
           </button>
         )}
       </div>

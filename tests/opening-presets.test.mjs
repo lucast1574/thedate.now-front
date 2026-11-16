@@ -19,8 +19,8 @@ test("six opening scenes expose different themed artwork and a complete shared t
     "opening-petals",
     "opening-orbit",
   ];
-  assert.equal(openingPresets.length, 6);
-  const scenes = openingPresets.map((preset, index) => {
+  assert.equal(openingPresets().length, 6);
+  const scenes = openingPresets().map((preset, index) => {
     const html = renderToStaticMarkup(
       createElement(Scene, {
         opening: { ...defaultOpening(true), style: preset.id },
@@ -77,7 +77,7 @@ test("custom icons and the explicit no-icon choice carry through every themed sc
   const { default: Artwork } = loadSource(
     "src/features/invitations/opening-artwork.tsx",
   );
-  for (const preset of openingPresets) {
+  for (const preset of openingPresets()) {
     const html = renderToStaticMarkup(
       createElement(Artwork, {
         opening: {
@@ -107,7 +107,7 @@ test("custom icons and the explicit no-icon choice carry through every themed sc
 
 test("the preview and guest timeline completes, prevents double activation and respects reduced motion", () => {
   for (const reduced of [false, true])
-    for (const preset of openingPresets) {
+    for (const preset of openingPresets()) {
       let phase = "closed",
         cursor = 0,
         callback,

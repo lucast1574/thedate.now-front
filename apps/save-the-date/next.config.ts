@@ -1,3 +1,4 @@
+import createNextIntlPlugin from "next-intl/plugin";
 import type { NextConfig } from "next";
 import path from "node:path";
 const root = path.resolve(__dirname, "../..");
@@ -7,4 +8,4 @@ const config: NextConfig = {
   turbopack: { root },
   env: { APP_PRODUCT: "wedding" },
 };
-export default config;
+export default createNextIntlPlugin("../../src/lib/i18n/request.ts")(config);

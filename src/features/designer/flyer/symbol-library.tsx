@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import {
@@ -16,6 +17,8 @@ export default function SymbolLibrary({
   disabled?: boolean;
   onPick: (icon: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const [query, setQuery] = useState("");
   const [group, setGroup] = useState("featured");
   const [limit, setLimit] = useState(60);
@@ -28,15 +31,18 @@ export default function SymbolLibrary({
   const source = search || group === "all" ? allSymbols : featured;
   const matches = source.filter((id) => !search || symbolMatches(id, search));
   return (
-    <section className="symbol-library" aria-label="Biblioteca de símbolos">
+    <section
+      className="symbol-library"
+      aria-label={i18n("Biblioteca de símbolos")}
+    >
       <label className="symbol-search">
         <Icon name="search" />
         <input
-          aria-label="Buscar símbolos"
+          aria-label={i18n("Buscar símbolos")}
           placeholder={
             kind === "general"
-              ? "Globos, regalos, música…"
-              : "Flores, corazones, música…"
+              ? i18n("Globos, regalos, música…")
+              : i18n("Flores, corazones, música…")
           }
           value={query}
           onChange={(e) => {
@@ -54,7 +60,7 @@ export default function SymbolLibrary({
             setLimit(60);
           }}
         >
-          {kind === "wedding" ? "Para tu boda" : "Para tu evento"}
+          {kind === "wedding" ? i18n("Para tu boda") : i18n("Para tu evento")}
         </button>
         <button
           aria-pressed={group === "all" || !!search}
@@ -63,7 +69,7 @@ export default function SymbolLibrary({
             setLimit(60);
           }}
         >
-          Todos · {allSymbols.length}
+          {i18n("Todos ·")} {allSymbols.length}
         </button>
       </div>
       <div className="symbol-library-grid">
@@ -71,8 +77,8 @@ export default function SymbolLibrary({
           <button
             key={id}
             disabled={disabled}
-            title={symbolLabel(id)}
-            aria-label={`Añadir ${symbolLabel(id)}`}
+            title={i18n(symbolLabel(id))}
+            aria-label={i18n("Añadir {v0}", { v0: i18n(symbolLabel(id)) })}
             onClick={() => onPick(id)}
           >
             <Icon name={id} />
@@ -80,11 +86,16 @@ export default function SymbolLibrary({
         ))}
       </div>
       {!matches.length && (
-        <p>No encontramos símbolos. Prueba otro nombre, también en inglés.</p>
+        <p>
+          {i18n(
+            "No encontramos símbolos. Prueba otro nombre, también en inglés.",
+          )}
+        </p>
       )}
       {matches.length > limit && (
         <button className="symbol-more" onClick={() => setLimit(limit + 60)}>
-          Ver más símbolos ({matches.length - limit})
+          {i18n("Ver más símbolos (")}
+          {matches.length - limit})
         </button>
       )}
     </section>

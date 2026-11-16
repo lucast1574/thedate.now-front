@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useRef } from "react";
 import { youtubeAPI, type YouTubePlayer } from "./youtube-api";
 export default function YouTubeBackground({
@@ -8,6 +10,8 @@ export default function YouTubeBackground({
   videoId: string;
   preview: boolean;
 }) {
+  const i18n = useTranslator();
+
   const host = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const container = host.current;
@@ -49,7 +53,7 @@ export default function YouTubeBackground({
           fs: 0,
         };
         const element = document.createElement("iframe");
-        element.title = "Música de la invitación";
+        element.title = i18n("Música de la invitación");
         element.referrerPolicy = "strict-origin-when-cross-origin";
         element.allow =
           "autoplay; encrypted-media; fullscreen; picture-in-picture";
@@ -90,12 +94,13 @@ export default function YouTubeBackground({
       player?.destroy();
       container.replaceChildren();
     };
-  }, [preview, videoId]);
+  }, [preview, videoId, i18n]);
   if (preview)
     return (
       <p className="canvas-panel-description">
-        YouTube sonará en la invitación publicada. Puede necesitar el primer
-        toque y depende de la disponibilidad del video.
+        {i18n(
+          "YouTube sonará en la invitación publicada. Puede necesitar el primer toque y depende de la disponibilidad del video.",
+        )}
       </p>
     );
   return (

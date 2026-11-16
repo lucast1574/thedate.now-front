@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 export function useLocationAddress(
@@ -5,6 +6,8 @@ export function useLocationAddress(
   link: string,
   onAddress: (address: string) => void,
 ) {
+  const i18n = useTranslator();
+
   const generation = useRef(0);
   const [requestLink, setRequestLink] = useState("");
   const [busy, setBusy] = useState(false),
@@ -25,11 +28,14 @@ export function useLocationAddress(
         "/api/backend/maps/resolve",
         "POST",
         { url: link },
+        i18n,
       );
       if (attempt === generation.current) {
         onAddress(result.address);
         setStatus(
-          "Dirección encontrada. Revísala antes de guardar. © OpenStreetMap contributors",
+          i18n(
+            "Dirección encontrada. Revísala antes de guardar. © OpenStreetMap contributors",
+          ),
         );
       }
     } catch (error) {

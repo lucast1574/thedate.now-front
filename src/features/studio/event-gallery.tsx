@@ -1,3 +1,5 @@
+import EventGalleryHeading from "./event-gallery-heading";
+import { useTranslator } from "@/lib/i18n/react";
 import CourtesyNotice from "./courtesy-notice";
 import { hasInvitationCourtesy } from "@/lib/events/courtesy";
 import { eventReadOnly } from "@/lib/events/event-closure";
@@ -22,6 +24,8 @@ export default function EventGallery({
   loading: boolean;
   onCreate: () => void;
 }) {
+  const i18n = useTranslator();
+
   const lastOpened = useEventRecency(user.id, portal);
   const all = galleryEvents(events, user, portal, lastOpened),
     pending = all.filter((e) => !e.isDemo && e.paymentStatus !== "paid"),
@@ -29,47 +33,15 @@ export default function EventGallery({
     wedding = portal === "wedding";
   return (
     <section className="workspace-gallery">
-      <div className="gallery-heading">
-        <div>
-          <p className="office-kicker">
-            {wedding
-              ? "SAVE THE DATE · TU ESTUDIO"
-              : "THE DATE · QUE EMPIECE LA FIESTA"}
-          </p>
-          <h1>
-            {wedding ? (
-              <>
-                Cada historia merece
-                <br />
-                <em>su invitación.</em>
-              </>
-            ) : (
-              <>
-                Tus planes.
-                <br />
-                <em>Grandes momentos.</em>
-              </>
-            )}
-          </h1>
-          <p>
-            {wedding
-              ? "Un espacio para diseñar, imaginar y celebrar juntos."
-              : "Crea algo que se sienta tan único como tu celebración."}
-          </p>
-        </div>
-        <button className="gallery-create" onClick={onCreate}>
-          <Icon name="plus" />
-          {wedding ? "Crear una boda" : "Crear un evento"}
-        </button>
-      </div>
+      <EventGalleryHeading wedding={wedding} onCreate={onCreate} />
       {pending.length > 0 && (
         <section className="demo-continuity-note">
-          <h2>Compras pendientes</h2>
-          <p>Conservamos tu diseño hasta que completes el pago.</p>
+          <h2>{i18n("Compras pendientes")}</h2>
+          <p>{i18n("Conservamos tu diseño hasta que completes el pago.")}</p>
           {pending.map((event) => (
             <p key={event.id}>
               <Link href={`/?event=${encodeURIComponent(event.id)}`}>
-                Continuar con {event.title}
+                {i18n("Continuar con")} {event.title}
               </Link>
             </p>
           ))}
@@ -78,17 +50,17 @@ export default function EventGallery({
       {hasInvitationCourtesy(events, user.id) && <CourtesyNotice />}
       <div className="gallery-section-heading">
         <div>
-          <h2>Mis invitaciones</h2>
+          <h2>{i18n("Mis invitaciones")}</h2>
           <span>
             {loading
-              ? "Cargando…"
-              : `${items.length} ${items.length === 1 ? "invitación" : "invitaciones"}`}{" "}
-            · Recientes primero
+              ? i18n("Cargando…")
+              : `${items.length} ${items.length === 1 ? i18n("invitación") : "invitaciones"}`}{" "}
+            {i18n("· Recientes primero")}
           </span>
         </div>
       </div>
       {loading ? (
-        <p role="status">Preparando tu galería…</p>
+        <p role="status">{i18n("Preparando tu galería…")}</p>
       ) : (
         <div className="invitation-grid">
           {items.map((event) => (
@@ -99,8 +71,10 @@ export default function EventGallery({
                   <Link
                     className="invitation-quick-edit"
                     href={`/?event=${encodeURIComponent(event.id)}`}
-                    aria-label={`Editar datos de ${event.title}`}
-                    title="Editar datos"
+                    aria-label={i18n("Editar datos de {v0}", {
+                      v0: event.title,
+                    })}
+                    title={i18n("Editar datos")}
                   >
                     <Icon name="lucide:pencil" />
                   </Link>
@@ -108,7 +82,7 @@ export default function EventGallery({
               <Link
                 className="invitation-card-preview"
                 href={`/editor/${encodeURIComponent(event.id)}`}
-                aria-label={`${eventReadOnly(event) ? "Ver" : "Editar"} ${event.title}${event.isDemo ? " · Invitación de demo" : ""}`}
+                aria-label={`${eventReadOnly(event) ? i18n("Ver") : i18n("Editar")} ${event.title}${event.isDemo ? i18n(" · Invitación de demo") : ""}`}
               >
                 {event.isDemo ? (
                   <DemoCover event={event} />
@@ -118,16 +92,18 @@ export default function EventGallery({
                 {event.isDemo && (
                   <span className="invitation-demo-badge">
                     <Icon name={wedding ? "flower" : "sparkle"} />
-                    Demo
+                    {i18n("Demo")}
                   </span>
                 )}
               </Link>
               {event.isDemo && (
                 <div className="invitation-card-meta">
                   <div>
-                    <span className="card-status demo">Invitación de demo</span>
+                    <span className="card-status demo">
+                      {i18n("Invitación de demo")}
+                    </span>
                     <p className="invitation-demo-description">
-                      Prueba el editor con esta invitación de muestra.
+                      {i18n("Prueba el editor con esta invitación de muestra.")}
                     </p>
                   </div>
                 </div>
@@ -137,11 +113,11 @@ export default function EventGallery({
                   <div>
                     <span className="card-status">
                       {eventReadOnly(event)
-                        ? "Terminada"
+                        ? i18n("Terminada")
                         : event.publishedAt
-                          ? "Publicada"
-                          : "Borrador"}
-                      {event.ownerId !== user.id ? " · Compartida" : ""}
+                          ? i18n("Publicada")
+                          : i18n("Borrador")}
+                      {event.ownerId !== user.id ? i18n(" · Compartida") : ""}
                     </span>
                     <h3>
                       <Link href={`/editor/${encodeURIComponent(event.id)}`}>
@@ -149,7 +125,7 @@ export default function EventGallery({
                       </Link>
                     </h3>
                     <small>
-                      {new Intl.DateTimeFormat("es", {
+                      {new Intl.DateTimeFormat(i18n.locale, {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
@@ -161,10 +137,12 @@ export default function EventGallery({
                     <Link
                       className="card-manage"
                       href={`/${eventReadOnly(event) ? "editor" : "manager"}/${encodeURIComponent(event.id)}`}
-                      aria-label={`${eventReadOnly(event) ? "Consultar" : "Gestionar"} ${event.title}`}
+                      aria-label={`${eventReadOnly(event) ? "Consultar" : i18n("Gestionar")} ${event.title}`}
                     >
                       <Icon name="users" />
-                      {eventReadOnly(event) ? "Consultar" : "Gestionar"}
+                      {eventReadOnly(event)
+                        ? i18n("Consultar")
+                        : i18n("Gestionar")}
                     </Link>
                   )}
                 </div>
@@ -179,17 +157,21 @@ export default function EventGallery({
                     href={`https://${invitationHost(event.kind, event.slug)}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={`Ver la invitación de ${event.title}`}
+                    aria-label={i18n("Ver la invitación de {v0}", {
+                      v0: event.title,
+                    })}
                   >
-                    Ver invitación <Icon name="arrow" />
+                    {i18n("Ver invitación")} <Icon name="arrow" />
                   </a>
                 )}
             </article>
           ))}
           <button className="invitation-new-card" onClick={onCreate}>
             <Icon name="plus" />
-            <strong>{wedding ? "Crear otra boda" : "Crear otro evento"}</strong>
-            <span>Nueva invitación</span>
+            <strong>
+              {wedding ? i18n("Crear otra boda") : i18n("Crear otro evento")}
+            </strong>
+            <span>{i18n("Nueva invitación")}</span>
           </button>
         </div>
       )}

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Link from "next/link";
 import { money, statusLabel, type Affiliate } from "@/lib/account/types";
 import Icon from "@/components/icon";
@@ -8,13 +9,15 @@ export default function AffiliateActivity({
   data: Affiliate;
   wedding: boolean;
 }) {
+  const i18n = useTranslator();
+
   const entries = [...(data.partnerEvents || [])].sort(
     (a, b) => Date.parse(b.availableAt) - Date.parse(a.availableAt),
   );
   return (
     <div className="partner-activity">
       <section className="partner-history">
-        <h3>Comisiones</h3>
+        <h3>{i18n("Comisiones")}</h3>
         {entries.length ? (
           entries.map((e) => (
             <div className="partner-history-row" key={e.eventId}>
@@ -24,47 +27,57 @@ export default function AffiliateActivity({
                 </Link>
                 <small>
                   {e.amount === 0
-                    ? "Revertida"
+                    ? i18n("Revertida")
                     : e.credited >= e.amount
-                      ? "Disponible"
-                      : `Disponible el ${new Date(e.availableAt).toLocaleDateString("es", { day: "numeric", month: "short" })}`}
+                      ? i18n("Disponible")
+                      : i18n("Disponible el {v0}", {
+                          v0: new Date(e.availableAt).toLocaleDateString(
+                            i18n.locale,
+                            {
+                              day: "numeric",
+                              month: "short",
+                            },
+                          ),
+                        })}
                 </small>
               </span>
-              <strong>{money(e.amount)}</strong>
+              <strong>{money(e.amount, i18n.locale)}</strong>
             </div>
           ))
         ) : (
           <div className="partner-empty">
             <Icon name="sparkle" />
             <p>
-              Tu primera comisión empieza con tu próxima{" "}
-              {wedding ? "boda" : "celebración"}.
+              {i18n("Tu primera comisión empieza con tu próxima")}{" "}
+              {wedding ? i18n("boda") : i18n("celebración")}.
             </p>
-            <small>Aparecerá aquí cuando completes el pago.</small>
+            <small>{i18n("Aparecerá aquí cuando completes el pago.")}</small>
           </div>
         )}
       </section>
       <section className="partner-history">
-        <h3>Retiros</h3>
+        <h3>{i18n("Retiros")}</h3>
         {data.withdrawals.length ? (
           data.withdrawals.map((w) => (
             <div className="partner-history-row" key={w.id}>
               <span>
-                <strong>{money(w.amountCents)}</strong>
+                <strong>{money(w.amountCents, i18n.locale)}</strong>
                 <small>
-                  {new Date(w.createdAt).toLocaleDateString("es")} ·{" "}
-                  {statusLabel[w.status]}
+                  {new Date(w.createdAt).toLocaleDateString(i18n.locale)} ·{" "}
+                  {statusLabel(i18n)[w.status]}
                 </small>
                 {w.note && <small>{w.note}</small>}
               </span>
-              <span className="partner-status">{statusLabel[w.status]}</span>
+              <span className="partner-status">
+                {statusLabel(i18n)[w.status]}
+              </span>
             </div>
           ))
         ) : (
           <div className="partner-empty">
             <Icon name="lucide:wallet" />
-            <p>Aún no has solicitado retiros.</p>
-            <small>Tu historial aparecerá aquí.</small>
+            <p>{i18n("Aún no has solicitado retiros.")}</p>
+            <small>{i18n("Tu historial aparecerá aquí.")}</small>
           </div>
         )}
       </section>

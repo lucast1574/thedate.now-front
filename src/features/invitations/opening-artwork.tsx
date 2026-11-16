@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { Opening } from "@/lib/events/celebration";
 import { openingPreset } from "@/lib/events/opening-presets";
@@ -9,7 +10,9 @@ export default function OpeningArtwork({
   title: string;
   wedding: boolean;
 }) {
-  const icon = opening.sealIcon || openingPreset(opening.style).icon;
+  const i18n = useTranslator();
+
+  const icon = opening.sealIcon || openingPreset(opening.style, i18n).icon;
   return (
     <span
       className="opening-artwork"
@@ -39,16 +42,15 @@ export default function OpeningArtwork({
       {opening.style === "ticket" && (
         <>
           <span className="opening-ticket-main">
-            <small>UNA FECHA PARA RECORDAR</small>
+            <small>{i18n("UNA FECHA PARA RECORDAR")}</small>
             <strong>
-              ESTÁS
-              <br />
-              INVITADO
+              {i18n("ESTÁS")} <br />
+              {i18n("INVITADO")}
             </strong>
             <span className="opening-barcode" />
           </span>
           <span className="opening-ticket-stub">
-            <small>ADMIT ONE</small>
+            <small>{i18n("ADMIT ONE")}</small>
           </span>
         </>
       )}

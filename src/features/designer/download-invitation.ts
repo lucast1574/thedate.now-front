@@ -1,8 +1,15 @@
-async function embeddedAsset(url: string, base: string) {
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
+async function embeddedAsset(
+  url: string,
+  base: string,
+  i18n: Translator = spanishTranslator,
+) {
   if (/^(data:|#)/.test(url)) return url;
   const response = await fetch(new URL(url, base));
   if (!response.ok)
-    throw new Error("No se pudo preparar la descarga. Vuelve a intentarlo.");
+    throw new Error(
+      i18n("No se pudo preparar la descarga. Vuelve a intentarlo."),
+    );
   const blob = await response.blob();
   return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
@@ -12,12 +19,16 @@ async function embeddedAsset(url: string, base: string) {
   });
 }
 
-async function embeddedCSS(css: string, base: string) {
+async function embeddedCSS(
+  css: string,
+  base: string,
+  i18n: Translator = spanishTranslator,
+) {
   const matches = [...css.matchAll(/url\(\s*["']?([^"')]+)["']?\s*\)/g)];
   const assets = await Promise.all(
     matches.map(async (match) => [
       match[0],
-      await embeddedAsset(match[1].trim(), base),
+      await embeddedAsset(match[1].trim(), base, i18n),
     ]),
   );
   for (const [original, asset] of assets)
@@ -26,7 +37,11 @@ async function embeddedCSS(css: string, base: string) {
 }
 
 // A self-contained visual keepsake: no account, live event server or API needed.
-export async function downloadInvitation(doc: Document, title: string) {
+export async function downloadInvitation(
+  doc: Document,
+  title: string,
+  i18n: Translator = spanishTranslator,
+) {
   await doc.fonts.ready;
   const copy = doc.documentElement.cloneNode(true) as HTMLElement;
   const head = copy.querySelector("head")!;
@@ -39,12 +54,14 @@ export async function downloadInvitation(doc: Document, title: string) {
       try {
         css = [...sheet.cssRules].map((rule) => rule.cssText).join("\n");
       } catch {
-        if (!sheet.href) throw new Error("No se pudo preparar la descarga.");
+        if (!sheet.href)
+          throw new Error(i18n("No se pudo preparar la descarga."));
         const response = await fetch(sheet.href);
-        if (!response.ok) throw new Error("No se pudo preparar la descarga.");
+        if (!response.ok)
+          throw new Error(i18n("No se pudo preparar la descarga."));
         css = await response.text();
       }
-      return embeddedCSS(css, sheet.href || doc.baseURI);
+      return embeddedCSS(css, sheet.href || doc.baseURI, i18n);
     }),
   );
   copy
@@ -61,7 +78,7 @@ export async function downloadInvitation(doc: Document, title: string) {
     [...copy.querySelectorAll<HTMLElement>("[style]")].map(async (node) => {
       node.setAttribute(
         "style",
-        await embeddedCSS(node.getAttribute("style") || "", doc.baseURI),
+        await embeddedCSS(node.getAttribute("style") || "", doc.baseURI, i18n),
       );
     }),
   );
@@ -70,6 +87,7 @@ export async function downloadInvitation(doc: Document, title: string) {
       image.src = await embeddedAsset(
         image.getAttribute("src") || "",
         doc.baseURI,
+        i18n,
       );
       image.removeAttribute("srcset");
       image.loading = "eager";
@@ -81,7 +99,8 @@ export async function downloadInvitation(doc: Document, title: string) {
       if (!href || href.startsWith("#")) return;
       const url = new URL(href, doc.baseURI);
       const response = await fetch(url.href.split("#")[0]);
-      if (!response.ok) throw new Error("No se pudo preparar la descarga.");
+      if (!response.ok)
+        throw new Error(i18n("No se pudo preparar la descarga."));
       const sprite = new DOMParser().parseFromString(
         await response.text(),
         "image/svg+xml",
@@ -89,7 +108,7 @@ export async function downloadInvitation(doc: Document, title: string) {
       const symbol = sprite.getElementById(
         decodeURIComponent(url.hash.slice(1)),
       );
-      if (!symbol) throw new Error("No se pudo preparar la descarga.");
+      if (!symbol) throw new Error(i18n("No se pudo preparar la descarga."));
       use.replaceWith(
         ...[...symbol.childNodes].map((node) => node.cloneNode(true)),
       );

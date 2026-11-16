@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import { ornaments } from "@/lib/events/ornaments";
 import { element } from "./flyer/canvas-model";
@@ -13,10 +14,11 @@ export function intersects(a: Box, b: Box, gap = 12) {
 export function editableOrnaments(
   canvas: FlyerCanvas,
   ink?: string,
+  i18n: Translator = spanishTranslator,
 ): FlyerCanvas {
   if (!canvas.art || canvas.artEditable || canvas.elements.length > 57)
     return canvas;
-  const family = ornaments.filter((item) => item.family === canvas.art);
+  const family = ornaments(i18n).filter((item) => item.family === canvas.art);
   const color =
     ink ||
     canvas.elements.find((item) => item.type === "text")?.color ||
@@ -66,14 +68,18 @@ export function editableOrnaments(
             ? "orbit"
             : drawing.id;
       art.push(
-        element("icon", {
-          ...space,
-          id: `ornament-${crypto.randomUUID()}`,
-          icon: `art:${icon}`,
-          color,
-          opacity: cover ? 0.8 : 0.65,
-          rotation: n && canvas.art === "botanical" ? 180 : 0,
-        }),
+        element(
+          "icon",
+          {
+            ...space,
+            id: `ornament-${crypto.randomUUID()}`,
+            icon: `art:${icon}`,
+            color,
+            opacity: cover ? 0.8 : 0.65,
+            rotation: n && canvas.art === "botanical" ? 180 : 0,
+          },
+          i18n,
+        ),
       );
       break;
     }

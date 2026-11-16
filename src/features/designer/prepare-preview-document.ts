@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { Kind } from "@/lib/events/types";
 
 // Do not mount invitation content until its own styles have finished loading.
@@ -5,7 +6,9 @@ export async function preparePreviewDocument(
   doc: Document,
   source: Document,
   product: Kind,
+  i18n: Translator = spanishTranslator,
 ) {
+  doc.documentElement.lang = source.documentElement.lang || "es";
   doc.documentElement.className = source.documentElement.className;
   doc.documentElement.dataset.product = product;
   doc.documentElement.dataset.application =
@@ -23,7 +26,9 @@ export async function preparePreviewDocument(
               () =>
                 reject(
                   new Error(
-                    "No se pudieron cargar los estilos de la vista previa.",
+                    i18n(
+                      "No se pudieron cargar los estilos de la vista previa.",
+                    ),
                   ),
                 ),
               { once: true },

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { type Dispatch, type SetStateAction } from "react";
 import { useEffect, useRef } from "react";
 import type { Event } from "@/lib/events/types";
@@ -18,20 +19,24 @@ export default function EventBasics({
   setDraft: Dispatch<SetStateAction<Event>>;
   selected: boolean;
 }) {
+  const i18n = useTranslator();
+
   const wedding = draft.kind === "wedding";
   const titleInput = useRef<HTMLTextAreaElement>(null);
   const wrongProduct = !wedding && weddingContent(draft.title);
   useEffect(() => {
     titleInput.current?.setCustomValidity(
-      wrongProduct ? "Para crear una boda utiliza Save the Date." : "",
+      wrongProduct ? i18n("Para crear una boda utiliza Save the Date.") : "",
     );
-  }, [wrongProduct]);
+  }, [wrongProduct, i18n]);
   const [date, time] = draft.startAt.split("T");
   return (
     <>
       <EventNames draft={draft} setDraft={setDraft} />
       <label>
-        {wedding ? "Nombre de la boda" : "¿Cómo se llama tu evento?"}
+        {wedding
+          ? i18n("Nombre de la boda")
+          : i18n("¿Cómo se llama tu evento?")}
         <textarea
           ref={titleInput}
           rows={wedding ? 2 : 1}
@@ -55,18 +60,20 @@ export default function EventBasics({
               ...(!selected ? { slug: suggestedAddress(e.target.value) } : {}),
             })
           }
-          placeholder={wedding ? "Sofía y Mateo" : "Cumpleaños de Lucas"}
+          placeholder={
+            wedding ? i18n("Sofía y Mateo") : i18n("Cumpleaños de Lucas")
+          }
         />
       </label>
       {!wedding && weddingContent(draft.title) && (
         <p role="alert">
-          Para una boda, crea tu invitación en{" "}
+          {i18n("Para una boda, crea tu invitación en")}{" "}
           <a href="https://studio.save.thedate.now">Save the Date</a>.
         </p>
       )}
       <div className="form-grid event-date-row">
         <DatePicker
-          label="¿Qué día?"
+          label={i18n("¿Qué día?")}
           required
           value={date || ""}
           onChange={(value) =>
@@ -78,7 +85,7 @@ export default function EventBasics({
           }
         />
         <TimePicker
-          label="¿A qué hora?"
+          label={i18n("¿A qué hora?")}
           required
           value={time?.slice(0, 5) || "18:00"}
           onChange={(value) =>
@@ -100,7 +107,9 @@ export default function EventBasics({
       />
       {selected && (
         <small>
-          Tu enlace ya está publicado y se conserva para tus invitados.
+          {i18n(
+            "Tu enlace ya está publicado y se conserva para tus invitados.",
+          )}
         </small>
       )}
     </>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useId } from "react";
 import ColorPicker from "./color-picker";
 import Icon from "./icon";
@@ -11,26 +12,30 @@ export default function StyleFields({
   template,
   accentColor,
   onChange,
-  classicLabel = "Clásico",
-  colorLabel = "Color",
+  classicLabel: sourceClassicLabel,
+  colorLabel: sourceColorLabel,
 }: Props) {
+  const i18n = useTranslator();
+  const classicLabel = sourceClassicLabel ?? i18n("Clásico");
+  const colorLabel = sourceColorLabel ?? i18n("Color");
+
   const group = useId();
   return (
     <div className="style-fields">
       <fieldset className="style-options">
-        <legend>Estilo de tu invitación</legend>
+        <legend>{i18n("Estilo de tu invitación")}</legend>
         <div className="style-option-grid">
           {(
             [
               [
                 "classic",
                 classicLabel,
-                "Detalles delicados y una composición editorial.",
+                i18n("Detalles delicados y una composición editorial."),
               ],
               [
                 "modern",
-                "Moderno",
-                "Tipografía con carácter y líneas contemporáneas.",
+                i18n("Moderno"),
+                i18n("Tipografía con carácter y líneas contemporáneas."),
               ],
             ] as const
           ).map(([key, label, description]) => (
@@ -48,7 +53,7 @@ export default function StyleFields({
                   style={{ color: accentColor }}
                 >
                   <Icon name={key === "classic" ? "flower" : "sparkle"} />
-                  <span>Aa</span>
+                  <span>{i18n("Aa")}</span>
                   <i />
                 </span>
                 <strong>{label}</strong>

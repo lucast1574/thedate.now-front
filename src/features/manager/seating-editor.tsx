@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState, type ReactNode } from "react";
 import type { Event, Guest } from "@/lib/events/types";
 import type { SeatingPlan } from "@/lib/events/seating";
@@ -37,11 +38,16 @@ export default function SeatingEditor({
   autosave,
   onReload,
 }: Props) {
+  const i18n = useTranslator();
+
   const [selected, setSelected] = useState("");
   const [proposal, setProposal] = useState<ReturnType<
     typeof proposeSeating
   > | null>(null);
-  const people = attendees(guests.filter((g) => g.response === "going"))
+  const people = attendees(
+    guests.filter((g) => g.response === "going"),
+    i18n,
+  )
     .filter((person) => person.registered)
     .sort(surnameOrder);
   const table = plan.tables.find((t) => t.id === selected);
@@ -58,10 +64,10 @@ export default function SeatingEditor({
       type="button"
       className="office-button seating-auto-action"
       disabled={busy}
-      onClick={() => setProposal(proposeSeating(guests, plan, event, 10))}
+      onClick={() => setProposal(proposeSeating(guests, plan, event, 10, i18n))}
     >
       <Icon name="users" />
-      Asignar automáticamente
+      {i18n("Asignar automáticamente")}
     </button>
   );
   return (
@@ -138,10 +144,11 @@ export default function SeatingEditor({
         <div>
           <Icon name="lucide:file-spreadsheet" />
           <div>
-            <h3>Lista para la entrada</h3>
+            <h3>{i18n("Lista para la entrada")}</h3>
             <p>
-              Descarga la lista para quien recibe a tus invitados: nombres,
-              acompañantes y mesa asignada para comprobar el ingreso y guiarlos.
+              {i18n(
+                "Descarga la lista para quien recibe a tus invitados: nombres, acompañantes y mesa asignada para comprobar el ingreso y guiarlos.",
+              )}
             </p>
           </div>
         </div>

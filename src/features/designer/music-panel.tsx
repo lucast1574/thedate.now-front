@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import { musicFromLink } from "@/lib/events/music";
@@ -8,6 +9,8 @@ export default function MusicPanel({
 }: {
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
+  const i18n = useTranslator();
+
   const { draft, setDraft } = editor;
   const { upload, busy, error } = useMusicUpload(editor);
   const music = draft.music;
@@ -18,22 +21,26 @@ export default function MusicPanel({
   );
   const [linkError, setLinkError] = useState("");
   return (
-    <section className="music-panel" aria-label="Música de la invitación">
+    <section
+      className="music-panel"
+      aria-label={i18n("Música de la invitación")}
+    >
       <p className="canvas-panel-description">
-        Una canción para acompañar toda la invitación, sin añadirla a cada
-        sección.
+        {i18n(
+          "Una canción para acompañar toda la invitación, sin añadirla a cada sección.",
+        )}
       </p>
-      <h3>Enlace de YouTube</h3>
+      <h3>{i18n("Enlace de YouTube")}</h3>
       <p className="canvas-panel-description">
-        Pega una canción de YouTube o YouTube Music. Intentará sonar
-        automáticamente, con volumen bajo y sin controles. Puede requerir un
-        toque; anuncios, bloqueos o disponibilidad dependen de YouTube.
+        {i18n(
+          "Pega una canción de YouTube o YouTube Music. Intentará sonar automáticamente, con volumen bajo y sin controles. Puede requerir un toque; anuncios, bloqueos o disponibilidad dependen de YouTube.",
+        )}
       </p>
       <label>
-        Enlace de la canción
+        {i18n("Enlace de la canción")}{" "}
         <input
           type="url"
-          placeholder="https://music.youtube.com/watch?v=…"
+          placeholder={i18n("https://music.youtube.com/watch?v=…")}
           value={link}
           onChange={(e) => setLink(e.target.value)}
         />
@@ -42,30 +49,32 @@ export default function MusicPanel({
         type="button"
         disabled={busy || !link.trim()}
         onClick={() => {
-          const next = musicFromLink(link);
+          const next = musicFromLink(link, i18n);
           if (!next || next.source !== "youtube") {
-            setLinkError("Pega un enlace de video de YouTube o YouTube Music.");
+            setLinkError(
+              i18n("Pega un enlace de video de YouTube o YouTube Music."),
+            );
             return;
           }
           setLinkError("");
           setDraft((current) => ({ ...current, music: next }));
         }}
       >
-        Usar canción de YouTube
+        {i18n("Usar canción de YouTube")}
       </button>
       {linkError && <p role="alert">{linkError}</p>}
       <div className="music-recommendation">
         <Icon name="music" />
-        <strong>O sube tu archivo MP3</strong>
+        <strong>{i18n("O sube tu archivo MP3")}</strong>
         <p>
-          Tu MP3 sonará en bucle, a volumen suave y sin reproductor visible. Si
-          el navegador bloquea el inicio automático, comienza con el primer
-          toque en la invitación.
+          {i18n(
+            "Tu MP3 sonará en bucle, a volumen suave y sin reproductor visible. Si el navegador bloquea el inicio automático, comienza con el primer toque en la invitación.",
+          )}
         </p>
       </div>
       <label className="canvas-upload">
         <Icon name="plus" />
-        {busy ? "Subiendo canción…" : "Subir MP3 · hasta 10 MB"}
+        {busy ? i18n("Subiendo canción…") : i18n("Subir MP3 · hasta 10 MB")}
         <input
           type="file"
           accept="audio/mpeg,.mp3"
@@ -80,9 +89,9 @@ export default function MusicPanel({
       {error && <p role="alert">{error}</p>}
       {music && (
         <section className="music-current">
-          <h3>Canción elegida</h3>
+          <h3>{i18n("Canción elegida")}</h3>
           <label>
-            Nombre
+            {i18n("Nombre")}{" "}
             <input
               maxLength={160}
               value={music.title}
@@ -101,7 +110,7 @@ export default function MusicPanel({
               controls
               preload="metadata"
               src={`/api/audio/${draft.id}/${music.value}`}
-              aria-label="Escuchar canción elegida"
+              aria-label={i18n("Escuchar canción elegida")}
               onLoadedMetadata={(e) => {
                 e.currentTarget.volume = 0.25;
               }}
@@ -109,8 +118,10 @@ export default function MusicPanel({
           ) : (
             <p>
               {music.source === "spotify"
-                ? "Spotify ya no está disponible. Sustituye esta canción por YouTube o un MP3."
-                : "YouTube · volumen suave y reproducción en bucle."}
+                ? i18n(
+                    "Spotify ya no está disponible. Sustituye esta canción por YouTube o un MP3.",
+                  )
+                : i18n("YouTube · volumen suave y reproducción en bucle.")}
             </p>
           )}
           <button
@@ -118,10 +129,10 @@ export default function MusicPanel({
             disabled={busy}
             onClick={() => setDraft((current) => ({ ...current, music: null }))}
           >
-            <Icon name="close" /> Quitar música
+            <Icon name="close" /> {i18n("Quitar música")}
           </button>
           <p className="canvas-panel-description">
-            Guarda el diseño para aplicar el cambio.
+            {i18n("Guarda el diseño para aplicar el cambio.")}
           </p>
         </section>
       )}

@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { DesignEvent } from "@/lib/events/types";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { invitationTemplates } from "@/lib/events/template-catalog";
@@ -6,8 +7,13 @@ function common<T extends string>(values: T[], fallback: T): T {
   values.forEach((v) => counts.set(v, (counts.get(v) || 0) + 1));
   return [...counts].sort((a, b) => b[1] - a[1])[0]?.[0] || fallback;
 }
-export function invitationTheme(draft: DesignEvent) {
-  const template = invitationTemplates.find((t) => t.id === draft.templateId);
+export function invitationTheme(
+  draft: DesignEvent,
+  i18n: Translator = spanishTranslator,
+) {
+  const template = invitationTemplates(i18n).find(
+    (t) => t.id === draft.templateId,
+  );
   const elements =
     draft.sections?.flatMap((s) => s.canvas?.elements || []) || [];
   return {
@@ -29,8 +35,9 @@ export function invitationTheme(draft: DesignEvent) {
 export function updateInvitationTheme(
   draft: DesignEvent,
   next: Partial<ReturnType<typeof invitationTheme>>,
+  i18n: Translator = spanishTranslator,
 ) {
-  const before = invitationTheme(draft),
+  const before = invitationTheme(draft, i18n),
     after = { ...before, ...next };
   const update = (item: FlyerElement) => ({
     ...item,

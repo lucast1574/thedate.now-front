@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { attendees, fullName } from "@/lib/events/attendees";
 import type { Guest } from "@/lib/events/types";
 import type { SeatingPlan } from "@/lib/events/seating";
@@ -10,8 +11,11 @@ export default function RecordTables({
   guests: Guest[];
   plan: SeatingPlan;
 }) {
+  const i18n = useTranslator();
+
   const people = attendees(
     guests.filter((guest) => guest.response === "going"),
+    i18n,
   );
   const groups = plan.tables.map((table) => ({
     id: table.id,
@@ -20,15 +24,20 @@ export default function RecordTables({
   }));
   const unassigned = people.filter((person) => !plan.assignments[person.id]);
   if (unassigned.length)
-    groups.push({ id: "unassigned", name: "Sin mesa", people: unassigned });
+    groups.push({
+      id: "unassigned",
+      name: i18n("Sin mesa"),
+      people: unassigned,
+    });
   return (
     <>
       <p className="record-summary">
-        {plan.tables.length} {plan.tables.length === 1 ? "mesa" : "mesas"} ·{" "}
-        {people.length - unassigned.length} personas ubicadas
+        {plan.tables.length}{" "}
+        {plan.tables.length === 1 ? i18n("mesa") : i18n("mesas")} ·{" "}
+        {people.length - unassigned.length} {i18n("personas ubicadas")}
       </p>
       {!groups.length ? (
-        <p className="record-empty">No hay mesas guardadas.</p>
+        <p className="record-empty">{i18n("No hay mesas guardadas.")}</p>
       ) : (
         <div className="record-table-groups">
           {groups.map((group) => (
@@ -37,7 +46,9 @@ export default function RecordTables({
                 {group.name}
                 <span>
                   {group.people.length}{" "}
-                  {group.people.length === 1 ? "persona" : "personas"}
+                  {group.people.length === 1
+                    ? i18n("persona")
+                    : i18n("personas")}
                 </span>
               </h3>
               {group.people.length ? (
@@ -47,7 +58,7 @@ export default function RecordTables({
                   ))}
                 </ul>
               ) : (
-                <p>Sin invitados asignados</p>
+                <p>{i18n("Sin invitados asignados")}</p>
               )}
             </section>
           ))}
@@ -55,7 +66,7 @@ export default function RecordTables({
       )}
       {(plan.tables.length > 0 || (plan.areas?.length || 0) > 0) && (
         <details className="record-plan">
-          <summary>Ver plano del salón</summary>
+          <summary>{i18n("Ver plano del salón")}</summary>
           <fieldset disabled>
             <SeatingCanvas
               plan={plan}

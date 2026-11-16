@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import {
   useCallback,
   useEffect,
@@ -14,12 +16,15 @@ import { normalizeColor } from "@/lib/ui/color";
 export default function ColorPicker({
   value = "#AD7254",
   onChange,
-  label = "Color",
+  label: sourceLabel,
 }: {
   value?: string;
   onChange: (value: string) => void;
   label?: string;
 }) {
+  const i18n = useTranslator();
+  const label = sourceLabel ?? i18n("Color");
+
   const [open, setOpen] = useState(false),
     id = useId();
   const trigger = useRef<HTMLButtonElement>(null);
@@ -32,7 +37,7 @@ export default function ColorPicker({
   const close = useCallback(() => {
     setOpen(false);
     trigger.current?.focus();
-  }, []);
+  }, [setOpen]);
   function show() {
     const node = trigger.current!;
     const rect = node.getBoundingClientRect();
@@ -95,7 +100,7 @@ export default function ColorPicker({
         ref={trigger}
         type="button"
         className="color-trigger"
-        aria-label={`Elegir ${label.toLowerCase()}`}
+        aria-label={i18n("Elegir {v0}", { v0: label.toLowerCase() })}
         aria-haspopup="dialog"
         aria-expanded={open}
         aria-controls={open ? id : undefined}
@@ -114,7 +119,7 @@ export default function ColorPicker({
         />
         <span>
           <strong>{color}</strong>
-          <small>Personalizar color</small>
+          <small>{i18n("Personalizar color")}</small>
         </span>
         <Icon name="chevron" />
       </button>
@@ -123,7 +128,9 @@ export default function ColorPicker({
         createPortal(
           <div
             ref={panel}
-            className={`color-picker color-popout ${popup.theme}`}
+            className={i18n("color-picker color-popout {v0}", {
+              v0: popup.theme,
+            })}
             style={popup.position}
             role="dialog"
             aria-label={label}

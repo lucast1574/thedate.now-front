@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 /* eslint-disable @next/next/no-img-element -- Satori renders raster images. */
 import type { PublicEvent } from "@/lib/events/types";
 import { elementValue } from "@/lib/events/element-values";
@@ -8,9 +9,11 @@ import { formatEventDate } from "@/lib/events/date";
 export default function ShareCover({
   event,
   photos,
+  i18n = spanishTranslator,
 }: {
   event: PublicEvent;
   photos: Record<string, string>;
+  i18n?: Translator;
 }) {
   const section = event.sections?.find((s) =>
     visibleInvitationSection(s, event),
@@ -68,7 +71,7 @@ export default function ShareCover({
           )}
           {canvas ? (
             canvas.elements.slice(0, 60).map((original) => {
-              const item = elementValue(original, event);
+              const item = elementValue(original, event, i18n);
               if (item.type === "icon") return null;
               const photo = item.photoKey && photos[item.photoKey];
               return (
@@ -154,7 +157,7 @@ export default function ShareCover({
           {event.title.slice(0, 120)}
         </div>
         <div style={{ fontSize: 26, color: "#605866" }}>
-          {formatEventDate(event.startAt, event.timeZone)}
+          {formatEventDate(event.startAt, event.timeZone, i18n)}
         </div>
         <div
           style={{
@@ -167,7 +170,7 @@ export default function ShareCover({
             fontSize: 26,
           }}
         >
-          Abre tu invitación
+          {i18n("Abre tu invitación")}
         </div>
       </div>
     </div>

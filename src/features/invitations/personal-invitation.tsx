@@ -1,3 +1,4 @@
+import { getTranslator } from "@/lib/i18n/server";
 import "server-only";
 import { giftListEnabled } from "@/lib/events/event-options";
 import { headers } from "next/headers";
@@ -23,6 +24,8 @@ export default async function PersonalInvitation({
   answer?: boolean;
   legacy?: boolean;
 }) {
+  const i18n = await getTranslator();
+
   if (!validInviteToken(token)) notFound();
   const response = await backendFetch(`public/rsvp/${token}`);
   if (!response?.ok) notFound();
@@ -53,9 +56,9 @@ export default async function PersonalInvitation({
     return (
       <RSVPTheme event={data.event}>
         <nav className="guest-page-navigation">
-          <a href={path}>Ver invitación</a>
+          <a href={path}>{i18n("Ver invitación")}</a>
           {giftListEnabled(data.event) && (
-            <a href={`${path}/regalos`}>Lista de regalos</a>
+            <a href={`${path}/regalos`}>{i18n("Lista de regalos")}</a>
           )}
         </nav>
         {data.finalized ||
@@ -64,16 +67,19 @@ export default async function PersonalInvitation({
         ) : (
           <main className="rsvp-page">
             <section className="rsvp-card">
-              <p className="eyebrow">TU RESPUESTA</p>
-              <h1>Primero, responde en WhatsApp.</h1>
+              <p className="eyebrow">{i18n("TU RESPUESTA")}</p>
+              <h1>{i18n("Primero, responde en WhatsApp.")}</h1>
               <p>
-                Elige{" "}
-                {data.maybeEnabled === false ? "Sí o No" : "Sí, No o Tal vez"}{" "}
-                en la encuesta que te enviamos. Después podrás completar tus
-                datos desde este enlace.
+                {i18n("Elige")}{" "}
+                {data.maybeEnabled === false
+                  ? i18n("Sí o No")
+                  : i18n("Sí, No o Tal vez")}{" "}
+                {i18n(
+                  "en la encuesta que te enviamos. Después podrás completar tus datos desde este enlace.",
+                )}
               </p>
               <a className="office-button" href={path}>
-                Ver invitación
+                {i18n("Ver invitación")}
               </a>
             </section>
           </main>

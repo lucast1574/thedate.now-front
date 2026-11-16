@@ -1,3 +1,4 @@
+import CanvasPanelBack from "./canvas-panel-back";
 import ArtLayerControl from "./art-layer-control";
 import CompositionTools from "./composition-tools";
 import { useCanvasPanel } from "./use-canvas-panel";
@@ -6,7 +7,6 @@ import CanvasPanelHeading from "./canvas-panel-heading";
 import CanvasSettings from "./canvas-settings";
 import TemplateWorkspacePanel from "./template-workspace-panel";
 import MusicPanel from "../music-panel";
-import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
 import type { useInvitationDesign } from "../use-invitation-design";
 import CanvasPages from "./canvas-pages";
@@ -74,15 +74,12 @@ export default function CanvasWorkspace({
         data-tool={tool}
       >
         {inspecting && (
-          <button
-            className="canvas-panel-back"
-            onClick={() => {
+          <CanvasPanelBack
+            onBack={() => {
               select("");
               onToolChange("elements");
             }}
-          >
-            <Icon name="undo" /> Volver a elementos
-          </button>
+          />
         )}
         {!inspecting &&
           active &&

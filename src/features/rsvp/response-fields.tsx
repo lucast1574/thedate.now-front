@@ -1,3 +1,5 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, localized } from "@/lib/i18n/translator";
 type Props = {
   response: string;
   reason: string;
@@ -5,11 +7,11 @@ type Props = {
   onReason: (value: string) => void;
   maybeEnabled?: boolean;
 };
-const choices = [
-  { value: "going", label: "Sí, asistiré" },
-  { value: "not_going", label: "No podré asistir" },
-  { value: "maybe", label: "Tal vez" },
-];
+const choices = localized((i18n: Translator) => [
+  { value: "going", label: i18n("Sí, asistiré") },
+  { value: "not_going", label: i18n("No podré asistir") },
+  { value: "maybe", label: i18n("Tal vez") },
+]);
 
 export default function ResponseFields({
   response,
@@ -18,11 +20,13 @@ export default function ResponseFields({
   onReason,
   maybeEnabled = true,
 }: Props) {
+  const i18n = useTranslator();
+
   return (
     <>
       <fieldset>
-        <legend>¿Podrás acompañarnos?</legend>
-        {choices
+        <legend>{i18n("¿Podrás acompañarnos?")}</legend>
+        {choices(i18n)
           .filter((choice) => choice.value !== "maybe" || maybeEnabled)
           .map((choice) => (
             <label key={choice.value}>
@@ -39,7 +43,7 @@ export default function ResponseFields({
       </fieldset>
       {maybeEnabled && response === "maybe" && (
         <label>
-          Cuéntanos por qué estás en espera
+          {i18n("Cuéntanos por qué estás en espera")}{" "}
           <textarea
             required
             minLength={3}

@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { Attendee } from "./seating";
 import type { Guest } from "./types";
 export function fullName(person: { name: string; lastName?: string }) {
@@ -6,7 +7,10 @@ export function fullName(person: { name: string; lastName?: string }) {
 export function partySeats(guest: Guest) {
   return guest.attendingSeats || guest.seats;
 }
-export function attendees(guests: Guest[]): Attendee[] {
+export function attendees(
+  guests: Guest[],
+  i18n: Translator = spanishTranslator,
+): Attendee[] {
   return guests.flatMap((guest) =>
     Array.from({ length: partySeats(guest) }, (_, slot) => {
       const person = slot === 0 ? guest : guest.companions?.[slot - 1];
@@ -14,7 +18,7 @@ export function attendees(guests: Guest[]): Attendee[] {
         id: `${guest.id}~${slot}`,
         guestId: guest.id,
         slot,
-        name: person?.name || "Acompañante pendiente",
+        name: person?.name || i18n("Acompañante pendiente"),
         lastName: person?.lastName || "",
         gender: person?.gender || "unspecified",
         family: guest.family || "",
@@ -24,15 +28,19 @@ export function attendees(guests: Guest[]): Attendee[] {
     }),
   );
 }
-export function responseLabel(guest: Guest, now = Date.now()) {
-  if (guest.response === "going") return "Confirmado";
-  if (guest.response === "not_going") return "No asistirá";
+export function responseLabel(
+  guest: Guest,
+  now = Date.now(),
+  i18n: Translator = spanishTranslator,
+) {
+  if (guest.response === "going") return i18n("Confirmado");
+  if (guest.response === "not_going") return i18n("No asistirá");
   if (guest.response === "maybe")
     return guest.maybeExpiresAt &&
       new Date(guest.maybeExpiresAt).getTime() <= now
-      ? "Espera vencida"
-      : "Pidió tiempo";
-  return "Sin respuesta";
+      ? i18n("Espera vencida")
+      : i18n("Pidió tiempo");
+  return i18n("Sin respuesta");
 }
 export function guestStats(guests: Guest[], now: number) {
   const confirmed = guests

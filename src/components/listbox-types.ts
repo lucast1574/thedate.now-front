@@ -1,5 +1,12 @@
 import type { ReactNode } from "react";
-import type { Choice } from "@/lib/ui/listbox";
+import type { Choice, listboxPosition } from "@/lib/ui/listbox";
+export type ListboxPopup = {
+  position: ReturnType<typeof listboxPosition>;
+  title: string;
+  general: boolean;
+  editor?: boolean;
+  container: Element;
+};
 export type ListboxProps = {
   children: ReactNode;
   value?: string;

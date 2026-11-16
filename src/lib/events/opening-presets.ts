@@ -1,52 +1,66 @@
+import {
+  type Translator,
+  localized,
+  spanishTranslator,
+} from "@/lib/i18n/translator";
 import type { Opening } from "./celebration";
 import type { DesignEvent } from "./types";
 import { normalizeColor } from "@/lib/ui/color";
-export const openingPresets = [
-  {
-    id: "classic",
-    name: "Carta",
-    description: "El sello se rompe y la carta se eleva.",
-    icon: "mail",
-    duration: 1800,
-  },
-  {
-    id: "arch",
-    name: "Jardín",
-    description: "Un arco botánico abre sus puertas.",
-    icon: "leaf",
-    duration: 1900,
-  },
-  {
-    id: "ticket",
-    name: "Ticket",
-    description: "Una entrada especial se separa en dos.",
-    icon: "ticket",
-    duration: 1600,
-  },
-  {
-    id: "curtain",
-    name: "Telón",
-    description: "El escenario se descubre entre cortinas.",
-    icon: "star",
-    duration: 2000,
-  },
-  {
-    id: "bloom",
-    name: "Flor",
-    description: "Los pétalos se despliegan para recibirte.",
-    icon: "flower",
-    duration: 1900,
-  },
-  {
-    id: "orbit",
-    name: "Constelación",
-    description: "Una estrella abre un universo de luz.",
-    icon: "sparkle",
-    duration: 1800,
-  },
-] as const;
-export function openingPreset(style: Opening["style"]) {
-  return openingPresets.find((item) => item.id === style) || openingPresets[0];
+export const openingPresets = localized(
+  (i18n: Translator) =>
+    [
+      {
+        id: "classic",
+        name: i18n("Carta"),
+        description: i18n("El sello se rompe y la carta se eleva."),
+        icon: "mail",
+        duration: 1800,
+      },
+      {
+        id: "arch",
+        name: i18n("Jardín"),
+        description: i18n("Un arco botánico abre sus puertas."),
+        icon: "leaf",
+        duration: 1900,
+      },
+      {
+        id: "ticket",
+        name: i18n("Ticket"),
+        description: i18n("Una entrada especial se separa en dos."),
+        icon: "ticket",
+        duration: 1600,
+      },
+      {
+        id: "curtain",
+        name: i18n("Telón"),
+        description: i18n("El escenario se descubre entre cortinas."),
+        icon: "star",
+        duration: 2000,
+      },
+      {
+        id: "bloom",
+        name: i18n("Flor"),
+        description: i18n("Los pétalos se despliegan para recibirte."),
+        icon: "flower",
+        duration: 1900,
+      },
+      {
+        id: "orbit",
+        name: i18n("Constelación"),
+        description: i18n("Una estrella abre un universo de luz."),
+        icon: "sparkle",
+        duration: 1800,
+      },
+    ] as const,
+);
+export function openingPreset(
+  style: Opening["style"],
+  i18n: Translator = spanishTranslator,
+) {
+  return (
+    openingPresets(i18n).find((item) => item.id === style) ||
+    openingPresets(i18n)[0]
+  );
 }
 function luminance(hex: string) {
   const [r, g, b] = [1, 3, 5].map((n) => {

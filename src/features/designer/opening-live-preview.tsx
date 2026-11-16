@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef } from "react";
 import type { DesignEvent } from "@/lib/events/types";
 import type { Opening } from "@/lib/events/celebration";
@@ -13,6 +14,8 @@ export default function OpeningLivePreview({
   draft: DesignEvent;
   opening: Opening;
 }) {
+  const i18n = useTranslator();
+
   const node = useRef<HTMLDivElement>(null);
   const animation = useOpeningAnimation(opening.style);
   const photo = (key: string) =>
@@ -21,7 +24,7 @@ export default function OpeningLivePreview({
   return (
     <section
       className="opening-live-preview"
-      aria-label="Vista previa interactiva de apertura"
+      aria-label={i18n("Vista previa interactiva de apertura")}
     >
       <div className="opening-preview-screen" ref={node}>
         {animation.phase === "done" ? (
@@ -39,8 +42,8 @@ export default function OpeningLivePreview({
             ) : (
               <div>
                 <Icon name="check" />
-                <h3>{draft.title || "Tu invitación"}</h3>
-                <p>Aquí comienza tu diseño.</p>
+                <h3>{draft.title || i18n("Tu invitación")}</h3>
+                <p>{i18n("Aquí comienza tu diseño.")}</p>
               </div>
             )}
           </div>
@@ -59,15 +62,15 @@ export default function OpeningLivePreview({
       <div className="opening-preview-caption">
         <span role="status">
           {animation.phase === "done"
-            ? "Así llegas a tu canvas"
+            ? i18n("Así llegas a tu canvas")
             : animation.phase === "opening"
-              ? "Descubriendo tu invitación…"
-              : "Toca la apertura para probarla"}
+              ? i18n("Descubriendo tu invitación…")
+              : i18n("Toca la apertura para probarla")}
         </span>
         {animation.phase === "done" && (
           <button onClick={animation.reset}>
             <Icon name="refresh" />
-            Ver de nuevo
+            {i18n("Ver de nuevo")}
           </button>
         )}
       </div>

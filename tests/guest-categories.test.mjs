@@ -11,7 +11,7 @@ test("categories normalize spelling without inventing groups", () => {
     "Compañeros de trabajo",
   );
   assert.equal(guestCategory(""), "");
-  for (const category of guestCategories)
+  for (const category of guestCategories())
     assert.equal(guestCategory(category), category);
   assert.throws(() => guestCategory("Familia Rojas"), /categoría/);
   const parse = (value) =>

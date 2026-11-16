@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { elementValue } from "@/lib/events/element-values";
 import { fitDressCanvas } from "@/lib/events/dress-layout";
 import { moveSelection } from "./composition";
@@ -32,9 +33,11 @@ export default function CanvasEditor({
   photoURL: (key: string) => string;
   onReplace?: (file: File, id: string) => Promise<void>;
 }) {
+  const i18n = useTranslator();
+
   const canvas = fitDressCanvas({
     ...authoredCanvas,
-    elements: authoredCanvas.elements.map((e) => elementValue(e, event)),
+    elements: authoredCanvas.elements.map((e) => elementValue(e, event, i18n)),
   });
   const gesture = useCanvasGesture(canvas, onChange, selectedIds);
   const replacement = useImageReplacement(onReplace);
@@ -80,7 +83,7 @@ export default function CanvasEditor({
         canvas={canvas}
         photoURL={photoURL}
         backgroundSlice={backgroundSlice}
-        label="Lienzo editable"
+        label={i18n("Lienzo editable")}
       >
         {moving && guides?.vertical && (
           <div className="canvas-guide is-vertical" aria-hidden="true" />
@@ -89,7 +92,7 @@ export default function CanvasEditor({
           <div className="canvas-guide is-horizontal" aria-hidden="true" />
         )}
         {guides && (guides.vertical || guides.horizontal) && (
-          <span className="canvas-center-label">Centrado</span>
+          <span className="canvas-center-label">{i18n("Centrado")}</span>
         )}
         <CanvasItems
           onChange={onChange}

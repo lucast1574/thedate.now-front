@@ -16,7 +16,7 @@ const { ornamentById } = loadSource("src/lib/events/ornaments.ts");
 const { sectionIcons } = loadSource("src/lib/events/section-icons.ts");
 
 test("all 48 canvas designs have valid, editable and distinct compositions", () => {
-  const designs = invitationTemplates.filter((item) => item.mode === "flyer");
+  const designs = invitationTemplates().filter((item) => item.mode === "flyer");
   assert.equal(designs.length, 48);
   const signatures = new Set();
   for (const template of designs) {
@@ -82,7 +82,7 @@ test("a template fills an empty page and preserves other pages, music and photos
       other,
     ],
   };
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (item) => item.id === "wedding-flyer-paris",
   );
   const result = applyTemplateToSection(draft, template, "empty");
@@ -114,7 +114,7 @@ test("a template fills an empty page and preserves other pages, music and photos
   );
   const rethemed = applyTemplateToSection(
     result,
-    invitationTemplates.find((item) => item.id === "wedding-flyer-ruby"),
+    invitationTemplates().find((item) => item.id === "wedding-flyer-ruby"),
     "empty",
   );
   assert.deepEqual(

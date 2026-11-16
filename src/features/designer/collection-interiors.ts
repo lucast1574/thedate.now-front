@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { templateArt } from "./template-art-direction";
@@ -50,18 +51,19 @@ export function collectionInterior(
   canvas: FlyerCanvas,
   template: InvitationTemplate,
   heading: string,
+  i18n: Translator = spanishTranslator,
 ): FlyerCanvas {
   const family = templateArt(template) || "editorial";
   const composition = compositions[family];
   const location = heading === "Ubicación";
   if (!location && heading !== "Fecha y hora") {
     const simple = [
-      "Lista de regalos",
-      "Para disfrutar juntos",
-      "Solo adultos",
-      "Guarda la fecha",
-      "Con todo nuestro cariño",
-      "Te esperamos",
+      i18n("Lista de regalos"),
+      i18n("Para disfrutar juntos"),
+      i18n("Solo adultos"),
+      i18n("Guarda la fecha"),
+      i18n("Con todo nuestro cariño"),
+      i18n("Te esperamos"),
     ];
     if (!simple.includes(heading)) return canvas;
     const text = canvas.elements.filter((e) => e.type === "text");

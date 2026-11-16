@@ -1,7 +1,10 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import { openingPreset } from "@/lib/events/opening-presets";
 import type { Opening } from "@/lib/events/celebration";
 export function useOpeningAnimation(style: Opening["style"]) {
+  const i18n = useTranslator();
+
   const [phase, setPhase] = useState<"closed" | "opening" | "done">("closed");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const started = useRef(false);
@@ -20,7 +23,7 @@ export function useOpeningAnimation(style: Opening["style"]) {
     ).matches;
     timer.current = setTimeout(
       () => setPhase("done"),
-      reduced ? 0 : openingPreset(style).duration,
+      reduced ? 0 : openingPreset(style, i18n).duration,
     );
   }
   function reset() {

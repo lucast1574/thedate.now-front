@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import { money, statusLabel, type Payout, type Run } from "@/lib/account/types";
 import { api } from "@/lib/api/client";
@@ -11,6 +13,8 @@ export default function AdminPayouts({
   busy: boolean;
   run: Run;
 }) {
+  const i18n = useTranslator();
+
   const [notes, setNotes] = useState<Record<string, string>>({});
   function update(row: Payout, status: string) {
     return run(
@@ -19,44 +23,50 @@ export default function AdminPayouts({
           `/api/backend/admin/users/${row.userId}/withdrawals/${row.withdrawal.id}`,
           "PATCH",
           { status, note: notes[row.withdrawal.id] ?? "" },
+          i18n,
         ),
-      "Retiro actualizado y auditado.",
+      i18n("Retiro actualizado y auditado."),
     );
   }
   return (
     <section className="account-card">
-      <p className="office-kicker">AFILIADOS · RETIROS</p>
-      <h2>Pagos con registro.</h2>
+      <p className="office-kicker">{i18n("AFILIADOS · RETIROS")}</p>
+      <h2>{i18n("Pagos con registro.")}</h2>
       <p>
-        Beneficios por evento y referidos; mínimo US$10. Marca pagado después de
-        transferir y escribe la referencia; este panel no envía dinero
-        automáticamente.
+        {i18n(
+          "Beneficios por evento y referidos; mínimo US$10. Marca pagado después de transferir y escribe la referencia; este panel no envía dinero automáticamente.",
+        )}
       </p>
-      {rows.length === 0 && <p>No hay solicitudes de retiro.</p>}
+      {rows.length === 0 && <p>{i18n("No hay solicitudes de retiro.")}</p>}
       {rows.map((row) => {
         const entry = row.withdrawal;
         return (
           <article className="payout-row" key={entry.id}>
             <h3>
-              {row.name} · {money(entry.amountCents)}
+              {row.name} · {money(entry.amountCents, i18n.locale)}
             </h3>
             <p>
-              {row.email} · {statusLabel[entry.status]}
+              {row.email} · {statusLabel(i18n)[entry.status]}
             </p>
             <p>
               {entry.method}: {entry.details}
             </p>
             {row.balanceCents < 0 && (
               <p className="alert error">
-                Saldo negativo por reversos: {money(row.balanceCents)}. Revisa
-                antes de transferir.
+                {i18n("Saldo negativo por reversos:")}{" "}
+                {money(row.balanceCents, i18n.locale)}
+                {i18n(". Revisa antes de transferir.")}
               </p>
             )}
-            {entry.note && <p>Registro: {entry.note}</p>}
+            {entry.note && (
+              <p>
+                {i18n("Registro:")} {entry.note}
+              </p>
+            )}
             {["pending", "approved"].includes(entry.status) && (
               <>
                 <label>
-                  Motivo o referencia de transferencia
+                  {i18n("Motivo o referencia de transferencia")}{" "}
                   <input
                     minLength={3}
                     maxLength={500}
@@ -78,14 +88,14 @@ export default function AdminPayouts({
                     }
                   >
                     {entry.status === "pending"
-                      ? "Aprobar"
-                      : "Registrar pago realizado"}
+                      ? i18n("Aprobar")
+                      : i18n("Registrar pago realizado")}
                   </button>
                   <button
                     disabled={busy || (notes[entry.id]?.length ?? 0) < 3}
                     onClick={() => void update(row, "rejected")}
                   >
-                    Rechazar y liberar saldo
+                    {i18n("Rechazar y liberar saldo")}
                   </button>
                 </div>
               </>

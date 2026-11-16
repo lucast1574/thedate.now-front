@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { ColorMemoryProvider } from "@/components/color-memory";
 import type { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,6 +26,8 @@ export default function Studio({
   googleEnabled?: boolean;
   paymentsEnabled?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const feedback = useFeedback(),
     session = useStudioSession(portal, feedback.setError),
     events = useStudioEvents(portal, session.user, feedback.setError);
@@ -61,15 +65,17 @@ export default function Studio({
           if (err instanceof Error && err.message === "Sign in required") {
             session.setUser(null);
             throw new Error(
-              "Tu sesión ha vencido. Inicia sesión para guardar tu invitación.",
+              i18n(
+                "Tu sesión ha vencido. Inicia sesión para guardar tu invitación.",
+              ),
             );
           }
           throw err;
         }
       },
       events.selected
-        ? "Cambios guardados."
-        : "Invitación guardada. Continúa con el pago para activarla.",
+        ? i18n("Cambios guardados.")
+        : i18n("Invitación guardada. Continúa con el pago para activarla."),
     );
   }
   if (!session.user)
@@ -79,7 +85,7 @@ export default function Studio({
       >
         <StudioHeader wedding={wedding} />
         {session.loading ? (
-          <p className="account-loading">Abriendo tu estudio…</p>
+          <p className="account-loading">{i18n("Abriendo tu estudio…")}</p>
         ) : (
           <AuthPanel
             wedding={wedding}

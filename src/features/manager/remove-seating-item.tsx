@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useInlineConfirmation } from "@/components/use-inline-confirmation";
 import Icon from "@/components/icon";
 export default function RemoveSeatingItem({
@@ -9,6 +10,8 @@ export default function RemoveSeatingItem({
   description: string;
   onRemove: () => void;
 }) {
+  const i18n = useTranslator();
+
   const {
     open: confirm,
     setOpen: setConfirm,
@@ -23,8 +26,10 @@ export default function RemoveSeatingItem({
       }}
     >
       {confirm ? (
-        <div role="group" aria-label={`Quitar ${name}`}>
-          <strong>¿Quitar {name}?</strong>
+        <div role="group" aria-label={i18n("Quitar {v0}", { v0: name })}>
+          <strong>
+            {i18n("¿Quitar")} {name}?
+          </strong>
           <p>{description}</p>
           <div>
             <button
@@ -32,10 +37,10 @@ export default function RemoveSeatingItem({
               type="button"
               onClick={() => setConfirm(false)}
             >
-              Cancelar
+              {i18n("Cancelar")}
             </button>
             <button type="button" className="seating-danger" onClick={onRemove}>
-              Sí, quitar
+              {i18n("Sí, quitar")}
             </button>
           </div>
         </div>
@@ -47,7 +52,7 @@ export default function RemoveSeatingItem({
           onClick={() => setConfirm(true)}
         >
           <Icon name="lucide:trash-2" />
-          Quitar {name}
+          {i18n("Quitar")} {name}
         </button>
       )}
     </div>

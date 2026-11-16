@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { eventReadOnly } from "./event-closure";
 import type { Event, Kind, User } from "./types";
 
@@ -15,9 +16,13 @@ export function organizationEvents(events: Event[], kind: Kind, user: User) {
   );
 }
 
-export function organizationEventDate(event: Event) {
-  if (!Number.isFinite(Date.parse(event.startAt))) return "Fecha por confirmar";
-  return new Intl.DateTimeFormat("es", {
+export function organizationEventDate(
+  event: Event,
+  i18n: Translator = spanishTranslator,
+) {
+  if (!Number.isFinite(Date.parse(event.startAt)))
+    return i18n("Fecha por confirmar");
+  return new Intl.DateTimeFormat(i18n.locale, {
     day: "numeric",
     month: "short",
     year: "numeric",

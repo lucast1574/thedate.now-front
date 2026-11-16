@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import Icon from "./icon";
 import {
@@ -14,6 +15,8 @@ export default function CalendarPicker({
   value: string;
   onChoose: (value: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const today = new Date(),
     initial = localDay(value) || today,
     todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
@@ -60,15 +63,20 @@ export default function CalendarPicker({
     setYear(date.getFullYear());
     setMonth(date.getMonth());
   }
-  const monthName = new Date(year, month, 1, 12).toLocaleDateString("es", {
-    month: "long",
-  });
+  const monthName = new Date(year, month, 1, 12).toLocaleDateString(
+    i18n.locale,
+    {
+      month: "long",
+    },
+  );
   return (
     <div className="calendar-picker">
       <div className="calendar-navigation">
         <button
           type="button"
-          aria-label={view === "days" ? "Mes anterior" : "Años anteriores"}
+          aria-label={
+            view === "days" ? i18n("Mes anterior") : i18n("Años anteriores")
+          }
           onClick={() =>
             view === "days"
               ? changeMonth(-1)
@@ -93,7 +101,9 @@ export default function CalendarPicker({
         </div>
         <button
           type="button"
-          aria-label={view === "days" ? "Mes siguiente" : "Años siguientes"}
+          aria-label={
+            view === "days" ? i18n("Mes siguiente") : i18n("Años siguientes")
+          }
           onClick={() =>
             view === "days"
               ? changeMonth(1)
@@ -106,7 +116,12 @@ export default function CalendarPicker({
       {view === "days" ? (
         <>
           <div className="calendar-weekdays" aria-hidden="true">
-            {["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"].map((day, i) => (
+            {Array.from({ length: 7 }, (_, day) =>
+              new Intl.DateTimeFormat(i18n.locale, {
+                weekday: "short",
+                timeZone: "UTC",
+              }).format(new Date(Date.UTC(2024, 0, day + 1))),
+            ).map((day, i) => (
               <span key={i}>{day}</span>
             ))}
           </div>
@@ -123,7 +138,7 @@ export default function CalendarPicker({
                   key={day}
                   data-date={day}
                   tabIndex={day === active ? 0 : -1}
-                  aria-label={localDay(day)!.toLocaleDateString("es", {
+                  aria-label={localDay(day)!.toLocaleDateString(i18n.locale, {
                     weekday: "long",
                     day: "numeric",
                     month: "long",
@@ -153,7 +168,7 @@ export default function CalendarPicker({
                   aria-pressed={i === month}
                   onClick={() => showDays(year, i)}
                 >
-                  {new Date(year, i, 1, 12).toLocaleDateString("es", {
+                  {new Date(year, i, 1, 12).toLocaleDateString(i18n.locale, {
                     month: "short",
                   })}
                 </button>
@@ -178,7 +193,7 @@ export default function CalendarPicker({
         className="calendar-today"
         onClick={() => onChoose(todayKey)}
       >
-        Hoy
+        {i18n("Hoy")}
       </button>
     </div>
   );

@@ -1,9 +1,13 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { templateIdentity } from "./template-identity";
 import { templatePage, templateText } from "./template-pages";
 import { element } from "./flyer/canvas-model";
-export function templateStoryPage(t: InvitationTemplate) {
-  const p = templateIdentity(t),
+export function templateStoryPage(
+  t: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
+) {
+  const p = templateIdentity(t, i18n),
     w = t.kind === "wedding",
     inset = p.inset;
   const text = (
@@ -15,7 +19,16 @@ export function templateStoryPage(t: InvitationTemplate) {
     height: number,
     size: number,
   ) =>
-    templateText(t, id, value, y, height, size, { x, width, align: p.align });
+    templateText(
+      t,
+      id,
+      value,
+      y,
+      height,
+      size,
+      { x, width, align: p.align },
+      i18n,
+    );
   const photo = (
     id: string,
     x: number,
@@ -24,18 +37,22 @@ export function templateStoryPage(t: InvitationTemplate) {
     height: number,
     arch = false,
   ) =>
-    element("image", {
-      id,
-      photoKey: "template-photo",
-      x,
-      y,
-      width,
-      height,
-      photoTreatment: arch ? "arch" : "none",
-    });
+    element(
+      "image",
+      {
+        id,
+        photoKey: "template-photo",
+        x,
+        y,
+        width,
+        height,
+        photoTreatment: arch ? "arch" : "none",
+      },
+      i18n,
+    );
   const guest = text(
     "guest",
-    "Hola, {{nombre_invitado}}",
+    i18n("Hola, {{nombre_invitado}}"),
     inset,
     125,
     720 - 2 * inset,
@@ -45,8 +62,8 @@ export function templateStoryPage(t: InvitationTemplate) {
   guest.binding = "guest_name";
   const lead = w ? p.lead : p.eventLead;
   const story = w
-    ? "Queremos que seas parte de un día que recordaremos siempre."
-    : "Una ocasión para reunirnos, reír y crear nuevos recuerdos.";
+    ? i18n("Queremos que seas parte de un día que recordaremos siempre.")
+    : i18n("Una ocasión para reunirnos, reír y crear nuevos recuerdos.");
   const elements = [guest];
   if (p.story === "split")
     elements.push(
@@ -88,8 +105,9 @@ export function templateStoryPage(t: InvitationTemplate) {
     );
   return templatePage(
     t,
-    w ? "Nuestra historia" : "Nos reunimos",
+    w ? i18n("Nuestra historia") : i18n("Nos reunimos"),
     1120,
     elements,
+    i18n,
   );
 }

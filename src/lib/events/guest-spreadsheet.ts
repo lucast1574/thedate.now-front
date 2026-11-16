@@ -1,8 +1,13 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { collectGuestRows, type GuestRowIssue } from "./guest-rows";
 import { validateWorkbookZip } from "./xlsx-guard";
 import type { Kind } from "./types";
-export async function readGuestFile(file: File, kind: Kind = "wedding") {
-  const report = await readGuestFileReport(file, kind);
+export async function readGuestFile(
+  file: File,
+  kind: Kind = "wedding",
+  i18n: Translator = spanishTranslator,
+) {
+  const report = await readGuestFileReport(file, kind, i18n);
   if (report.issues.length) {
     const issue = report.issues[0];
     throw new Error(`Revisa la fila ${issue.row}: ${issue.message}`);
@@ -11,12 +16,16 @@ export async function readGuestFile(file: File, kind: Kind = "wedding") {
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
   return report.guests;
 }
-export async function readGuestFileReport(file: File, kind: Kind = "wedding") {
+export async function readGuestFileReport(
+  file: File,
+  kind: Kind = "wedding",
+  i18n: Translator = spanishTranslator,
+) {
   if (file.size > 2_000_000) throw new Error("El archivo supera 2 MB.");
   if (!/\.xlsx$/i.test(file.name))
     throw new Error("Selecciona un archivo Excel (.xlsx).");
   const bytes = await file.arrayBuffer();
-  validateWorkbookZip(bytes);
+  validateWorkbookZip(bytes, i18n);
   const { Workbook } = await import("exceljs");
   const book = new Workbook();
   try {
@@ -106,7 +115,7 @@ export async function readGuestFileReport(file: File, kind: Kind = "wedding") {
       rows.push([]);
     } else rows.push(cells);
   });
-  const report = collectGuestRows(rows, kind);
+  const report = collectGuestRows(rows, kind, i18n);
   return {
     guests: report.guests,
     issues: [...issues, ...report.issues].sort((a, b) => a.row - b.row),

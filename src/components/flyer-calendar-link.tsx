@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import { calendarDownload } from "@/lib/events/calendar";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -9,10 +10,12 @@ export default function FlyerCalendarLink({
   item: FlyerElement;
   event?: Partial<PublicEvent>;
 }) {
+  const i18n = useTranslator();
+
   const content = (
     <>
       <Icon name="calendar" />
-      <span>{item.text || "Añadir al calendario"}</span>
+      <span>{item.text || i18n("Añadir al calendario")}</span>
     </>
   );
   const href = calendarDownload(event);

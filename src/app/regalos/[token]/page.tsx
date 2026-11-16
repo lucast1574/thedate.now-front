@@ -1,8 +1,12 @@
+import { getTranslator } from "@/lib/i18n/server";
 import { personalPath } from "@/lib/events/personal-links";
 import { notFound, redirect } from "next/navigation";
 import { scopedWishlist } from "@/lib/api/gift-scope";
 import { giftMetadata } from "@/lib/products/metadata";
-export const generateMetadata = () => giftMetadata(true);
+export async function generateMetadata() {
+  const i18n = await getTranslator();
+  return giftMetadata(true, i18n);
+}
 export default async function Page({
   params,
   searchParams,

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useEffect, useState } from "react";
 import Listbox from "@/components/listbox";
 import { api } from "@/lib/api/client";
@@ -10,6 +11,8 @@ export default function MapInspector({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const [link, setLink] = useState(item.link || "");
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
@@ -37,6 +40,7 @@ export default function MapInspector({
               "/api/backend/maps/resolve",
               "POST",
               { url: link },
+              i18n,
             );
       if (attempt === generation.current)
         onChange({
@@ -54,15 +58,17 @@ export default function MapInspector({
   return (
     <div className="inspector-group">
       <p className="editor-hint">
-        Pega el enlace del lugar. El mapa mostrará un marcador en esa ubicación.
+        {i18n(
+          "Pega el enlace del lugar. El mapa mostrará un marcador en esa ubicación.",
+        )}
       </p>
       <label>
-        Enlace de Google Maps
+        {i18n("Enlace de Google Maps")}{" "}
         <input
           value={link}
           type="url"
           maxLength={2048}
-          placeholder="https://maps.app.goo.gl/…"
+          placeholder={i18n("https://maps.app.goo.gl/…")}
           onChange={(e) => {
             generation.current++;
             setBusy(false);
@@ -71,24 +77,24 @@ export default function MapInspector({
         />
       </label>
       <button disabled={busy || !link.trim()} onClick={() => void locate()}>
-        {busy ? "Buscando ubicación…" : "Ubicar en el mapa"}
+        {busy ? i18n("Buscando ubicación…") : i18n("Ubicar en el mapa")}
       </button>
       {error && <p role="alert">{error}</p>}
       <label>
-        Estilo del mapa
+        {i18n("Estilo del mapa")}{" "}
         <Listbox
           value={item.mapStyle || "natural"}
           onValueChange={(mapStyle) =>
             onChange({ mapStyle: mapStyle as FlyerElement["mapStyle"] })
           }
         >
-          <option value="natural">Natural</option>
-          <option value="warm">Papel cálido</option>
-          <option value="ink">Tinta suave</option>
+          <option value="natural">{i18n("Natural")}</option>
+          <option value="warm">{i18n("Papel cálido")}</option>
+          <option value="ink">{i18n("Tinta suave")}</option>
         </Listbox>
       </label>
       <label>
-        Acercamiento
+        {i18n("Acercamiento")}{" "}
         <input
           type="range"
           min={3}
@@ -98,7 +104,7 @@ export default function MapInspector({
         />
       </label>
       <label>
-        Esquinas redondeadas
+        {i18n("Esquinas redondeadas")}{" "}
         <input
           type="range"
           min={0}
@@ -108,7 +114,7 @@ export default function MapInspector({
         />
       </label>
       <label>
-        Suavizar bordes
+        {i18n("Suavizar bordes")}{" "}
         <input
           type="range"
           min={0}

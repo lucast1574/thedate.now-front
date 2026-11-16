@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 export default function CanvasPanelHeading({
   tool,
   hidden,
@@ -5,20 +6,22 @@ export default function CanvasPanelHeading({
   tool: string;
   hidden: boolean;
 }) {
+  const i18n = useTranslator();
+
   const title =
     {
-      elements: "Añadir elementos",
-      photos: "Tus imágenes",
-      background: "Fondo de tu invitación",
-      opening: "Sobre de apertura",
-      pages: "Secciones",
-      music: "Ponle música",
-      layers: "Capas del lienzo",
-      templates: "Elige tu diseño",
-    }[tool] || "Tu invitación";
+      elements: i18n("Añadir elementos"),
+      photos: i18n("Tus imágenes"),
+      background: i18n("Fondo de tu invitación"),
+      opening: i18n("Sobre de apertura"),
+      pages: i18n("Secciones"),
+      music: i18n("Ponle música"),
+      layers: i18n("Capas del lienzo"),
+      templates: i18n("Elige tu diseño"),
+    }[tool] || i18n("Tu invitación");
   return (
     <header hidden={hidden}>
-      <span>TU INVITACIÓN</span>
+      <span>{i18n("TU INVITACIÓN")}</span>
       <h2>{title}</h2>
     </header>
   );

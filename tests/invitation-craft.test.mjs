@@ -38,7 +38,7 @@ function checkGeometry(draft) {
   }
 }
 test("all 48 designs support photo-free and photographic compositions, and every library section inherits the theme", () => {
-  for (const t of invitationTemplates.filter((t) => t.mode === "flyer")) {
+  for (const t of invitationTemplates().filter((t) => t.mode === "flyer")) {
     const source = {
       ...blankEvent(t.kind),
       title:
@@ -65,7 +65,7 @@ test("all 48 designs support photo-free and photographic compositions, and every
       background: "#f1f2f3",
       font: "script",
     });
-    for (const [id] of sectionRecipes) {
+    for (const [id] of sectionRecipes()) {
       const s = librarySection(draft, id);
       assert.equal(s.canvas.background, "#f1f2f3");
       for (const e of s.canvas.elements.filter((e) => e.type !== "image")) {
@@ -90,7 +90,7 @@ test("all 48 designs support photo-free and photographic compositions, and every
 });
 test("switching designs keeps matching personal content and replaces custom sections", () => {
   for (const kind of ["wedding", "general"]) {
-    const list = invitationTemplates.filter(
+    const list = invitationTemplates().filter(
       (t) => t.kind === kind && t.mode === "flyer",
     );
     const draft = applyCompleteTemplate(
@@ -139,7 +139,9 @@ test("switching designs keeps matching personal content and replaces custom sect
 test("global changes keep customized exceptions and persist a font on a blank canvas", () => {
   const base = applyCompleteTemplate(
     { ...blankEvent("wedding"), title: "Ana y Luis" },
-    invitationTemplates.find((t) => t.mode === "flyer" && t.kind === "wedding"),
+    invitationTemplates().find(
+      (t) => t.mode === "flyer" && t.kind === "wedding",
+    ),
   );
   const item = base.sections[0].canvas.elements.find((e) => e.type === "text");
   item.color = "#ff1234";
@@ -234,7 +236,7 @@ test("copying style never carries content, geometry, grouping or locks", () => {
   assert.equal(target.locked, undefined);
 });
 test("switching at the section limit replaces old sections with the complete template", () => {
-  const t = invitationTemplates.find(
+  const t = invitationTemplates().find(
     (t) => t.kind === "wedding" && t.mode === "flyer",
   );
   const source = { ...blankEvent("wedding"), title: "Ana y Luis" };

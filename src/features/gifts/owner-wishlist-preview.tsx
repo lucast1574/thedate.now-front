@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Event } from "@/lib/events/types";
 import type { Wishlist } from "@/lib/events/wishlist";
 import GiftExperiencePreview from "./gift-experience-preview";
@@ -10,6 +11,8 @@ export default function OwnerWishlistPreview({
   list: Wishlist;
   example: boolean;
 }) {
+  const i18n = useTranslator();
+
   return (
     <GiftExperiencePreview
       wedding={event.kind === "wedding"}
@@ -18,7 +21,7 @@ export default function OwnerWishlistPreview({
           ? undefined
           : {
               event,
-              guestName: "Lucía",
+              guestName: i18n("Lucía"),
               version: list.version,
               items: list.items.map((item) => ({
                 id: item.id,

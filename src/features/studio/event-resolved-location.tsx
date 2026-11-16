@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 export default function EventResolvedLocation({
@@ -13,10 +14,12 @@ export default function EventResolvedLocation({
   canCorrect: boolean;
   onEdit: () => void;
 }) {
+  const i18n = useTranslator();
+
   if (editing)
     return (
       <label>
-        Nombre y dirección del lugar
+        {i18n("Nombre y dirección del lugar")}{" "}
         <input
           autoFocus
           required
@@ -30,11 +33,12 @@ export default function EventResolvedLocation({
               virtualUrl: "",
             })
           }
-          placeholder="Ej. Hacienda Los Olivos, Lima"
+          placeholder={i18n("Ej. Hacienda Los Olivos, Lima")}
         />
         <small>
-          Corrige el texto que verán tus invitados. El enlace de Maps se
-          conserva.
+          {i18n(
+            "Corrige el texto que verán tus invitados. El enlace de Maps se conserva.",
+          )}
         </small>
       </label>
     );
@@ -42,15 +46,15 @@ export default function EventResolvedLocation({
     <>
       {draft.location && (
         <div className="map-detected-place" role="status">
-          <strong>Ubicación de la celebración</strong>
+          <strong>{i18n("Ubicación de la celebración")}</strong>
           <p>{draft.location}</p>
         </div>
       )}
       {canCorrect && (
         <button type="button" className="map-retry" onClick={onEdit}>
           {draft.location
-            ? "¿No es correcto? Corregir ubicación"
-            : "Escribir la ubicación manualmente"}
+            ? i18n("¿No es correcto? Corregir ubicación")
+            : i18n("Escribir la ubicación manualmente")}
         </button>
       )}
     </>

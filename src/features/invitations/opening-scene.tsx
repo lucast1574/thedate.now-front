@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { CSSProperties } from "react";
 import FlyerBackground from "@/components/flyer-background";
 import Icon from "@/components/icon";
@@ -22,6 +23,8 @@ export default function OpeningScene({
   onOpen: () => void;
   preview?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const Heading = preview ? "h3" : "h1";
   return (
     <div
@@ -32,7 +35,7 @@ export default function OpeningScene({
         {
           "--envelope-paper": opening.color,
           "--envelope-ink": opening.ink,
-          "--opening-duration": `${openingPreset(opening.style).duration}ms`,
+          "--opening-duration": `${openingPreset(opening.style, i18n).duration}ms`,
         } as CSSProperties
       }
     >
@@ -49,7 +52,9 @@ export default function OpeningScene({
       )}
       <div className="opening-intro">
         <span>
-          {wedding ? "Con todo nuestro cariño" : "Una fecha para recordar"}
+          {wedding
+            ? i18n("Con todo nuestro cariño")
+            : i18n("Una fecha para recordar")}
         </span>
         <Heading
           id={preview ? undefined : "opening-title"}
@@ -57,14 +62,14 @@ export default function OpeningScene({
             opening.font ? { fontFamily: flyerFonts[opening.font] } : undefined
           }
         >
-          {opening.title || title || "Tu invitación"}
+          {opening.title || title || i18n("Tu invitación")}
         </Heading>
         <p>{opening.message}</p>
       </div>
       <button
         className="opening-envelope"
         onClick={onOpen}
-        aria-label={opening.buttonLabel || "Abrir invitación"}
+        aria-label={opening.buttonLabel || i18n("Abrir invitación")}
         disabled={phase === "opening"}
       >
         <OpeningArtwork opening={opening} title={title} wedding={wedding} />
@@ -75,8 +80,8 @@ export default function OpeningScene({
         disabled={phase === "opening"}
       >
         {phase === "opening"
-          ? "Abriendo tu invitación…"
-          : opening.buttonLabel || "Abrir invitación"}
+          ? i18n("Abriendo tu invitación…")
+          : opening.buttonLabel || i18n("Abrir invitación")}
         <Icon name="arrow" />
       </button>
     </div>

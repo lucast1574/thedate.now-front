@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import Icon from "@/components/icon";
 import type { Gift } from "@/lib/events/wishlist";
@@ -19,6 +20,8 @@ export default function GiftForm({
   onCancel: () => void;
   onDirtyChange?: (dirty: boolean) => void;
 }) {
+  const i18n = useTranslator();
+
   const { draft, setDraft, fetching, hint, changeURL, lookup } = useGiftDraft(
     eventId,
     gift,
@@ -58,18 +61,18 @@ export default function GiftForm({
           <Icon name={gift ? "lucide:pencil" : "plus"} />
         </span>
         <div>
-          <h3>{gift ? "Editar regalo" : "Añade una nueva idea"}</h3>
+          <h3>{gift ? i18n("Editar regalo") : i18n("Añade una nueva idea")}</h3>
           <p>
             {gift
-              ? "Actualiza sus detalles antes de guardar."
-              : "Pega el enlace. Buscamos los datos por ti."}
+              ? i18n("Actualiza sus detalles antes de guardar.")
+              : i18n("Pega el enlace. Buscamos los datos por ti.")}
           </p>
         </div>
       </header>
       <div className="gift-form-fields">
         <div className="gift-import-row">
           <label>
-            Enlace del producto
+            {i18n("Enlace del producto")}{" "}
             <input
               ref={urlInput}
               required
@@ -79,7 +82,7 @@ export default function GiftForm({
               value={draft.url}
               disabled={busy}
               onChange={(e) => changeURL(e.target.value)}
-              placeholder="https://tienda.com/producto"
+              placeholder={i18n("https://tienda.com/producto")}
             />
           </label>
           <button
@@ -89,7 +92,7 @@ export default function GiftForm({
             onClick={() => void lookup()}
           >
             <Icon name="lucide:link" />
-            {fetching ? "Buscando…" : "Buscar datos"}
+            {fetching ? i18n("Buscando…") : i18n("Buscar datos")}
           </button>
         </div>
         {hint && (
@@ -98,7 +101,7 @@ export default function GiftForm({
           </p>
         )}
         <label>
-          Nombre del regalo
+          {i18n("Nombre del regalo")}{" "}
           <input
             required
             minLength={2}
@@ -106,7 +109,7 @@ export default function GiftForm({
             value={draft.title}
             disabled={busy}
             onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-            placeholder="Por ejemplo, una cafetera"
+            placeholder={i18n("Por ejemplo, una cafetera")}
           />
         </label>
         {(draft.title || draft.imageUrl) && <GiftFormPreview gift={draft} />}
@@ -119,14 +122,14 @@ export default function GiftForm({
         >
           <Icon name="image" />
           {imageEditing
-            ? "Cerrar imagen"
+            ? i18n("Cerrar imagen")
             : draft.imageUrl
-              ? "Cambiar imagen"
-              : "Añadir imagen (opcional)"}
+              ? i18n("Cambiar imagen")
+              : i18n("Añadir imagen (opcional)")}
         </button>
         {imageEditing && (
           <label>
-            Enlace de la imagen
+            {i18n("Enlace de la imagen")}{" "}
             <input
               type="url"
               pattern="https://.*"
@@ -134,13 +137,13 @@ export default function GiftForm({
               value={draft.imageUrl || ""}
               disabled={busy}
               onChange={(e) => setDraft({ ...draft, imageUrl: e.target.value })}
-              placeholder="https://… imagen del producto"
+              placeholder={i18n("https://… imagen del producto")}
             />
-            <small>Úsalo si la tienda no comparte una imagen.</small>
+            <small>{i18n("Úsalo si la tienda no comparte una imagen.")}</small>
           </label>
         )}
         <label>
-          Nota para tus invitados <small>Opcional</small>
+          {i18n("Nota para tus invitados")} <small>{i18n("Opcional")}</small>
           <textarea
             maxLength={1000}
             rows={2}
@@ -149,7 +152,7 @@ export default function GiftForm({
             onChange={(e) =>
               setDraft({ ...draft, description: e.target.value })
             }
-            placeholder="Color, modelo o algún detalle especial…"
+            placeholder={i18n("Color, modelo o algún detalle especial…")}
           />
         </label>
       </div>
@@ -162,7 +165,7 @@ export default function GiftForm({
       />
       <p className="gift-composer-footnote">
         <Icon name="lucide:shopping-bag" />
-        El invitado reserva en tu lista y compra en la tienda.
+        {i18n("El invitado reserva en tu lista y compra en la tienda.")}
       </p>
     </form>
   );

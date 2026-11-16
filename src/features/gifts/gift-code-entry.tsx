@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Icon from "@/components/icon";
@@ -19,6 +21,8 @@ export default function GiftCodeEntry({
   onEnter?: (token: string) => void;
   example?: string;
 }) {
+  const i18n = useTranslator();
+
   const [value, setValue] = useState(example),
     [error, setError] = useState("");
   const router = useRouter();
@@ -26,20 +30,23 @@ export default function GiftCodeEntry({
     <main className="gift-code-page">
       <Icon name="lucide:gift" />
       {onEnter ? (
-        <h2>Tu invitación abre la lista</h2>
+        <h2>{i18n("Tu invitación abre la lista")}</h2>
       ) : (
-        <h1>Tu invitación abre la lista</h1>
+        <h1>{i18n("Tu invitación abre la lista")}</h1>
       )}
       <p>
-        Entra con el enlace personal que recibiste por WhatsApp. No necesitas
-        crear una cuenta.
+        {i18n(
+          "Entra con el enlace personal que recibiste por WhatsApp. No necesitas crear una cuenta.",
+        )}
       </p>
       <form
         onSubmit={(e) => {
           e.preventDefault();
           const token = giftToken(value);
           if (!token) {
-            setError("Pega tu enlace de invitación o su código completo.");
+            setError(
+              i18n("Pega tu enlace de invitación o su código completo."),
+            );
             return;
           }
           if (onEnter) onEnter(token);
@@ -47,7 +54,7 @@ export default function GiftCodeEntry({
         }}
       >
         <label>
-          Tu código o enlace de invitación
+          {i18n("Tu código o enlace de invitación")}{" "}
           <input
             autoComplete="off"
             spellCheck={false}
@@ -56,18 +63,19 @@ export default function GiftCodeEntry({
               setValue(e.target.value);
               setError("");
             }}
-            placeholder="Pega aquí tu enlace de WhatsApp"
+            placeholder={i18n("Pega aquí tu enlace de WhatsApp")}
             required
           />
         </label>
         {error && <p role="alert">{error}</p>}
-        <button className="gift-primary">Ver lista de regalos</button>
+        <button className="gift-primary">{i18n("Ver lista de regalos")}</button>
       </form>
       <div className="gift-entry-help">
         <Icon name="lock" />
         <p>
-          Usa el mismo enlace con el que confirmas tu asistencia. Así guardamos
-          tu elección y evitamos regalos repetidos.
+          {i18n(
+            "Usa el mismo enlace con el que confirmas tu asistencia. Así guardamos tu elección y evitamos regalos repetidos.",
+          )}
         </p>
       </div>
     </main>

@@ -1,7 +1,11 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { element } from "./flyer/canvas-model";
 import { templatePage, templateText } from "./template-pages";
-export function templateLayoutPages(template: InvitationTemplate) {
+export function templateLayoutPages(
+  template: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
+) {
   const layout = template.layout || "";
   const pages = [];
   const photo = (
@@ -12,17 +16,21 @@ export function templateLayoutPages(template: InvitationTemplate) {
     height: number,
     rotation = 0,
   ) =>
-    element("image", {
-      id,
-      photoKey: "template-photo",
-      x,
-      y,
-      width,
-      height,
-      rotation,
-    });
+    element(
+      "image",
+      {
+        id,
+        photoKey: "template-photo",
+        x,
+        y,
+        width,
+        height,
+        rotation,
+      },
+      i18n,
+    );
   const heading = (title: string) =>
-    templateText(template, "album-title", title, 60, 110, 42);
+    templateText(template, "album-title", title, 60, 110, 42, undefined, i18n);
   {
     const photos =
       layout === "gallery"
@@ -47,53 +55,73 @@ export function templateLayoutPages(template: InvitationTemplate) {
                 photo("panorama-b", 60, 490, 600, 220),
               ];
     pages.push(
-      templatePage(template, "Nuestros momentos", 900, [
-        heading(
-          template.kind === "wedding"
-            ? "Una historia en imágenes"
-            : "Recuerdos por crear",
-        ),
-        ...photos,
-        templateText(
-          template,
-          "photo-note",
-          "Cada imagen cuenta una parte de esta celebración.",
-          790,
-          70,
-          24,
-        ),
-      ]),
+      templatePage(
+        template,
+        i18n("Nuestros momentos"),
+        900,
+        [
+          heading(
+            template.kind === "wedding"
+              ? i18n("Una historia en imágenes")
+              : i18n("Recuerdos por crear"),
+          ),
+          ...photos,
+          templateText(
+            template,
+            "photo-note",
+            i18n("Cada imagen cuenta una parte de esta celebración."),
+            790,
+            70,
+            24,
+            undefined,
+            i18n,
+          ),
+        ],
+        i18n,
+      ),
     );
   }
   {
     const labels =
       template.kind === "wedding"
-        ? ["El encuentro", "El brindis", "La celebración"]
-        : ["La bienvenida", "El gran momento", "Seguimos celebrando"];
+        ? [i18n("El encuentro"), i18n("El brindis"), i18n("La celebración")]
+        : [
+            i18n("La bienvenida"),
+            i18n("El gran momento"),
+            i18n("Seguimos celebrando"),
+          ];
     pages.push(
-      templatePage(template, "El programa", 860, [
-        heading("Así será nuestro día"),
-        ...labels.flatMap((label, index) => [
-          templateText(
-            template,
-            `step-${index}`,
-            `0${index + 1}`,
-            240 + index * 170,
-            80,
-            38,
-            { x: 60, width: 80 },
-          ),
-          templateText(
-            template,
-            `moment-${index}`,
-            `${label}\nAñade aquí la hora y los detalles.`,
-            230 + index * 170,
-            120,
-            30,
-            { x: 180, width: 460, align: "left" },
-          ),
-        ]),
-      ]),
+      templatePage(
+        template,
+        i18n("El programa"),
+        860,
+        [
+          heading(i18n("Así será nuestro día")),
+          ...labels.flatMap((label, index) => [
+            templateText(
+              template,
+              `step-${index}`,
+              `0${index + 1}`,
+              240 + index * 170,
+              80,
+              38,
+              { x: 60, width: 80 },
+              i18n,
+            ),
+            templateText(
+              template,
+              `moment-${index}`,
+              `${label}\nAñade aquí la hora y los detalles.`,
+              230 + index * 170,
+              120,
+              30,
+              { x: 180, width: 460, align: "left" },
+              i18n,
+            ),
+          ]),
+        ],
+        i18n,
+      ),
     );
   }
   return pages;

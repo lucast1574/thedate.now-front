@@ -1,7 +1,10 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useState } from "react";
 export function useImageReplacement(
   replace?: (file: File, id: string) => Promise<void>,
 ) {
+  const i18n = useTranslator();
+
   const input = useRef<HTMLInputElement>(null);
   const target = useRef("");
   const [busy, setBusy] = useState(false);
@@ -17,7 +20,7 @@ export function useImageReplacement(
         className="canvas-replace-file"
         type="file"
         accept="image/jpeg,image/png,image/webp"
-        aria-label="Reemplazar foto del diseño"
+        aria-label={i18n("Reemplazar foto del diseño")}
         disabled={busy}
         onChange={async (e) => {
           const file = e.target.files?.[0];

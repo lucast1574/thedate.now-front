@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 
@@ -22,6 +24,8 @@ export function useInvitationDelivery(
   eventId: string,
   onUpdate: () => Promise<void>,
 ) {
+  const i18n = useTranslator();
+
   const [delivery, setDelivery] = useState<Delivery | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -35,11 +39,17 @@ export function useInvitationDelivery(
       try {
         const value = await api<Delivery>(
           `/api/backend/events/${eventId}/delivery`,
+          undefined,
+          undefined,
+          i18n,
         );
         if (!active) return;
         if (value.phase === "preparing") {
           const deployment = await api<{ phase: string }>(
             `/api/backend/events/${eventId}/deployment`,
+            undefined,
+            undefined,
+            i18n,
           ).catch(() => null);
           if (!active) return;
           value.deploymentPhase = deployment?.phase;
@@ -52,7 +62,9 @@ export function useInvitationDelivery(
       } catch {
         if (active)
           setError(
-            "No pudimos consultar el envío. Estamos intentando reconectar.",
+            i18n(
+              "No pudimos consultar el envío. Estamos intentando reconectar.",
+            ),
           );
       } finally {
         if (active) timer = setTimeout(() => void poll(), 3000);
@@ -63,7 +75,7 @@ export function useInvitationDelivery(
       active = false;
       clearTimeout(timer);
     };
-  }, [eventId]);
+  }, [eventId, i18n]);
   async function start(retry = false) {
     if (request.current) return;
     request.current = true;
@@ -74,6 +86,8 @@ export function useInvitationDelivery(
         await api<Delivery>(
           `/api/backend/events/${eventId}/delivery${retry ? "/retry" : ""}`,
           "POST",
+          undefined,
+          i18n,
         ),
       );
       await onUpdate();

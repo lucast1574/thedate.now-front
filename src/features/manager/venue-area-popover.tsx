@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import SeatingRotationControl from "./seating-rotation-control";
 import Icon from "@/components/icon";
 import RemoveSeatingItem from "./remove-seating-item";
@@ -16,6 +17,8 @@ export default function VenueAreaPopover({
   onClose: () => void;
   getViewport?: () => { width: number; height: number } | undefined;
 }) {
+  const i18n = useTranslator();
+
   function patch(fields: Partial<VenueArea>) {
     const next = moveVenueArea(
       { ...area, ...fields },
@@ -35,15 +38,19 @@ export default function VenueAreaPopover({
       <header>
         <div>
           <h3 id="table-popover-title">{area.name}</h3>
-          <small>Ajusta el tamaño aquí mismo.</small>
+          <small>{i18n("Ajusta el tamaño aquí mismo.")}</small>
         </div>
-        <button type="button" aria-label="Cerrar espacio" onClick={onClose}>
+        <button
+          type="button"
+          aria-label={i18n("Cerrar espacio")}
+          onClick={onClose}
+        >
           <Icon name="close" />
         </button>
       </header>
       <div className="venue-popover-fields">
         <label>
-          Nombre
+          {i18n("Nombre")}{" "}
           <input
             maxLength={100}
             value={area.name}
@@ -51,7 +58,7 @@ export default function VenueAreaPopover({
           />
         </label>
         <label>
-          Ancho · {area.width}
+          {i18n("Ancho ·")} {area.width}
           <input
             type="range"
             min={80}
@@ -62,7 +69,7 @@ export default function VenueAreaPopover({
           />
         </label>
         <label>
-          Alto · {area.height}
+          {i18n("Alto ·")} {area.height}
           <input
             type="range"
             min={60}
@@ -79,7 +86,9 @@ export default function VenueAreaPopover({
       />
       <RemoveSeatingItem
         name={area.name}
-        description="Se quitará este espacio. Las mesas y sus invitados se conservan."
+        description={i18n(
+          "Se quitará este espacio. Las mesas y sus invitados se conservan.",
+        )}
         onRemove={() => {
           onChange({
             ...plan,

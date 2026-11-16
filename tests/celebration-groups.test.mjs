@@ -12,8 +12,8 @@ const { readGuestFileReport } = loadSource(
 const { exampleSeatingPlan } = loadSource("src/lib/events/venue-examples.ts");
 
 test("celebration groups are separate from wedding categories", () => {
-  assert.equal(generalGuestCategories.length, 8);
-  for (const category of generalGuestCategories)
+  assert.equal(generalGuestCategories().length, 8);
+  for (const category of generalGuestCategories())
     assert.equal(guestCategory(category, "general"), category);
   assert.equal(
     guestCategory("  COMPANEROS de ESTUDIOS ", "general"),
@@ -54,7 +54,7 @@ test("The Date Excel preserves country inheritance and +1 while importing its ow
     .getCell("G11")
     .dataValidation.formulae[0].replace(/^"|"$/g, "")
     .split(",");
-  assert.deepEqual(options, Array.from(generalGuestCategories));
+  assert.deepEqual(options, Array.from(generalGuestCategories()));
   sheet.getCell("D5").value = "Perú (+51)";
   for (const [row, name, phone, group] of [
     [11, "Ana", "987654321", "Compañeros de estudios"],

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import Icon from "@/components/icon";
 import {
@@ -13,13 +14,16 @@ export default function OpeningBackgroundEditor({
 }: {
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
+  const i18n = useTranslator();
+
   const { draft, setDraft } = editor;
   const image = draft.opening?.backgroundImage;
   function update(backgroundImage: ImageBackground | undefined) {
     setDraft((d) => ({
       ...d,
       opening: {
-        ...(d.opening || defaultOpening(d.kind === "wedding")),
+        ...(d.opening ||
+          defaultOpening(d.kind === "wedding", undefined, undefined, i18n)),
         backgroundImage,
       },
     }));
@@ -30,16 +34,17 @@ export default function OpeningBackgroundEditor({
   });
   return (
     <details className="opening-background-editor">
-      <summary>Imagen de fondo de la apertura</summary>
+      <summary>{i18n("Imagen de fondo de la apertura")}</summary>
       {upload.input}
       <p className="editor-hint">
-        Añade una foto, flores o una textura propia para recibir a tus
-        invitados.
+        {i18n(
+          "Añade una foto, flores o una textura propia para recibir a tus invitados.",
+        )}
       </p>
       <label>
-        Imagen de la apertura
+        {i18n("Imagen de la apertura")}{" "}
         <Listbox
-          aria-label="Imagen de fondo de la apertura"
+          aria-label={i18n("Imagen de fondo de la apertura")}
           value={image?.photoKey || ""}
           onValueChange={(key) =>
             update(
@@ -49,18 +54,18 @@ export default function OpeningBackgroundEditor({
             )
           }
         >
-          <option value="">Solo color</option>
-          <option value="template-photo">Pon tu foto aquí</option>
+          <option value="">{i18n("Solo color")}</option>
+          <option value="template-photo">{i18n("Pon tu foto aquí")}</option>
           {draft.photoKeys.map((key, n) => (
             <option key={key} value={key}>
-              Imagen {n + 1}
+              {i18n("Imagen")} {n + 1}
             </option>
           ))}
         </Listbox>
       </label>
       <button disabled={editor.busy} onClick={() => upload.request("opening")}>
         <Icon name="image" />
-        Subir fondo de apertura
+        {i18n("Subir fondo de apertura")}
       </button>
       {image && (
         <BackgroundImageFields

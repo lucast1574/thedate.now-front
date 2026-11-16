@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import GuestTextEditor from "./guest-text-editor";
 import type { DesignSection } from "@/lib/events/types";
@@ -20,16 +21,20 @@ export default function SectionEditor({
   onMove,
   onRemove,
 }: Props) {
+  const i18n = useTranslator();
+
   return (
     <div className="designer-section">
       <div className="designer-section-head">
-        <strong>Sección {index + 1}</strong>
+        <strong>
+          {i18n("Sección")} {index + 1}
+        </strong>
         <div>
           <button
             type="button"
             disabled={index === 0}
             onClick={() => onMove(-1)}
-            aria-label="Subir sección"
+            aria-label={i18n("Subir sección")}
           >
             ↑
           </button>
@@ -37,34 +42,34 @@ export default function SectionEditor({
             type="button"
             disabled={index === sectionCount - 1}
             onClick={() => onMove(1)}
-            aria-label="Bajar sección"
+            aria-label={i18n("Bajar sección")}
           >
             ↓
           </button>
           <button
             type="button"
             onClick={onRemove}
-            aria-label="Eliminar sección"
+            aria-label={i18n("Eliminar sección")}
           >
             ×
           </button>
         </div>
       </div>
       <label>
-        Icono
+        {i18n("Icono")}{" "}
         <Listbox
           value={section.icon}
           onValueChange={(value) => onUpdate({ icon: value })}
         >
           {Object.entries(icons).map(([key, symbol]) => (
             <option key={key} value={key}>
-              {symbol} {key}
+              {i18n(symbol)}
             </option>
           ))}
         </Listbox>
       </label>
       <label>
-        Encabezado
+        {i18n("Encabezado")}{" "}
         <input
           maxLength={120}
           value={section.heading}
@@ -72,7 +77,7 @@ export default function SectionEditor({
         />
       </label>
       <label>
-        Texto
+        {i18n("Texto")}{" "}
         <textarea
           rows={3}
           maxLength={2000}
@@ -90,15 +95,15 @@ export default function SectionEditor({
         />
       )}
       <label>
-        Imagen
+        {i18n("Imagen")}{" "}
         <Listbox
           value={section.photoKey || ""}
           onValueChange={(value) => onUpdate({ photoKey: value })}
         >
-          <option value="">Sin imagen</option>
+          <option value="">{i18n("Sin imagen")}</option>
           {photos.map((key, n) => (
             <option key={key} value={key}>
-              Imagen {n + 1}
+              {i18n("Imagen")} {n + 1}
             </option>
           ))}
         </Listbox>

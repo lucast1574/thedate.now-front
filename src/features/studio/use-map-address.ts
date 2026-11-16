@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { api } from "@/lib/api/client";
 import type { Event } from "@/lib/events/types";
@@ -8,6 +10,8 @@ export function useMapAddress(
   setDraft: Dispatch<SetStateAction<Event>>,
   manual = false,
 ) {
+  const i18n = useTranslator();
+
   const [attempt, setAttempt] = useState(0);
   const [resolvingMap, setResolvingMap] = useState(false);
   const [mapStatus, setMapStatus] = useState("");
@@ -17,13 +21,13 @@ export function useMapAddress(
     let active = true;
     const timer = window.setTimeout(async () => {
       setResolvingMap(true);
-      setMapStatus("Buscando la dirección del enlace…");
+      setMapStatus(i18n("Buscando la dirección del enlace…"));
       try {
         const result = await api<{
           address: string;
           latitude?: number;
           longitude?: number;
-        }>("/api/backend/maps/resolve", "POST", { url });
+        }>("/api/backend/maps/resolve", "POST", { url }, i18n);
         if (active) {
           setDraft((current) =>
             current.mapUrl.trim() === url &&
@@ -43,14 +47,17 @@ export function useMapAddress(
               : current,
           );
           setMapStatus(
-            "Ubicación encontrada automáticamente. © OpenStreetMap contributors",
+            i18n(
+              "Ubicación encontrada automáticamente. © OpenStreetMap contributors",
+            ),
           );
         }
       } catch (err) {
         if (active)
           setMapStatus(
-            "No pudimos obtener la ubicación. Reintenta o pega otro enlace de Google Maps. " +
-              (err as Error).message.replace(/Escríbela manualmente.*$/, ""),
+            i18n(
+              "No pudimos obtener la ubicación. Reintenta o pega otro enlace de Google Maps. ",
+            ) + (err as Error).message.replace(/Escríbela manualmente.*$/, ""),
           );
       } finally {
         if (active) setResolvingMap(false);
@@ -67,6 +74,7 @@ export function useMapAddress(
     attempt,
     setDraft,
     manual,
+    i18n,
   ]);
   return {
     resolvingMap: resolvingMap && !draft.location && !manual,

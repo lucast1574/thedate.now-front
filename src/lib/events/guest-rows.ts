@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { GuestFields, Kind } from "./types";
 import type { Gender } from "./seating";
 import { guestCategory } from "./guest-categories";
@@ -25,8 +26,9 @@ const gender = (value: string): Gender => {
 export function parseGuestRows(
   rows: string[][],
   kind: Kind = "wedding",
+  i18n: Translator = spanishTranslator,
 ): GuestFields[] {
-  const report = collectGuestRows(rows, kind);
+  const report = collectGuestRows(rows, kind, i18n);
   if (report.issues.length) {
     const issue = report.issues[0];
     throw new Error(`Revisa la fila ${issue.row}: ${issue.message}`);
@@ -35,7 +37,11 @@ export function parseGuestRows(
     throw new Error("Importa entre 1 y 500 invitados por archivo.");
   return report.guests;
 }
-export function collectGuestRows(rows: string[][], kind: Kind = "wedding") {
+export function collectGuestRows(
+  rows: string[][],
+  kind: Kind = "wedding",
+  i18n: Translator = spanishTranslator,
+) {
   const headerRow = rows.slice(0, 20).findIndex((row) => {
     const labels = row.map((cell) => cell.trim().toLowerCase());
     return (
@@ -127,6 +133,7 @@ export function collectGuestRows(rows: string[][], kind: Kind = "wedding") {
         family: guestCategory(
           field("categoria", "categoría", "familia", "grupo"),
           kind,
+          i18n,
         ),
         companions: names.map((name, i) => ({
           name,

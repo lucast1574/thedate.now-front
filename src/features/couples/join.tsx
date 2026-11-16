@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api/client";
@@ -19,6 +21,8 @@ export default function Join({
   token: string;
   googleEnabled: boolean;
 }) {
+  const i18n = useTranslator();
+
   const router = useRouter();
   const [invite, setInvite] = useState<Invite | null>(null),
     [user, setUser] = useState<User | null>(null),
@@ -29,8 +33,8 @@ export default function Join({
   useEffect(() => {
     let active = true;
     Promise.all([
-      api<Invite>(`/api/join/${token}`),
-      api<User>("/api/session").catch(() => null),
+      api<Invite>(`/api/join/${token}`, undefined, undefined, i18n),
+      api<User>("/api/session", undefined, undefined, i18n).catch(() => null),
     ])
       .then(async ([i, u]) => {
         if (!active) return;
@@ -42,6 +46,8 @@ export default function Join({
             const result = await api<{ eventId: string }>(
               `/api/join/${token}`,
               "POST",
+              undefined,
+              i18n,
             );
             router.replace(`/editor/${encodeURIComponent(result.eventId)}`);
           } catch (e) {
@@ -52,21 +58,26 @@ export default function Join({
         }
       })
       .catch(() => {
-        if (active) setMessage("Esta invitación ya no está disponible.");
+        if (active) setMessage(i18n("Esta invitación ya no está disponible."));
       });
     return () => {
       active = false;
     };
-  }, [token, router]);
+  }, [token, router, i18n]);
   async function signIn(fields: AccountFields, mode: AuthMode) {
     setBusy(true);
     setMessage("");
     try {
-      const result = await api<{ user: User }>("/api/session", "POST", {
-        ...fields,
-        action: mode,
-        role: "user",
-      });
+      const result = await api<{ user: User }>(
+        "/api/session",
+        "POST",
+        {
+          ...fields,
+          action: mode,
+          role: "user",
+        },
+        i18n,
+      );
       setUser(result.user);
       if (result.user.email === invite?.email) await accept();
     } catch (e) {
@@ -82,6 +93,8 @@ export default function Join({
       const result = await api<{ eventId: string }>(
         `/api/join/${token}`,
         "POST",
+        undefined,
+        i18n,
       );
       setEventId(result.eventId);
       setAccepted(true);
@@ -100,12 +113,18 @@ export default function Join({
           <Brand wedding={wedding} />
         </a>
       </header>
-      <section className="join-intro" aria-label="Invitación para colaborar">
+      <section
+        className="join-intro"
+        aria-label={i18n("Invitación para colaborar")}
+      >
         {invite && (
           <p className="join-summary">
-            Te invitaron a colaborar en <strong>{invite.eventTitle}</strong> con{" "}
-            <strong>{invite.email}</strong>. Tendrás acceso al diseño, invitados
-            y mesas de este evento.
+            {i18n("Te invitaron a colaborar en")}{" "}
+            <strong>{invite.eventTitle}</strong> {i18n("con")}{" "}
+            <strong>{invite.email}</strong>
+            {i18n(
+              ". Tendrás acceso al diseño, invitados y mesas de este evento.",
+            )}
           </p>
         )}
         {(!invite || user) && <Alert>{message}</Alert>}
@@ -114,7 +133,7 @@ export default function Join({
             className="office-button"
             href={`${invite?.studioUrl}/?event=${encodeURIComponent(eventId)}`}
           >
-            Entrar al evento ↗
+            {i18n("Entrar al evento ↗")}
           </a>
         )}
         {invite &&
@@ -134,23 +153,27 @@ export default function Join({
             />
           ) : (
             <>
-              <p>Sesión: {user.email}</p>
+              <p>
+                {i18n("Sesión:")} {user.email}
+              </p>
               {user.email === invite.email ? (
                 <button
                   className="office-button"
                   disabled={busy}
                   onClick={() => void accept()}
                 >
-                  Aceptar acceso a este evento
+                  {i18n("Aceptar acceso a este evento")}
                 </button>
               ) : (
                 <button
                   className="office-button"
                   onClick={() =>
-                    void api("/api/session", "DELETE").then(() => setUser(null))
+                    void api("/api/session", "DELETE", undefined, i18n).then(
+                      () => setUser(null),
+                    )
                   }
                 >
-                  Entrar con el correo invitado
+                  {i18n("Entrar con el correo invitado")}
                 </button>
               )}
             </>

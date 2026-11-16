@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function TextSpacingFields({
   item,
@@ -8,23 +9,25 @@ export default function TextSpacingFields({
   onChange: (patch: Partial<FlyerElement>) => void;
   compact?: boolean;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className={compact ? "canvas-text-spacing" : "studio-type-detail"}>
       {!compact && (
         <button
           type="button"
-          aria-label="Cursiva"
+          aria-label={i18n("Cursiva")}
           aria-pressed={!!item.italic}
           onClick={() => onChange({ italic: !item.italic })}
         >
-          <i>Cursiva</i>
+          <i>{i18n("Cursiva")}</i>
         </button>
       )}
       <label>
-        Interlineado{" "}
+        {i18n("Interlineado")}{" "}
         {!compact && <output>{(item.lineHeight ?? 1.2).toFixed(2)}</output>}
         <input
-          aria-label="Interlineado"
+          aria-label={i18n("Interlineado")}
           type={compact ? "number" : "range"}
           min="0.8"
           max="2.4"
@@ -38,12 +41,12 @@ export default function TextSpacingFields({
         />
       </label>
       <label>
-        {compact ? "Espaciado" : "Espacio entre letras"}{" "}
+        {compact ? i18n("Espaciado") : i18n("Espacio entre letras")}{" "}
         {!compact && (
           <output>{Math.round((item.letterSpacing ?? 0) * 100)}%</output>
         )}
         <input
-          aria-label="Espacio entre letras"
+          aria-label={i18n("Espacio entre letras")}
           type={compact ? "number" : "range"}
           min="-0.08"
           max="0.3"

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { clamp } from "./flyer/canvas-model";
 import ElementInspector from "./flyer/element-inspector";
@@ -10,11 +11,14 @@ export default function GuestTextEditor({
   onChange: (patch: Partial<FlyerElement>) => void;
   onRemove: () => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="guest-text-editor">
       <p className="editor-hint">
-        Cada invitado verá su nombre y apellido desde su enlace de WhatsApp. El
-        nombre se conserva automáticamente. Área de texto: 720 × 240.
+        {i18n(
+          "Cada invitado verá su nombre y apellido desde su enlace de WhatsApp. El nombre se conserva automáticamente. Área de texto: 720 × 240.",
+        )}
       </p>
       <ElementInspector
         item={item}

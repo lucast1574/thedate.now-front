@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { createPortal } from "react-dom";
 import {
   createContext,
@@ -32,6 +34,8 @@ export default function PickerField({
   required?: boolean;
   children: ReactNode;
 }) {
+  const i18n = useTranslator();
+
   const id = useId(),
     button = useRef<HTMLButtonElement>(null),
     panel = useRef<HTMLDivElement>(null);
@@ -158,7 +162,7 @@ export default function PickerField({
               <button
                 type="button"
                 onClick={close}
-                aria-label="Cerrar selector"
+                aria-label={i18n("Cerrar selector")}
               >
                 ×
               </button>

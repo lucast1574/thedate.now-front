@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Link from "next/link";
 import { partySeats } from "@/lib/events/attendees";
 import { useClock } from "@/components/use-clock";
@@ -20,6 +21,8 @@ export default function GuestPanel({
   onAdd: (fields: GuestFields) => Promise<boolean>;
   sendInvitations: () => void;
 }) {
+  const i18n = useTranslator();
+
   const now = useClock();
   const occupied = guests
     .filter(
@@ -33,11 +36,11 @@ export default function GuestPanel({
   if (selected.paymentStatus !== "paid")
     return (
       <section className="guest-locked">
-        <h2>Invitados y WhatsApp</h2>
+        <h2>{i18n("Invitados y WhatsApp")}</h2>
         <p>
-          Guarda y previsualiza tu diseño gratis. Paga para habilitar la lista
-          de invitados y publicar tu invitación; después podrás enviarla por
-          WhatsApp.
+          {i18n(
+            "Guarda y previsualiza tu diseño gratis. Paga para habilitar la lista de invitados y publicar tu invitación; después podrás enviarla por WhatsApp.",
+          )}
         </p>
       </section>
     );
@@ -46,14 +49,17 @@ export default function GuestPanel({
       <div className="office-divider" />
       <div className="action-row">
         <div>
-          <p className="office-kicker">LISTA DE INVITADOS</p>
-          <h2>Confirmaciones</h2>
+          <p className="office-kicker">{i18n("LISTA DE INVITADOS")}</p>
+          <h2>{i18n("Confirmaciones")}</h2>
         </div>
         <div className="seat-stat">
           <strong>{occupied}</strong>
           <span>
-            / {selected.capacityUnlimited ? "sin límite" : selected.capacity}{" "}
-            cupos reservados
+            /{" "}
+            {selected.capacityUnlimited
+              ? i18n("sin límite")
+              : selected.capacity}{" "}
+            {i18n("cupos reservados")}
           </span>
         </div>
       </div>
@@ -63,15 +69,16 @@ export default function GuestPanel({
           disabled={busy || guests.every((g) => !!g.sentAt)}
           onClick={sendInvitations}
         >
-          Enviar invitaciones por WhatsApp ↗
+          {i18n("Enviar invitaciones por WhatsApp ↗")}
         </button>
       )}
       <p className="guest-hint">
-        Cada persona recibe su propio enlace para responder. Puedes copiarlo
-        antes de enviar WhatsApp.
+        {i18n(
+          "Cada persona recibe su propio enlace para responder. Puedes copiarlo antes de enviar WhatsApp.",
+        )}
       </p>
       <Link className="office-button" href={`/manager/${selected.id}`}>
-        Abrir gestor de invitados y plano de mesas ↗
+        {i18n("Abrir gestor de invitados y plano de mesas ↗")}
       </Link>
       <GuestForm kind={selected.kind} busy={busy} onAdd={onAdd} />
       <GuestImport

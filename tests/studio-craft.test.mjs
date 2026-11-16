@@ -43,7 +43,7 @@ test("headlines fit their longest word; spacing and line height participate in f
   );
 });
 test("all templates have individually editable art and preserve the element budget", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (t) => t.mode === "flyer",
   )) {
     for (const { canvas } of templateSequence(template)) {
@@ -59,7 +59,7 @@ test("all templates have individually editable art and preserve the element budg
   }
 });
 test("switching collections does not accumulate generated decoration or lose photo framing", () => {
-  const templates = invitationTemplates.filter(
+  const templates = invitationTemplates().filter(
     (t) => t.kind === "wedding" && t.mode === "flyer",
   );
   let draft = applyCompleteTemplate(blankEvent("wedding"), templates[0]);

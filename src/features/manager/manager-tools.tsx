@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import ManagerRecords from "./manager-records";
 import InvitationDelivery from "./invitation-delivery";
 import GuestWorkspace from "./guest-workspace";
@@ -12,6 +13,7 @@ export default function ManagerTools({
   manager: ReturnType<typeof useManager>;
   tab: string;
 }) {
+  const i18n = useTranslator();
   const { event, guests, plan, user, busy, dirty, stale } = manager;
   if (!event) return null;
   if (manager.readOnly) return <ManagerRecords manager={manager} tab={tab} />;
@@ -47,14 +49,17 @@ export default function ManagerTools({
               dirty={dirty}
               stale={stale}
               onExport={(task) => {
-                void manager.run(task, "Excel generado.");
+                void manager.run(task, i18n("Excel generado."));
               }}
             />
           }
           onChange={manager.update}
           autosave={manager.autosave}
           onReload={() => {
-            void manager.run(() => manager.refresh(true), "Plano recargado.");
+            void manager.run(
+              () => manager.refresh(true),
+              i18n("Plano recargado."),
+            );
           }}
         />
       )}

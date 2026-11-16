@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef } from "react";
 import { recoveryKey } from "./silent-recovery";
 import { api } from "@/lib/api/client";
@@ -11,6 +12,8 @@ export function useSilentDesign(
   event: DesignEvent,
   onError: (message: string) => void,
 ) {
+  const i18n = useTranslator();
+
   const latest = useRef(draft);
   const saved = useRef(event);
   const version = useRef(event.designVersion || 0);
@@ -28,12 +31,14 @@ export function useSilentDesign(
   }, [draft]);
   async function persist() {
     try {
-      while (!sameDesign(latest.current, saved.current)) {
+      while (!sameDesign(latest.current, saved.current, i18n)) {
         const snapshot = latest.current;
         const sections = snapshot.sections || [];
         if (!validDesignDressColors(sections))
           throw new Error(
-            "Revisa los nombres y colores del dress code para guardar tus cambios.",
+            i18n(
+              "Revisa los nombres y colores del dress code para guardar tus cambios.",
+            ),
           );
         if (
           sections.some((s) =>
@@ -47,12 +52,16 @@ export function useSilentDesign(
           )
         )
           throw new Error(
-            "Revisa el enlace de Google Maps para guardar tus cambios.",
+            i18n("Revisa el enlace de Google Maps para guardar tus cambios."),
           );
         const result = await api<{ designVersion: number }>(
           `/api/backend/events/${snapshot.id}/design`,
           "PATCH",
-          { ...designPayload(snapshot), expectedVersion: version.current },
+          {
+            ...designPayload(snapshot, i18n),
+            expectedVersion: version.current,
+          },
+          i18n,
         );
         version.current = result.designVersion;
         saved.current = snapshot;
@@ -68,7 +77,11 @@ export function useSilentDesign(
       onError("");
       return true;
     } catch (error) {
-      onError(`No pudimos guardar tus cambios. ${(error as Error).message}`);
+      onError(
+        i18n("No pudimos guardar tus cambios. {v0}", {
+          v0: (error as Error).message,
+        }),
+      );
       return false;
     }
   }
@@ -102,9 +115,14 @@ export function useSilentDesign(
     if (!event.publishedAt) return false;
     if (!(await save())) return false;
     try {
-      await api(`/api/backend/events/${event.id}/design/publish`, "POST", {
-        expectedVersion: version.current,
-      });
+      await api(
+        `/api/backend/events/${event.id}/design/publish`,
+        "POST",
+        {
+          expectedVersion: version.current,
+        },
+        i18n,
+      );
       return true;
     } catch (error) {
       onError((error as Error).message);

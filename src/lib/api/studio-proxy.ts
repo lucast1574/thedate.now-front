@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import "server-only";
 import { sessionToken, clearSession } from "@/lib/auth/session";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
@@ -9,15 +10,16 @@ export async function proxyStudio(
   request: Request,
   path: string[],
   method: "GET" | "POST" | "PATCH" | "DELETE",
+  i18n: Translator = spanishTranslator,
 ) {
   const joined = path.join("/");
   if (!allowedPath.test(joined))
-    return Response.json({ error: "Not found" }, { status: 404 });
+    return Response.json({ error: i18n("Not found") }, { status: 404 });
   if (method !== "GET" && invalidOrigin(request))
-    return Response.json({ error: "Invalid origin" }, { status: 403 });
+    return Response.json({ error: i18n("Invalid origin") }, { status: 403 });
   const token = await sessionToken();
   if (!token)
-    return Response.json({ error: "Sign in required" }, { status: 401 });
+    return Response.json({ error: i18n("Sign in required") }, { status: 401 });
   let body: string | undefined;
   if (method !== "GET" && method !== "DELETE") {
     try {
@@ -30,8 +32,8 @@ export async function proxyStudio(
         {
           error:
             error instanceof RequestBodyTooLarge
-              ? "El reporte supera el tamaño permitido."
-              : "No se pudo leer la solicitud.",
+              ? i18n("El reporte supera el tamaño permitido.")
+              : i18n("No se pudo leer la solicitud."),
         },
         { status: error instanceof RequestBodyTooLarge ? 413 : 400 },
       );

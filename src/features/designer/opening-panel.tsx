@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
@@ -15,9 +16,11 @@ export default function OpeningPanel({
 }: {
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
+  const i18n = useTranslator();
+
   const { draft, setDraft } = editor;
   const original = draft.opening || {
-    ...defaultOpening(draft.kind === "wedding"),
+    ...defaultOpening(draft.kind === "wedding", undefined, undefined, i18n),
     enabled: false,
   };
   const opening = resolvedOpening(draft, original)!;
@@ -31,23 +34,25 @@ export default function OpeningPanel({
     <div className="opening-editor opening-editor-simple">
       <div className="opening-editor-state">
         <span>
-          {opening.enabled ? "Apertura de tu invitación" : "Entrada directa"}
+          {opening.enabled
+            ? i18n("Apertura de tu invitación")
+            : i18n("Entrada directa")}
         </span>
         <button onClick={() => patch({ enabled: !opening.enabled })}>
           <Icon name={opening.enabled ? "close" : "plus"} />
-          {opening.enabled ? "Quitar apertura" : "Añadir apertura"}
+          {opening.enabled ? i18n("Quitar apertura") : i18n("Añadir apertura")}
         </button>
       </div>
       <OpeningLivePreview key={opening.style} draft={draft} opening={opening} />
       <section className="opening-preset-picker">
-        <h3>Elige cómo empieza</h3>
-        <p>Seis formas de descubrir tu invitación.</p>
+        <h3>{i18n("Elige cómo empieza")}</h3>
+        <p>{i18n("Seis formas de descubrir tu invitación.")}</p>
         <div
           className="opening-preset-grid"
           role="group"
-          aria-label="Estilo de animación de apertura"
+          aria-label={i18n("Estilo de animación de apertura")}
         >
-          {openingPresets.map((preset) => (
+          {openingPresets(i18n).map((preset) => (
             <button
               key={preset.id}
               aria-pressed={opening.enabled && opening.style === preset.id}
@@ -88,12 +93,14 @@ export default function OpeningPanel({
             onClick={() => setPreview(true)}
           >
             <Icon name="eye" />
-            Ver con mi invitación
+            {i18n("Ver con mi invitación")}
           </button>
         </>
       )}
       <small className="editor-hint">
-        Tu canvas se mantiene. Guarda el diseño para publicar la apertura.
+        {i18n(
+          "Tu canvas se mantiene. Guarda el diseño para publicar la apertura.",
+        )}
       </small>
       {preview && (
         <PreviewModal

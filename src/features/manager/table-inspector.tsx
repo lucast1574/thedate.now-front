@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { ReactNode } from "react";
 import type { Attendee, SeatingPlan, SeatingTable } from "@/lib/events/seating";
 import TableProperties from "./table-properties";
@@ -18,6 +19,8 @@ export default function TableInspector({
   onDelete: () => void;
   actions?: ReactNode;
 }) {
+  const i18n = useTranslator();
+
   const assigned = people.filter(
     (p) => plan.assignments[p.id] === table.id,
   ).length;
@@ -28,17 +31,17 @@ export default function TableInspector({
     >
       <section className="table-config">
         <header className="table-organizer-heading">
-          <small>Mesa seleccionada</small>
+          <small>{i18n("Mesa seleccionada")}</small>
           <h3>{table.name}</h3>
           <p>
-            {assigned} personas sentadas ·{" "}
-            {Math.max(0, table.capacity - assigned)} asientos libres
+            {assigned} {i18n("personas sentadas ·")}{" "}
+            {Math.max(0, table.capacity - assigned)} {i18n("asientos libres")}
           </p>
         </header>
         <div
           className="table-occupancy"
           role="progressbar"
-          aria-label={`Ocupación de ${table.name}`}
+          aria-label={i18n("Ocupación de {v0}", { v0: table.name })}
           aria-valuemin={0}
           aria-valuemax={table.capacity}
           aria-valuenow={assigned}
@@ -67,7 +70,9 @@ export default function TableInspector({
           {actions}
           <RemoveSeatingItem
             name={table.name}
-            description="Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente."
+            description={i18n(
+              "Las personas de esta mesa quedarán sin asignar. El cambio se guardará automáticamente.",
+            )}
             onRemove={onDelete}
           />
         </div>

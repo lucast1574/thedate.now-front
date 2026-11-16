@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { Gift } from "@/lib/events/wishlist";
@@ -8,6 +9,8 @@ type Metadata = {
   url?: string;
 };
 export function useGiftDraft(eventId: string, gift?: Gift) {
+  const i18n = useTranslator();
+
   const [draft, setDraft] = useState<Gift>(
     gift || {
       id: crypto.randomUUID(),
@@ -52,7 +55,7 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
       if (url.protocol !== "https:" || url.username || url.password)
         throw new Error();
     } catch {
-      setHint("Usa el enlace HTTPS completo del producto.");
+      setHint(i18n("Usa el enlace HTTPS completo del producto."));
       return;
     }
     setFetching(true);
@@ -62,6 +65,7 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
         `/api/backend/events/${eventId}/wishlist/metadata`,
         "POST",
         { url: draft.url.trim() },
+        i18n,
       );
       if (current !== attempt.current) return;
       autoAttempted.current = result.url || before.url.trim();
@@ -83,18 +87,22 @@ export function useGiftDraft(eventId: string, gift?: Gift) {
       }));
       setHint(
         result.title && result.imageUrl
-          ? "Encontramos el producto. Revisa su ficha antes de guardarlo."
-          : "La tienda compartió datos parciales. Completa el nombre o la imagen; puedes guardar el regalo igualmente.",
+          ? i18n("Encontramos el producto. Revisa su ficha antes de guardarlo.")
+          : i18n(
+              "La tienda compartió datos parciales. Completa el nombre o la imagen; puedes guardar el regalo igualmente.",
+            ),
       );
     } catch {
       if (current === attempt.current)
         setHint(
-          "La tienda no compartió la ficha del producto. Tu enlace se conserva; completa el nombre y añade una imagen.",
+          i18n(
+            "La tienda no compartió la ficha del producto. Tu enlace se conserva; completa el nombre y añade una imagen.",
+          ),
         );
     } finally {
       if (current === attempt.current) setFetching(false);
     }
-  }, [draft, eventId]);
+  }, [draft, eventId, i18n]);
   useEffect(() => {
     const raw = draft.url.trim();
     if (!raw || raw === autoAttempted.current) return;

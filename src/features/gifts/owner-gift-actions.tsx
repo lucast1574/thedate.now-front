@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import { useInlineConfirmation } from "@/components/use-inline-confirmation";
 export default function OwnerGiftActions({
@@ -17,6 +18,8 @@ export default function OwnerGiftActions({
   onRemove: () => void;
   onReservation: (action: "release" | "delivered" | "pending") => void;
 }) {
+  const i18n = useTranslator();
+
   const { open, setOpen, trigger, cancel } = useInlineConfirmation();
   return (
     <div
@@ -29,16 +32,18 @@ export default function OwnerGiftActions({
         <div
           className="gift-owner-confirm"
           role="group"
-          aria-label={reserved ? "Liberar reserva" : "Eliminar regalo"}
+          aria-label={
+            reserved ? i18n("Liberar reserva") : i18n("Eliminar regalo")
+          }
         >
           <strong>
             {reserved
-              ? "¿Liberar este regalo?"
-              : "¿Quitar este regalo de la lista?"}
+              ? i18n("¿Liberar este regalo?")
+              : i18n("¿Quitar este regalo de la lista?")}
           </strong>
           <p>
             {reserved
-              ? "Otra persona podrá elegirlo al liberar la reserva."
+              ? i18n("Otra persona podrá elegirlo al liberar la reserva.")
               : title}
           </p>
           <div>
@@ -49,7 +54,7 @@ export default function OwnerGiftActions({
               disabled={busy}
               onClick={() => setOpen(false)}
             >
-              Cancelar
+              {i18n("Cancelar")}
             </button>
             <button
               type="button"
@@ -61,7 +66,7 @@ export default function OwnerGiftActions({
                 else onRemove();
               }}
             >
-              {reserved ? "Sí, liberar" : "Sí, quitar"}
+              {reserved ? i18n("Sí, liberar") : i18n("Sí, quitar")}
             </button>
           </div>
         </div>
@@ -75,7 +80,7 @@ export default function OwnerGiftActions({
               onClick={() => onReservation(delivered ? "pending" : "delivered")}
             >
               <Icon name={delivered ? "lucide:undo-2" : "check"} />
-              {delivered ? "Marcar pendiente" : "Marcar recibido"}
+              {delivered ? i18n("Marcar pendiente") : i18n("Marcar recibido")}
             </button>
           ) : (
             <button
@@ -85,7 +90,7 @@ export default function OwnerGiftActions({
               onClick={onEdit}
             >
               <Icon name="lucide:pencil" />
-              Editar
+              {i18n("Editar")}
             </button>
           )}
           <button
@@ -93,13 +98,15 @@ export default function OwnerGiftActions({
             className="gift-owner-remove"
             ref={trigger}
             aria-label={
-              reserved ? `Liberar reserva de ${title}` : `Eliminar ${title}`
+              reserved
+                ? i18n("Liberar reserva de {v0}", { v0: title })
+                : i18n("Eliminar {v0}", { v0: title })
             }
             disabled={busy}
             onClick={() => setOpen(true)}
           >
             <Icon name={reserved ? "lucide:unlink" : "lucide:trash"} />
-            {reserved ? "Liberar" : "Quitar"}
+            {reserved ? i18n("Liberar") : i18n("Quitar")}
           </button>
         </>
       )}

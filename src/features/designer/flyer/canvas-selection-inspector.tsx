@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import CanvasProperties from "./canvas-properties";
 import type { useCanvasWorkspace } from "./use-canvas-workspace";
 import type { useInvitationDesign } from "../use-invitation-design";
@@ -8,6 +9,8 @@ export default function CanvasSelectionInspector({
   editor: ReturnType<typeof useInvitationDesign>;
   workspace: ReturnType<typeof useCanvasWorkspace>;
 }) {
+  const i18n = useTranslator();
+
   const {
     active,
     canvas,
@@ -24,8 +27,10 @@ export default function CanvasSelectionInspector({
     return (
       <p className="canvas-panel-description">
         {selected.locked
-          ? "Desbloquea el elemento para editarlo."
-          : "Alinea, distribuye o agrupa la selección. Pulsa un solo elemento para editar su contenido."}
+          ? i18n("Desbloquea el elemento para editarlo.")
+          : i18n(
+              "Alinea, distribuye o agrupa la selección. Pulsa un solo elemento para editar su contenido.",
+            )}
       </p>
     );
   return (

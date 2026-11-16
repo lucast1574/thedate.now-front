@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import "server-only";
 import { createHash } from "node:crypto";
 import type { Metadata } from "next";
@@ -17,13 +18,16 @@ export async function shareEvent(host: string) {
   return event && (!pinned || event.id === pinned.eventId) ? event : null;
 }
 
-export function shareMetadata(event: PublicEvent): Metadata {
+export function shareMetadata(
+  event: PublicEvent,
+  i18n: Translator = spanishTranslator,
+): Metadata {
   const brand = event.kind === "wedding" ? "Save the Date" : "The Date";
   const url = `https://${invitationHost(event.kind, event.slug)}`;
   const title = `${event.title} | ${brand}`;
   const description = [
-    "Abre tu invitación y conoce todos los detalles de la celebración.",
-    formatEventDate(event.startAt, event.timeZone),
+    i18n("Abre tu invitación y conoce todos los detalles de la celebración."),
+    formatEventDate(event.startAt, event.timeZone, i18n),
   ].join(" ");
   const version = createHash("sha256")
     .update(JSON.stringify(event))
@@ -34,7 +38,7 @@ export function shareMetadata(event: PublicEvent): Metadata {
       url: `${url}/api/invitation-preview?v=${version}`,
       width: 1200,
       height: 630,
-      alt: `Invitación a ${event.title}`,
+      alt: i18n("Invitación a {v0}", { v0: event.title }),
       type: "image/png",
     },
   ];
@@ -44,7 +48,12 @@ export function shareMetadata(event: PublicEvent): Metadata {
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      locale: "es_ES",
+      locale:
+        i18n.locale === "pt"
+          ? "pt_BR"
+          : i18n.locale === "en"
+            ? "en_US"
+            : "es_ES",
       siteName: brand,
       title,
       description,

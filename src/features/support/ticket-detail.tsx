@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
@@ -20,6 +21,8 @@ export default function TicketDetail({
   admin: boolean;
   onUpdated: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [state, setState] = useState(ticket.state),
     [note, setNote] = useState("");
   const [busy, setBusy] = useState(false),
@@ -28,11 +31,16 @@ export default function TicketDetail({
     setBusy(true);
     setError("");
     try {
-      await api(`/api/backend/admin/support/tickets/${ticket.id}`, "PATCH", {
-        state,
-        note: note.trim(),
-        version: ticket.version,
-      });
+      await api(
+        `/api/backend/admin/support/tickets/${ticket.id}`,
+        "PATCH",
+        {
+          state,
+          note: note.trim(),
+          version: ticket.version,
+        },
+        i18n,
+      );
       onUpdated();
     } catch (err) {
       setError((err as Error).message);
@@ -41,12 +49,17 @@ export default function TicketDetail({
     }
   }
   return (
-    <article className="support-detail" aria-label="Detalle del reporte">
+    <article
+      className="support-detail"
+      aria-label={i18n("Detalle del reporte")}
+    >
       <span className="support-state" data-state={ticket.state}>
-        {ticketStateLabel(ticket.state)}
+        {ticketStateLabel(ticket.state, i18n)}
       </span>
       <h3>{ticket.title}</h3>
-      <p className="support-hint">Enviado el {ticketDate(ticket.createdAt)}</p>
+      <p className="support-hint">
+        {i18n("Enviado el")} {ticketDate(ticket.createdAt, i18n.locale)}
+      </p>
       {ticket.requester && (
         <div className="support-requester">
           <strong>{ticket.requester.name}</strong>
@@ -59,18 +72,22 @@ export default function TicketDetail({
           {ticket.images.map((url, index) => (
             <a key={url} href={url} target="_blank" rel="noopener noreferrer">
               <Photo src={url} alt={`Captura adjunta ${index + 1}`} />
-              <span>Abrir captura {index + 1}</span>
+              <span>
+                {i18n("Abrir captura")} {index + 1}
+              </span>
             </a>
           ))}
         </div>
       )}
-      <h4>Seguimiento</h4>
+      <h4>{i18n("Seguimiento")}</h4>
       <ol className="support-history">
         {ticket.history.map((change, index) => (
           <li key={`${change.at}-${index}`}>
             <div>
-              <strong>{ticketStateLabel(change.state)}</strong>
-              <time dateTime={change.at}>{ticketDate(change.at)}</time>
+              <strong>{ticketStateLabel(change.state, i18n)}</strong>
+              <time dateTime={change.at}>
+                {ticketDate(change.at, i18n.locale)}
+              </time>
             </div>
             {change.note && <p>{change.note}</p>}
           </li>
@@ -78,17 +95,17 @@ export default function TicketDetail({
       </ol>
       {admin && ticket.state !== "DONE" && (
         <div className="support-update">
-          <h4>Actualizar reporte</h4>
+          <h4>{i18n("Actualizar reporte")}</h4>
           <Alert>{error}</Alert>
           <label>
-            Estado
+            {i18n("Estado")}{" "}
             <Listbox
-              aria-label="Estado del reporte"
+              aria-label={i18n("Estado del reporte")}
               value={state}
               onValueChange={(value) => setState(value as Ticket["state"])}
               disabled={busy}
             >
-              {supportStates.map((item) => (
+              {supportStates(i18n).map((item) => (
                 <option key={item.id} value={item.id}>
                   {item.label}
                 </option>
@@ -96,13 +113,15 @@ export default function TicketDetail({
             </Listbox>
           </label>
           <label>
-            Respuesta al usuario
+            {i18n("Respuesta al usuario")}{" "}
             <textarea
               rows={3}
               maxLength={1500}
               value={note}
               onChange={(event) => setNote(event.target.value)}
-              placeholder="Indica qué revisaste o qué información necesitas."
+              placeholder={i18n(
+                "Indica qué revisaste o qué información necesitas.",
+              )}
               disabled={busy}
             />
           </label>
@@ -111,14 +130,15 @@ export default function TicketDetail({
             onClick={() => void save()}
             disabled={busy || (state === ticket.state && !note.trim())}
           >
-            {busy ? "Guardando…" : "Guardar seguimiento"}
+            {busy ? i18n("Guardando…") : i18n("Guardar seguimiento")}
           </ActionButton>
         </div>
       )}
       {ticket.state === "DONE" && (
         <p className="support-closed">
-          Reporte resuelto. Si encuentras otro problema, puedes crear un nuevo
-          reporte.
+          {i18n(
+            "Reporte resuelto. Si encuentras otro problema, puedes crear un nuevo reporte.",
+          )}
         </p>
       )}
     </article>

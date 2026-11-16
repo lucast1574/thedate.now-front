@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { formatEventDate } from "@/lib/events/date";
 
 type Details = {
@@ -15,17 +16,22 @@ export default function EventDetails({
   event: Details;
   variant?: "invitation" | "rsvp";
 }) {
+  const i18n = useTranslator();
+
   const virtual = event.isVirtual;
   const fields = {
     when: {
-      label: "CUÁNDO",
-      value: formatEventDate(event.startAt, event.timeZone),
+      label: i18n("CUÁNDO"),
+      value: formatEventDate(event.startAt, event.timeZone, i18n),
     },
     where: {
-      label: virtual ? "MODALIDAD" : "DÓNDE",
-      value: virtual ? "En línea" : event.location,
+      label: virtual ? "MODALIDAD" : i18n("DÓNDE"),
+      value: virtual ? i18n("En línea") : event.location,
     },
-    who: { label: "ORGANIZA", value: event.organizer || "El anfitrión" },
+    who: {
+      label: i18n("ORGANIZA"),
+      value: event.organizer || i18n("El anfitrión"),
+    },
   };
   const order =
     variant === "rsvp"

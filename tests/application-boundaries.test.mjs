@@ -58,7 +58,7 @@ test("24 complete templates per product never insert media from the user's libra
     { globals: { crypto } },
   );
   for (const kind of ["general", "wedding"]) {
-    const catalog = invitationTemplates.filter(
+    const catalog = invitationTemplates().filter(
       (item) => item.kind === kind && item.mode === "flyer",
     );
     assert.equal(catalog.length, 24);

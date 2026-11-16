@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -8,6 +9,8 @@ export default function DressColorRules({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const colors = item.dressExcludedColors || [];
   function patch(index: number, value: Partial<(typeof colors)[number]>) {
     onChange({
@@ -19,30 +22,38 @@ export default function DressColorRules({
   return (
     <section className="dress-color-settings">
       <header>
-        <h4>Colores no permitidos</h4>
+        <h4>{i18n("Colores no permitidos")}</h4>
         <span>{colors.length}/8</span>
       </header>
-      <p>Se muestran en el dress code con su nombre y una muestra tachada.</p>
+      <p>
+        {i18n(
+          "Se muestran en el dress code con su nombre y una muestra tachada.",
+        )}
+      </p>
       {colors.map((rule, index) => (
         <div className="dress-color-editor-row" key={index}>
           <ColorPicker
-            label={`Color no permitido ${index + 1}`}
+            label={i18n("Color no permitido {v0}", { v0: index + 1 })}
             value={rule.color}
             onChange={(color) => patch(index, { color })}
           />
           <label>
-            <span className="sr-only">Nombre del color {index + 1}</span>
+            <span className="sr-only">
+              {i18n("Nombre del color")} {index + 1}
+            </span>
             <input
               required
               maxLength={40}
               value={rule.name}
-              placeholder="Nombre del color"
+              placeholder={i18n("Nombre del color")}
               onChange={(e) => patch(index, { name: e.target.value })}
             />
           </label>
           <button
             type="button"
-            aria-label={`Quitar color ${rule.name || index + 1}`}
+            aria-label={i18n("Quitar color {v0}", {
+              v0: rule.name || index + 1,
+            })}
             onClick={() =>
               onChange({
                 dressExcludedColors: colors.filter((_, n) => n !== index),
@@ -62,14 +73,14 @@ export default function DressColorRules({
             dressExcludedColors: [
               ...colors,
               {
-                name: colors.length ? "Marfil" : "Blanco",
+                name: colors.length ? i18n("Marfil") : i18n("Blanco"),
                 color: colors.length ? "#F5EFE2" : "#FFFFFF",
               },
             ],
           })
         }
       >
-        <Icon name="plus" /> Añadir color no permitido
+        <Icon name="plus" /> {i18n("Añadir color no permitido")}
       </button>
     </section>
   );

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import {
   halfHourTimes,
@@ -12,6 +13,8 @@ export default function TimePanel({
   value: string;
   onChoose: (value: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const [period, setPeriod] = useState(() => timeParts(value).period);
   const list = useRef<HTMLDivElement>(null);
   const times = halfHourTimes(period);
@@ -38,11 +41,15 @@ export default function TimePanel({
   }, [period]);
   return (
     <div className="time-panel">
-      <p className="time-hint">Elige una hora, en punto o y media.</p>
-      <div className="time-period" role="group" aria-label="Momento del día">
+      <p className="time-hint">{i18n("Elige una hora, en punto o y media.")}</p>
+      <div
+        className="time-period"
+        role="group"
+        aria-label={i18n("Momento del día")}
+      >
         {[
-          ["AM", "Madrugada y mañana"],
-          ["PM", "Tarde y noche"],
+          ["AM", i18n("Madrugada y mañana")],
+          ["PM", i18n("Tarde y noche")],
         ].map(([key, text]) => (
           <button
             type="button"
@@ -59,7 +66,7 @@ export default function TimePanel({
         ref={list}
         className="time-options"
         role="group"
-        aria-label="Horas disponibles"
+        aria-label={i18n("Horas disponibles")}
       >
         {times.map((time, i) => (
           <button
@@ -97,7 +104,7 @@ export default function TimePanel({
       </div>
       {value && !times.includes(value) && (
         <p className="time-current">
-          Hora actual: <strong>{timeLabel(value)}</strong>
+          {i18n("Hora actual:")} <strong>{timeLabel(value)}</strong>
         </p>
       )}
     </div>

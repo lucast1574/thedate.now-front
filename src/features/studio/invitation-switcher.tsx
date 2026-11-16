@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import { organizationEventDate } from "@/lib/events/organization-events";
 import Listbox from "@/components/listbox";
@@ -14,15 +15,19 @@ export default function InvitationSwitcher({
   error?: string;
   onSelect: (event: Event) => void;
 }) {
+  const i18n = useTranslator();
+
   const invitations = events.filter(
     (event) => !event.isDemo && !eventReadOnly(event),
   );
   if (invitations.length < 2) return null;
   return (
     <div className="workspace-invitation">
-      <span className="workspace-invitation-label">Estás organizando</span>
+      <span className="workspace-invitation-label">
+        {i18n("Estás organizando")}
+      </span>
       <Listbox
-        aria-label="Cambiar invitación"
+        aria-label={i18n("Cambiar invitación")}
         value={selected?.isDemo ? "" : selected?.id || ""}
         menuMinWidth={320}
         renderLabel={(option, trigger) => {
@@ -40,8 +45,10 @@ export default function InvitationSwitcher({
               <span className="invitation-choice-text">
                 <strong>{event.title}</strong>
                 <small>
-                  {organizationEventDate(event)}
-                  {event.paymentStatus !== "paid" ? " · Pendiente de pago" : ""}
+                  {organizationEventDate(event, i18n)}
+                  {event.paymentStatus !== "paid"
+                    ? i18n(" · Pendiente de pago")
+                    : ""}
                 </small>
               </span>
             </span>
@@ -54,13 +61,13 @@ export default function InvitationSwitcher({
       >
         {(!selected || selected.isDemo) && (
           <option value="" disabled>
-            Elige tu invitación
+            {i18n("Elige tu invitación")}
           </option>
         )}
         {invitations.map((event) => (
           <option key={event.id} value={event.id}>
             {event.title}
-            {event.paymentStatus !== "paid" ? " · Pendiente" : ""}
+            {event.paymentStatus !== "paid" ? i18n(" · Pendiente") : ""}
           </option>
         ))}
       </Listbox>

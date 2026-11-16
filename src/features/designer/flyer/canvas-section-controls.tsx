@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import Icon from "@/components/icon";
@@ -20,29 +21,34 @@ export default function CanvasSectionControls({
   onChange: (canvas: FlyerCanvas) => void;
   onBackground?: () => void;
 }) {
+  const i18n = useTranslator();
+
   const index = Math.max(
     0,
     sections.findIndex((s) => s.id === activeId),
   );
   return (
-    <section className="canvas-section-controls" aria-label="Sección y fondo">
-      <span className="section-controls-label">Estás editando</span>
+    <section
+      className="canvas-section-controls"
+      aria-label={i18n("Sección y fondo")}
+    >
+      <span className="section-controls-label">{i18n("Estás editando")}</span>
       <div className="section-controls-row">
         <Listbox
-          aria-label="Sección activa"
+          aria-label={i18n("Sección activa")}
           value={activeId}
           onValueChange={onSelect}
         >
           {sections.map((section, n) => (
             <option key={section.id} value={section.id}>
-              {n + 1}. {section.heading || "Sección sin título"}
+              {n + 1}. {section.heading || i18n("Sección sin título")}
             </option>
           ))}
         </Listbox>
         <button
           className="section-controls-add"
-          aria-label="Añadir sección"
-          title="Añadir sección"
+          aria-label={i18n("Añadir sección")}
+          title={i18n("Añadir sección")}
           onClick={onAdd}
           disabled={sections.length >= 20}
         >
@@ -50,9 +56,9 @@ export default function CanvasSectionControls({
         </button>
       </div>
       <div className="section-controls-background" key={activeId}>
-        <span>Fondo de la sección</span>
+        <span>{i18n("Fondo de la sección")}</span>
         <ColorPicker
-          label={`Color de fondo de la sección ${index + 1}`}
+          label={i18n("Color de fondo de la sección {v0}", { v0: index + 1 })}
           value={canvas.background}
           onChange={(background) =>
             onChange({
@@ -70,7 +76,7 @@ export default function CanvasSectionControls({
           onClick={onBackground}
         >
           <Icon name="image" />
-          Imagen de fondo
+          {i18n("Imagen de fondo")}
         </button>
       )}
     </section>

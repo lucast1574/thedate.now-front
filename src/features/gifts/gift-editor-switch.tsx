@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef } from "react";
 export default function GiftEditorSwitch({
   name,
@@ -10,6 +11,8 @@ export default function GiftEditorSwitch({
   onCancel: () => void;
   onConfirm: () => void;
 }) {
+  const i18n = useTranslator();
+
   const cancel = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     const trigger = document.activeElement as HTMLElement | null;
@@ -22,13 +25,16 @@ export default function GiftEditorSwitch({
     <div
       className="gift-editor-switch"
       role="group"
-      aria-label="Cambiar de regalo"
+      aria-label={i18n("Cambiar de regalo")}
       onKeyDown={(e) => {
         if (e.key === "Escape") onCancel();
       }}
     >
-      <strong>Tienes cambios sin guardar</strong>
-      <p>¿Descartarlos para editar «{name}»?</p>
+      <strong>{i18n("Tienes cambios sin guardar")}</strong>
+      <p>
+        {i18n("¿Descartarlos para editar «")}
+        {name}»?
+      </p>
       <button
         type="button"
         className="gift-secondary"
@@ -36,7 +42,7 @@ export default function GiftEditorSwitch({
         disabled={busy}
         onClick={onCancel}
       >
-        Seguir aquí
+        {i18n("Seguir aquí")}
       </button>
       <button
         type="button"
@@ -44,7 +50,7 @@ export default function GiftEditorSwitch({
         disabled={busy}
         onClick={onConfirm}
       >
-        Descartar y editar
+        {i18n("Descartar y editar")}
       </button>
     </div>
   );

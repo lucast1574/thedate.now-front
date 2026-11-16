@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import {
   sectionBackground,
   type ImageBackground,
@@ -31,6 +32,8 @@ export default function InvitationSections({
   flyer?: boolean;
   photoURL?: (key: string) => string;
 }) {
+  const i18n = useTranslator();
+
   const photo =
     photoURL ??
     ((key: string) =>
@@ -52,7 +55,7 @@ export default function InvitationSections({
             backgroundSlice={sectionBackground(visible, index, backgroundImage)}
             canvas={section.canvas}
             photoURL={photo}
-            label={section.heading || "Lienzo"}
+            label={section.heading || i18n("Lienzo")}
           />
         ) : (
           <section key={section.id} className="invite-section">
@@ -70,14 +73,14 @@ export default function InvitationSections({
                 }}
                 guestName={guestName}
                 photoURL={photo}
-                label="Nombre personalizado del invitado"
+                label={i18n("Nombre personalizado del invitado")}
               />
             )}
             <p>{section.body}</p>
             {section.photoKey && (
               <Photo
                 src={photo(section.photoKey)}
-                alt={section.heading || "Foto de la invitación"}
+                alt={section.heading || i18n("Foto de la invitación")}
               />
             )}
           </section>

@@ -1,12 +1,14 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, localized } from "@/lib/i18n/translator";
 import FlyerGiftLink from "@/components/flyer-gift-link";
 import Icon from "@/components/icon";
 import type { FlyerElement } from "@/lib/events/flyer";
-const gift: FlyerElement = {
+const gift = localized((i18n: Translator): FlyerElement => ({
   id: "preview-gifts",
   type: "text",
   binding: "gift_link",
   link: "/regalos",
-  text: "Nuestra lista de regalos",
+  text: i18n("Nuestra lista de regalos"),
   x: 0,
   y: 0,
   width: 400,
@@ -18,8 +20,8 @@ const gift: FlyerElement = {
   bold: false,
   align: "center",
   actionHint: true,
-  hintText: "Ver regalos",
-};
+  hintText: i18n("Ver regalos"),
+}));
 export default function GiftPreviewInvitation({
   title,
   wedding,
@@ -29,18 +31,26 @@ export default function GiftPreviewInvitation({
   wedding: boolean;
   onOpen: () => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <section
       className="gift-preview-invitation"
-      aria-label="Elemento de regalos en la invitación"
+      aria-label={i18n("Elemento de regalos en la invitación")}
     >
       <div>
-        <span className="gift-preview-label">Así lo encuentra tu invitado</span>
+        <span className="gift-preview-label">
+          {i18n("Así lo encuentra tu invitado")}
+        </span>
         <h3>{title}</h3>
         <p>
           {wedding
-            ? "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás nuestra lista de deseos."
-            : "Tu compañía es lo más importante. Si quieres tener un detalle, aquí encontrarás la lista de deseos."}
+            ? i18n(
+                "Tu compañía es nuestro mejor regalo. Si quieres tener un detalle, aquí encontrarás nuestra lista de deseos.",
+              )
+            : i18n(
+                "Tu compañía es lo más importante. Si quieres tener un detalle, aquí encontrarás la lista de deseos.",
+              )}
         </p>
       </div>
       <div className="gift-preview-element">
@@ -52,14 +62,18 @@ export default function GiftPreviewInvitation({
         >
           <FlyerGiftLink
             item={{
-              ...gift,
-              text: wedding ? "Nuestra lista de regalos" : "Lista de deseos",
+              ...gift(i18n),
+              text: wedding
+                ? i18n("Nuestra lista de regalos")
+                : i18n("Lista de deseos"),
             }}
           />
         </div>
         <p>
-          <Icon name="check" /> La lista se abre directamente. La app reconoce
-          el acceso personal del invitado.
+          <Icon name="check" />{" "}
+          {i18n(
+            "La lista se abre directamente. La app reconoce el acceso personal del invitado.",
+          )}
         </p>
       </div>
     </section>

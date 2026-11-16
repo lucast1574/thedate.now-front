@@ -1,4 +1,7 @@
 "use client";
+import GiftListEmpty from "./gift-list-empty";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import Icon from "@/components/icon";
 import type { GuestGift, GuestWishlist } from "@/lib/events/wishlist";
@@ -26,6 +29,8 @@ export default function GuestWishlistView({
   imageSource: (item: GuestGift) => string | undefined;
   onChoose: (id: string, release: boolean) => Promise<boolean>;
 }) {
+  const i18n = useTranslator();
+
   const [pending, setPending] = useState<{
     item: GuestGift;
     release: boolean;
@@ -49,26 +54,30 @@ export default function GuestWishlistView({
     <>
       <header className="gift-page-heading">
         <span className="gift-event-title">{data.event.title}</span>
-        <Heading>Un detalle para celebrar</Heading>
+        <Heading>{i18n("Un detalle para celebrar")}</Heading>
         <p>
-          {data.guestName ? `${data.guestName}, tu` : "Tu"} compañía es lo más
-          importante. Si quieres tener un detalle, aquí tienes algunas ideas.
+          {data.guestName ? `${data.guestName}, tu` : i18n("Tu")}{" "}
+          {i18n(
+            "compañía es lo más importante. Si quieres tener un detalle, aquí tienes algunas ideas.",
+          )}
         </p>
       </header>
       {mine ? (
-        <section className="gift-chosen" aria-label="Tu regalo elegido">
+        <section className="gift-chosen" aria-label={i18n("Tu regalo elegido")}>
           <Icon name="check" />
           <div>
             <span>
               {mine.delivered
-                ? "¡Gracias por tu regalo!"
-                : "Tu elección está reservada"}
+                ? i18n("¡Gracias por tu regalo!")
+                : i18n("Tu elección está reservada")}
             </span>
             <h3>{mine.title}</h3>
             <p>
               {mine.delivered
-                ? "El organizador ya confirmó que lo recibió."
-                : "Ahora puedes comprarlo en la tienda. Reservarlo aquí no realiza la compra."}
+                ? i18n("El organizador ya confirmó que lo recibió.")
+                : i18n(
+                    "Ahora puedes comprarlo en la tienda. Reservarlo aquí no realiza la compra.",
+                  )}
             </p>
           </div>
           <a
@@ -78,30 +87,30 @@ export default function GuestWishlistView({
             rel="noopener noreferrer"
             referrerPolicy="no-referrer"
           >
-            Ir a {giftStore(mine.url)} <Icon name="external" />
+            {i18n("Ir a")} {giftStore(mine.url)} <Icon name="external" />
           </a>
         </section>
       ) : (
-        <ol className="gift-journey" aria-label="Cómo elegir un regalo">
+        <ol className="gift-journey" aria-label={i18n("Cómo elegir un regalo")}>
           <li>
             <span>1</span>
             <div>
-              <strong>Encuentra un detalle</strong>
-              <small>Revisa los productos y sus tiendas.</small>
+              <strong>{i18n("Encuentra un detalle")}</strong>
+              <small>{i18n("Revisa los productos y sus tiendas.")}</small>
             </div>
           </li>
           <li>
             <span>2</span>
             <div>
-              <strong>Reserva tu elección</strong>
-              <small>Una opción por invitación, sin repetir.</small>
+              <strong>{i18n("Reserva tu elección")}</strong>
+              <small>{i18n("Una opción por invitación, sin repetir.")}</small>
             </div>
           </li>
           <li>
             <span>3</span>
             <div>
-              <strong>Cómpralo en la tienda</strong>
-              <small>El pago se hace fuera de The Date.</small>
+              <strong>{i18n("Cómpralo en la tienda")}</strong>
+              <small>{i18n("El pago se hace fuera de The Date.")}</small>
             </div>
           </li>
         </ol>
@@ -120,37 +129,34 @@ export default function GuestWishlistView({
         <div className="gift-catalog-heading">
           <p>
             <strong>{available}</strong>{" "}
-            {available === 1 ? "regalo disponible" : "regalos disponibles"}
+            {available === 1
+              ? i18n("regalo disponible")
+              : i18n("regalos disponibles")}
           </p>
-          <div className="gift-filters" aria-label="Mostrar regalos">
+          <div className="gift-filters" aria-label={i18n("Mostrar regalos")}>
             <button
               aria-pressed={filter === "all"}
               onClick={() => setFilter("all")}
             >
-              Todos ({data.items.length})
+              {i18n("Todos (")}
+              {data.items.length})
             </button>
             <button
               aria-pressed={filter === "available"}
               onClick={() => setFilter("available")}
             >
-              Disponibles
+              {i18n("Disponibles")}
             </button>
           </div>
         </div>
       )}
       {!data.items.length ? (
-        <section className="gift-empty">
-          <Icon name="lucide:gift" />
-          <h2>Estamos preparando la lista</h2>
-          <p>
-            {data.event.kind === "wedding"
-              ? "Los novios aún no han añadido sus regalos. Vuelve pronto para descubrir su lista de deseos."
-              : "Quien organiza aún está preparando su lista de deseos. Vuelve pronto para descubrir las ideas de regalos."}
-          </p>
-        </section>
+        <GiftListEmpty wedding={data.event.kind === "wedding"} />
       ) : !visible.length ? (
         <p className="gift-empty">
-          Todos los regalos ya están reservados. Gracias por acompañarnos.
+          {i18n(
+            "Todos los regalos ya están reservados. Gracias por acompañarnos.",
+          )}
         </p>
       ) : (
         <div className="gift-grid">
@@ -170,7 +176,7 @@ export default function GuestWishlistView({
       )}
       <footer className="gift-privacy">
         <Icon name="lock" />
-        Tu nombre y tu elección solo los ve quien organiza el evento.
+        {i18n("Tu nombre y tu elección solo los ve quien organiza el evento.")}
       </footer>
       {pending && (
         <GiftConfirmation

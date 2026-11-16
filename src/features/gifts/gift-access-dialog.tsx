@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useId, useRef, useState } from "react";
 import type { CountryCode } from "libphonenumber-js";
 import Icon from "@/components/icon";
@@ -14,6 +16,8 @@ export default function GiftAccessDialog({
   giftId: string;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const dialog = useRef<HTMLDialogElement>(null),
     heading = useId(),
     sending = useRef(false);
@@ -48,7 +52,12 @@ export default function GiftAccessDialog({
     setBusy(true);
     setError("");
     try {
-      await api("/api/gift-catalog/access", "POST", { phone: value, giftId });
+      await api(
+        "/api/gift-catalog/access",
+        "POST",
+        { phone: value, giftId },
+        i18n,
+      );
       setSent(true);
     } catch (e) {
       setError((e as Error).message);
@@ -71,7 +80,7 @@ export default function GiftAccessDialog({
         <button
           type="button"
           className="gift-icon-button"
-          aria-label="Cerrar acceso"
+          aria-label={i18n("Cerrar acceso")}
           disabled={busy}
           onClick={onClose}
         >
@@ -79,20 +88,24 @@ export default function GiftAccessDialog({
         </button>
         <Icon name={sent ? "check" : "lucide:gift"} />
         <h2 id={heading} tabIndex={-1}>
-          {sent ? "Revisa tu WhatsApp" : "Guarda tu elección a tu nombre"}
+          {sent
+            ? i18n("Revisa tu WhatsApp")
+            : i18n("Guarda tu elección a tu nombre")}
         </h2>
         {sent ? (
           <>
             <p role="status">
-              Si este número está en la lista de invitados, recibirás tu acceso
-              personal por WhatsApp. Ábrelo para elegir tu regalo.
+              {i18n(
+                "Si este número está en la lista de invitados, recibirás tu acceso personal por WhatsApp. Ábrelo para elegir tu regalo.",
+              )}
             </p>
             <p>
-              Usa el número con el que recibiste la invitación. Si no llega,
-              revisa esa conversación o consulta con quien organiza.
+              {i18n(
+                "Usa el número con el que recibiste la invitación. Si no llega, revisa esa conversación o consulta con quien organiza.",
+              )}
             </p>
             <button className="gift-primary" onClick={onClose}>
-              Volver a los regalos
+              {i18n("Volver a los regalos")}
             </button>
           </>
         ) : (
@@ -103,9 +116,11 @@ export default function GiftAccessDialog({
             }}
           >
             <p>
-              Para elegir «{title}», te enviamos tu acceso al WhatsApp donde
-              recibiste la invitación. No necesitas copiar enlaces ni crear una
-              cuenta.
+              {i18n("Para elegir «")}
+              {title}
+              {i18n(
+                "», te enviamos tu acceso al WhatsApp donde recibiste la invitación. No necesitas copiar enlaces ni crear una cuenta.",
+              )}
             </p>
             <GuestPhoneField
               country={country}
@@ -116,10 +131,14 @@ export default function GiftAccessDialog({
               onChange={setPhone}
             />
             <button className="gift-primary" disabled={busy}>
-              {busy ? "Solicitando acceso…" : "Recibir mi acceso por WhatsApp"}
+              {busy
+                ? i18n("Solicitando acceso…")
+                : i18n("Recibir mi acceso por WhatsApp")}
             </button>
             <small>
-              El regalo seguirá disponible hasta que completes la reserva.
+              {i18n(
+                "El regalo seguirá disponible hasta que completes la reserva.",
+              )}
             </small>
           </form>
         )}

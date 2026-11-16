@@ -25,7 +25,7 @@ test("every new flyer template includes an optional editable calendar element", 
     "src/features/designer/template-sequence.ts",
     { globals: { crypto } },
   );
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (t) => t.mode === "flyer",
   )) {
     const pages = templateSequence(template);

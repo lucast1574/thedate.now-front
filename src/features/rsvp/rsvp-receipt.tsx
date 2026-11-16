@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Link from "next/link";
 import Icon from "@/components/icon";
 import type { Person } from "@/lib/events/seating";
@@ -15,6 +16,8 @@ export default function RSVPReceipt({
   onContinue?: () => void;
   invitationHref?: string;
 }) {
+  const i18n = useTranslator();
+
   const attending = response !== "not_going";
   return (
     <main className="rsvp-page">
@@ -22,26 +25,29 @@ export default function RSVPReceipt({
         <Icon name={response === "maybe" ? "clock" : "check"} />
         <p className="eyebrow">
           {response === "maybe"
-            ? "RESPUESTA PENDIENTE"
-            : "CONFIRMACI\u00d3N GUARDADA"}
+            ? i18n("RESPUESTA PENDIENTE")
+            : i18n("CONFIRMACIÓN GUARDADA")}
         </p>
-        <h1>Gracias, {details.guestName}.</h1>
+        <h1>
+          {i18n("Gracias,")} {details.guestName}.
+        </h1>
         <p>
-          Tu respuesta para <strong>{details.eventTitle}</strong> ya está
-          registrada.
+          {i18n("Tu respuesta para")} <strong>{details.eventTitle}</strong>{" "}
+          {i18n("ya está registrada.")}
         </p>
         <p className="rsvp-current-choice">
           {response === "going"
-            ? "Sí, asistiré"
+            ? i18n("Sí, asistiré")
             : response === "maybe"
-              ? "Tal vez"
-              : "No podré asistir"}
+              ? i18n("Tal vez")
+              : i18n("No podré asistir")}
         </p>
         {attending && (
           <>
             <p>
               {1 + companions.length}{" "}
-              {companions.length ? "personas" : "persona"}, contándote a ti.
+              {companions.length ? i18n("personas") : i18n("persona")}
+              {i18n(", contándote a ti.")}
             </p>
             {companions.length > 0 && (
               <ul>
@@ -57,8 +63,9 @@ export default function RSVPReceipt({
         {response === "maybe" ? (
           <>
             <p>
-              Guardamos tu respuesta y tus acompañantes. Puedes confirmar Sí o
-              No desde este enlace.
+              {i18n(
+                "Guardamos tu respuesta y tus acompañantes. Puedes confirmar Sí o No desde este enlace.",
+              )}
             </p>
             {onContinue && (
               <button
@@ -66,14 +73,15 @@ export default function RSVPReceipt({
                 className="office-button"
                 onClick={onContinue}
               >
-                Confirmar Sí o No
+                {i18n("Confirmar Sí o No")}
               </button>
             )}
           </>
         ) : (
           <p>
-            Para solicitar un cambio, comunícate con quienes organizan la
-            celebración.
+            {i18n(
+              "Para solicitar un cambio, comunícate con quienes organizan la celebración.",
+            )}
           </p>
         )}
         {attending && (
@@ -83,7 +91,7 @@ export default function RSVPReceipt({
             }
             href={invitationHref}
           >
-            Ver invitación
+            {i18n("Ver invitación")}
           </Link>
         )}
       </section>

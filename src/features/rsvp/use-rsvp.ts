@@ -1,9 +1,13 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState, useRef, type FormEvent } from "react";
 import type { Person } from "@/lib/events/seating";
 import type { RSVPDetails } from "./types";
 
 export function useRSVP(token: string) {
+  const i18n = useTranslator();
+
   const [details, setDetails] = useState<RSVPDetails | null>(null);
   const [response, setResponse] = useState("going");
   const [companions, setCompanions] = useState<Person[]>([]);
@@ -16,7 +20,7 @@ export function useRSVP(token: string) {
     let active = true;
     fetch(`/api/rsvp/${token}`)
       .then(async (result) => {
-        if (!result.ok) throw new Error("Invitación no disponible");
+        if (!result.ok) throw new Error(i18n("Invitación no disponible"));
         return result.json();
       })
       .then((data) => {
@@ -39,7 +43,7 @@ export function useRSVP(token: string) {
     return () => {
       active = false;
     };
-  }, [token]);
+  }, [token, i18n]);
   async function submit(e: FormEvent) {
     e.preventDefault();
     if (saved || request.current) return;
@@ -67,8 +71,10 @@ export function useRSVP(token: string) {
       else
         setError(
           data?.error === "There are not enough seats available"
-            ? "Ya no hay cupos disponibles. Comunícate con el organizador."
-            : (data?.error ?? "No pudimos guardar tu respuesta."),
+            ? i18n(
+                "Ya no hay cupos disponibles. Comunícate con el organizador.",
+              )
+            : (data?.error ?? i18n("No pudimos guardar tu respuesta.")),
         );
     } else {
       setDetails((previous) =>

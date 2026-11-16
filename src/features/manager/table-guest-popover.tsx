@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useState } from "react";
 import SeatingRotationControl from "./seating-rotation-control";
 import Icon from "@/components/icon";
@@ -22,6 +23,8 @@ export default function TableGuestPopover({
   onChange: (plan: SeatingPlan) => void;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [adding, setAdding] = useState(false),
     [search, setSearch] = useState(""),
     [notice, setNotice] = useState("");
@@ -43,22 +46,22 @@ export default function TableGuestPopover({
           <small>
             {group.members.length > 1
               ? group.members.slice(1).map(fullName).join(", ")
-              : "Sin acompañantes"}
+              : i18n("Sin acompañantes")}
           </small>
           {!remove && (
             <small>
               {group.disabled
-                ? "El grupo completo no cabe aquí"
+                ? i18n("El grupo completo no cabe aquí")
                 : group.elsewhere.length
                   ? `En ${group.elsewhere.join(", ")}`
-                  : "Sin mesa"}
+                  : i18n("Sin mesa")}
             </small>
           )}
         </div>
         <button
           type="button"
           disabled={!remove && group.disabled}
-          aria-label={`${remove ? "Quitar" : "Sentar"} a ${fullName(group.members[0])} y su grupo`}
+          aria-label={`${remove ? i18n("Quitar") : "Sentar"} a ${fullName(group.members[0])} y su grupo`}
           onClick={() => {
             const next = moveTableHousehold(
               people,
@@ -72,8 +75,8 @@ export default function TableGuestPopover({
               onChange(next);
               setNotice(
                 remove
-                  ? "Grupo retirado de la mesa."
-                  : "Grupo sentado en esta mesa.",
+                  ? i18n("Grupo retirado de la mesa.")
+                  : i18n("Grupo sentado en esta mesa."),
               );
               setSearch("");
               if (adding) input.current?.focus();
@@ -81,7 +84,11 @@ export default function TableGuestPopover({
             }
           }}
         >
-          {remove ? "Quitar" : group.elsewhere.length ? "Mover" : "Sentar"}
+          {remove
+            ? i18n("Quitar")
+            : group.elsewhere.length
+              ? i18n("Mover")
+              : i18n("Sentar")}
         </button>
       </div>
     );
@@ -92,10 +99,14 @@ export default function TableGuestPopover({
         <div>
           <h3 id="table-popover-title">{table.name}</h3>
           <small>
-            {occupied}/{table.capacity} asientos ocupados
+            {occupied}/{table.capacity} {i18n("asientos ocupados")}
           </small>
         </div>
-        <button type="button" aria-label="Cerrar invitados" onClick={onClose}>
+        <button
+          type="button"
+          aria-label={i18n("Cerrar invitados")}
+          onClick={onClose}
+        >
           <Icon name="close" />
         </button>
       </header>
@@ -112,7 +123,7 @@ export default function TableGuestPopover({
       />
       <div className="table-popover-list">
         {seated.map((g) => row(g, true))}
-        {!seated.length && <p>Aún no hay personas en esta mesa.</p>}
+        {!seated.length && <p>{i18n("Aún no hay personas en esta mesa.")}</p>}
       </div>
       <button
         className="table-popover-add"
@@ -125,17 +136,17 @@ export default function TableGuestPopover({
         }}
       >
         <Icon name="plus" />
-        {adding ? "Cerrar lista" : "Añadir personas"}
+        {adding ? i18n("Cerrar lista") : i18n("Añadir personas")}
       </button>
       {adding && (
         <section className="table-popover-search">
           <label>
-            Buscar invitado o acompañante
+            {i18n("Buscar invitado o acompañante")}{" "}
             <input
               ref={input}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Nombre o apellido"
+              placeholder={i18n("Nombre o apellido")}
             />
           </label>
           <div className="table-popover-list">
@@ -143,15 +154,15 @@ export default function TableGuestPopover({
             {!available.length && (
               <p>
                 {search
-                  ? "No encontramos ese nombre."
-                  : "No hay más invitados para añadir."}
+                  ? i18n("No encontramos ese nombre.")
+                  : i18n("No hay más invitados para añadir.")}
               </p>
             )}
           </div>
         </section>
       )}
       <small className="table-popover-hint">
-        Los acompañantes se mueven juntos.
+        {i18n("Los acompañantes se mueven juntos.")}
       </small>
       <span className="table-popover-status" role="status">
         {notice}

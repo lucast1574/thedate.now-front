@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import { api } from "@/lib/api/client";
@@ -9,6 +10,8 @@ export default function ProfessionalUpgrade({
   wedding: boolean;
   onUpgrade: (user: User) => void;
 }) {
+  const i18n = useTranslator();
+
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   return (
@@ -17,12 +20,13 @@ export default function ProfessionalUpgrade({
       <div>
         <strong>
           {wedding
-            ? "¿Organizas bodas para otras parejas?"
-            : "¿Creas eventos para otras personas?"}
+            ? i18n("¿Organizas bodas para otras parejas?")
+            : i18n("¿Creas eventos para otras personas?")}
         </strong>
         <p>
-          Activa gratis tu espacio profesional y comparte cada celebración con
-          sus protagonistas.
+          {i18n(
+            "Activa gratis tu espacio profesional y comparte cada celebración con sus protagonistas.",
+          )}
         </p>
         {error && <p role="alert">{error}</p>}
       </div>
@@ -34,7 +38,12 @@ export default function ProfessionalUpgrade({
           setError("");
           try {
             onUpgrade(
-              await api<User>("/api/backend/profile/professional", "POST"),
+              await api<User>(
+                "/api/backend/profile/professional",
+                "POST",
+                undefined,
+                i18n,
+              ),
             );
           } catch (e) {
             setError((e as Error).message);
@@ -44,10 +53,10 @@ export default function ProfessionalUpgrade({
         }}
       >
         {busy
-          ? "Activando…"
+          ? i18n("Activando…")
           : wedding
-            ? "Soy wedding planner"
-            : "Soy organizador de eventos"}
+            ? i18n("Soy wedding planner")
+            : i18n("Soy organizador de eventos")}
         <Icon name="arrow" />
       </button>
     </section>

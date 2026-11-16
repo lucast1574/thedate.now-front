@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Event, Guest } from "@/lib/events/types";
 import { guestStats } from "@/lib/events/attendees";
 import { useClock } from "@/components/use-clock";
@@ -8,22 +9,27 @@ export default function GuestSummary({
   event: Event;
   guests: Guest[];
 }) {
+  const i18n = useTranslator();
+
   const stats = guestStats(guests, useClock());
   const awaiting = guests
     .filter((g) => g.invitationHeld)
     .reduce((sum, g) => sum + g.seats, 0);
   const used = stats.confirmed + stats.held + awaiting;
   return (
-    <section className="guest-metrics" aria-label="Aforo y confirmaciones">
+    <section
+      className="guest-metrics"
+      aria-label={i18n("Aforo y confirmaciones")}
+    >
       <div>
-        <small>Personas que puedes recibir</small>
+        <small>{i18n("Personas que puedes recibir")}</small>
         <strong>
-          {event.capacityUnlimited ? "Sin límite" : event.capacity}{" "}
-          <span>{event.capacityUnlimited ? "" : "personas"}</span>
+          {event.capacityUnlimited ? i18n("Sin límite") : event.capacity}{" "}
+          <span>{event.capacityUnlimited ? "" : i18n("personas")}</span>
         </strong>
         <p>
           {event.capacityUnlimited
-            ? "Sin límite de aforo"
+            ? i18n("Sin límite de aforo")
             : `${Math.max(0, event.capacity - used)} plazas disponibles`}
         </p>
         {!event.capacityUnlimited && (
@@ -31,19 +37,20 @@ export default function GuestSummary({
         )}
       </div>
       <div>
-        <small>Confirmados</small>
+        <small>{i18n("Confirmados")}</small>
         <strong>{stats.confirmed}</strong>
-        <p>Personas, incluidos acompañantes</p>
+        <p>{i18n("Personas, incluidos acompañantes")}</p>
       </div>
       <div>
-        <small>Esperando respuesta</small>
+        <small>{i18n("Esperando respuesta")}</small>
         <strong>{awaiting + stats.held}</strong>
         <p>
-          {awaiting} cupos invitados · {stats.held} con reserva temporal
+          {awaiting} {i18n("cupos invitados ·")} {stats.held}{" "}
+          {i18n("con reserva temporal")}
         </p>
       </div>
       <div>
-        <small>Por invitar</small>
+        <small>{i18n("Por invitar")}</small>
         <strong>
           {
             guests.filter(
@@ -52,7 +59,8 @@ export default function GuestSummary({
           }
         </strong>
         <p>
-          {stats.declined} no asistirán · Se avisa al siguiente cuando hay cupo
+          {stats.declined}{" "}
+          {i18n("no asistirán · Se avisa al siguiente cuando hay cupo")}
         </p>
       </div>
     </section>

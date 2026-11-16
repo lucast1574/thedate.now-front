@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { templateSequence } from "./template-sequence";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import { adaptTemplateCanvas } from "./adapt-template-content";
@@ -26,6 +27,7 @@ function preserveSection(
   next: DesignSection,
   previous: DesignSection,
   defaults?: DesignSection,
+  i18n: Translator = spanishTranslator,
 ) {
   if (!next.canvas || !previous.canvas) return { ...next, body: previous.body };
   const used = new Set<string>();
@@ -52,8 +54,8 @@ function preserveSection(
           defaults?.canvas?.elements.find((e) => key(e) === key(source))
             ?.text ||
         [
-          "El comienzo de una nueva aventura",
-          "Los mejores momentos se comparten",
+          i18n("El comienzo de una nueva aventura"),
+          i18n("Los mejores momentos se comparten"),
         ].includes(source.text || "")
           ? target.text
           : source.text,
@@ -105,14 +107,17 @@ function preserveSection(
 export function preserveTemplateContent(
   draft: DesignEvent,
   generated: DesignSection[],
+  i18n: Translator = spanishTranslator,
 ) {
   const old = draft.sections || [],
     matched = new Set<string>();
-  const priorTemplate = invitationTemplates.find(
+  const priorTemplate = invitationTemplates(i18n).find(
     (t) => t.id === draft.templateId,
   );
   const baseline =
-    old.length && priorTemplate ? templateSequence(priorTemplate, draft) : [];
+    old.length && priorTemplate
+      ? templateSequence(priorTemplate, draft, i18n)
+      : [];
   const next = generated.map((section) => {
     const role = sectionRole(section);
     const previous =
@@ -126,6 +131,7 @@ export function preserveTemplateContent(
       section,
       previous,
       baseline.find((s) => s.heading === previous.heading),
+      i18n,
     );
   });
   return next.map((section) => ({

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { PointerEvent } from "react";
 import { hsvToHex, colorAdjustmentKey, type HSV } from "@/lib/ui/color";
 export default function ColorPlane({
@@ -9,6 +10,8 @@ export default function ColorPlane({
   onChange: (next: HSV) => void;
   onCommit: (next: HSV) => void;
 }) {
+  const i18n = useTranslator();
+
   function position(e: PointerEvent<HTMLDivElement>) {
     const rect = e.currentTarget.getBoundingClientRect();
     return {
@@ -23,7 +26,7 @@ export default function ColorPlane({
         className="color-plane"
         style={{ backgroundColor: hsvToHex({ h: hsv.h, s: 1, v: 1 }) }}
         role="group"
-        aria-label="Saturación y luminosidad"
+        aria-label={i18n("Saturación y luminosidad")}
         onPointerDown={(e) => {
           e.currentTarget.setPointerCapture(e.pointerId);
           onChange(position(e));
@@ -44,7 +47,7 @@ export default function ColorPlane({
         />
       </div>
       <label className="color-slider-label">
-        Tono
+        {i18n("Tono")}{" "}
         <input
           className="color-hue"
           type="range"
@@ -68,8 +71,8 @@ export default function ColorPlane({
       <div className="color-adjustments">
         {(
           [
-            ["s", "Saturación"],
-            ["v", "Luminosidad"],
+            ["s", i18n("Saturación")],
+            ["v", i18n("Luminosidad")],
           ] as const
         ).map(([field, label]) => (
           <label key={field}>

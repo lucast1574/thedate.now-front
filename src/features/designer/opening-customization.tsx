@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
@@ -16,24 +17,26 @@ export default function OpeningCustomization({
   title: string;
   patch: (value: Partial<Opening>) => void;
 }) {
-  const icon = opening.sealIcon || openingPreset(opening.style).icon;
+  const i18n = useTranslator();
+
+  const icon = opening.sealIcon || openingPreset(opening.style, i18n).icon;
   return (
     <>
       <section className="opening-palette-settings">
         <header>
-          <strong>Colores</strong>
-          <span>Se adaptan a tu diseño</span>
+          <strong>{i18n("Colores")}</strong>
+          <span>{i18n("Se adaptan a tu diseño")}</span>
         </header>
         <div
           className="opening-palette-mode"
           role="group"
-          aria-label="Origen de los colores"
+          aria-label={i18n("Origen de los colores")}
         >
           <button
             aria-pressed={opening.paletteMode === "design"}
             onClick={() => patch({ paletteMode: "design" })}
           >
-            Del diseño
+            {i18n("Del diseño")}
           </button>
           <button
             aria-pressed={opening.paletteMode !== "design"}
@@ -45,7 +48,7 @@ export default function OpeningCustomization({
               })
             }
           >
-            Personalizados
+            {i18n("Personalizados")}
           </button>
         </div>
         <div className="opening-palette-swatches">
@@ -53,24 +56,24 @@ export default function OpeningCustomization({
           <span style={{ background: opening.ink }} />
           <small>
             {opening.paletteMode === "design"
-              ? "Siguen la plantilla y los cambios del canvas."
-              : "Conservan tus colores al cambiar de plantilla."}
+              ? i18n("Siguen la plantilla y los cambios del canvas.")
+              : i18n("Conservan tus colores al cambiar de plantilla.")}
           </small>
         </div>
         {opening.paletteMode !== "design" && (
           <div className="opening-custom-colors">
             <label>
-              Fondo
+              {i18n("Fondo")}{" "}
               <ColorPicker
-                label="Fondo de apertura"
+                label={i18n("Fondo de apertura")}
                 value={opening.color}
                 onChange={(color) => patch({ color })}
               />
             </label>
             <label>
-              Detalle y texto
+              {i18n("Detalle y texto")}{" "}
               <ColorPicker
-                label="Detalle y texto de apertura"
+                label={i18n("Detalle y texto de apertura")}
                 value={opening.ink}
                 onChange={(ink) => patch({ ink })}
               />
@@ -81,24 +84,28 @@ export default function OpeningCustomization({
       <details className="opening-custom-section">
         <summary>
           <span>
-            Icono de la apertura
+            {i18n("Icono de la apertura")}{" "}
             <small>
-              {opening.sealIcon ? "Personalizado" : "Incluido con este estilo"}
+              {opening.sealIcon
+                ? i18n("Personalizado")
+                : i18n("Incluido con este estilo")}
             </small>
           </span>
           {icon !== "none" && <Icon name={icon} />}
         </summary>
         <button onClick={() => patch({ sealIcon: "" })}>
-          Usar icono del estilo
+          {i18n("Usar icono del estilo")}
         </button>
-        <button onClick={() => patch({ sealIcon: "none" })}>Sin icono</button>
+        <button onClick={() => patch({ sealIcon: "none" })}>
+          {i18n("Sin icono")}
+        </button>
         <SymbolLibrary kind={kind} onPick={(sealIcon) => patch({ sealIcon })} />
       </details>
       <details className="opening-custom-section">
-        <summary>Editar textos y letra</summary>
+        <summary>{i18n("Editar textos y letra")}</summary>
         <div className="opening-editor-fields">
           <label>
-            Título
+            {i18n("Título")}{" "}
             <input
               maxLength={160}
               placeholder={title}
@@ -107,7 +114,7 @@ export default function OpeningCustomization({
             />
           </label>
           <label>
-            Mensaje
+            {i18n("Mensaje")}{" "}
             <textarea
               maxLength={240}
               rows={3}
@@ -116,7 +123,7 @@ export default function OpeningCustomization({
             />
           </label>
           <label>
-            Botón
+            {i18n("Botón")}{" "}
             <input
               maxLength={60}
               value={opening.buttonLabel}
@@ -124,16 +131,16 @@ export default function OpeningCustomization({
             />
           </label>
           <label>
-            Letra
+            {i18n("Letra")}{" "}
             <Listbox
               value={opening.font || ""}
               onValueChange={(font) => patch({ font: font as Opening["font"] })}
-              aria-label="Letra del título de apertura"
+              aria-label={i18n("Letra del título de apertura")}
             >
-              <option value="">Del estilo</option>
-              <option value="serif">Serif</option>
-              <option value="sans">Sans</option>
-              <option value="script">Manuscrita</option>
+              <option value="">{i18n("Del estilo")}</option>
+              <option value="serif">{i18n("Serif")}</option>
+              <option value="sans">{i18n("Sans")}</option>
+              <option value="script">{i18n("Manuscrita")}</option>
             </Listbox>
           </label>
         </div>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useId, type CSSProperties } from "react";
 import { ornamentById } from "@/lib/events/ornaments";
 export default function OrnamentArt({
@@ -7,8 +8,10 @@ export default function OrnamentArt({
   name: string;
   style?: CSSProperties;
 }) {
+  const i18n = useTranslator();
+
   const filterId = `floral-${useId().replace(/[^a-z0-9]/gi, "")}`;
-  const drawing = ornamentById(name);
+  const drawing = ornamentById(name, i18n);
   if (!drawing) return null;
   return (
     <svg

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import { turnSeatingItem } from "@/lib/events/rotation";
 export default function SeatingRotationControl({
@@ -7,16 +8,18 @@ export default function SeatingRotationControl({
   value: number;
   onChange: (angle: number) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div
       className="seating-rotation-control"
       role="group"
-      aria-label="Girar elemento"
+      aria-label={i18n("Girar elemento")}
     >
-      <span>Girar</span>
+      <span>{i18n("Girar")}</span>
       <button
         type="button"
-        aria-label="Girar 15 grados a la izquierda"
+        aria-label={i18n("Girar 15 grados a la izquierda")}
         onClick={() => onChange(turnSeatingItem(value, -15))}
       >
         <Icon name="lucide:rotate-ccw" />
@@ -24,7 +27,7 @@ export default function SeatingRotationControl({
       <output aria-live="polite">{value}°</output>
       <button
         type="button"
-        aria-label="Girar 15 grados a la derecha"
+        aria-label={i18n("Girar 15 grados a la derecha")}
         onClick={() => onChange(turnSeatingItem(value, 15))}
       >
         <Icon name="lucide:rotate-cw" />

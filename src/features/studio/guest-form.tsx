@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
 import CompanionFields from "@/components/companion-fields";
@@ -26,6 +28,8 @@ export default function GuestForm({
   kind?: Kind;
   onAdd: (fields: GuestFields) => Promise<boolean>;
 }) {
+  const i18n = useTranslator();
+
   const [guest, setGuest] = useState(blank);
   const [country, setCountry] = useState<CountryCode>("PE");
   const [phoneError, setPhoneError] = useState("");
@@ -42,10 +46,10 @@ export default function GuestForm({
   }
   return (
     <form className="manual-guest" onSubmit={submit}>
-      <h3>Añadir invitado manualmente</h3>
+      <h3>{i18n("Añadir invitado manualmente")}</h3>
       <div className="manager-fields">
         <label>
-          Nombre
+          {i18n("Nombre")}{" "}
           <input
             required
             minLength={2}
@@ -55,7 +59,7 @@ export default function GuestForm({
           />
         </label>
         <label>
-          Apellido (opcional)
+          {i18n("Apellido (opcional)")}{" "}
           <input
             maxLength={80}
             value={guest.lastName}
@@ -77,7 +81,7 @@ export default function GuestForm({
           }}
         />
         <label>
-          Acompañantes permitidos
+          {i18n("Acompañantes permitidos")}{" "}
           <Listbox
             value={String(guest.seats - 1)}
             onValueChange={(value) => {
@@ -89,30 +93,30 @@ export default function GuestForm({
               });
             }}
           >
-            <option value="0">Sin acompañante</option>
-            <option value="1">Con un acompañante (+1)</option>
+            <option value="0">{i18n("Sin acompañante")}</option>
+            <option value="1">{i18n("Con un acompañante (+1)")}</option>
           </Listbox>
         </label>
         <label>
           {kind === "general"
-            ? "Grupo para mesas (opcional)"
-            : "Categoría para mesas (opcional)"}
+            ? i18n("Grupo para mesas (opcional)")
+            : i18n("Categoría para mesas (opcional)")}
           <Listbox
             value={guest.family}
             onValueChange={(family) => setGuest({ ...guest, family })}
           >
             <option value="">
-              {kind === "general" ? "Sin grupo" : "Sin categoría"}
+              {kind === "general" ? i18n("Sin grupo") : i18n("Sin categoría")}
             </option>
-            {guestCategoriesFor(kind).map((category) => (
-              <option key={category} value={category}>
-                {category}
+            {guestCategoriesFor(kind, i18n).map((category) => (
+              <option key={i18n(category)} value={i18n(category)}>
+                {i18n(category)}
               </option>
             ))}
           </Listbox>
         </label>
         <label>
-          Género (opcional)
+          {i18n("Género (opcional)")}{" "}
           <Listbox
             value={guest.gender}
             onValueChange={(value) =>
@@ -122,33 +126,36 @@ export default function GuestForm({
               })
             }
           >
-            <option value="unspecified">Sin especificar</option>
-            <option value="man">Hombre</option>
-            <option value="woman">Mujer</option>
+            <option value="unspecified">{i18n("Sin especificar")}</option>
+            <option value="man">{i18n("Hombre")}</option>
+            <option value="woman">{i18n("Mujer")}</option>
           </Listbox>
         </label>
       </div>
       <p className="guest-hint">
-        Esta invitación permite hasta {guest.seats}{" "}
+        {i18n("Esta invitación permite hasta")} {guest.seats}{" "}
         {guest.seats === 1
-          ? "persona: solo el titular."
-          : "personas, contando al titular."}{" "}
-        El invitado registrará a sus acompañantes al confirmar. El grupo solo
-        sirve para organizar las mesas.
+          ? i18n("persona: solo el titular.")
+          : i18n("personas, contando al titular.")}{" "}
+        {i18n(
+          "El invitado registrará a sus acompañantes al confirmar. El grupo solo sirve para organizar las mesas.",
+        )}
       </p>
       {guest.seats > 1 && (
         <details>
-          <summary>Registrar sus nombres ahora (opcional)</summary>
+          <summary>{i18n("Registrar sus nombres ahora (opcional)")}</summary>
           <CompanionFields
             people={guest.companions || []}
             max={guest.seats - 1}
-            description="Añade los nombres si ya los conoces. La asistencia se confirma por separado."
+            description={i18n(
+              "Añade los nombres si ya los conoces. La asistencia se confirma por separado.",
+            )}
             onChange={(companions) => setGuest({ ...guest, companions })}
           />
         </details>
       )}
       <ActionButton className="office-button" disabled={busy}>
-        Añadir invitado
+        {i18n("Añadir invitado")}
       </ActionButton>
     </form>
   );

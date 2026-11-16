@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { sectionBackground } from "@/lib/events/background";
 import CanvasFormatting from "./canvas-formatting";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -29,6 +30,8 @@ export default function CanvasPages({
   selected?: FlyerElement;
   patch: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const { draft, sections } = editor;
   const activeIndex = Math.max(
     0,
@@ -38,36 +41,45 @@ export default function CanvasPages({
   const photoURL = (key: string) =>
     `/api/photos/${draft.id}/${encodeURIComponent(key)}`;
   return (
-    <section className="canvas-desk" aria-label="Lienzos de la invitación">
+    <section
+      className="canvas-desk"
+      aria-label={i18n("Lienzos de la invitación")}
+    >
       <div className="canvas-context">
         {selectedIds.length > 1 ? (
-          <span>{selectedIds.length} elementos seleccionados</span>
+          <span>
+            {selectedIds.length} {i18n("elementos seleccionados")}
+          </span>
         ) : selected?.locked ? (
-          <span>Elemento bloqueado</span>
+          <span>{i18n("Elemento bloqueado")}</span>
         ) : selected ? (
           <CanvasFormatting item={selected} onChange={patch} />
         ) : active ? (
           <button
             className="canvas-background-control"
-            aria-label={`Editar color de fondo de la sección ${activeIndex + 1}`}
+            aria-label={i18n("Editar color de fondo de la sección {v0}", {
+              v0: activeIndex + 1,
+            })}
             onClick={() => onSelect(active.id, "")}
           >
             <span
               className="canvas-background-swatch"
               style={{
-                backgroundColor: sectionCanvas(active, draft).background,
+                backgroundColor: sectionCanvas(active, draft, i18n).background,
               }}
               aria-hidden="true"
             />
-            <strong>Fondo</strong>
-            <span>Sección {activeIndex + 1}</span>
+            <strong>{i18n("Fondo")}</strong>
+            <span>
+              {i18n("Sección")} {activeIndex + 1}
+            </span>
           </button>
         ) : null}
         <div>
           <button
             disabled={zoom <= 30}
             onClick={() => setZoom(zoom - 10)}
-            aria-label="Alejar"
+            aria-label={i18n("Alejar")}
           >
             −
           </button>
@@ -75,7 +87,7 @@ export default function CanvasPages({
           <button
             disabled={zoom >= 100}
             onClick={() => setZoom(zoom + 10)}
-            aria-label="Acercar"
+            aria-label={i18n("Acercar")}
           >
             <Icon name="plus" />
           </button>
@@ -101,27 +113,29 @@ export default function CanvasPages({
                   }}
                 >
                   {String(n + 1).padStart(2, "0")}{" "}
-                  <span>{section.heading || "Sección sin título"}</span>
-                  {activeId === section.id && <small>En edición</small>}
+                  <span>{section.heading || i18n("Sección sin título")}</span>
+                  {activeId === section.id && (
+                    <small>{i18n("En edición")}</small>
+                  )}
                 </button>
                 <div>
                   <button
                     disabled={n === 0}
-                    aria-label={`Subir sección ${n + 1}`}
+                    aria-label={i18n("Subir sección {v0}", { v0: n + 1 })}
                     onClick={() => editor.moveSection(n, -1)}
                   >
                     <Icon name="down" style={{ transform: "rotate(180deg)" }} />
                   </button>
                   <button
                     disabled={n === sections.length - 1}
-                    aria-label={`Bajar sección ${n + 1}`}
+                    aria-label={i18n("Bajar sección {v0}", { v0: n + 1 })}
                     onClick={() => editor.moveSection(n, 1)}
                   >
                     <Icon name="down" />
                   </button>
                   <button
                     disabled={sections.length === 1}
-                    aria-label={`Eliminar sección ${n + 1}`}
+                    aria-label={i18n("Eliminar sección {v0}", { v0: n + 1 })}
                     onClick={() => editor.removeSection(section.id)}
                   >
                     <Icon name="close" />
@@ -135,7 +149,7 @@ export default function CanvasPages({
                   n,
                   draft.backgroundImage,
                 )}
-                canvas={sectionCanvas(section, draft)}
+                canvas={sectionCanvas(section, draft, i18n)}
                 selectedId={activeId === section.id ? selectedId : ""}
                 selectedIds={activeId === section.id ? selectedIds : []}
                 onSelect={(id, multiple) => {
@@ -149,7 +163,7 @@ export default function CanvasPages({
               />
               {!section.canvas?.elements.length && (
                 <p className="canvas-empty-caption">
-                  Tu lienzo en blanco. Añade algo desde Elementos.
+                  {i18n("Tu lienzo en blanco. Añade algo desde Elementos.")}
                 </p>
               )}
             </article>
@@ -159,11 +173,11 @@ export default function CanvasPages({
             disabled={sections.length >= 20}
             onClick={addPage}
           >
-            <Icon name="plus" /> Añadir sección
+            <Icon name="plus" /> {i18n("Añadir sección")}
           </button>
           <p className="canvas-stack-note">
-            {sections.length} de 20 secciones · Se verán seguidas en tu
-            invitación
+            {sections.length}{" "}
+            {i18n("de 20 secciones · Se verán seguidas en tu invitación")}
           </p>
         </div>
       </div>

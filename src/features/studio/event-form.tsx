@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import DemoContinuation from "./demo-continuation";
 import ActionButton from "@/components/action-button";
 import Alert from "@/components/alert";
@@ -30,6 +31,8 @@ export default function EventForm({
   courtesy?: boolean;
   onSubmit: (e: FormEvent) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <form
       className="event-form simple-event-form"
@@ -52,9 +55,11 @@ export default function EventForm({
           <span>01</span>
           <div>
             <h2>
-              {draft.kind === "wedding" ? "Su gran día" : "Tu celebración"}
+              {draft.kind === "wedding"
+                ? i18n("Su gran día")
+                : i18n("Tu celebración")}
             </h2>
-            <p>Empecemos con el nombre y la fecha.</p>
+            <p>{i18n("Empecemos con el nombre y la fecha.")}</p>
           </div>
         </div>
         <EventBasics
@@ -67,8 +72,8 @@ export default function EventForm({
         <div className="event-form-card-heading">
           <span>02</span>
           <div>
-            <h2>El lugar de la celebración</h2>
-            <p>Una dirección clara para que todos puedan llegar.</p>
+            <h2>{i18n("El lugar de la celebración")}</h2>
+            <p>{i18n("Una dirección clara para que todos puedan llegar.")}</p>
           </div>
         </div>
         <EventLocationFields draft={draft} setDraft={setDraft} />
@@ -79,8 +84,8 @@ export default function EventForm({
             <Icon name="users" />
           </span>
           <div>
-            <h2>A quiénes esperamos</h2>
-            <p>Cupos y edades, reunidos en un solo lugar.</p>
+            <h2>{i18n("A quiénes esperamos")}</h2>
+            <p>{i18n("Cupos y edades, reunidos en un solo lugar.")}</p>
           </div>
         </div>
         <div className="event-guest-settings">
@@ -100,16 +105,16 @@ export default function EventForm({
         <summary>
           <Icon name="layout" />
           <span>
-            Organización y confirmaciones
+            {i18n("Organización y confirmaciones")}{" "}
             <small>
-              Configura las respuestas de tus invitados y los regalos.
+              {i18n("Configura las respuestas de tus invitados y los regalos.")}
             </small>
           </span>
           <Icon name="chevron" />
         </summary>
         <div>
           <label>
-            ¿Quién organiza?
+            {i18n("¿Quién organiza?")}{" "}
             <input
               required
               value={draft.organizer}
@@ -126,17 +131,21 @@ export default function EventForm({
       <div className="event-form-submit">
         <p>
           {selected
-            ? "Tus cambios se guardarán en este evento."
+            ? i18n("Tus cambios se guardarán en este evento.")
             : courtesy
-              ? "Tienes una cortesía: esta invitación será gratis. Se consume una sola vez."
-              : "Tu diseño se conserva al continuar. Activa tu evento con un único pago."}
+              ? i18n(
+                  "Tienes una cortesía: esta invitación será gratis. Se consume una sola vez.",
+                )
+              : i18n(
+                  "Tu diseño se conserva al continuar. Activa tu evento con un único pago.",
+                )}
         </p>
         <ActionButton className="office-button" disabled={busy}>
           {selected
-            ? "Guardar cambios"
+            ? i18n("Guardar cambios")
             : courtesy
-              ? "Crear mi invitación gratis"
-              : "Continuar al pago"}{" "}
+              ? i18n("Crear mi invitación gratis")
+              : i18n("Continuar al pago")}{" "}
           <Icon name="arrow" />
         </ActionButton>
       </div>

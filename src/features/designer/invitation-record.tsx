@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon";
@@ -20,6 +22,8 @@ export default function InvitationRecord({
   user: User;
   initialTab?: RecordTab;
 }) {
+  const i18n = useTranslator();
+
   const [tab, setTab] = useState(recordTab(initialTab));
   const wedding = event.kind === "wedding";
   return (
@@ -35,20 +39,20 @@ export default function InvitationRecord({
       <main className="workspace-content invitation-record">
         <header className="invitation-record-header">
           <Link className="invitation-record-back" href="/">
-            <Icon name="lucide:arrow-left" /> Mis invitaciones
+            <Icon name="lucide:arrow-left" /> {i18n("Mis invitaciones")}
           </Link>
-          <p className="office-kicker">MI INVITACIÓN</p>
+          <p className="office-kicker">{i18n("MI INVITACIÓN")}</p>
           <h1>{event.title}</h1>
           <p className="invitation-record-date">
-            {organizationEventDate(event)}
+            {organizationEventDate(event, i18n)}
           </p>
-          <nav aria-label="Datos de la celebración">
+          <nav aria-label={i18n("Datos de la celebración")}>
             {(
               [
-                ["invitation", "layout", "Invitación"],
-                ["guests", "users", "Invitados"],
-                ["tables", "table", "Mesas"],
-                ["gifts", "lucide:gift", "Regalos"],
+                ["invitation", "layout", i18n("Invitación")],
+                ["guests", "users", i18n("Invitados")],
+                ["tables", "table", i18n("Mesas")],
+                ["gifts", "lucide:gift", i18n("Regalos")],
               ] as const
             ).map(([value, icon, label]) => (
               <button

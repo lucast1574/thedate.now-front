@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function DressExcludedColors({
   colors,
@@ -6,13 +7,15 @@ export default function DressExcludedColors({
   presentation?: FlyerElement["dressPaletteStyle"];
   colors: FlyerElement["dressExcludedColors"];
 }) {
+  const i18n = useTranslator();
+
   if (!colors?.length) return null;
   return (
     <span
       className="dress-excluded-colors"
       data-palette={presentation || "auto"}
     >
-      <strong>Preferimos evitar estos tonos</strong>
+      <strong>{i18n("Preferimos evitar estos tonos")}</strong>
       <span>
         {colors.map((rule, index) => (
           <span className="dress-excluded-color" key={index}>

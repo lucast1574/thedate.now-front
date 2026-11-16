@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import Icon from "@/components/icon";
 import type { GuestWishlist } from "@/lib/events/wishlist";
@@ -15,13 +17,15 @@ export default function GiftExperiencePreview({
   initial?: GuestWishlist;
   imageSource?: (id: string) => string | undefined;
 }) {
+  const i18n = useTranslator();
+
   const [step, setStep] = useState<"entry" | "list">(
     initial ? "list" : "entry",
   );
   const [empty, setEmpty] = useState(false);
   const [selected, setSelected] = useState("");
   const [notice, setNotice] = useState("");
-  const source = initial || exampleWishlist(wedding);
+  const source = initial || exampleWishlist(wedding, i18n);
   const data = {
     ...source,
     items: (empty ? [] : source.items).map((item) => ({
@@ -33,18 +37,19 @@ export default function GiftExperiencePreview({
   return (
     <section
       className="gift-experience-preview"
-      aria-label="Vista previa de la experiencia del invitado"
+      aria-label={i18n("Vista previa de la experiencia del invitado")}
     >
       <header className="gift-preview-toolbar">
         <div>
           <span className="gift-preview-label">
             {initial
-              ? "Tu lista · Vista del invitado"
-              : "Productos de ejemplo · Vista del invitado"}
+              ? i18n("Tu lista · Vista del invitado")
+              : i18n("Productos de ejemplo · Vista del invitado")}
           </span>
           <p>
-            Abre la lista desde la invitación y prueba una reserva. Los cambios
-            de esta vista no se guardan.
+            {i18n(
+              "Abre la lista desde la invitación y prueba una reserva. Los cambios de esta vista no se guardan.",
+            )}
           </p>
         </div>
         {!initial && (
@@ -57,7 +62,9 @@ export default function GiftExperiencePreview({
               setStep("list");
             }}
           >
-            {empty ? "Ver regalos de ejemplo" : "Ver lista por preparar"}
+            {empty
+              ? i18n("Ver regalos de ejemplo")
+              : i18n("Ver lista por preparar")}
           </button>
         )}
         <button
@@ -69,19 +76,23 @@ export default function GiftExperiencePreview({
             setStep("entry");
           }}
         >
-          <Icon name="refresh" /> Reiniciar recorrido
+          <Icon name="refresh" /> {i18n("Reiniciar recorrido")}
         </button>
       </header>
-      <div className="gift-preview-steps" aria-label="Recorrido del invitado">
+      <div
+        className="gift-preview-steps"
+        aria-label={i18n("Recorrido del invitado")}
+      >
         <button
           aria-pressed={step === "entry"}
           onClick={() => setStep("entry")}
         >
-          <span>1</span> Desde la invitación
+          <span>1</span> {i18n("Desde la invitación")}
         </button>
         <Icon name="chevron" />
         <button aria-pressed={step === "list"} onClick={() => setStep("list")}>
-          <span>2</span> {selected ? "Mi regalo elegido" : "Lista de regalos"}
+          <span>2</span>{" "}
+          {selected ? i18n("Mi regalo elegido") : i18n("Lista de regalos")}
         </button>
       </div>
       <div
@@ -101,8 +112,9 @@ export default function GiftExperiencePreview({
             imageSource={(item) =>
               initial
                 ? imageSource?.(item.id)
-                : exampleProducts.find((product) => product.id === item.id)
-                    ?.image
+                : exampleProducts(i18n).find(
+                    (product) => product.id === item.id,
+                  )?.image
             }
             onChoose={async (id, release) => {
               if (
@@ -114,8 +126,10 @@ export default function GiftExperiencePreview({
               setSelected(release ? "" : id);
               setNotice(
                 release
-                  ? "Elección liberada. Puedes probar con otro regalo."
-                  : "Reserva de prueba confirmada. El siguiente paso es comprarlo en la tienda.",
+                  ? i18n("Elección liberada. Puedes probar con otro regalo.")
+                  : i18n(
+                      "Reserva de prueba confirmada. El siguiente paso es comprarlo en la tienda.",
+                    ),
               );
               return true;
             }}

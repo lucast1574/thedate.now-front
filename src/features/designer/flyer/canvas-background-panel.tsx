@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import Photo from "@/components/photo";
@@ -18,10 +19,12 @@ export default function CanvasBackgroundPanel({
   editor: ReturnType<typeof useInvitationDesign>;
   index: number;
 }) {
+  const i18n = useTranslator();
+
   const [scope, setScope] = useState("section");
   const { draft, setDraft } = editor;
   const section = editor.sections[index];
-  const canvas = section ? sectionCanvas(section, draft) : undefined;
+  const canvas = section ? sectionCanvas(section, draft, i18n) : undefined;
   const target = scope === "all" ? "@invitation" : section?.id || "";
   const image =
     scope === "all" ? draft.backgroundImage : canvas?.backgroundImage;
@@ -37,7 +40,7 @@ export default function CanvasBackgroundPanel({
                 : {
                     ...s,
                     canvas: {
-                      ...sectionCanvas(s, d),
+                      ...sectionCanvas(s, d, i18n),
                       backgroundImage: value || undefined,
                       backgroundOverride: !value && !inherit,
                     },
@@ -57,45 +60,51 @@ export default function CanvasBackgroundPanel({
     <div className="canvas-background-panel">
       {replacement.input}
       <p className="canvas-panel-description">
-        Usa tus fotos, texturas o ilustraciones como fondo. Los elementos siguen
-        siendo editables encima.
+        {i18n(
+          "Usa tus fotos, texturas o ilustraciones como fondo. Los elementos siguen siendo editables encima.",
+        )}
       </p>
       <div
         className="canvas-background-scope"
         role="group"
-        aria-label="Alcance del fondo"
+        aria-label={i18n("Alcance del fondo")}
       >
         <button
           aria-pressed={scope === "section"}
           onClick={() => setScope("section")}
         >
-          Esta sección
+          {i18n("Esta sección")}
         </button>
         <button aria-pressed={scope === "all"} onClick={() => setScope("all")}>
-          Toda la invitación
+          {i18n("Toda la invitación")}
         </button>
       </div>
       <p className="editor-hint">
         {scope === "all"
-          ? "Una sola imagen continua de principio a fin. Las secciones con fondo propio conservan su elección."
-          : `Fondo de ${section?.heading || `la sección ${index + 1}`}. Puedes usar una imagen propia o heredar el fondo común.`}
+          ? i18n(
+              "Una sola imagen continua de principio a fin. Las secciones con fondo propio conservan su elección.",
+            )
+          : i18n(
+              "Fondo de {v0}. Puedes usar una imagen propia o heredar el fondo común.",
+              { v0: section?.heading || `la sección ${index + 1}` },
+            )}
       </p>
       {scope === "section" && (
         <p className="editor-hint" role="status">
           {canvas?.backgroundOverride
-            ? "Esta sección usa solo color."
+            ? i18n("Esta sección usa solo color.")
             : image
-              ? "Esta sección tiene una imagen propia."
+              ? i18n("Esta sección tiene una imagen propia.")
               : draft.backgroundImage
-                ? "Esta sección usa el fondo continuo."
-                : "Esta sección usa su color de fondo."}
+                ? i18n("Esta sección usa el fondo continuo.")
+                : i18n("Esta sección usa su color de fondo.")}
         </p>
       )}
       {image && (
         <div className="canvas-background-preview">
           <Photo
             src={photoURL(image.photoKey)}
-            alt="Imagen de fondo seleccionada"
+            alt={i18n("Imagen de fondo seleccionada")}
             style={{
               objectFit: image.fit,
               objectPosition: image.position,
@@ -105,9 +114,9 @@ export default function CanvasBackgroundPanel({
         </div>
       )}
       <label>
-        Imagen de fondo
+        {i18n("Imagen de fondo")}{" "}
         <Listbox
-          aria-label="Imagen de fondo"
+          aria-label={i18n("Imagen de fondo")}
           value={image?.photoKey || ""}
           onValueChange={(key) => {
             if (key)
@@ -119,12 +128,12 @@ export default function CanvasBackgroundPanel({
           }}
         >
           <option value="" disabled>
-            Elige una imagen
+            {i18n("Elige una imagen")}
           </option>
-          <option value="template-photo">Pon tu foto aquí</option>
+          <option value="template-photo">{i18n("Pon tu foto aquí")}</option>
           {draft.photoKeys.map((key, n) => (
             <option key={key} value={key}>
-              Imagen {n + 1}
+              {i18n("Imagen")} {n + 1}
             </option>
           ))}
         </Listbox>
@@ -135,7 +144,7 @@ export default function CanvasBackgroundPanel({
         onClick={() => replacement.request(target)}
       >
         <Icon name="image" />
-        Subir imagen de fondo
+        {i18n("Subir imagen de fondo")}
       </button>
       {image && (
         <BackgroundImageFields
@@ -146,18 +155,19 @@ export default function CanvasBackgroundPanel({
       <div className="canvas-background-actions">
         {scope === "section" && (
           <button onClick={() => apply(target, null, true)}>
-            Usar fondo común
+            {i18n("Usar fondo común")}
           </button>
         )}
         <button onClick={() => apply(target, null)}>
           {scope === "all"
-            ? "Quitar fondo continuo"
-            : "Usar solo color en esta sección"}
+            ? i18n("Quitar fondo continuo")
+            : i18n("Usar solo color en esta sección")}
         </button>
       </div>
       <p className="editor-hint">
-        Revisa el fondo en Vista previa y guarda el diseño para aplicar los
-        cambios.
+        {i18n(
+          "Revisa el fondo en Vista previa y guarda el diseño para aplicar los cambios.",
+        )}
       </p>
     </div>
   );

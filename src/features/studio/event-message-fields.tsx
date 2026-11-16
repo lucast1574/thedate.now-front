@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import InvitationMessageInput from "./invitation-message-input";
 import {
   ensureInvitationLink,
@@ -14,8 +15,10 @@ export default function EventMessageFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const i18n = useTranslator();
+
   const message = ensureInvitationLink(
-    draft.invitationMessage ?? defaultInvitationMessage,
+    draft.invitationMessage ?? defaultInvitationMessage(i18n),
   );
   const link = `https://${invitationHost(draft.kind, draft.slug || "tucelebracion")}/rsvp/enlace-personal`;
   return (
@@ -28,13 +31,14 @@ export default function EventMessageFields({
       />
       <div
         className="event-message-preview"
-        aria-label="Ejemplo del mensaje de WhatsApp"
+        aria-label={i18n("Ejemplo del mensaje de WhatsApp")}
       >
-        <strong>Así lo verá tu invitado · ejemplo</strong>
+        <strong>{i18n("Así lo verá tu invitado · ejemplo")}</strong>
         <p>{invitationMessagePreview(message, link)}</p>
         <small>
-          Se envía desde el gestor después de publicar. Guardar aquí no envía
-          mensajes.
+          {i18n(
+            "Se envía desde el gestor después de publicar. Guardar aquí no envía mensajes.",
+          )}
         </small>
       </div>
     </section>

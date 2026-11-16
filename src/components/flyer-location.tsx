@@ -1,8 +1,11 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import ElementActionHint from "./element-action-hint";
 import type { FlyerElement } from "@/lib/events/flyer";
 import { locationHref, locationParts } from "@/lib/events/location-element";
 export function LocationContent({ item }: { item: FlyerElement }) {
+  const i18n = useTranslator();
+
   const parts = locationParts(item.locationStyle),
     onlyIcon = parts.length === 1 && parts[0] === "icon";
   return (
@@ -21,25 +24,27 @@ export function LocationContent({ item }: { item: FlyerElement }) {
       )}
       {parts.includes("label") && (
         <span className="location-composition-title">
-          {item.text || "Cómo llegar"}
+          {item.text || i18n("Cómo llegar")}
         </span>
       )}
       {parts.includes("address") && (
         <span
           className={`location-composition-address ${parts.includes("label") ? "is-secondary" : ""}`}
         >
-          {item.address || "Dirección del evento"}
+          {item.address || i18n("Dirección del evento")}
         </span>
       )}
     </span>
   );
 }
 export default function FlyerLocation({ item }: { item: FlyerElement }) {
+  const i18n = useTranslator();
+
   const href = locationHref(item);
   const label =
     locationParts(item.locationStyle).length === 1 &&
     item.locationStyle === "icon"
-      ? `Ver ubicación: ${item.address || "Google Maps"}`
+      ? i18n("Ver ubicación: {v0}", { v0: item.address || i18n("Google Maps") })
       : undefined;
   return href ? (
     <a
@@ -50,7 +55,7 @@ export default function FlyerLocation({ item }: { item: FlyerElement }) {
       aria-label={label}
     >
       <LocationContent item={item} />
-      <ElementActionHint item={item} label="Cómo llegar" />
+      <ElementActionHint item={item} label={i18n("Cómo llegar")} />
     </a>
   ) : (
     <span className="flyer-location">

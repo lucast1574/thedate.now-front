@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { personalPath } from "@/lib/events/personal-links";
 import RSVPReceipt from "./rsvp-receipt";
 import RSVPCompanions from "./rsvp-companions";
@@ -16,6 +18,8 @@ function safeHTTPSLink(raw: string) {
   }
 }
 export default function RSVPForm({ token }: { token: string }) {
+  const i18n = useTranslator();
+
   const rsvp = useRSVP(token);
   const {
     details,
@@ -45,22 +49,28 @@ export default function RSVPForm({ token }: { token: string }) {
   return (
     <main className="rsvp-page">
       <section className="rsvp-card">
-        <p className="eyebrow">CONFIRMA TU ASISTENCIA</p>
+        <p className="eyebrow">{i18n("CONFIRMA TU ASISTENCIA")}</p>
         <h1>
           {saved
-            ? "Respuesta recibida."
+            ? i18n("Respuesta recibida.")
             : details
-              ? `Hola, ${details.guestName}.`
-              : "Tu invitación"}
+              ? i18n("Hola, {v0}.", { v0: details.guestName })
+              : i18n("Tu invitación")}
         </h1>
         {details && (
           <>
             <p>
-              Te invitaron a <strong>{details.eventTitle}</strong>. Tu
-              invitación{" "}
+              {i18n("Te invitaron a")} <strong>{details.eventTitle}</strong>
+              {i18n(". Tu invitación")}{" "}
               {details.seats === 1
-                ? "es solo para ti."
-                : `te permite llevar hasta ${details.seats - 1} ${details.seats === 2 ? "acompañante" : "acompañantes"}.`}
+                ? i18n("es solo para ti.")
+                : i18n("te permite llevar hasta {v0} {v1}.", {
+                    v0: details.seats - 1,
+                    v1:
+                      details.seats === 2
+                        ? i18n("acompañante")
+                        : i18n("acompañantes"),
+                  })}
             </p>
             {details.response === "pending" && (
               <EventDetails event={details} variant="rsvp" />
@@ -73,8 +83,8 @@ export default function RSVPForm({ token }: { token: string }) {
                 rel="noopener noreferrer"
               >
                 {virtual
-                  ? "Unirse al evento virtual"
-                  : "Cómo llegar con Google Maps"}{" "}
+                  ? i18n("Unirse al evento virtual")
+                  : i18n("Cómo llegar con Google Maps")}{" "}
                 ↗
               </a>
             )}
@@ -82,8 +92,9 @@ export default function RSVPForm({ token }: { token: string }) {
         )}
         {saved ? (
           <p>
-            Tu confirmación ya está registrada. Para solicitar un cambio,
-            comunícate con quienes organizan la celebración.
+            {i18n(
+              "Tu confirmación ya está registrada. Para solicitar un cambio, comunícate con quienes organizan la celebración.",
+            )}
           </p>
         ) : (
           details && (
@@ -102,14 +113,14 @@ export default function RSVPForm({ token }: { token: string }) {
                 <>
                   <p className="rsvp-current-choice">
                     {response === "going"
-                      ? "Asistirás a la celebración"
+                      ? i18n("Asistirás a la celebración")
                       : response === "maybe"
-                        ? "Has respondido: Tal vez"
-                        : "Has respondido: No asistiré"}
+                        ? i18n("Has respondido: Tal vez")
+                        : i18n("Has respondido: No asistiré")}
                   </p>
                   {response === "maybe" && (
                     <label>
-                      Cuéntanos por qué estás en espera
+                      {i18n("Cuéntanos por qué estás en espera")}{" "}
                       <textarea
                         required
                         minLength={3}
@@ -130,21 +141,25 @@ export default function RSVPForm({ token }: { token: string }) {
               {response !== "not_going" && (
                 <p>
                   {response === "going"
-                    ? "Confirmarás"
-                    : "Reservarás temporalmente"}{" "}
+                    ? i18n("Confirmarás")
+                    : i18n("Reservarás temporalmente")}{" "}
                   {1 + rsvp.companions.length}{" "}
-                  {rsvp.companions.length ? "personas" : "persona"}, contándote
-                  a ti.
+                  {rsvp.companions.length ? i18n("personas") : i18n("persona")}
+                  {i18n(", contándote a ti.")}{" "}
                   {details.seats > 1 &&
                     (response === "maybe"
-                      ? " Tus acompa\u00f1antes quedar\u00e1n guardados. Puedes confirmar S\u00ed o No despu\u00e9s."
-                      : " Revisa los nombres antes de guardar. Esta confirmaci\u00f3n se registra una sola vez.")}
+                      ? i18n(
+                          " Tus acompañantes quedarán guardados. Puedes confirmar Sí o No después.",
+                        )
+                      : i18n(
+                          " Revisa los nombres antes de guardar. Esta confirmación se registra una sola vez.",
+                        ))}
                 </p>
               )}
               <ActionButton className="office-button" disabled={busy}>
                 {response === "maybe"
-                  ? "Guardar respuesta pendiente"
-                  : "Guardar confirmaci\u00f3n"}
+                  ? i18n("Guardar respuesta pendiente")
+                  : i18n("Guardar confirmación")}
               </ActionButton>
             </form>
           )

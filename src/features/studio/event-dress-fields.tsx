@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Dispatch, SetStateAction } from "react";
 import Icon from "@/components/icon";
 import Listbox from "@/components/listbox";
@@ -17,8 +18,10 @@ export default function EventDressFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const i18n = useTranslator();
+
   const celebration =
-    draft.celebration || defaultCelebration(draft.kind === "wedding");
+    draft.celebration || defaultCelebration(draft.kind === "wedding", i18n);
   const creation = {
     ...draft.creation,
     restrictionText:
@@ -26,11 +29,15 @@ export default function EventDressFields({
     restrictionIcon:
       celebration.restrictionIcon ?? draft.creation?.restrictionIcon,
   };
-  const dress = element("text", {
-    binding: "dress_code",
-    dressExcludedColors:
-      celebration.dressExcludedColors || creation.dressExcludedColors,
-  });
+  const dress = element(
+    "text",
+    {
+      binding: "dress_code",
+      dressExcludedColors:
+        celebration.dressExcludedColors || creation.dressExcludedColors,
+    },
+    i18n,
+  );
   function patchCreation(patch: Event["creation"]) {
     setDraft((current) => ({
       ...current,
@@ -43,14 +50,16 @@ export default function EventDressFields({
         <summary>
           <Icon name="lucide:shirt" />
           <span>
-            Vestimenta y cuidados
-            <small>Dress code, colores reservados e indicaciones.</small>
+            {i18n("Vestimenta y cuidados")}{" "}
+            <small>
+              {i18n("Dress code, colores reservados e indicaciones.")}
+            </small>
           </span>
           <Icon name="chevron" />
         </summary>
         <div>
           <label>
-            Dress code
+            {i18n("Dress code")}{" "}
             <input
               maxLength={120}
               value={celebration.dressCode}
@@ -63,7 +72,7 @@ export default function EventDressFields({
             />
           </label>
           <label>
-            Indicaciones de vestimenta
+            {i18n("Indicaciones de vestimenta")}{" "}
             <textarea
               maxLength={500}
               rows={2}
@@ -89,19 +98,19 @@ export default function EventDressFields({
             }
           />
           <label>
-            Otras restricciones · opcional
+            {i18n("Otras restricciones · opcional")}{" "}
             <textarea
               rows={3}
               maxLength={1000}
               value={creation.restrictionText || ""}
-              placeholder="Por ejemplo: el lugar no admite mascotas…"
+              placeholder={i18n("Por ejemplo: el lugar no admite mascotas…")}
               onChange={(e) =>
                 patchCreation({ restrictionText: e.target.value })
               }
             />
           </label>
           <div className="form-rule-suggestions">
-            {restrictionExamples
+            {restrictionExamples(i18n)
               .filter((e) => e.label !== "Solo adultos")
               .map((example) => (
                 <button
@@ -122,7 +131,7 @@ export default function EventDressFields({
                       creation.restrictionText || "",
                       example.text,
                     );
-                    const selected = restrictionExamples.filter((item) =>
+                    const selected = restrictionExamples(i18n).filter((item) =>
                       restrictionText.includes(item.text),
                     );
                     patchCreation({
@@ -141,15 +150,15 @@ export default function EventDressFields({
           </div>
           {creation.restrictionText?.trim() && (
             <label>
-              Icono de la indicación
+              {i18n("Icono de la indicación")}{" "}
               <Listbox
                 value={creation.restrictionIcon || "lucide:shield-alert"}
                 onValueChange={(restrictionIcon) =>
                   patchCreation({ restrictionIcon })
                 }
               >
-                <option value="lucide:shield-alert">Aviso</option>
-                {restrictionExamples.map((example) => (
+                <option value="lucide:shield-alert">{i18n("Aviso")}</option>
+                {restrictionExamples(i18n).map((example) => (
                   <option key={example.icon} value={example.icon}>
                     {example.label}
                   </option>
@@ -158,8 +167,9 @@ export default function EventDressFields({
             </label>
           )}
           <small>
-            «Solo adultos» se toma de la sección de invitados. Estas
-            indicaciones se añaden al lienzo y puedes seguir editándolas allí.
+            {i18n(
+              "«Solo adultos» se toma de la sección de invitados. Estas indicaciones se añaden al lienzo y puedes seguir editándolas allí.",
+            )}
           </small>
         </div>
       </details>

@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import {
   ticketDate,
@@ -23,6 +25,8 @@ export default function KanbanColumn({
   onMove,
   onSelect,
 }: Props) {
+  const i18n = useTranslator();
+
   const [page, setPage] = useState(1),
     [over, setOver] = useState(false);
   const { data, loading, error } = useTickets(true, state, page, 0);
@@ -33,7 +37,7 @@ export default function KanbanColumn({
       className="support-kanban-column"
       data-state={state}
       data-over={over && canDrop}
-      aria-label={ticketStateLabel(state)}
+      aria-label={ticketStateLabel(state, i18n)}
       onDragOver={(event) => {
         if (canDrop) {
           event.preventDefault();
@@ -55,13 +59,13 @@ export default function KanbanColumn({
       <header>
         <h3>
           <span className="support-kanban-dot" />
-          {ticketStateLabel(state)}
+          {ticketStateLabel(state, i18n)}
         </h3>
         <span className="support-kanban-total">{data ? data.total : "—"}</span>
       </header>
       {loading ? (
         <p className="support-kanban-empty" role="status">
-          Cargando tickets…
+          {i18n("Cargando tickets…")}
         </p>
       ) : error ? (
         <p className="support-kanban-empty" role="alert">
@@ -105,25 +109,29 @@ export default function KanbanColumn({
                   </span>
                 )}
                 <time dateTime={ticket.createdAt}>
-                  {ticketDate(ticket.createdAt)}
+                  {ticketDate(ticket.createdAt, i18n.locale)}
                 </time>
               </button>
             ))}
           </div>
           {!data?.items.length && (
-            <p className="support-kanban-empty">Sin tickets en este estado</p>
+            <p className="support-kanban-empty">
+              {i18n("Sin tickets en este estado")}
+            </p>
           )}
           {data && (data.pages > 1 || page > 1) && (
             <nav
               className="support-kanban-pagination"
-              aria-label={`Páginas de ${ticketStateLabel(state)}`}
+              aria-label={i18n("Páginas de {v0}", {
+                v0: ticketStateLabel(state),
+              })}
             >
               <button
                 type="button"
                 disabled={page <= 1 || busy}
                 onClick={() => setPage((value) => value - 1)}
               >
-                Anterior
+                {i18n("Anterior")}
               </button>
               <span>
                 {page} / {Math.max(page, data.pages)}
@@ -133,7 +141,7 @@ export default function KanbanColumn({
                 disabled={page >= data.pages || busy}
                 onClick={() => setPage((value) => value + 1)}
               >
-                Siguiente
+                {i18n("Siguiente")}
               </button>
             </nav>
           )}

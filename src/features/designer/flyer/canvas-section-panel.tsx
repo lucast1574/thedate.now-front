@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import SectionLibrary from "../section-library-panel";
 import Icon from "@/components/icon";
 import type { DesignSection } from "@/lib/events/types";
@@ -25,32 +26,39 @@ export default function CanvasSectionPanel({
   onChange: (canvas: FlyerCanvas) => void;
   onAdd: () => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="canvas-section-panel">
       <SectionLibrary editor={editor} onSelect={onSelect} />
       <p className="canvas-section-help">
-        Elige una sección aquí o pulsa su fondo en el lienzo.
+        {i18n("Elige una sección aquí o pulsa su fondo en el lienzo.")}
       </p>
       <button className="opening-section-card" onClick={onOpening}>
         <Icon name="mail" />
         <span>
           <strong>
             {editor.draft.opening?.enabled
-              ? "Sobre de apertura"
-              : "Añadir una apertura"}
+              ? i18n("Sobre de apertura")
+              : i18n("Añadir una apertura")}
           </strong>
           <small>
-            Inicio de la invitación ·{" "}
-            {editor.draft.opening?.enabled ? "Editar" : "Opcional"}
+            {i18n("Inicio de la invitación ·")}{" "}
+            {editor.draft.opening?.enabled ? i18n("Editar") : i18n("Opcional")}
           </small>
         </span>
         <Icon name="chevron" />
       </button>
       <div className="canvas-section-list-heading">
-        <h3>Tus secciones</h3>
-        <span>{editor.sections.length} de 20</span>
+        <h3>{i18n("Tus secciones")}</h3>
+        <span>
+          {editor.sections.length} {i18n("de 20")}
+        </span>
       </div>
-      <div className="canvas-page-list" aria-label="Seleccionar sección">
+      <div
+        className="canvas-page-list"
+        aria-label={i18n("Seleccionar sección")}
+      >
         {editor.sections.map((section, n) => (
           <button
             key={section.id}
@@ -60,16 +68,16 @@ export default function CanvasSectionPanel({
             <span
               className="canvas-section-swatch"
               style={{
-                backgroundColor: sectionCanvas(section, editor.draft)
+                backgroundColor: sectionCanvas(section, editor.draft, i18n)
                   .background,
               }}
               aria-hidden="true"
             />
             <span className="canvas-section-caption">
-              <strong>{section.heading || "Sección sin título"}</strong>
+              <strong>{section.heading || i18n("Sección sin título")}</strong>
               <small>
-                Sección {n + 1}
-                {section.id === active?.id ? " · Seleccionada" : ""}
+                {i18n("Sección")} {n + 1}
+                {section.id === active?.id ? i18n(" · Seleccionada") : ""}
               </small>
             </span>
             {section.id === active?.id && <Icon name="check" />}
@@ -82,13 +90,15 @@ export default function CanvasSectionPanel({
         disabled={editor.sections.length >= 20}
       >
         <Icon name="plus" />
-        Añadir sección
+        {i18n("Añadir sección")}
       </button>
       {active && (
         <details className="canvas-section-details">
-          <summary>Opciones de la sección {index + 1}</summary>
+          <summary>
+            {i18n("Opciones de la sección")} {index + 1}
+          </summary>
           <label>
-            Nombre de la sección
+            {i18n("Nombre de la sección")}{" "}
             <input
               value={active.heading}
               maxLength={120}
@@ -98,7 +108,7 @@ export default function CanvasSectionPanel({
             />
           </label>
           <label>
-            Altura del lienzo
+            {i18n("Altura del lienzo")}{" "}
             <input
               type="number"
               min={320}

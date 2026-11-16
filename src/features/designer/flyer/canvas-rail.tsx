@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import Brand from "@/components/brand";
 import type { Kind } from "@/lib/events/types";
@@ -11,9 +12,11 @@ export default function CanvasRail({
   kind: Kind;
   onChange: (tab: string) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
-    <nav className="canvas-rail" aria-label="Herramientas de diseño">
-      {canvasToolGroups.map((group) => (
+    <nav className="canvas-rail" aria-label={i18n("Herramientas de diseño")}>
+      {canvasToolGroups(i18n).map((group) => (
         <div
           key={group.label}
           className="canvas-rail-group"

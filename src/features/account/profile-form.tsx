@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import UserAvatar from "@/components/user-avatar";
 import Alert from "@/components/alert";
@@ -14,6 +15,8 @@ export default function ProfileForm({
   onSaved: (user: User) => void;
   onSignOut: () => Promise<void>;
 }) {
+  const i18n = useTranslator();
+
   const [current, setCurrent] = useState(user),
     [name, setName] = useState(user.name),
     [busy, setBusy] = useState(false),
@@ -27,13 +30,13 @@ export default function ProfileForm({
     try {
       const response = await fetch("/api/profile/avatar", {
         method: "POST",
-        body: await profilePhoto(file),
+        body: await profilePhoto(file, i18n),
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error);
       setCurrent(result);
       onSaved(result);
-      setNotice("Foto actualizada.");
+      setNotice(i18n("Foto actualizada."));
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -43,23 +46,25 @@ export default function ProfileForm({
   return (
     <div className="profile-layout">
       <section className="profile-page">
-        <p className="office-kicker">TU CUENTA</p>
-        <h1>Un espacio muy tuyo.</h1>
-        <p>Tu perfil acompaña todas tus bodas y celebraciones.</p>
+        <p className="office-kicker">{i18n("TU CUENTA")}</p>
+        <h1>{i18n("Un espacio muy tuyo.")}</h1>
+        <p>{i18n("Tu perfil acompaña todas tus bodas y celebraciones.")}</p>
         <Alert>{error}</Alert>
         <Alert variant="success">{notice}</Alert>
         <div className="profile-panel">
           <div className="profile-photo">
             <UserAvatar user={current} />
             <div>
-              <h2>Foto de perfil</h2>
+              <h2>{i18n("Foto de perfil")}</h2>
               <p>
                 {user.googlePhotoUrl
-                  ? "Usamos tu foto de Google. Puedes elegir otra si prefieres."
-                  : "Elige la foto que quieras ver en tu espacio."}
+                  ? i18n(
+                      "Usamos tu foto de Google. Puedes elegir otra si prefieres.",
+                    )
+                  : i18n("Elige la foto que quieras ver en tu espacio.")}
               </p>
               <label className="profile-upload">
-                {busy ? "Guardando…" : "Elegir una foto"}
+                {busy ? i18n("Guardando…") : i18n("Elegir una foto")}
                 <input
                   type="file"
                   accept="image/jpeg,image/png,image/webp"
@@ -70,7 +75,9 @@ export default function ProfileForm({
                   }}
                 />
               </label>
-              <small>JPG, PNG o WebP · hasta 10 MB · recorte cuadrado</small>
+              <small>
+                {i18n("JPG, PNG o WebP · hasta 10 MB · recorte cuadrado")}
+              </small>
             </div>
           </div>
           <form
@@ -85,10 +92,11 @@ export default function ProfileForm({
                   {
                     name,
                   },
+                  i18n,
                 );
                 setCurrent(result);
                 onSaved(result);
-                setNotice("Perfil guardado.");
+                setNotice(i18n("Perfil guardado."));
               } catch (e) {
                 setError((e as Error).message);
               } finally {
@@ -97,7 +105,7 @@ export default function ProfileForm({
             }}
           >
             <label>
-              Tu nombre
+              {i18n("Tu nombre")}{" "}
               <input
                 required
                 minLength={2}
@@ -107,11 +115,10 @@ export default function ProfileForm({
               />
             </label>
             <label>
-              Correo
-              <input readOnly value={user.email} />
+              {i18n("Correo")} <input readOnly value={user.email} />
             </label>
             <button className="office-button" disabled={busy}>
-              Guardar perfil
+              {i18n("Guardar perfil")}
             </button>
           </form>
         </div>
@@ -132,7 +139,7 @@ export default function ProfileForm({
               }
             }}
           >
-            Cerrar sesión
+            {i18n("Cerrar sesión")}
           </button>
         </div>
       </section>

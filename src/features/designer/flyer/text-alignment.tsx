@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { FlyerElement } from "@/lib/events/flyer";
 
@@ -8,17 +9,19 @@ export default function TextAlignment({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div
       className="inspector-alignment"
       role="group"
-      aria-label="Alineación del texto"
+      aria-label={i18n("Alineación del texto")}
     >
       {(
         [
-          ["left", "Izquierda", "lucide:text-align-start"],
-          ["center", "Centro", "lucide:text-align-center"],
-          ["right", "Derecha", "lucide:text-align-end"],
+          ["left", i18n("Izquierda"), "lucide:text-align-start"],
+          ["center", i18n("Centro"), "lucide:text-align-center"],
+          ["right", i18n("Derecha"), "lucide:text-align-end"],
         ] as const
       ).map(([align, label, icon]) => (
         <button

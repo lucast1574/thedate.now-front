@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import CompanionFields from "@/components/companion-fields";
 import type { Person } from "@/lib/events/seating";
 export default function RSVPCompanions({
@@ -9,10 +10,12 @@ export default function RSVPCompanions({
   max: number;
   onChange: (people: Person[]) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <>
       <fieldset>
-        <legend>¿Vendrás con acompañantes?</legend>
+        <legend>{i18n("¿Vendrás con acompañantes?")}</legend>
         <label>
           <input
             type="radio"
@@ -20,7 +23,7 @@ export default function RSVPCompanions({
             checked={!people.length}
             onChange={() => onChange([])}
           />{" "}
-          No, iré solo
+          {i18n("No, iré solo")}
         </label>
         <label>
           <input
@@ -32,7 +35,7 @@ export default function RSVPCompanions({
                 onChange([{ name: "", lastName: "", gender: "unspecified" }]);
             }}
           />{" "}
-          Sí, iré acompañado
+          {i18n("Sí, iré acompañado")}
         </label>
       </fieldset>
       {people.length > 0 && (
@@ -40,7 +43,9 @@ export default function RSVPCompanions({
           people={people}
           max={max}
           onChange={onChange}
-          description="Registra el nombre de cada persona que irá contigo."
+          description={i18n(
+            "Registra el nombre de cada persona que irá contigo.",
+          )}
         />
       )}
     </>

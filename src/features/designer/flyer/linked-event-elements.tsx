@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { DesignEvent, Event } from "@/lib/events/types";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -14,28 +15,34 @@ export default function LinkedEventElements({
   disabled: boolean;
   onAdd: (item: FlyerElement) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="canvas-special-tools">
       <button
         disabled={disabled}
         onClick={() =>
           onAdd(
-            element("text", {
-              binding:
-                event.kind === "wedding" ? "couple_names" : "event_title",
-              eventBound: true,
-              text: event.kind === "wedding" ? "{{novios}}" : "{{evento}}",
-              color: draft.accentColor,
-            }),
+            element(
+              "text",
+              {
+                binding:
+                  event.kind === "wedding" ? "couple_names" : "event_title",
+                eventBound: true,
+                text: event.kind === "wedding" ? "{{novios}}" : "{{evento}}",
+                color: draft.accentColor,
+              },
+              i18n,
+            ),
           )
         }
       >
         <Icon name="heart" />
         <span>
           {event.kind === "wedding"
-            ? "Nombres de los novios"
-            : "Nombre del evento"}
-          <small>Conectado a los datos de la celebración</small>
+            ? i18n("Nombres de los novios")
+            : i18n("Nombre del evento")}
+          <small>{i18n("Conectado a los datos de la celebración")}</small>
         </span>
         <Icon name="plus" />
       </button>
@@ -44,25 +51,30 @@ export default function LinkedEventElements({
           disabled={disabled}
           onClick={() =>
             onAdd(
-              element("text", {
-                binding: "map",
-                eventBound: true,
-                text: "",
-                height: 320,
-                actionHint: true,
-                mapStyle: "warm",
-                mapRadius: 18,
-                mapZoom: 14,
-                ...mapCoordinates(event.mapUrl),
-                link: event.mapUrl,
-                color: draft.accentColor,
-              }),
+              element(
+                "text",
+                {
+                  binding: "map",
+                  eventBound: true,
+                  text: "",
+                  height: 320,
+                  actionHint: true,
+                  mapStyle: "warm",
+                  mapRadius: 18,
+                  mapZoom: 14,
+                  ...mapCoordinates(event.mapUrl),
+                  link: event.mapUrl,
+                  color: draft.accentColor,
+                },
+                i18n,
+              ),
             )
           }
         >
           <Icon name="lucide:map" />
           <span>
-            Mapa<small>Ubicación, marcador y estilo propio</small>
+            {i18n("Mapa")}
+            <small>{i18n("Ubicación, marcador y estilo propio")}</small>
           </span>
           <Icon name="plus" />
         </button>

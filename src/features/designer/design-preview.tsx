@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { downloadInvitation } from "./download-invitation";
 import { useRef, useState } from "react";
 import Icon from "@/components/icon";
@@ -12,11 +14,13 @@ export default function DesignPreview({
   draft: Event;
   downloadable?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const root = useRef<HTMLElement>(null);
   const [downloading, setDownloading] = useState(false),
     [downloadError, setDownloadError] = useState("");
   const [ready, setReady] = useState(false);
-  const [guestName, setGuestName] = useState("María Rojas");
+  const [guestName, setGuestName] = useState(i18n("María Rojas"));
   const [device, setDevice] = useState<"mobile" | "desktop">("mobile");
   function chooseDevice(next: "mobile" | "desktop") {
     if (next === device) return;
@@ -27,7 +31,7 @@ export default function DesignPreview({
     <section
       ref={root}
       className="editor-preview"
-      aria-label="Vista previa de la invitación"
+      aria-label={i18n("Vista previa de la invitación")}
     >
       <div className="preview-toolbar">
         {downloadable && (
@@ -41,7 +45,7 @@ export default function DesignPreview({
               setDownloading(true);
               setDownloadError("");
               try {
-                await downloadInvitation(doc, draft.title);
+                await downloadInvitation(doc, draft.title, i18n);
               } catch (error) {
                 setDownloadError((error as Error).message);
               } finally {
@@ -51,41 +55,41 @@ export default function DesignPreview({
           >
             <Icon name="down" />
             {!ready
-              ? "Preparando invitación…"
+              ? i18n("Preparando invitación…")
               : downloading
-                ? "Preparando descarga…"
-                : "Descargar invitación"}
+                ? i18n("Preparando descarga…")
+                : i18n("Descargar invitación")}
           </button>
         )}
 
         <div
           className="preview-device-tabs"
           role="group"
-          aria-label="Dispositivo de la vista previa"
+          aria-label={i18n("Dispositivo de la vista previa")}
         >
           <button
             type="button"
             aria-pressed={device === "mobile"}
             onClick={() => chooseDevice("mobile")}
           >
-            <Icon name="lucide:smartphone" /> Móvil
+            <Icon name="lucide:smartphone" /> {i18n("Móvil")}
           </button>
           <button
             type="button"
             aria-pressed={device === "desktop"}
             onClick={() => chooseDevice("desktop")}
           >
-            <Icon name="lucide:monitor" /> Escritorio
+            <Icon name="lucide:monitor" /> {i18n("Escritorio")}
           </button>
         </div>
         {!downloadable && (
           <label className="preview-name">
             <Icon name="users" />
-            <span>Invitado de ejemplo</span>
+            <span>{i18n("Invitado de ejemplo")}</span>
             <input
               maxLength={200}
               value={guestName}
-              placeholder="Nombre del invitado"
+              placeholder={i18n("Nombre del invitado")}
               onChange={(e) => setGuestName(e.target.value)}
             />
           </label>
@@ -104,12 +108,12 @@ export default function DesignPreview({
       </div>
       <footer className="preview-caption">
         <span>
-          <Icon name="lock" /> Vista previa privada
+          <Icon name="lock" /> {i18n("Vista previa privada")}
         </span>
         {(draft.isDemo || draft.paymentStatus !== "paid") && (
           <PreviewWatermark wedding={draft.kind === "wedding"} />
         )}
-        <p>Explora tu invitación desplazándote dentro de ella.</p>
+        <p>{i18n("Explora tu invitación desplazándote dentro de ella.")}</p>
       </footer>
     </section>
   );

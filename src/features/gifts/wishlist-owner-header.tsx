@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import { invitationHost } from "@/lib/events/domains";
 import type { Event } from "@/lib/events/types";
@@ -13,17 +14,22 @@ export default function WishlistOwnerHeader({
   view: string;
   onView: (view: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const published =
     event.paymentStatus === "paid" && !event.isDemo && !!event.publishedAt;
   return (
     <>
       <header className="wishlist-owner-header">
         <div>
-          <span className="wishlist-eyebrow">DETALLES PARA COMPARTIR</span>
-          <h2>Tu lista, regalo a regalo</h2>
+          <span className="wishlist-eyebrow">
+            {i18n("DETALLES PARA COMPARTIR")}
+          </span>
+          <h2>{i18n("Tu lista, regalo a regalo")}</h2>
           <p>
-            Elige lo que les gustaría recibir. Cada regalo encuentra a su
-            persona.
+            {i18n(
+              "Elige lo que les gustaría recibir. Cada regalo encuentra a su persona.",
+            )}
           </p>
         </div>
         <div className="wishlist-auto-status" role="status">
@@ -31,13 +37,15 @@ export default function WishlistOwnerHeader({
           <span>
             <strong>
               {list.items.length
-                ? "Tu lista se actualiza automáticamente"
-                : "Empieza con un regalo"}
+                ? i18n("Tu lista se actualiza automáticamente")
+                : i18n("Empieza con un regalo")}
             </strong>
             <small>
               {published
-                ? "Disponible desde el elemento de regalos de tu invitación"
-                : "Se compartirá al publicar la invitación"}
+                ? i18n(
+                    "Disponible desde el elemento de regalos de tu invitación",
+                  )
+                : i18n("Se compartirá al publicar la invitación")}
             </small>
           </span>
         </div>
@@ -47,7 +55,7 @@ export default function WishlistOwnerHeader({
           {view !== "manage" && (
             <button type="button" onClick={() => onView("manage")}>
               <Icon name="lucide:arrow-left" />
-              Mi lista
+              {i18n("Mi lista")}
             </button>
           )}
           <button
@@ -56,7 +64,7 @@ export default function WishlistOwnerHeader({
             onClick={() => onView(view === "guest" ? "manage" : "guest")}
           >
             <Icon name="lucide:eye" />
-            Vista de invitado
+            {i18n("Vista de invitado")}
           </button>
           <button
             type="button"
@@ -64,7 +72,7 @@ export default function WishlistOwnerHeader({
             onClick={() => onView(view === "example" ? "manage" : "example")}
           >
             <Icon name="lucide:book-open" />
-            Ver ejemplo
+            {i18n("Ver ejemplo")}
           </button>
         </div>
         {published ? (
@@ -75,12 +83,12 @@ export default function WishlistOwnerHeader({
             rel="noopener noreferrer"
           >
             <Icon name="external" />
-            Abrir lista publicada
+            {i18n("Abrir lista publicada")}
           </a>
         ) : (
           <span className="wishlist-publication-hint">
             <Icon name="clock" />
-            Publica la invitación para compartirla
+            {i18n("Publica la invitación para compartirla")}
           </span>
         )}
       </div>

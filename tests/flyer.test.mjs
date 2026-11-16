@@ -59,7 +59,7 @@ test("canvas moves and resizes stay inside its coordinate space", () => {
 test("each product has both template modes and applying a theme retains content", () => {
   for (const kind of ["wedding", "general"]) {
     for (const mode of ["sections", "flyer"]) {
-      const choices = invitationTemplates.filter(
+      const choices = invitationTemplates().filter(
         (t) => t.kind === kind && t.mode === mode,
       );
       assert.ok(choices.length >= 2);
@@ -82,7 +82,9 @@ test("flyer mode preserves custom layers across mode changes and theme applicati
   const flyer = { ...event, sections, designMode: "flyer" };
   const themed = applyTemplate(
     flyer,
-    invitationTemplates.find((t) => t.kind === "wedding" && t.mode === "flyer"),
+    invitationTemplates().find(
+      (t) => t.kind === "wedding" && t.mode === "flyer",
+    ),
   );
   assert.equal(themed.sections[0].canvas.elements[0].rotation, 45);
   assert.equal(

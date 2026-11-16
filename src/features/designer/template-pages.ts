@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { collectionRhythm } from "./collection-rhythm";
 import { editableOrnaments } from "./editable-ornaments";
 import { interiorLayout } from "./template-interior-layout";
@@ -13,6 +14,7 @@ export function templatePage(
   heading: string,
   height: number,
   elements: FlyerElement[],
+  i18n: Translator = spanishTranslator,
 ): DesignSection {
   const id = crypto.randomUUID();
   return {
@@ -55,12 +57,15 @@ export function templatePage(
             ),
             template,
             heading,
+            i18n,
           ),
           template,
           heading,
+          i18n,
         ),
       ),
       undefined,
+      i18n,
     ),
   };
 }
@@ -72,32 +77,42 @@ export function templateText(
   height = 100,
   size = 36,
   patch: Partial<FlyerElement> = {},
+  i18n: Translator = spanishTranslator,
 ) {
-  return element("text", {
-    id,
-    text,
-    x: 60,
-    y,
-    width: 600,
-    height,
-    font: template.font,
-    color: template.accent,
-    fontSize: size,
-    ...patch,
-  });
+  return element(
+    "text",
+    {
+      id,
+      text,
+      x: 60,
+      y,
+      width: 600,
+      height,
+      font: template.font,
+      color: template.accent,
+      fontSize: size,
+      ...patch,
+    },
+    i18n,
+  );
 }
 export function templateIcon(
   template: InvitationTemplate,
   icon: string,
   y: number,
+  i18n: Translator = spanishTranslator,
 ) {
-  return element("icon", {
-    id: icon.replace(":", "-"),
-    icon,
-    x: 310,
-    y,
-    width: 100,
-    height: 100,
-    color: template.accent,
-  });
+  return element(
+    "icon",
+    {
+      id: icon.replace(":", "-"),
+      icon,
+      x: 310,
+      y,
+      width: 100,
+      height: 100,
+      color: template.accent,
+    },
+    i18n,
+  );
 }

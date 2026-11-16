@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { Delivery } from "./use-invitation-delivery";
 
@@ -6,6 +7,8 @@ export default function DeliveryArtwork({
 }: {
   phase: Delivery["phase"];
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="delivery-artwork" aria-hidden="true">
       <svg viewBox="0 0 260 180" fill="none">
@@ -55,14 +58,14 @@ export default function DeliveryArtwork({
       </span>
       <span className="delivery-art-caption">
         {phase === "complete"
-          ? "Ya están en camino"
+          ? i18n("Ya están en camino")
           : phase === "sending"
-            ? "De tu historia a su WhatsApp"
+            ? i18n("De tu historia a su WhatsApp")
             : phase === "waiting"
-              ? "Cada invitado tiene su momento"
+              ? i18n("Cada invitado tiene su momento")
               : phase === "attention" || phase === "error"
-                ? "Tu lista está a salvo"
-                : "Una invitación, muchos encuentros"}
+                ? i18n("Tu lista está a salvo")
+                : i18n("Una invitación, muchos encuentros")}
       </span>
     </div>
   );

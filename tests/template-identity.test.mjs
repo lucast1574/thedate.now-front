@@ -20,11 +20,11 @@ const { default: Surface } = loadSource(
   "src/components/flyer-surface.tsx",
   options,
 );
-const pick = (id) => invitationTemplates.find((t) => t.id === id);
+const pick = (id) => invitationTemplates().find((t) => t.id === id);
 test("template families have different reading sequences and non-overlapping story text", () => {
   const flows = new Set(),
     compositions = new Set();
-  for (const t of invitationTemplates.filter((t) => t.mode === "flyer")) {
+  for (const t of invitationTemplates().filter((t) => t.mode === "flyer")) {
     const pages = templateSequence(t);
     flows.add(
       pages
@@ -111,7 +111,7 @@ test("switching untouched openings follows the chosen identity and explicit cust
 });
 test("photo-free covers retain distinct structures and old extra layers are removed", () => {
   const covers = new Set();
-  for (const t of invitationTemplates.filter(
+  for (const t of invitationTemplates().filter(
     (t) => t.kind === "wedding" && t.mode === "flyer",
   )) {
     const c = applyCompleteTemplate(blankEvent("wedding"), t, false).sections[0]
@@ -155,7 +155,7 @@ test("each product has 24 different cover compositions, beyond palette changes",
     options,
   );
   for (const kind of ["wedding", "general"]) {
-    const signatures = invitationTemplates
+    const signatures = invitationTemplates()
       .filter((t) => t.kind === kind && t.mode === "flyer")
       .map((t) =>
         JSON.stringify(

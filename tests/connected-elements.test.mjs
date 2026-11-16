@@ -43,7 +43,7 @@ const source = {
   },
 };
 test("both products ship every essential connected element and always show gift access", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (t) => t.mode === "flyer",
   )) {
     const pages = templateSequence(template, {
@@ -120,7 +120,7 @@ test("bound values follow event edits while existing independent designs stay un
     false,
   );
   const withoutGifts = templateSequence(
-    invitationTemplates.find((t) => t.mode === "flyer"),
+    invitationTemplates().find((t) => t.mode === "flyer"),
     { ...source, celebration: { giftsEnabled: false } },
   );
   assert.equal(
@@ -139,7 +139,7 @@ test("adding missing elements preserves personalized sections and is idempotent"
       },
     ],
   };
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (t) => t.kind === "wedding" && t.mode === "flyer",
   );
   const result = addMissingTemplateElements(original, template);

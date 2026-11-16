@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 export const clamp = (value: number, min: number, max: number) =>
@@ -5,6 +6,7 @@ export const clamp = (value: number, min: number, max: number) =>
 export function element(
   type: FlyerElement["type"],
   patch: Partial<FlyerElement> = {},
+  i18n: Translator = spanishTranslator,
 ): FlyerElement {
   return {
     id: crypto.randomUUID(),
@@ -20,7 +22,7 @@ export function element(
     bold: false,
     align: "center",
     ...(type === "text"
-      ? { text: "Tu texto aquí" }
+      ? { text: i18n("Tu texto aquí") }
       : type === "icon"
         ? { icon: "heart", width: 100, height: 100, fontSize: 72 }
         : { width: 300, height: 300 }),
@@ -41,40 +43,60 @@ export function blankCanvas(
 export function sectionCanvas(
   section: DesignSection,
   draft: DesignEvent,
+  i18n: Translator = spanishTranslator,
 ): FlyerCanvas {
   if (section.canvas) return section.canvas;
   const elements = [
-    element("text", {
-      text: section.heading,
-      y: 110,
-      fontSize: 54,
-      color: draft.accentColor,
-    }),
-    element("text", { text: section.body, y: 250, height: 250, fontSize: 28 }),
+    element(
+      "text",
+      {
+        text: section.heading,
+        y: 110,
+        fontSize: 54,
+        color: draft.accentColor,
+      },
+      i18n,
+    ),
+    element(
+      "text",
+      { text: section.body, y: 250, height: 250, fontSize: 28 },
+      i18n,
+    ),
   ];
   if (section.guestText) elements.push({ ...section.guestText, y: 540 });
   if (section.icon && section.icon !== "none")
     elements.push(
-      element("icon", {
-        icon: section.icon,
-        x: 310,
-        y: 20,
-        color: draft.accentColor,
-      }),
+      element(
+        "icon",
+        {
+          icon: section.icon,
+          x: 310,
+          y: 20,
+          color: draft.accentColor,
+        },
+        i18n,
+      ),
     );
   if (section.photoKey)
     elements.push(
-      element("image", {
-        photoKey: section.photoKey,
-        x: 110,
-        y: 550,
-        width: 500,
-        height: 300,
-      }),
+      element(
+        "image",
+        {
+          photoKey: section.photoKey,
+          x: 110,
+          y: 550,
+          width: 500,
+          height: 300,
+        },
+        i18n,
+      ),
     );
   return { width: 720, height: 960, background: "#fff9ed", elements };
 }
-export function flyerSections(draft: DesignEvent) {
+export function flyerSections(
+  draft: DesignEvent,
+  i18n: Translator = spanishTranslator,
+) {
   const sections = draft.sections?.length
     ? draft.sections
     : [
@@ -87,7 +109,7 @@ export function flyerSections(draft: DesignEvent) {
       ];
   return sections.map((section) => ({
     ...section,
-    canvas: sectionCanvas(section, draft),
+    canvas: sectionCanvas(section, draft, i18n),
   }));
 }
 export function moveElement(

@@ -1,4 +1,11 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+import {
+  type Translator,
+  localized,
+  bindTranslator,
+} from "@/lib/i18n/translator";
+
 import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/icon";
@@ -6,21 +13,26 @@ import SeatingCanvas from "./seating-canvas";
 import { exampleSeatingPlan } from "@/lib/events/venue-examples";
 import GiftExperiencePreview from "@/features/gifts/gift-experience-preview";
 import { exampleVenueAreas } from "@/lib/events/venue-areas";
-const examples = [
+const examples = localized((i18n: Translator) => [
   {
-    name: "Valentina Torres",
+    name: i18n("Valentina Torres"),
     people: 2,
-    status: "Confirmado",
-    gift: "Cafetera",
+    status: i18n("Confirmado"),
+    gift: i18n("Cafetera"),
   },
-  { name: "Mateo Rojas", people: 1, status: "Pendiente", gift: "Sin elección" },
   {
-    name: "Lucía y familia",
-    people: 4,
-    status: "Confirmado",
-    gift: "Juego de copas",
+    name: i18n("Mateo Rojas"),
+    people: 1,
+    status: i18n("Pendiente"),
+    gift: i18n("Sin elección"),
   },
-];
+  {
+    name: i18n("Lucía y familia"),
+    people: 4,
+    status: i18n("Confirmado"),
+    gift: i18n("Juego de copas"),
+  },
+]);
 export default function OrganizationPreview({
   tool = "guests",
   eventId,
@@ -32,26 +44,38 @@ export default function OrganizationPreview({
   active?: boolean;
   wedding?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const [selected, setSelected] = useState("");
-  const [areas, setAreas] = useState(exampleVenueAreas);
-  const [plan, setPlan] = useState(() => exampleSeatingPlan(wedding));
+  const [areas, setAreas] = useState(
+    bindTranslator(exampleVenueAreas, i18n, 0),
+  );
+  const [plan, setPlan] = useState(() => exampleSeatingPlan(wedding, i18n));
   return (
     <section className="organization-preview">
       <header>
-        <span className="preview-label">Vista previa · datos de ejemplo</span>
+        <span className="preview-label">
+          {i18n("Vista previa · datos de ejemplo")}
+        </span>
         <h2>
           {tool === "tables"
-            ? "Un lugar para cada persona"
+            ? i18n("Un lugar para cada persona")
             : tool === "gifts"
-              ? "Cada regalo, una persona"
-              : "Todo empieza con tus invitados"}
+              ? i18n("Cada regalo, una persona")
+              : i18n("Todo empieza con tus invitados")}
         </h2>
         <p>
           {tool === "tables"
-            ? "Mueve mesas, bocaditos, bar y pista de baile para distribuir el espacio de tu evento."
+            ? i18n(
+                "Mueve mesas, bocaditos, bar y pista de baile para distribuir el espacio de tu evento.",
+              )
             : tool === "gifts"
-              ? "Tu invitación conecta con tu lista automáticamente. Añade regalos, evita repetidos y conoce quién elige cada detalle."
-              : "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento."}
+              ? i18n(
+                  "Tu invitación conecta con tu lista automáticamente. Añade regalos, evita repetidos y conoce quién elige cada detalle.",
+                )
+              : i18n(
+                  "Nombres, acompañantes, confirmaciones y regalos en un solo lugar para cada evento.",
+                )}
         </p>
       </header>
       {tool === "gifts" ? (
@@ -84,12 +108,12 @@ export default function OrganizationPreview({
       ) : (
         <div className="preview-roster">
           <div className="preview-roster-head">
-            <span>Invitación</span>
-            <span>Personas</span>
-            <span>Estado</span>
-            <span>Regalo</span>
+            <span>{i18n("Invitación")}</span>
+            <span>{i18n("Personas")}</span>
+            <span>{i18n("Estado")}</span>
+            <span>{i18n("Regalo")}</span>
           </div>
-          {examples.map((row) => (
+          {examples(i18n).map((row) => (
             <div key={row.name}>
               <strong>{row.name}</strong>
               <span>{row.people}</span>
@@ -105,10 +129,10 @@ export default function OrganizationPreview({
       )}
       <div className="organization-benefits">
         {[
-          ["users", "Invitados y acompañantes"],
-          ["table", "Mesas y aforo"],
-          ["lucide:gift", "Regalos sin repetir"],
-          ["check", "Control de entrada en Excel"],
+          ["users", i18n("Invitados y acompañantes")],
+          ["table", i18n("Mesas y aforo")],
+          ["lucide:gift", i18n("Regalos sin repetir")],
+          ["check", i18n("Control de entrada en Excel")],
         ].map(([icon, label]) => (
           <span key={label}>
             <Icon name={icon} />
@@ -119,8 +143,12 @@ export default function OrganizationPreview({
       <footer>
         <p>
           {active
-            ? "Este evento ya tiene su espacio activo. Abre sus invitados, mesas y regalos."
-            : "Al activar un evento, se abre su espacio de organización con sus propios invitados, mesas y regalos."}
+            ? i18n(
+                "Este evento ya tiene su espacio activo. Abre sus invitados, mesas y regalos.",
+              )
+            : i18n(
+                "Al activar un evento, se abre su espacio de organización con sus propios invitados, mesas y regalos.",
+              )}
         </p>
         <Link
           className="gift-primary"
@@ -134,9 +162,9 @@ export default function OrganizationPreview({
         >
           {eventId
             ? active
-              ? "Organizar este evento"
-              : "Activar este evento"
-            : "Crear mi evento"}
+              ? i18n("Organizar este evento")
+              : i18n("Activar este evento")
+            : i18n("Crear mi evento")}
           <Icon name="arrow" />
         </Link>
       </footer>

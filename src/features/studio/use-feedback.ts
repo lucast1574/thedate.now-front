@@ -1,7 +1,11 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 
 export function useFeedback() {
+  const i18n = useTranslator();
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -14,7 +18,9 @@ export function useFeedback() {
       return true;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "No se pudo completar la acción",
+        err instanceof Error
+          ? err.message
+          : i18n("No se pudo completar la acción"),
       );
       return false;
     } finally {

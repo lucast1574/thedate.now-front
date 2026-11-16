@@ -1,3 +1,8 @@
+import {
+  type Translator,
+  localized,
+  spanishTranslator,
+} from "@/lib/i18n/translator";
 import { identityVariants } from "./template-identity-variants";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { baseIdentities } from "./template-identities-base";
@@ -12,10 +17,16 @@ export type TemplateIdentity = {
   seal: string;
   opening: string;
 };
-const plans = { ...baseIdentities, ...extendedIdentities };
-export function templateIdentity(t: InvitationTemplate) {
+const plans = localized((i18n: Translator) => ({
+  ...baseIdentities(i18n),
+  ...extendedIdentities(i18n),
+}));
+export function templateIdentity(
+  t: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
+) {
   return {
-    ...plans[t.layout || (t.kind === "wedding" ? "floral" : "poster")],
-    ...identityVariants[t.id],
+    ...plans(i18n)[t.layout || (t.kind === "wedding" ? "floral" : "poster")],
+    ...identityVariants(i18n)[t.id],
   };
 }

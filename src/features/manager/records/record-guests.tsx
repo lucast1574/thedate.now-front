@@ -1,14 +1,16 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, localized } from "@/lib/i18n/translator";
 import { useState } from "react";
 import { fullName, partySeats } from "@/lib/events/attendees";
 import type { Guest } from "@/lib/events/types";
 import type { SeatingPlan } from "@/lib/events/seating";
 
-const responses: Record<string, string> = {
-  going: "Confirmó",
-  not_going: "Declinó",
-  maybe: "Sin confirmar",
-  pending: "Sin respuesta",
-};
+const responses = localized((i18n: Translator): Record<string, string> => ({
+  going: i18n("Confirmó"),
+  not_going: i18n("Declinó"),
+  maybe: i18n("Sin confirmar"),
+  pending: i18n("Sin respuesta"),
+}));
 export default function RecordGuests({
   guests,
   plan,
@@ -16,6 +18,8 @@ export default function RecordGuests({
   guests: Guest[];
   plan: SeatingPlan;
 }) {
+  const i18n = useTranslator();
+
   const [search, setSearch] = useState("");
   const confirmed = guests
     .filter((guest) => guest.response === "going")
@@ -28,31 +32,36 @@ export default function RecordGuests({
   return (
     <>
       <p className="record-summary">
-        {guests.length} {guests.length === 1 ? "invitación" : "invitaciones"} ·{" "}
+        {guests.length}{" "}
+        {guests.length === 1 ? i18n("invitación") : i18n("invitaciones")} ·{" "}
         {confirmed}{" "}
-        {confirmed === 1 ? "persona confirmada" : "personas confirmadas"}
+        {confirmed === 1
+          ? i18n("persona confirmada")
+          : i18n("personas confirmadas")}
       </p>
       {guests.length > 8 && (
         <label className="record-search">
-          Buscar por nombre
+          {i18n("Buscar por nombre")}{" "}
           <input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Nombre o apellido"
+            placeholder={i18n("Nombre o apellido")}
           />
         </label>
       )}
       {!guests.length ? (
-        <p className="record-empty">No hay invitados en esta lista.</p>
+        <p className="record-empty">
+          {i18n("No hay invitados en esta lista.")}
+        </p>
       ) : (
         <div className="record-table-scroll">
           <table className="record-table">
             <thead>
               <tr>
-                <th>Invitado</th>
-                <th>Respuesta</th>
-                <th>Personas</th>
-                <th>Mesa</th>
+                <th>{i18n("Invitado")}</th>
+                <th>{i18n("Respuesta")}</th>
+                <th>{i18n("Personas")}</th>
+                <th>{i18n("Mesa")}</th>
               </tr>
             </thead>
             <tbody>
@@ -65,7 +74,7 @@ export default function RecordGuests({
                     ) : null}
                   </td>
                   <td data-label="Respuesta">
-                    {responses[guest.response] || "Sin respuesta"}
+                    {responses(i18n)[guest.response] || i18n("Sin respuesta")}
                   </td>
                   <td data-label="Personas">{partySeats(guest)}</td>
                   <td data-label="Mesa">
@@ -78,7 +87,7 @@ export default function RecordGuests({
             </tbody>
           </table>
           {!list.length && (
-            <p className="record-empty">No hay coincidencias.</p>
+            <p className="record-empty">{i18n("No hay coincidencias.")}</p>
           )}
         </div>
       )}

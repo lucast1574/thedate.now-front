@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import { LocationContent } from "@/components/flyer-location";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -13,6 +14,8 @@ export default function LocationPresentation({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const parts = locationParts(item.locationStyle);
   function toggle(part: LocationPart) {
     const locationStyle = toggleLocationPart(item.locationStyle, part);
@@ -35,18 +38,18 @@ export default function LocationPresentation({
   }
   return (
     <div className="location-presentation">
-      <h4>Elementos visibles</h4>
-      <p>Combina las partes que quieras mostrar.</p>
+      <h4>{i18n("Elementos visibles")}</h4>
+      <p>{i18n("Combina las partes que quieras mostrar.")}</p>
       <div
         className="location-part-options"
         role="group"
-        aria-label="Elementos de la ubicación"
+        aria-label={i18n("Elementos de la ubicación")}
       >
         {(
           [
-            ["icon", "Icono", "lucide:map-pin"],
-            ["label", "Título", "lucide:type"],
-            ["address", "Dirección", "lucide:map-pinned"],
+            ["icon", i18n("Icono"), "lucide:map-pin"],
+            ["label", i18n("Título"), "lucide:type"],
+            ["address", i18n("Dirección"), "lucide:map-pinned"],
           ] as const
         ).map(([part, label, icon]) => (
           <button
@@ -64,7 +67,7 @@ export default function LocationPresentation({
       </div>
       <div
         className="location-mini-preview"
-        aria-label="Vista previa de la ubicación"
+        aria-label={i18n("Vista previa de la ubicación")}
       >
         <LocationContent item={item} />
       </div>

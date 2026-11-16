@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import {
@@ -7,6 +9,8 @@ import {
   type WishlistOwner,
 } from "@/lib/events/wishlist";
 export function useWishlist(id: string) {
+  const i18n = useTranslator();
+
   const submitting = useRef(false);
   const [ready, setReady] = useState(false);
   const [data, setData] = useState<WishlistOwner>({
@@ -18,16 +22,26 @@ export function useWishlist(id: string) {
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
   const load = useCallback(async () => {
-    const next = await api<WishlistOwner>(`/api/backend/events/${id}/wishlist`);
+    const next = await api<WishlistOwner>(
+      `/api/backend/events/${id}/wishlist`,
+      undefined,
+      undefined,
+      i18n,
+    );
     setData((current) =>
       next.list.version >= current.list.version ? next : current,
     );
     setReady(true);
     setError("");
-  }, [id]);
+  }, [id, i18n]);
   useEffect(() => {
     let active = true;
-    void api<WishlistOwner>(`/api/backend/events/${id}/wishlist`)
+    void api<WishlistOwner>(
+      `/api/backend/events/${id}/wishlist`,
+      undefined,
+      undefined,
+      i18n,
+    )
       .then((next) => {
         if (active) {
           setData(next);
@@ -47,7 +61,7 @@ export function useWishlist(id: string) {
       active = false;
       window.clearInterval(timer);
     };
-  }, [id, load]);
+  }, [id, load, i18n]);
   async function save(list: Wishlist) {
     if (submitting.current || !ready) return false;
     submitting.current = true;
@@ -59,13 +73,14 @@ export function useWishlist(id: string) {
         `/api/backend/events/${id}/wishlist`,
         "PATCH",
         list,
+        i18n,
       );
       setData((current) =>
         next.version >= current.list.version
           ? { ...current, list: next }
           : current,
       );
-      setNotice("Lista guardada.");
+      setNotice(i18n("Lista guardada."));
       return true;
     } catch (e) {
       await load().catch(() => {});
@@ -89,12 +104,15 @@ export function useWishlist(id: string) {
         `/api/backend/events/${id}/wishlist/reservations/${gift}`,
         "PATCH",
         { version: data.list.version, action },
+        i18n,
       );
       setData((current) =>
         list.version >= current.list.version ? { ...current, list } : current,
       );
       setNotice(
-        action === "release" ? "Reserva liberada." : "Entrega actualizada.",
+        action === "release"
+          ? i18n("Reserva liberada.")
+          : i18n("Entrega actualizada."),
       );
     } catch (e) {
       await load().catch(() => {});

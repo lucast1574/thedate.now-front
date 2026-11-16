@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import GuestForm from "@/features/studio/guest-form";
 import GuestImport from "@/features/studio/guest-import";
@@ -12,6 +13,8 @@ export default function GuestWorkspace({
 }: {
   manager: ReturnType<typeof useManager>;
 }) {
+  const i18n = useTranslator();
+
   const [queueNotice, setQueueNotice] = useState<{
     open: boolean;
     hasSpots: boolean;
@@ -49,11 +52,14 @@ export default function GuestWorkspace({
     >
       <header className="guest-workspace-heading">
         <div>
-          <p className="journey-eyebrow">TU LISTA, A TU MANERA</p>
-          <h2 id="guest-workspace-title">¿A quiénes quieres invitar?</h2>
+          <p className="journey-eyebrow">{i18n("TU LISTA, A TU MANERA")}</p>
+          <h2 id="guest-workspace-title">
+            {i18n("¿A quiénes quieres invitar?")}
+          </h2>
           <p>
-            Sube tu lista o añade personas una a una. Aquí puedes hacer ambas
-            cosas.
+            {i18n(
+              "Sube tu lista o añade personas una a una. Aquí puedes hacer ambas cosas.",
+            )}
           </p>
         </div>
       </header>
@@ -71,12 +77,12 @@ export default function GuestWorkspace({
           <div className="guest-method-heading">
             <Icon name="users" />
             <div>
-              <h3>Añade personas a mano</h3>
-              <p>No necesitas una hoja de cálculo.</p>
+              <h3>{i18n("Añade personas a mano")}</h3>
+              <p>{i18n("No necesitas una hoja de cálculo.")}</p>
             </div>
           </div>
           <p className="guest-hint">
-            Los nuevos invitados se añaden al final de tu lista.
+            {i18n("Los nuevos invitados se añaden al final de tu lista.")}
           </p>
           <GuestForm
             kind={manager.event.kind}
@@ -92,16 +98,16 @@ export default function GuestWorkspace({
       <aside className="guest-queue-guide">
         <Icon name="users" />
         <div>
-          <h3>El orden de tu lista importa</h3>
+          <h3>{i18n("El orden de tu lista importa")}</h3>
           <p>
-            Puedes añadir más personas que el aforo disponible. Invitaremos por
-            orden, respetando los cupos de cada familia.
+            {i18n(
+              "Puedes añadir más personas que el aforo disponible. Invitaremos por orden, respetando los cupos de cada familia.",
+            )}
           </p>
           <p>
-            Cuando alguien diga que no, confirme menos personas o venza su
-            reserva temporal, la siguiente invitación se enviará automáticamente
-            si hay espacio para todo su grupo. Nadie recibe un mensaje antes de
-            pulsar «Enviar invitaciones».
+            {i18n(
+              "Cuando alguien diga que no, confirme menos personas o venza su reserva temporal, la siguiente invitación se enviará automáticamente si hay espacio para todo su grupo. Nadie recibe un mensaje antes de pulsar «Enviar invitaciones».",
+            )}
           </p>
         </div>
       </aside>

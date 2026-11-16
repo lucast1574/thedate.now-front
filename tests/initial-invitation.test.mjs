@@ -10,7 +10,7 @@ const { invitationTemplates } = loadSource(
   "src/lib/events/template-catalog.ts",
 );
 const { templateOpening } = loadSource(
-  "src/features/designer/template-extras.ts",
+  "src/features/designer/template-opening.ts",
 );
 const { applyCompleteTemplate } = loadSource(
   "src/features/designer/apply-template-design.ts",
@@ -49,7 +49,7 @@ test("starting without a template persists a genuinely empty editable canvas in 
 });
 
 test("every initial canvas template saves the preview with current features atomically", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (t) => t.mode === "flyer",
   )) {
     const draft = {
@@ -96,7 +96,7 @@ test("virtual templates use their join link and configured openings survive", ()
     isVirtual: true,
     virtualUrl: "https://meet.google.com/example",
     opening: {
-      ...templateOpening(invitationTemplates.find((t) => t.mode === "flyer")),
+      ...templateOpening(invitationTemplates().find((t) => t.mode === "flyer")),
       enabled: false,
     },
   };
@@ -109,7 +109,7 @@ test("virtual templates use their join link and configured openings survive", ()
 });
 
 test("changing templates carries editable restrictions, color exclusions and active gift access", () => {
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (t) => t.mode === "flyer" && t.kind === "wedding",
   );
   const first = initialInvitation({
@@ -160,7 +160,7 @@ test("event payload persists dress defaults and private WhatsApp copy independen
 });
 
 test("all 48 templates load saved dress, restrictions and adults-only choices", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (item) => item.mode === "flyer",
   )) {
     const draft = {
@@ -240,7 +240,7 @@ test("an empty WhatsApp message persists empty without link tokens", () => {
   );
 });
 test("every canvas template carries the venue name and address into its location element", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (item) => item.mode === "flyer",
   )) {
     const draft = {

@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Alert from "@/components/alert";
 import ActionButton from "@/components/action-button";
 import { useState, type FormEvent } from "react";
@@ -25,6 +27,8 @@ export default function AuthPanel({
   onSignIn: (form: AccountFields, mode: AuthMode) => Promise<void>;
   onClearError: () => void;
 }) {
+  const i18n = useTranslator();
+
   const otherPortal = wedding
     ? "https://crea.thedate.now"
     : "https://studio.save.thedate.now";
@@ -48,32 +52,36 @@ export default function AuthPanel({
       {!invitation && (
         <>
           <p className="office-kicker">
-            {wedding ? "ESTUDIO DE BODAS" : "MI ESPACIO DE EVENTOS"}
+            {wedding ? i18n("ESTUDIO DE BODAS") : i18n("MI ESPACIO DE EVENTOS")}
           </p>
           <h1>
             {mode === "login"
-              ? "Bienvenido de nuevo."
+              ? i18n("Bienvenido de nuevo.")
               : wedding
-                ? "Creemos algo inolvidable."
-                : "Que empiece el plan."}
+                ? i18n("Creemos algo inolvidable.")
+                : i18n("Que empiece el plan.")}
           </h1>
           <p>
             {wedding
-              ? "Organiza cada boda con la pareja, sus invitados y todos los detalles en un mismo lugar."
-              : "Tu celebración, tus invitados y cada detalle en un solo lugar."}
+              ? i18n(
+                  "Organiza cada boda con la pareja, sus invitados y todos los detalles en un mismo lugar.",
+                )
+              : i18n(
+                  "Tu celebración, tus invitados y cada detalle en un solo lugar.",
+                )}
           </p>
         </>
       )}
       {invitation && googleEnabled && (
         <a className="google-button" href={googleLink}>
           <GoogleIcon />
-          <span>Continuar con Google</span>
+          <span>{i18n("Continuar con Google")}</span>
         </a>
       )}
       <form onSubmit={submit}>
         {mode === "register" && (
           <label>
-            Nombre
+            {i18n("Nombre")}{" "}
             <input
               required
               autoComplete="name"
@@ -83,7 +91,7 @@ export default function AuthPanel({
           </label>
         )}
         <label>
-          Correo
+          {i18n("Correo")}{" "}
           <input
             required
             type="email"
@@ -94,7 +102,7 @@ export default function AuthPanel({
           />
         </label>
         <label>
-          Contraseña
+          {i18n("Contraseña")}{" "}
           <input
             required
             type="password"
@@ -108,23 +116,23 @@ export default function AuthPanel({
         </label>
         <ActionButton className="office-button" disabled={busy}>
           {busy
-            ? "Entrando…"
+            ? i18n("Entrando…")
             : invitation
               ? mode === "login"
-                ? "Entrar con correo"
-                : "Crear cuenta y aceptar"
+                ? i18n("Entrar con correo")
+                : i18n("Crear cuenta y aceptar")
               : mode === "login"
-                ? "Entrar"
+                ? i18n("Entrar")
                 : wedding
-                  ? "Crear cuenta de planner"
-                  : "Crear mi cuenta"}{" "}
+                  ? i18n("Crear cuenta de planner")
+                  : i18n("Crear mi cuenta")}{" "}
           {!invitation && "↗"}
         </ActionButton>
       </form>
       {!invitation && googleEnabled && (
         <a className="google-button" href={googleLink}>
           <GoogleIcon />
-          <span>Continuar con Google</span>
+          <span>{i18n("Continuar con Google")}</span>
         </a>
       )}
       <button
@@ -138,15 +146,17 @@ export default function AuthPanel({
       >
         {mode === "login"
           ? invitation
-            ? "Crear cuenta con este correo"
-            : "¿Primera vez? Crea tu cuenta"
-          : "Ya tengo una cuenta"}
+            ? i18n("Crear cuenta con este correo")
+            : i18n("¿Primera vez? Crea tu cuenta")
+          : i18n("Ya tengo una cuenta")}
       </button>
       {!invitation && (
         <p className="portal-switch">
-          {wedding ? "¿Organizas otro tipo de evento?" : "¿Planeas bodas?"}{" "}
+          {wedding
+            ? i18n("¿Organizas otro tipo de evento?")
+            : i18n("¿Planeas bodas?")}{" "}
           <a href={otherPortal}>
-            {wedding ? "Ir a The Date" : "Ir al Estudio de bodas"} ↗
+            {wedding ? i18n("Ir a The Date") : i18n("Ir al Estudio de bodas")} ↗
           </a>
         </p>
       )}

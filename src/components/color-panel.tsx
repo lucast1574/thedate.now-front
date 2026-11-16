@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import ColorPlane from "./color-plane";
 import Icon from "./icon";
@@ -21,6 +22,8 @@ export default function ColorPanel({
   onChange: (value: string) => void;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [hsv, setHsv] = useState(() => hexToHsv(value));
   const [hex, setHex] = useState(value),
     [invalid, setInvalid] = useState(false);
@@ -69,22 +72,22 @@ export default function ColorPanel({
   return (
     <div id={id} className="color-panel">
       <div className="color-panel-heading">
-        <strong>Tu paleta</strong>
+        <strong>{i18n("Tu paleta")}</strong>
         <button
           type="button"
-          aria-label="Cerrar selector de color"
+          aria-label={i18n("Cerrar selector de color")}
           onClick={onClose}
         >
           ×
         </button>
       </div>
-      {swatches(weddingColors, "Elegancia natural")}
-      {swatches(partyColors, "A todo color")}
+      {swatches(weddingColors, i18n("Elegancia natural"))}
+      {swatches(partyColors, i18n("A todo color"))}
       {memory.colors.length ? (
-        swatches(memory.colors, "Tus colores recientes")
+        swatches(memory.colors, i18n("Tus colores recientes"))
       ) : (
         <p className="color-memory-note">
-          Los colores que uses aparecerán aquí.
+          {i18n("Los colores que uses aparecerán aquí.")}
         </p>
       )}
       <ColorPlane
@@ -95,9 +98,9 @@ export default function ColorPanel({
       <div className="color-hex-row">
         <span style={{ backgroundColor: value }} />
         <label>
-          HEX
+          {i18n("HEX")}{" "}
           <input
-            aria-label="Código hexadecimal"
+            aria-label={i18n("Código hexadecimal")}
             value={hex}
             maxLength={7}
             spellCheck={false}
@@ -116,16 +119,16 @@ export default function ColorPanel({
           />
         </label>
         <button type="button" onClick={applyHex}>
-          Aplicar
+          {i18n("Aplicar")}
         </button>
       </div>
       {invalid && (
         <p role="alert" className="color-error">
-          Escribe un color como #8150C7.
+          {i18n("Escribe un color como #8150C7.")}
         </p>
       )}
       <small className="color-memory-note">
-        Recientes guardados en este navegador, para tu cuenta.
+        {i18n("Recientes guardados en este navegador, para tu cuenta.")}
       </small>
     </div>
   );

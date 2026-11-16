@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { Workbook, Worksheet } from "exceljs";
 import type { Event } from "./types";
 
@@ -17,20 +18,31 @@ function merged(sheet: Worksheet, text: string, height: number, dark = false) {
   row.alignment = { vertical: "middle", wrapText: true };
   return row;
 }
-export function addDoorSheet(book: Workbook, event: Event, rows: string[][]) {
-  const sheet = book.addWorksheet("Invitados por mesa");
+export function addDoorSheet(
+  book: Workbook,
+  event: Event,
+  rows: string[][],
+  i18n: Translator = spanishTranslator,
+) {
+  const sheet = book.addWorksheet(i18n("Invitados por mesa"));
   [29, 37, 24].forEach((width, i) => {
     sheet.getColumn(i + 1).width = width;
     sheet.getColumn(i + 1).numFmt = "@";
   });
   merged(sheet, event.title, 38, true);
-  merged(sheet, `GUÍA DE ENTRADA  ·  ${rows.length} personas invitadas`, 24);
   merged(
     sheet,
-    "Invitados agrupados por mesa y ordenados por apellido. Sin mesa: consultar al organizador.",
+    i18n("GUÍA DE ENTRADA  ·  {v0} personas invitadas", { v0: rows.length }),
+    24,
+  );
+  merged(
+    sheet,
+    i18n(
+      "Invitados agrupados por mesa y ordenados por apellido. Sin mesa: consultar al organizador.",
+    ),
     30,
   );
-  const header = sheet.addRow(["Apellido", "Nombre", "Mesa"]);
+  const header = sheet.addRow([i18n("Apellido"), i18n("Nombre"), i18n("Mesa")]);
   header.height = 26;
   header.font = { name: "Calibri", size: 12, bold: true, color: { argb: ink } };
   header.eachCell((cell) => {
@@ -103,7 +115,8 @@ export function addDoorSheet(book: Workbook, event: Event, rows: string[][]) {
       usedHeight += heights[index];
     });
   }
-  if (!rows.length) merged(sheet, "Todavía no hay invitados en la lista.", 32);
+  if (!rows.length)
+    merged(sheet, i18n("Todavía no hay invitados en la lista."), 32);
   sheet.views = [{ state: "frozen", ySplit: 4, showGridLines: false }];
   sheet.pageSetup = {
     paperSize: 9,
@@ -122,5 +135,5 @@ export function addDoorSheet(book: Workbook, event: Event, rows: string[][]) {
       footer: 0.2,
     },
   };
-  sheet.headerFooter.oddFooter = "&LGuía de entrada&R Página &P de &N";
+  sheet.headerFooter.oddFooter = i18n("&LGuía de entrada&R Página &P de &N");
 }

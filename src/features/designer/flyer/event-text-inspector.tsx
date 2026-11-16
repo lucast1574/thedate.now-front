@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function EventTextInspector({
@@ -7,6 +8,8 @@ export default function EventTextInspector({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const token =
     item.binding === "couple_names"
       ? "{{novios}}"
@@ -16,7 +19,9 @@ export default function EventTextInspector({
   return (
     <div className="inspector-group">
       <label>
-        {item.eventBound ? "Texto alrededor del dato" : "Texto personalizado"}
+        {item.eventBound
+          ? i18n("Texto alrededor del dato")
+          : i18n("Texto personalizado")}
         <textarea
           rows={3}
           maxLength={2000}
@@ -29,21 +34,24 @@ export default function EventTextInspector({
         />
       </label>
       {item.eventBound && (
-        <small>Conserva {token} para que se actualice automáticamente.</small>
+        <small>
+          {i18n("Conserva")} {token}{" "}
+          {i18n("para que se actualice automáticamente.")}
+        </small>
       )}
       {item.binding === "couple_names" && (
         <label>
-          Composición de los nombres
+          {i18n("Composición de los nombres")}{" "}
           <Listbox
             value={item.nameFormat || "names"}
             onValueChange={(nameFormat) =>
               onChange({ nameFormat: nameFormat as FlyerElement["nameFormat"] })
             }
           >
-            <option value="names">Juntos</option>
-            <option value="stacked">En líneas separadas</option>
-            <option value="initials">Iniciales</option>
-            <option value="uppercase">Mayúsculas</option>
+            <option value="names">{i18n("Juntos")}</option>
+            <option value="stacked">{i18n("En líneas separadas")}</option>
+            <option value="initials">{i18n("Iniciales")}</option>
+            <option value="uppercase">{i18n("Mayúsculas")}</option>
           </Listbox>
         </label>
       )}

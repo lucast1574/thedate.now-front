@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState, type FormEvent } from "react";
 import { api } from "@/lib/api/client";
 import { money, type Run } from "@/lib/account/types";
@@ -11,39 +13,51 @@ export default function AffiliateWithdrawal({
   available: number;
   run: Run;
 }) {
+  const i18n = useTranslator();
+
   const [amount, setAmount] = useState("10"),
     [details, setDetails] = useState("");
   function withdraw(e: FormEvent) {
     e.preventDefault();
     void run(
       () =>
-        api("/api/backend/affiliates/withdrawals", "POST", {
-          amountCents: Math.round(Number(amount) * 100),
-          method: "bank",
-          details,
-        }),
-      "Retiro solicitado. Reservamos el importe mientras revisamos tus datos.",
+        api(
+          "/api/backend/affiliates/withdrawals",
+          "POST",
+          {
+            amountCents: Math.round(Number(amount) * 100),
+            method: "bank",
+            details,
+          },
+          i18n,
+        ),
+      i18n(
+        "Retiro solicitado. Reservamos el importe mientras revisamos tus datos.",
+      ),
     );
   }
   if (available < 1000)
     return (
       <section className="partner-withdrawal-note">
-        <strong>Retira desde US$10</strong>
+        <strong>{i18n("Retira desde US$10")}</strong>
         <p>
-          Te faltan {money(1000 - available)} de saldo disponible. Cuando
-          llegues, podrás añadir tu cuenta bancaria aquí.
+          {i18n("Te faltan")} {money(1000 - available, i18n.locale)}{" "}
+          {i18n(
+            "de saldo disponible. Cuando llegues, podrás añadir tu cuenta bancaria aquí.",
+          )}
         </p>
       </section>
     );
   return (
     <section className="account-card partner-withdrawal" id="retiro">
-      <h2>Retirar saldo</h2>
+      <h2>{i18n("Retirar saldo")}</h2>
       <p>
-        Recíbelo por transferencia bancaria. Disponible: {money(available)}.
+        {i18n("Recíbelo por transferencia bancaria. Disponible:")}{" "}
+        {money(available, i18n.locale)}.
       </p>
       <form onSubmit={withdraw}>
         <label>
-          Monto en USD
+          {i18n("Monto en USD")}{" "}
           <input
             required
             type="number"
@@ -55,18 +69,18 @@ export default function AffiliateWithdrawal({
           />
         </label>
         <label>
-          Tu cuenta bancaria
+          {i18n("Tu cuenta bancaria")}{" "}
           <textarea
             required
             minLength={5}
             maxLength={500}
             value={details}
             onChange={(e) => setDetails(e.target.value)}
-            placeholder="Titular, banco, país y cuenta"
+            placeholder={i18n("Titular, banco, país y cuenta")}
           />
         </label>
         <button className="office-button" disabled={busy || available < 1000}>
-          {busy ? "Enviando solicitud…" : "Solicitar retiro"}
+          {busy ? i18n("Enviando solicitud…") : i18n("Solicitar retiro")}
         </button>
       </form>
     </section>

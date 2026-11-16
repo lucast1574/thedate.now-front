@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { eventReadOnly } from "@/lib/events/event-closure";
 import { useEventReadOnly } from "@/features/studio/use-event-read-only";
@@ -9,6 +11,8 @@ import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
 import { useSeatingAutosave } from "./use-seating-autosave";
 import { useLiveResponses } from "./use-live-responses";
 export function useManager(id: string) {
+  const i18n = useTranslator();
+
   const [event, setEvent] = useState<Event | null>(null),
     [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<Event[]>([]);
@@ -26,9 +30,19 @@ export function useManager(id: string) {
   const refresh = useCallback(
     async (discard = false) => {
       const [list, remote, events] = await Promise.all([
-        api<Guest[]>(`/api/backend/events/${id}/guests`),
-        api<SeatingPlan>(`/api/backend/events/${id}/seating`),
-        api<Event[]>("/api/backend/events"),
+        api<Guest[]>(
+          `/api/backend/events/${id}/guests`,
+          undefined,
+          undefined,
+          i18n,
+        ),
+        api<SeatingPlan>(
+          `/api/backend/events/${id}/seating`,
+          undefined,
+          undefined,
+          i18n,
+        ),
+        api<Event[]>("/api/backend/events", undefined, undefined, i18n),
       ]);
       const latest = events.find((e) => e.id === id);
       if (latest) setEvent(latest);
@@ -41,18 +55,18 @@ export function useManager(id: string) {
         setStale(false);
       } else if (remote.version !== versionRef.current) setStale(true);
     },
-    [id],
+    [id, i18n],
   );
   useEffect(() => {
     let active = true;
     Promise.all([
-      api<Event[]>("/api/backend/events"),
-      api<User>("/api/session"),
+      api<Event[]>("/api/backend/events", undefined, undefined, i18n),
+      api<User>("/api/session", undefined, undefined, i18n),
     ])
       .then(async ([list, current]) => {
         if (!active) return;
         const found = list.find((e) => e.id === id);
-        if (!found) throw new Error("No tienes acceso a este evento.");
+        if (!found) throw new Error(i18n("No tienes acceso a este evento."));
         setEvents(list);
         setEvent(found);
         setUser(current);
@@ -69,7 +83,7 @@ export function useManager(id: string) {
     return () => {
       active = false;
     };
-  }, [id, refresh]);
+  }, [id, refresh, i18n]);
   useLiveResponses(
     Boolean(
       event && !readOnly && !event.isDemo && event.paymentStatus === "paid",
@@ -113,6 +127,7 @@ export function useManager(id: string) {
         `/api/backend/events/${id}/seating`,
         "PATCH",
         plan,
+        i18n,
       );
       setPlan(saved);
       versionRef.current = saved.version;
@@ -124,9 +139,9 @@ export function useManager(id: string) {
   const add = (fields: GuestFields) =>
     run(async () => {
       if (eventReadOnly(event)) return;
-      await api(`/api/backend/events/${id}/guests`, "POST", fields);
+      await api(`/api/backend/events/${id}/guests`, "POST", fields, i18n);
       await refresh();
-    }, "Invitado añadido.");
+    }, i18n("Invitado añadido."));
 
   const autosave = useSeatingAutosave(
     plan,

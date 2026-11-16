@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import ColorPicker from "@/components/color-picker";
 import TypefacePicker from "./typeface-picker";
 import Icon from "@/components/icon";
@@ -11,17 +12,22 @@ export default function CanvasFormatting({
   item?: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
-  if (!item) return <span>Tu invitación, sección a sección</span>;
+  const i18n = useTranslator();
+
+  if (!item) return <span>{i18n("Tu invitación, sección a sección")}</span>;
   return (
-    <div className="canvas-formatting" aria-label="Formato del elemento">
+    <div
+      className="canvas-formatting"
+      aria-label={i18n("Formato del elemento")}
+    >
       <span>
         {item.binding === "location"
-          ? "Ubicación"
+          ? i18n("Ubicación")
           : item.type === "image"
-            ? "Imagen seleccionada"
+            ? i18n("Imagen seleccionada")
             : item.type === "icon"
-              ? "Símbolo"
-              : "Texto"}
+              ? i18n("Símbolo")
+              : i18n("Texto")}
       </span>
       {item.type !== "image" && (
         <ColorPicker
@@ -33,7 +39,7 @@ export default function CanvasFormatting({
         <>
           <TypefacePicker item={item} onChange={onChange} />
           <input
-            aria-label="Tamaño de fuente"
+            aria-label={i18n("Tamaño de fuente")}
             type="number"
             min={8}
             max={160}
@@ -46,8 +52,8 @@ export default function CanvasFormatting({
           />
           <button
             type="button"
-            title="Negrita"
-            aria-label="Negrita"
+            title={i18n("Negrita")}
+            aria-label={i18n("Negrita")}
             aria-pressed={item.bold}
             onClick={() => onChange({ bold: !item.bold })}
           >
@@ -55,8 +61,8 @@ export default function CanvasFormatting({
           </button>
           <button
             type="button"
-            title="Cursiva"
-            aria-label="Cursiva"
+            title={i18n("Cursiva")}
+            aria-label={i18n("Cursiva")}
             aria-pressed={!!item.italic}
             onClick={() => onChange({ italic: !item.italic })}
           >

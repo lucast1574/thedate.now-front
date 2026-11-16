@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEventReadOnly } from "@/features/studio/use-event-read-only";
 import OwnerGiftCard from "./owner-gift-card";
 import Icon from "@/components/icon";
@@ -12,6 +14,8 @@ import WishlistOwnerHeader from "./wishlist-owner-header";
 import WishlistCollection from "./wishlist-collection";
 import OwnerWishlistPreview from "./owner-wishlist-preview";
 export default function WishlistPanel({ event }: { event: Event }) {
+  const i18n = useTranslator();
+
   const readOnly = useEventReadOnly(event);
   const state = useWishlist(event.id),
     { list, guests } = state.data;
@@ -42,32 +46,33 @@ export default function WishlistPanel({ event }: { event: Event }) {
   if (event.celebration?.giftsEnabled === false)
     return (
       <section className="wishlist-panel wishlist-owner">
-        <h2>La lista de regalos está desactivada</h2>
+        <h2>{i18n("La lista de regalos está desactivada")}</h2>
         <p>
-          Conservamos tus regalos y sus reservas. Tus invitados no verán la
-          lista ni recibirán su enlace. Puedes activarla desde los datos de esta
-          invitación.
+          {i18n(
+            "Conservamos tus regalos y sus reservas. Tus invitados no verán la lista ni recibirán su enlace. Puedes activarla desde los datos de esta invitación.",
+          )}
         </p>
       </section>
     );
-  if (state.loading) return <p role="status">Cargando tu lista de regalos…</p>;
+  if (state.loading)
+    return <p role="status">{i18n("Cargando tu lista de regalos…")}</p>;
   if (!state.ready)
     return (
       <section className="wishlist-panel wishlist-owner">
-        <h2>No pudimos abrir tu lista</h2>
+        <h2>{i18n("No pudimos abrir tu lista")}</h2>
         <p role="alert">{state.error}</p>
         <button
           className="gift-secondary"
           onClick={() => void state.load().catch(() => {})}
         >
-          Volver a intentar
+          {i18n("Volver a intentar")}
         </button>
       </section>
     );
   if (readOnly)
     return (
       <section className="wishlist-panel wishlist-owner">
-        <h2>Lista de regalos</h2>
+        <h2>{i18n("Lista de regalos")}</h2>
         <div className="wishlist-gift-grid">
           {list.items.map((gift) => (
             <OwnerGiftCard
@@ -100,7 +105,7 @@ export default function WishlistPanel({ event }: { event: Event }) {
             className="gift-secondary"
             onClick={() => void state.load().catch(() => {})}
           >
-            Recargar lista
+            {i18n("Recargar lista")}
           </button>
         </div>
       )}
@@ -112,7 +117,7 @@ export default function WishlistPanel({ event }: { event: Event }) {
       {view === "manage" && (
         <a className="wishlist-mobile-add" href="#wishlist-gift-composer">
           <Icon name="plus" />
-          {editor === "new" ? "Añadir regalo" : "Continuar edición"}
+          {editor === "new" ? i18n("Añadir regalo") : i18n("Continuar edición")}
         </a>
       )}
       <div className="wishlist-owner-layout" data-preview={view !== "manage"}>
@@ -144,7 +149,9 @@ export default function WishlistPanel({ event }: { event: Event }) {
           id="wishlist-gift-composer"
           hidden={view !== "manage"}
           className="wishlist-composer"
-          aria-label={editor === "new" ? "Añadir regalo" : "Editar regalo"}
+          aria-label={
+            editor === "new" ? i18n("Añadir regalo") : i18n("Editar regalo")
+          }
         >
           {pending && (
             <GiftEditorSwitch
@@ -159,9 +166,11 @@ export default function WishlistPanel({ event }: { event: Event }) {
           )}
           {list.items.length >= 100 && editor === "new" && (
             <div className="wishlist-limit">
-              <h3>Tu lista tiene 100 regalos</h3>
+              <h3>{i18n("Tu lista tiene 100 regalos")}</h3>
               <p>
-                Puedes editar tus ideas o quitar alguna antes de añadir otra.
+                {i18n(
+                  "Puedes editar tus ideas o quitar alguna antes de añadir otra.",
+                )}
               </p>
             </div>
           )}

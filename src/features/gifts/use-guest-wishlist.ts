@@ -1,18 +1,27 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api } from "@/lib/api/client";
 import type { GuestWishlist } from "@/lib/events/wishlist";
 export function useGuestWishlist(token: string, initial: GuestWishlist) {
+  const i18n = useTranslator();
+
   const submitting = useRef(false);
   const [data, setData] = useState(initial),
     [busy, setBusy] = useState(false),
     [error, setError] = useState(""),
     [notice, setNotice] = useState("");
   const refresh = useCallback(async () => {
-    const next = await api<GuestWishlist>(`/api/gifts/${token}`);
+    const next = await api<GuestWishlist>(
+      `/api/gifts/${token}`,
+      undefined,
+      undefined,
+      i18n,
+    );
     setData((current) => (next.version >= current.version ? next : current));
     return next;
-  }, [token]);
+  }, [token, i18n]);
   useEffect(() => {
     const update = () => {
       void refresh().catch(() => {});
@@ -33,13 +42,18 @@ export function useGuestWishlist(token: string, initial: GuestWishlist) {
     setError("");
     setNotice("");
     const successNotice = release
-      ? "Tu elección se liberó. Ya puedes escoger otro regalo."
-      : "Este regalo quedó reservado para ti. ¡Gracias por ser parte!";
+      ? i18n("Tu elección se liberó. Ya puedes escoger otro regalo.")
+      : i18n("Este regalo quedó reservado para ti. ¡Gracias por ser parte!");
     try {
-      const next = await api<GuestWishlist>(`/api/gifts/${token}`, "POST", {
-        giftId,
-        release,
-      });
+      const next = await api<GuestWishlist>(
+        `/api/gifts/${token}`,
+        "POST",
+        {
+          giftId,
+          release,
+        },
+        i18n,
+      );
       setData((current) => (next.version >= current.version ? next : current));
       setNotice(successNotice);
       return true;

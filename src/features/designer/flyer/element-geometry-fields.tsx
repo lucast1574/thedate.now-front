@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
 import { scaleElement } from "./canvas-geometry";
@@ -10,6 +11,8 @@ export default function ElementGeometryFields({
   canvas?: FlyerCanvas;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   const bounds = canvas || {
     width: 720,
     height: 960,
@@ -21,22 +24,22 @@ export default function ElementGeometryFields({
     <details className="element-geometry inspector-disclosure" key={item.id}>
       <summary>
         <Icon name="lucide:move" />
-        <span>Posición y tamaño</span>
+        <span>{i18n("Posición y tamaño")}</span>
         <Icon name="chevron" />
       </summary>
       <div className="inspector-disclosure-body">
         {proportional && (
           <p className="inspector-proportions">
-            <Icon name="lock" /> Proporciones vinculadas
+            <Icon name="lock" /> {i18n("Proporciones vinculadas")}
           </p>
         )}
         <div className="inspector-grid">
           {(
             [
-              ["width", "Ancho"],
-              ["height", "Alto"],
-              ["x", "Posición X"],
-              ["y", "Posición Y"],
+              ["width", i18n("Ancho")],
+              ["height", i18n("Alto")],
+              ["x", i18n("Posición X")],
+              ["y", i18n("Posición Y")],
               ["rotation", "Giro °"],
             ] as const
           ).map(([field, label]) => (
@@ -69,19 +72,19 @@ export default function ElementGeometryFields({
           <div
             className="inspector-center-actions"
             role="group"
-            aria-label="Centrar en el lienzo"
+            aria-label={i18n("Centrar en el lienzo")}
           >
             <button
               onClick={() => onChange({ x: (canvas.width - item.width) / 2 })}
             >
               <Icon name="lucide:align-center-horizontal" />
-              Horizontal
+              {i18n("Horizontal")}
             </button>
             <button
               onClick={() => onChange({ y: (canvas.height - item.height) / 2 })}
             >
               <Icon name="lucide:align-center-vertical" />
-              Vertical
+              {i18n("Vertical")}
             </button>
           </div>
         )}

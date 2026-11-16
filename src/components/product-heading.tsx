@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { WeddingMark } from "./brand";
 import Icon from "./icon";
 import type { Kind } from "@/lib/events/types";
@@ -8,6 +9,8 @@ export default function ProductHeading({
   kind: Kind;
   area: "editor" | "manager";
 }) {
+  const i18n = useTranslator();
+
   const wedding = kind === "wedding";
   return (
     <div className={`product-heading product-heading-${kind}`}>
@@ -19,14 +22,16 @@ export default function ProductHeading({
         <span>
           {area === "editor"
             ? wedding
-              ? "El diseño de vuestra historia"
-              : "Dale personalidad a tu evento"
+              ? i18n("El diseño de vuestra historia")
+              : i18n("Dale personalidad a tu evento")
             : wedding
-              ? "Vuestra boda · invitados y salón"
-              : "Tu evento · asistentes y distribución"}
+              ? i18n("Vuestra boda · invitados y salón")
+              : i18n("Tu evento · asistentes y distribución")}
         </span>
       </div>
-      <small>{wedding ? "ESTUDIO DE BODAS" : "ESPACIO DE EVENTOS"}</small>
+      <small>
+        {wedding ? i18n("ESTUDIO DE BODAS") : i18n("ESPACIO DE EVENTOS")}
+      </small>
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef } from "react";
 import Icon from "@/components/icon";
 import type { Event } from "@/lib/events/types";
@@ -9,6 +10,8 @@ export default function PreviewModal({
   draft: Event;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
@@ -40,16 +43,16 @@ export default function PreviewModal({
           </span>
           <div>
             <span>
-              {draft.kind === "wedding" ? "Save the Date" : "The Date"} · Vista
-              previa
+              {draft.kind === "wedding" ? "Save the Date" : "The Date"}{" "}
+              {i18n("· Vista previa")}
             </span>
-            <h2 id="preview-title">{draft.title || "Tu invitación"}</h2>
+            <h2 id="preview-title">{draft.title || i18n("Tu invitación")}</h2>
           </div>
         </div>
         <button
           type="button"
           onClick={onClose}
-          aria-label="Cerrar vista previa"
+          aria-label={i18n("Cerrar vista previa")}
         >
           <Icon name="close" />
         </button>

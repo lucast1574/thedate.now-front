@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import AccountShell from "@/features/account/account-shell";
@@ -20,6 +22,8 @@ function OrganizationTools({
   tool: string;
   user: User;
 }) {
+  const i18n = useTranslator();
+
   const [events, setEvents] = useState<Event[]>([]),
     [error, setError] = useState(""),
     [loaded, setLoaded] = useState(false);
@@ -28,7 +32,12 @@ function OrganizationTools({
     router = useRouter();
   useEffect(() => {
     let active = true;
-    api<Event[]>("/api/backend/events?scope=organization")
+    api<Event[]>(
+      "/api/backend/events?scope=organization",
+      undefined,
+      undefined,
+      i18n,
+    )
       .then((list) => {
         if (active)
           setEvents(
@@ -40,7 +49,7 @@ function OrganizationTools({
     return () => {
       active = false;
     };
-  }, [wedding, user]);
+  }, [wedding, user, i18n]);
   const selected =
     events.find((e) => e.id === (params.get("event") || lastOpened)) ||
     (events.length === 1 && !eventReadOnly(events[0]) ? events[0] : undefined);
@@ -58,17 +67,19 @@ function OrganizationTools({
         <div>
           <h1>
             {tool === "tables"
-              ? "Mesas y distribución"
+              ? i18n("Mesas y distribución")
               : tool === "gifts"
-                ? "Lista de regalos"
-                : "Invitados y respuestas"}
+                ? i18n("Lista de regalos")
+                : i18n("Invitados y respuestas")}
           </h1>
           <p>
             {events.length > 0
               ? wedding
-                ? "Elige una boda para abrir su información."
-                : "Elige un evento para abrir su información."
-              : "Conoce lo que incluye tu evento y abre su espacio de organización."}
+                ? i18n("Elige una boda para abrir su información.")
+                : i18n("Elige un evento para abrir su información.")
+              : i18n(
+                  "Conoce lo que incluye tu evento y abre su espacio de organización.",
+                )}
           </p>
         </div>
       </header>
@@ -76,10 +87,12 @@ function OrganizationTools({
       {(selected || !loaded || events.length === 0) && (
         <p role="status">
           {selected
-            ? "Abriendo tu evento…"
+            ? i18n("Abriendo tu evento…")
             : loaded
-              ? "Tus herramientas estarán disponibles cuando actives tu evento."
-              : "Cargando tus eventos…"}
+              ? i18n(
+                  "Tus herramientas estarán disponibles cuando actives tu evento.",
+                )
+              : i18n("Cargando tus eventos…")}
         </p>
       )}
       {loaded && !error && !hasPaidEvent && (

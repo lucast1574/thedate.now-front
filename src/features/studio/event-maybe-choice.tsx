@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 import EventOptionChoice from "./event-option-choice";
@@ -10,6 +11,8 @@ export default function EventMaybeChoice({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const i18n = useTranslator();
+
   const enabled = draft.maybeEnabled !== false;
   return (
     <div className="event-confirmation-settings">
@@ -23,14 +26,14 @@ export default function EventMaybeChoice({
         choices={[
           {
             value: false,
-            title: "Solo Sí o No",
-            description: "Tus invitados confirmarán si asistirán o no.",
+            title: i18n("Solo Sí o No"),
+            description: i18n("Tus invitados confirmarán si asistirán o no."),
             icon: "check",
           },
           {
             value: true,
-            title: "Con Tal vez",
-            description: "Podrán reservar su lugar mientras confirman.",
+            title: i18n("Con Tal vez"),
+            description: i18n("Podrán reservar su lugar mientras confirman."),
             icon: "clock",
           },
         ]}
@@ -38,8 +41,9 @@ export default function EventMaybeChoice({
       {enabled && <GuestHoldField draft={draft} setDraft={setDraft} />}
       {!enabled && draft.id && (
         <p className="event-option-note">
-          Las respuestas «Tal vez» ya recibidas conservan su plazo original.
-          Esos invitados podrán confirmar Sí o No.
+          {i18n(
+            "Las respuestas «Tal vez» ya recibidas conservan su plazo original. Esos invitados podrán confirmar Sí o No.",
+          )}
         </p>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import type { SeatingTable } from "@/lib/events/seating";
 
@@ -10,10 +11,12 @@ export default function TableProperties({
   assigned: number;
   onPatch: (fields: Partial<SeatingTable>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="table-properties">
       <label>
-        Nombre de la mesa
+        {i18n("Nombre de la mesa")}{" "}
         <input
           maxLength={60}
           value={table.name}
@@ -22,7 +25,7 @@ export default function TableProperties({
       </label>
       <div className="table-properties-row">
         <label>
-          Asientos
+          {i18n("Asientos")}{" "}
           <input
             type="number"
             min={Math.max(1, assigned)}
@@ -40,15 +43,15 @@ export default function TableProperties({
           />
         </label>
         <label>
-          Forma
+          {i18n("Forma")}{" "}
           <Listbox
             value={table.shape}
             onValueChange={(value) =>
               onPatch({ shape: value as SeatingTable["shape"] })
             }
           >
-            <option value="round">Circular</option>
-            <option value="rectangle">Rectangular</option>
+            <option value="round">{i18n("Circular")}</option>
+            <option value="rectangle">{i18n("Rectangular")}</option>
           </Listbox>
         </label>
       </div>

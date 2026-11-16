@@ -1,15 +1,18 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import { elementLabel } from "@/lib/events/element-label";
 import type { FlyerElement } from "@/lib/events/flyer";
-function layerLabel(item: FlyerElement) {
+function layerLabel(item: FlyerElement, i18n: Translator = spanishTranslator) {
   return (
-    ((item.binding || item.icon?.startsWith("art:")) && elementLabel(item)) ||
+    ((item.binding || item.icon?.startsWith("art:")) &&
+      elementLabel(item, i18n)) ||
     (item.type === "text"
-      ? item.text?.slice(0, 45) || "Texto"
+      ? item.text?.slice(0, 45) || i18n("Texto")
       : item.type === "image"
-        ? "Imagen"
-        : "Símbolo")
+        ? i18n("Imagen")
+        : i18n("Símbolo"))
   );
 }
 export default function CanvasLayers({
@@ -29,34 +32,40 @@ export default function CanvasLayers({
   onEdit?: (id: string) => void;
   onElements?: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [multiple, setMultiple] = useState(false);
   if (!elements.length)
     return (
       <div className="canvas-layers-empty">
         <Icon name="lucide:layers" />
-        <h3>Aún no hay elementos</h3>
+        <h3>{i18n("Aún no hay elementos")}</h3>
         <p>
-          Añade un texto, una foto o un elemento para ordenar aquí lo que se ve
-          delante y detrás.
+          {i18n(
+            "Añade un texto, una foto o un elemento para ordenar aquí lo que se ve delante y detrás.",
+          )}
         </p>
-        {onElements && <button onClick={onElements}>Añadir elementos</button>}
+        {onElements && (
+          <button onClick={onElements}>{i18n("Añadir elementos")}</button>
+        )}
       </div>
     );
   return (
     <section
       className="canvas-layers-panel"
-      aria-label="Orden de los elementos"
+      aria-label={i18n("Orden de los elementos")}
     >
       <p className="canvas-panel-description">
-        Los primeros se ven delante. Selecciona un elemento para localizarlo o
-        cambia su posición con las flechas.
+        {i18n(
+          "Los primeros se ven delante. Selecciona un elemento para localizarlo o cambia su posición con las flechas.",
+        )}
       </p>
       <button aria-pressed={multiple} onClick={() => setMultiple(!multiple)}>
-        Seleccionar varios
+        {i18n("Seleccionar varios")}
       </button>
       <div className="canvas-layers-list">
         {[...elements].reverse().map((item, displayIndex) => {
-          const label = layerLabel(item);
+          const label = layerLabel(item, i18n);
           return (
             <div
               key={item.id}
@@ -86,9 +95,9 @@ export default function CanvasLayers({
                   {label}
                   <small>
                     {displayIndex === 0
-                      ? "Delante"
+                      ? i18n("Delante")
                       : displayIndex === elements.length - 1
-                        ? "Detrás"
+                        ? i18n("Detrás")
                         : `Capa ${elements.length - displayIndex}`}
                   </small>
                 </span>
@@ -98,15 +107,15 @@ export default function CanvasLayers({
                   <>
                     <button
                       aria-label={`Adelantar ${label}`}
-                      title="Adelantar una capa"
+                      title={i18n("Adelantar una capa")}
                       disabled={displayIndex === 0}
                       onClick={() => onMove(item.id, 1)}
                     >
                       <Icon name="lucide:arrow-up" />
                     </button>
                     <button
-                      aria-label={`Enviar atrás ${label}`}
-                      title="Enviar una capa atrás"
+                      aria-label={i18n("Enviar atrás {v0}", { v0: label })}
+                      title={i18n("Enviar una capa atrás")}
                       disabled={displayIndex === elements.length - 1}
                       onClick={() => onMove(item.id, -1)}
                     >
@@ -116,8 +125,8 @@ export default function CanvasLayers({
                 )}
                 {onEdit && (
                   <button
-                    aria-label={`Editar ${label}`}
-                    title="Editar elemento"
+                    aria-label={i18n("Editar {v0}", { v0: label })}
+                    title={i18n("Editar elemento")}
                     onClick={() => onEdit(item.id)}
                   >
                     <Icon name="lucide:pencil" />

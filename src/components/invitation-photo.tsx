@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Photo from "./photo";
 import TemplatePhotoPlaceholder from "./template-photo-placeholder";
 import { templatePhotoURL } from "@/lib/events/template-photos";
@@ -9,6 +10,8 @@ export default function InvitationPhoto({
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
+  const i18n = useTranslator();
+
   const placeholder = item.photoKey === "template-photo";
   const src = placeholder
     ? undefined
@@ -36,7 +39,7 @@ export default function InvitationPhoto({
             objectFit: item.photoFit || "contain",
             objectPosition: `${item.photoPositionX ?? 50}% ${item.photoPositionY ?? 50}%`,
           }}
-          alt="Imagen de la invitación"
+          alt={i18n("Imagen de la invitación")}
           draggable={false}
         />
       )}

@@ -1,6 +1,10 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { GuestFields } from "./types";
 import { parseGuestRows } from "./guest-rows";
-export function parseGuestCSV(source: string): GuestFields[] {
+export function parseGuestCSV(
+  source: string,
+  i18n: Translator = spanishTranslator,
+): GuestFields[] {
   if (source.length > 200_000)
     throw new Error("El archivo supera el tamaño permitido.");
   const rows: string[][] = [];
@@ -29,5 +33,5 @@ export function parseGuestCSV(source: string): GuestFields[] {
   if (quoted) throw new Error("El CSV tiene comillas sin cerrar.");
   row.push(field);
   if (row.some((cell) => cell.trim())) rows.push(row);
-  return parseGuestRows(rows);
+  return parseGuestRows(rows, undefined, i18n);
 }

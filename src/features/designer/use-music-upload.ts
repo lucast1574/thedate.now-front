@@ -1,13 +1,16 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import type { useInvitationDesign } from "./use-invitation-design";
 export function useMusicUpload(editor: ReturnType<typeof useInvitationDesign>) {
+  const i18n = useTranslator();
+
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   async function upload(file: File) {
     if (busy) return;
     setError("");
     if (!/\.mp3$/i.test(file.name) || file.size > 10 * 1024 * 1024) {
-      setError("Elige un archivo MP3 de hasta 10 MB.");
+      setError(i18n("Elige un archivo MP3 de hasta 10 MB."));
       return;
     }
     setBusy(true);
@@ -19,7 +22,7 @@ export function useMusicUpload(editor: ReturnType<typeof useInvitationDesign>) {
       });
       const body = await response.json();
       if (!response.ok)
-        throw new Error(body.error || "No se pudo subir la canción.");
+        throw new Error(body.error || i18n("No se pudo subir la canción."));
       editor.setDraft((current) => ({
         ...current,
         audioKeys: [...(current.audioKeys || []), body.key],

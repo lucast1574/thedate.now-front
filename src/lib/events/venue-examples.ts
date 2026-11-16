@@ -1,10 +1,14 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { emptyPlan, type SeatingPlan } from "./seating";
-export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
+export const exampleSeatingPlan = (
+  wedding = true,
+  i18n: Translator = spanishTranslator,
+): SeatingPlan => ({
   ...emptyPlan(),
   tables: [
     {
       id: "a",
-      name: "Familia",
+      name: i18n("Familia"),
       shape: "round",
       capacity: 8,
       x: 160,
@@ -13,7 +17,7 @@ export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
     },
     {
       id: "b",
-      name: "Amigos",
+      name: i18n("Amigos"),
       shape: "round",
       capacity: 6,
       x: 1200,
@@ -22,7 +26,7 @@ export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
     },
     {
       id: "c",
-      name: "Mesa principal",
+      name: i18n("Mesa principal"),
       shape: "rectangle",
       capacity: 8,
       x: 680,
@@ -31,7 +35,7 @@ export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
     },
     {
       id: "d",
-      name: wedding ? "Familia de Sofía" : "Compañeros de estudios",
+      name: wedding ? i18n("Familia de Sofía") : i18n("Compañeros de estudios"),
       shape: "round",
       capacity: 8,
       x: 180,
@@ -40,7 +44,7 @@ export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
     },
     {
       id: "e",
-      name: wedding ? "Familia de Mateo" : "Vecinos",
+      name: wedding ? i18n("Familia de Mateo") : i18n("Vecinos"),
       shape: "round",
       capacity: 8,
       x: 1200,
@@ -49,7 +53,7 @@ export const exampleSeatingPlan = (wedding = true): SeatingPlan => ({
     },
     {
       id: "f",
-      name: wedding ? "Compañeros" : "Equipo o club",
+      name: wedding ? i18n("Compañeros") : i18n("Equipo o club"),
       shape: "round",
       capacity: 6,
       x: 640,

@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Icon from "@/components/icon";
 import Alert from "@/components/alert";
 import { useCollaborationAccess } from "./use-collaboration-access";
@@ -11,24 +13,33 @@ export default function CoupleAccess({
   wedding: boolean;
   readOnly?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const state = useCollaborationAccess(eventId);
   return (
     <section className="shared-invite-panel">
       <Icon name="users" />
       <h2>
-        {wedding ? "Un lugar para los dos" : "Invita a sus protagonistas"}
+        {wedding
+          ? i18n("Un lugar para los dos")
+          : i18n("Invita a sus protagonistas")}
       </h2>
       <p>
         {wedding
-          ? "Añade los correos de los novios y acompañad juntos cada detalle de su boda."
-          : "Añade hasta dos personas para que puedan diseñar y planificar contigo."}{" "}
-        Pueden usar su correo de Google para entrar directamente.
+          ? i18n(
+              "Añade los correos de los novios y acompañad juntos cada detalle de su boda.",
+            )
+          : i18n(
+              "Añade hasta dos personas para que puedan diseñar y planificar contigo.",
+            )}{" "}
+        {i18n("Pueden usar su correo de Google para entrar directamente.")}
       </p>
       <Alert>{state.error}</Alert>
       <Alert variant="success">{state.notice}</Alert>
       {state.access && (
         <p className="shared-slot-count">
-          {state.remaining} de {state.access.limit} accesos disponibles
+          {state.remaining} {i18n("de")} {state.access.limit}{" "}
+          {i18n("accesos disponibles")}
         </p>
       )}
       {state.access?.members.map((member) => (
@@ -38,7 +49,9 @@ export default function CoupleAccess({
           </span>
           <span>
             <strong>{member.name}</strong>
-            <small>{member.email} · Acceso activo</small>
+            <small>
+              {member.email} {i18n("· Acceso activo")}
+            </small>
           </span>
           {!readOnly && (
             <button
@@ -46,7 +59,7 @@ export default function CoupleAccess({
               disabled={state.busy}
               onClick={() => void state.remove(member.id)}
             >
-              Retirar acceso
+              {i18n("Retirar acceso")}
             </button>
           )}
         </div>
@@ -58,11 +71,12 @@ export default function CoupleAccess({
             <strong>{invite.email}</strong>
             <small>
               {invite.delivery === "sent"
-                ? "Invitación enviada"
+                ? i18n("Invitación enviada")
                 : invite.delivery === "failed"
-                  ? "Envío fallido"
-                  : "Entrega sin confirmar"}{" "}
-              · vence {new Date(invite.expiresAt).toLocaleDateString("es-PE")}
+                  ? i18n("Envío fallido")
+                  : i18n("Entrega sin confirmar")}{" "}
+              {i18n("· vence")}{" "}
+              {new Date(invite.expiresAt).toLocaleDateString(i18n.locale)}
             </small>
           </span>
           {!readOnly && (
@@ -71,7 +85,7 @@ export default function CoupleAccess({
               disabled={state.busy}
               onClick={() => void state.remove(invite.id)}
             >
-              Retirar invitación
+              {i18n("Retirar invitación")}
             </button>
           )}
         </div>
@@ -83,9 +97,9 @@ export default function CoupleAccess({
               <label key={index}>
                 {wedding
                   ? index === 0
-                    ? "Primer correo de la pareja"
-                    : "Segundo correo de la pareja"
-                  : `Correo de la persona ${index + 1}`}
+                    ? i18n("Primer correo de la pareja")
+                    : i18n("Segundo correo de la pareja")
+                  : i18n("Correo de la persona {v0}", { v0: index + 1 })}
                 <input
                   type="email"
                   autoComplete="off"
@@ -110,27 +124,28 @@ export default function CoupleAccess({
               className="office-button"
               disabled={state.busy || !state.access?.emailConfigured}
             >
-              {state.busy ? "Enviando…" : "Enviar invitaciones"}
+              {state.busy ? i18n("Enviando…") : i18n("Enviar invitaciones")}
               <Icon name="arrow" />
             </button>
           )}
         </form>
       )}
       {state.access && !state.access.emailConfigured && (
-        <p>El envío por correo aún no está configurado.</p>
+        <p>{i18n("El envío por correo aún no está configurado.")}</p>
       )}
       {!state.remaining && state.access && (
         <p>
-          Los dos accesos ya están asignados. Puedes retirar uno para invitar a
-          otra persona.
+          {i18n(
+            "Los dos accesos ya están asignados. Puedes retirar uno para invitar a otra persona.",
+          )}
         </p>
       )}
       <div className="shared-access-notes">
         <Icon name="lock" />
         <p>
-          Cada persona entra con su propia cuenta y solo accede a esta
-          celebración: diseño, invitados, mesas y regalos. Tú mantienes la
-          propiedad y los pagos.
+          {i18n(
+            "Cada persona entra con su propia cuenta y solo accede a esta celebración: diseño, invitados, mesas y regalos. Tú mantienes la propiedad y los pagos.",
+          )}
         </p>
       </div>
     </section>

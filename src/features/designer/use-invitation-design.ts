@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useSilentDesign } from "./use-silent-design";
 import { useRef, useState } from "react";
 import { useDesignHistory } from "./use-design-history";
@@ -10,6 +12,8 @@ export function useInvitationDesign(
   onSaved: () => Promise<void>,
   initialDraft?: DesignEvent,
 ) {
+  const i18n = useTranslator();
+
   const history = useDesignHistory(event, initialDraft);
   const { draft, setDraft } = history;
   const [busy, setBusy] = useState(false);
@@ -47,11 +51,11 @@ export function useInvitationDesign(
         {
           id: crypto.randomUUID(),
           icon: current.kind === "wedding" ? "heart" : "star",
-          heading: "Una nueva sección",
+          heading: i18n("Una nueva sección"),
           body:
             current.kind === "wedding"
-              ? "Escribe aquí vuestra historia."
-              : "Añade los detalles de tu evento.",
+              ? i18n("Escribe aquí vuestra historia.")
+              : i18n("Añade los detalles de tu evento."),
           ...(current.designMode === "flyer"
             ? { canvas: blankCanvas(current.accentColor, current.kind) }
             : {}),
@@ -68,7 +72,7 @@ export function useInvitationDesign(
         {
           id: crypto.randomUUID(),
           icon: "none",
-          heading: "Una invitación para ti",
+          heading: i18n("Una invitación para ti"),
           body: "",
           guestText: guestNameElement(current.accentColor, crypto.randomUUID()),
         },
@@ -90,7 +94,8 @@ export function useInvitationDesign(
         body: data,
       });
       const body = await result.json();
-      if (!result.ok) throw new Error(body.error || "No se pudo subir la foto");
+      if (!result.ok)
+        throw new Error(body.error || i18n("No se pudo subir la foto"));
       setDraft((current) => ({
         ...current,
         photoKeys: [...current.photoKeys, body.key],

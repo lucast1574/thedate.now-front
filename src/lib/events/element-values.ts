@@ -1,18 +1,26 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { FlyerElement } from "./flyer";
 import type { PublicEvent } from "./types";
 import { formatEventDate } from "./date";
 import { mapCoordinates } from "./map-element";
-export function coupleNames(event: Partial<PublicEvent>) {
+export function coupleNames(
+  event: Partial<PublicEvent>,
+  i18n: Translator = spanishTranslator,
+) {
   return (
     [event.celebration?.partnerOne, event.celebration?.partnerTwo]
       .filter((name) => name?.trim())
       .join(" y ") ||
     event.title ||
-    "Nombres de los novios"
+    i18n("Nombres de los novios")
   );
 }
-function formattedNames(event: Partial<PublicEvent>, item: FlyerElement) {
-  const names = coupleNames(event);
+function formattedNames(
+  event: Partial<PublicEvent>,
+  item: FlyerElement,
+  i18n: Translator = spanishTranslator,
+) {
+  const names = coupleNames(event, i18n);
   const parts =
     event.celebration?.partnerOne && event.celebration?.partnerTwo
       ? [event.celebration.partnerOne, event.celebration.partnerTwo]
@@ -30,6 +38,7 @@ function formattedNames(event: Partial<PublicEvent>, item: FlyerElement) {
 export function elementValue(
   item: FlyerElement,
   event?: Partial<PublicEvent>,
+  i18n: Translator = spanishTranslator,
 ): FlyerElement {
   if (!event || !item.eventBound) return item;
   const details = event.celebration;
@@ -38,15 +47,21 @@ export function elementValue(
       return {
         ...item,
         text: item.text?.includes("{{novios}}")
-          ? item.text.replaceAll("{{novios}}", formattedNames(event, item))
-          : formattedNames(event, item),
+          ? item.text.replaceAll(
+              "{{novios}}",
+              formattedNames(event, item, i18n),
+            )
+          : formattedNames(event, item, i18n),
       };
     case "event_title":
       return {
         ...item,
         text: item.text?.includes("{{evento}}")
-          ? item.text.replaceAll("{{evento}}", event.title || "Tu celebración")
-          : event.title || "Tu celebración",
+          ? item.text.replaceAll(
+              "{{evento}}",
+              event.title || i18n("Tu celebración"),
+            )
+          : event.title || i18n("Tu celebración"),
       };
     case "event_date":
       return {
@@ -54,9 +69,9 @@ export function elementValue(
         text: item.text?.includes("{{fecha_hora}}")
           ? item.text.replaceAll(
               "{{fecha_hora}}",
-              formatEventDate(event.startAt || "", event.timeZone),
+              formatEventDate(event.startAt || "", event.timeZone, i18n),
             )
-          : formatEventDate(event.startAt || "", event.timeZone),
+          : formatEventDate(event.startAt || "", event.timeZone, i18n),
       };
     case "location":
       return {

@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import WorkspaceSidebar from "@/features/studio/workspace-sidebar";
@@ -13,6 +15,8 @@ export default function ManagerPage({ id }: { id: string }) {
   return <ManagerWorkspace key={id} id={id} />;
 }
 function ManagerWorkspace({ id }: { id: string }) {
+  const i18n = useTranslator();
+
   const manager = useManager(id);
   const params = useSearchParams();
   const requested = params.get("tab"),
@@ -24,37 +28,41 @@ function ManagerWorkspace({ id }: { id: string }) {
           : "guests";
   const section = {
     guests: {
-      title: "Invitados y respuestas",
-      description: "Gestiona tu lista y sigue cada confirmación de asistencia.",
+      title: i18n("Invitados y respuestas"),
+      description: i18n(
+        "Gestiona tu lista y sigue cada confirmación de asistencia.",
+      ),
     },
     tables: {
-      title: "Mesas y distribución",
-      description:
+      title: i18n("Mesas y distribución"),
+      description: i18n(
         "Organiza el salón, asigna los asientos y descarga tu lista de entrada.",
+      ),
     },
     gifts: {
-      title: "Lista de regalos",
-      description:
+      title: i18n("Lista de regalos"),
+      description: i18n(
         "Prepara los regalos de tu celebración y consulta las elecciones de tus invitados.",
+      ),
     },
   }[tab];
   const { event, guests, user, error, dirty, stale } = manager;
   if (!event)
     return (
       <main className="editor-loading">
-        <h1>Gestor de invitados</h1>
+        <h1>{i18n("Gestor de invitados")}</h1>
         <p role={error ? "alert" : "status"}>
-          {error || "Abriendo tu evento…"}
+          {error || i18n("Abriendo tu evento…")}
         </p>
-        <Link href="/">Volver al estudio e iniciar sesión</Link>
+        <Link href="/">{i18n("Volver al estudio e iniciar sesión")}</Link>
       </main>
     );
   if (!event.isDemo && event.paymentStatus !== "paid")
     return (
       <main className="editor-loading">
-        <h1>Tu evento está pendiente de pago</h1>
+        <h1>{i18n("Tu evento está pendiente de pago")}</h1>
         <Link href={`/?event=${encodeURIComponent(id)}`}>
-          Continuar con mi invitación
+          {i18n("Continuar con mi invitación")}
         </Link>
       </main>
     );
@@ -70,7 +78,9 @@ function ManagerWorkspace({ id }: { id: string }) {
   const allowed = event.paymentStatus === "paid" && !event.isDemo;
   const guard = () =>
     !dirty ||
-    window.confirm("Hay cambios del plano sin guardar. ¿Salir y descartarlos?");
+    window.confirm(
+      i18n("Hay cambios del plano sin guardar. ¿Salir y descartarlos?"),
+    );
   return (
     <div
       className={`office workspace ${event.kind === "wedding" ? "office-wedding" : "office-general"}`}
@@ -117,8 +127,9 @@ function ManagerWorkspace({ id }: { id: string }) {
             {tab === "guests" && <GuestSummary event={event} guests={guests} />}
             {tab === "tables" && stale && (
               <p className="manager-warning" role="alert">
-                Hay respuestas o cambios nuevos. Conservamos tu borrador;
-                recarga el plano antes de guardarlo o exportar.
+                {i18n(
+                  "Hay respuestas o cambios nuevos. Conservamos tu borrador; recarga el plano antes de guardarlo o exportar.",
+                )}
               </p>
             )}
             <ManagerTools manager={manager} tab={tab} />

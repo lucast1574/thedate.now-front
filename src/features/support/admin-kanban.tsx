@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useState } from "react";
 import Alert from "@/components/alert";
 import Icon from "@/components/icon";
@@ -13,6 +15,8 @@ import KanbanColumn from "./kanban-column";
 import TicketDialog from "./ticket-dialog";
 
 export default function AdminKanban({ revision = 0 }: { revision?: number }) {
+  const i18n = useTranslator();
+
   const [refresh, setRefresh] = useState(0),
     [selected, setSelected] = useState<Ticket | null>(null);
   const [dragged, setDragged] = useState<Ticket | null>(null),
@@ -39,13 +43,18 @@ export default function AdminKanban({ revision = 0 }: { revision?: number }) {
     setError("");
     setNotice("");
     try {
-      await api(`/api/backend/admin/support/tickets/${ticket.id}`, "PATCH", {
-        state,
-        note: "",
-        version: ticket.version,
-      });
+      await api(
+        `/api/backend/admin/support/tickets/${ticket.id}`,
+        "PATCH",
+        {
+          state,
+          note: "",
+          version: ticket.version,
+        },
+        i18n,
+      );
       setNotice(
-        `Reporte movido a ${ticketStateLabel(state)}.${state === "DONE" ? " El usuario recibirá un correo." : ""}`,
+        `Reporte movido a ${ticketStateLabel(state, i18n)}.${state === "DONE" ? i18n(" El usuario recibirá un correo.") : ""}`,
       );
       reload();
     } catch (failure) {
@@ -59,30 +68,32 @@ export default function AdminKanban({ revision = 0 }: { revision?: number }) {
     <section
       className="account-card support-inbox support-admin-kanban"
       id="support"
-      aria-label="Tickets de soporte"
+      aria-label={i18n("Tickets de soporte")}
     >
       <div className="support-section-head">
         <div>
-          <p className="office-kicker">SOPORTE · TABLERO KANBAN</p>
-          <h2>Tickets de soporte</h2>
+          <p className="office-kicker">{i18n("SOPORTE · TABLERO KANBAN")}</p>
+          <h2>{i18n("Tickets de soporte")}</h2>
           <p className="support-hint">
-            Arrastra un ticket o ábrelo para cambiar su estado y responder al
-            usuario.
+            {i18n(
+              "Arrastra un ticket o ábrelo para cambiar su estado y responder al usuario.",
+            )}
           </p>
           <p className="support-hint">
-            Al resolverlo, el usuario recibe un correo. Los tickets resueltos
-            conservan su historial.
+            {i18n(
+              "Al resolverlo, el usuario recibe un correo. Los tickets resueltos conservan su historial.",
+            )}
           </p>
         </div>
         <button className="support-refresh" onClick={reload} disabled={busy}>
           <Icon name="refresh" />
-          Actualizar
+          {i18n("Actualizar")}
         </button>
       </div>
       <Alert>{error}</Alert>
       <Alert variant="success">{notice}</Alert>
       <div className="support-kanban" aria-busy={busy}>
-        {supportStates.map((state) => (
+        {supportStates(i18n).map((state) => (
           <KanbanColumn
             key={`${state.id}:${revision}:${refresh}`}
             state={state.id}
@@ -95,15 +106,16 @@ export default function AdminKanban({ revision = 0 }: { revision?: number }) {
         ))}
       </div>
       <p className="support-kanban-keyboard">
-        También puedes abrir cualquier tarjeta con Enter y cambiar el estado
-        desde su detalle.
+        {i18n(
+          "También puedes abrir cualquier tarjeta con Enter y cambiar el estado desde su detalle.",
+        )}
       </p>
       {selected && (
         <TicketDialog
           ticket={selected}
           onClose={() => setSelected(null)}
           onUpdated={() => {
-            setNotice("Seguimiento guardado.");
+            setNotice(i18n("Seguimiento guardado."));
             reload();
           }}
         />

@@ -1,3 +1,4 @@
+import { type Translator, localized } from "@/lib/i18n/translator";
 export function suggestedAddress(title: string) {
   return title
     .normalize("NFD")
@@ -9,5 +10,8 @@ export function suggestedAddress(title: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-export const defaultInvitationMessage =
-  "¡Queremos celebrar este momento contigo!\nConoce todos los detalles y confirma tu asistencia.\n\n👇 Por favor, responde en la encuesta de aquí abajo para confirmar tu asistencia.";
+export const defaultInvitationMessage = localized((i18n: Translator) =>
+  i18n(
+    "¡Queremos celebrar este momento contigo!\nConoce todos los detalles y confirma tu asistencia.\n\n👇 Por favor, responde en la encuesta de aquí abajo para confirmar tu asistencia.",
+  ),
+);

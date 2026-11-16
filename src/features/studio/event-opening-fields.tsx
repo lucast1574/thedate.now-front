@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { CSSProperties, Dispatch, SetStateAction } from "react";
 import Icon from "@/components/icon";
 import OpeningArtwork from "@/features/invitations/opening-artwork";
@@ -15,13 +16,17 @@ export default function EventOpeningFields({
   opening: Opening;
   palette: Opening;
 }) {
+  const i18n = useTranslator();
+
   return (
     <details className="event-form-options" open>
       <summary>
         <Icon name="mail" />
         <span>
-          La primera impresión
-          <small>Apertura animada con los colores de tu plantilla.</small>
+          {i18n("La primera impresión")}{" "}
+          <small>
+            {i18n("Apertura animada con los colores de tu plantilla.")}
+          </small>
         </span>
         <Icon name="chevron" />
       </summary>
@@ -29,7 +34,7 @@ export default function EventOpeningFields({
         <div
           className="form-choice-row"
           role="group"
-          aria-label="Incluir apertura"
+          aria-label={i18n("Incluir apertura")}
         >
           <button
             type="button"
@@ -38,7 +43,7 @@ export default function EventOpeningFields({
               setDraft({ ...draft, opening: { ...opening, enabled: true } })
             }
           >
-            Con apertura
+            {i18n("Con apertura")}
           </button>
           <button
             type="button"
@@ -47,16 +52,16 @@ export default function EventOpeningFields({
               setDraft({ ...draft, opening: { ...opening, enabled: false } })
             }
           >
-            Entrar directamente
+            {i18n("Entrar directamente")}
           </button>
         </div>
         {opening.enabled && (
           <div
             className="form-opening-grid"
             role="group"
-            aria-label="Animación de apertura"
+            aria-label={i18n("Animación de apertura")}
           >
-            {openingPresets.map((preset) => (
+            {openingPresets(i18n).map((preset) => (
               <button
                 type="button"
                 key={preset.id}
@@ -99,8 +104,9 @@ export default function EventOpeningFields({
           </div>
         )}
         <small>
-          Abre «Ver invitación» para probar la animación. En el editor puedes
-          cambiar el icono y todos sus detalles.
+          {i18n(
+            "Abre «Ver invitación» para probar la animación. En el editor puedes cambiar el icono y todos sus detalles.",
+          )}
         </small>
       </div>
     </details>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useState, type FormEvent } from "react";
 import Listbox from "@/components/listbox";
 import Icon from "@/components/icon";
@@ -16,6 +17,8 @@ export default function GuestActions({
   onUpdated?: () => Promise<void>;
   blocked?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const [mode, setMode] = useState<"idle" | "edit" | "delete">("idle");
   const [choice, setChoice] = useState(
     guest.response === "pending" ? "going" : guest.response,
@@ -36,6 +39,7 @@ export default function GuestActions({
         `/api/backend/events/${eventId}/guests/${guest.id}`,
         remove ? "DELETE" : "PATCH",
         remove ? undefined : { response: choice, reason },
+        i18n,
       );
       committed = true;
       setMode("idle");
@@ -43,7 +47,7 @@ export default function GuestActions({
     } catch (e) {
       setError(
         committed
-          ? "El cambio se guardó. Recarga la lista para verlo."
+          ? i18n("El cambio se guardó. Recarga la lista para verlo.")
           : (e as Error).message,
       );
     } finally {
@@ -69,10 +73,10 @@ export default function GuestActions({
             type="button"
             disabled={blocked || busy}
             onClick={edit}
-            aria-label={`Editar respuesta de ${name}`}
+            aria-label={i18n("Editar respuesta de {v0}", { v0: name })}
           >
             <Icon name="lucide:pencil" />
-            Editar respuesta
+            {i18n("Editar respuesta")}
           </button>
           <button
             type="button"
@@ -81,26 +85,28 @@ export default function GuestActions({
               setError("");
               setMode("delete");
             }}
-            aria-label={`Eliminar a ${name}`}
+            aria-label={i18n("Eliminar a {v0}", { v0: name })}
           >
             <Icon name="lucide:trash-2" />
-            Eliminar
+            {i18n("Eliminar")}
           </button>
         </div>
       ) : mode === "edit" ? (
         <form className="guest-row-editor" onSubmit={submit}>
-          <strong>Respuesta de {name}</strong>
+          <strong>
+            {i18n("Respuesta de")} {name}
+          </strong>
           <label>
-            Asistencia
+            {i18n("Asistencia")}{" "}
             <Listbox value={choice} onValueChange={setChoice} disabled={busy}>
-              <option value="going">Sí, asistirá</option>
-              <option value="not_going">No asistirá</option>
-              <option value="maybe">Tal vez</option>
+              <option value="going">{i18n("Sí, asistirá")}</option>
+              <option value="not_going">{i18n("No asistirá")}</option>
+              <option value="maybe">{i18n("Tal vez")}</option>
             </Listbox>
           </label>
           {choice === "maybe" && (
             <label>
-              Motivo
+              {i18n("Motivo")}{" "}
               <textarea
                 required
                 minLength={3}
@@ -112,8 +118,9 @@ export default function GuestActions({
             </label>
           )}
           <small>
-            Se conservarán sus acompañantes. Los cupos y las mesas se ajustarán
-            a la respuesta.
+            {i18n(
+              "Se conservarán sus acompañantes. Los cupos y las mesas se ajustarán a la respuesta.",
+            )}
           </small>
           <div className="guest-row-buttons">
             <button
@@ -121,14 +128,14 @@ export default function GuestActions({
               className="office-button"
               disabled={busy || blocked}
             >
-              {busy ? "Guardando…" : "Guardar respuesta"}
+              {busy ? i18n("Guardando…") : i18n("Guardar respuesta")}
             </button>
             <button
               type="button"
               disabled={busy}
               onClick={() => setMode("idle")}
             >
-              Cancelar
+              {i18n("Cancelar")}
             </button>
           </div>
         </form>
@@ -136,13 +143,15 @@ export default function GuestActions({
         <div
           className="guest-row-editor"
           role="group"
-          aria-label={`Eliminar a ${name}`}
+          aria-label={i18n("Eliminar a {v0}", { v0: name })}
         >
-          <strong>¿Eliminar a {name}?</strong>
+          <strong>
+            {i18n("¿Eliminar a")} {name}?
+          </strong>
           <p>
-            Se quitará de la lista junto con sus acompañantes, se liberarán sus
-            cupos y reservas de regalos y su enlace personal dejará de
-            funcionar.
+            {i18n(
+              "Se quitará de la lista junto con sus acompañantes, se liberarán sus cupos y reservas de regalos y su enlace personal dejará de funcionar.",
+            )}
           </p>
           <div className="guest-row-buttons">
             <button
@@ -150,7 +159,7 @@ export default function GuestActions({
               disabled={busy}
               onClick={() => setMode("idle")}
             >
-              Cancelar
+              {i18n("Cancelar")}
             </button>
             <button
               type="button"
@@ -158,14 +167,16 @@ export default function GuestActions({
               disabled={busy || blocked}
               onClick={() => void save(true)}
             >
-              {busy ? "Eliminando…" : "Sí, eliminar"}
+              {busy ? i18n("Eliminando…") : i18n("Sí, eliminar")}
             </button>
           </div>
         </div>
       )}
       {error && <p role="alert">{error}</p>}
       {blocked && (
-        <small>Guarda los cambios del plano antes de editar la lista.</small>
+        <small>
+          {i18n("Guarda los cambios del plano antes de editar la lista.")}
+        </small>
       )}
     </div>
   );

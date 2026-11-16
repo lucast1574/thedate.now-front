@@ -32,7 +32,7 @@ const base = {
   timeZone: "America/Lima",
 };
 test("every canvas template is a complete editable invitation with bounded geometry", () => {
-  for (const template of invitationTemplates.filter(
+  for (const template of invitationTemplates().filter(
     (t) => t.mode === "flyer",
   )) {
     const pages = templateSequence(template, { ...base, kind: template.kind });
@@ -76,7 +76,7 @@ test("every canvas template is a complete editable invitation with bounded geome
   }
 });
 test("applying a complete template replaces pages, respects an explicit opening opt-out and preserves user media", () => {
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (t) => t.id === "wedding-flyer-paris",
   );
   const draft = {
@@ -108,7 +108,7 @@ test("applying a complete template replaces pages, respects an explicit opening 
   );
 });
 test("adults-only is optional and its editable section appears only when selected", () => {
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (t) => t.id === "wedding-flyer-paris",
   );
   const draft = {
@@ -142,7 +142,7 @@ test("adults-only is optional and its editable section appears only when selecte
   );
 });
 test("opening and WhatsApp settings participate in dirty state, save and concurrent refresh merge", () => {
-  const template = invitationTemplates.find(
+  const template = invitationTemplates().find(
     (t) => t.id === "wedding-flyer-paris",
   );
   const initial = applyCompleteTemplate(base, template);

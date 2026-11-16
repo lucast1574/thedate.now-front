@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import ElementActionHint from "./element-action-hint";
 import type { FlyerElement } from "@/lib/events/flyer";
@@ -9,12 +10,14 @@ export default function FlyerGiftLink({
   item: FlyerElement;
   giftURL?: string;
 }) {
+  const i18n = useTranslator();
+
   const href = giftHref(item, giftURL);
   const content = (
     <>
       <Icon name="lucide:gift" />
-      <span>{item.text || "Lista de regalos"}</span>
-      <ElementActionHint item={item} label="Ver regalos" />
+      <span>{item.text || i18n("Lista de regalos")}</span>
+      <ElementActionHint item={item} label={i18n("Ver regalos")} />
     </>
   );
   return href ? (

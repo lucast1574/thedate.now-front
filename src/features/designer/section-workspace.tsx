@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import {
   invitationTemplates,
   resolveTemplateId,
@@ -10,8 +11,10 @@ export default function SectionWorkspace({
 }: {
   editor: ReturnType<typeof useInvitationDesign>;
 }) {
+  const i18n = useTranslator();
+
   const { draft, setDraft } = editor;
-  const template = invitationTemplates.find(
+  const template = invitationTemplates(i18n).find(
     (item) =>
       item.id === draft.templateId &&
       item.kind === draft.kind &&
@@ -19,12 +22,14 @@ export default function SectionWorkspace({
   );
   return (
     <section className="section-workspace designer-controls">
-      <h2>Diseño por secciones</h2>
+      <h2>{i18n("Diseño por secciones")}</h2>
       <p>
-        Edita el contenido y abre la vista previa para verlo como tus invitados.
+        {i18n(
+          "Edita el contenido y abre la vista previa para verlo como tus invitados.",
+        )}
       </p>
       <label>
-        Título
+        {i18n("Título")}{" "}
         <input
           maxLength={160}
           value={draft.title}
@@ -34,7 +39,7 @@ export default function SectionWorkspace({
         />
       </label>
       <label>
-        Mensaje
+        {i18n("Mensaje")}{" "}
         <textarea
           rows={3}
           maxLength={5000}
@@ -46,7 +51,9 @@ export default function SectionWorkspace({
       </label>
       {template && (
         <details className="template-customization">
-          <summary>Personalizar plantilla · {template.name}</summary>
+          <summary>
+            {i18n("Personalizar plantilla ·")} {template.name}
+          </summary>
           <StyleFields
             template={draft.template}
             accentColor={draft.accentColor}
@@ -61,6 +68,8 @@ export default function SectionWorkspace({
                         current.kind,
                         patch.template,
                         "sections",
+                        undefined,
+                        i18n,
                       ),
                     }
                   : {}),
@@ -88,7 +97,7 @@ export default function SectionWorkspace({
         disabled={editor.sections.length >= 20}
         onClick={editor.addGuestSection}
       >
-        ＋ Nombre del invitado
+        {i18n("＋ Nombre del invitado")}
       </button>
       <button
         type="button"
@@ -96,7 +105,7 @@ export default function SectionWorkspace({
         disabled={editor.sections.length >= 20}
         onClick={editor.addSection}
       >
-        ＋ Añadir sección
+        {i18n("＋ Añadir sección")}
       </button>
     </section>
   );

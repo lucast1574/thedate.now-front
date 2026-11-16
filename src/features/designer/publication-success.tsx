@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useId, useRef } from "react";
 import Icon from "@/components/icon";
 
@@ -12,6 +14,8 @@ export default function PublicationSuccess({
   onClose: () => void;
   onStart: () => void;
 }) {
+  const i18n = useTranslator();
+
   const dialog = useRef<HTMLDialogElement>(null);
   const heading = useId(),
     description = useId();
@@ -56,7 +60,7 @@ export default function PublicationSuccess({
           type="button"
           className="publication-success-close"
           onClick={onClose}
-          aria-label="Cerrar confirmación"
+          aria-label={i18n("Cerrar confirmación")}
         >
           <Icon name="close" />
         </button>
@@ -95,11 +99,11 @@ export default function PublicationSuccess({
           <path className="publication-success-check" d="m103 98 7 7 14-15" />
         </svg>
         <h2 id={heading} tabIndex={-1}>
-          Invitaciones actualizadas
+          {i18n("Invitaciones actualizadas")}
         </h2>
         <p className="publication-success-event">{title}</p>
         <p id={description}>
-          Los últimos cambios ya están disponibles en tus enlaces.
+          {i18n("Los últimos cambios ya están disponibles en tus enlaces.")}
         </p>
       </div>
     </dialog>

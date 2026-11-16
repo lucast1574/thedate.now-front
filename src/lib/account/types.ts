@@ -1,3 +1,4 @@
+import { type Translator, localized } from "@/lib/i18n/translator";
 import type { User } from "@/lib/events/types";
 export type Revenue = {
   events: number;
@@ -52,16 +53,16 @@ export type Affiliate = {
   conversions: number;
   withdrawals: Withdrawal[];
 };
-export const money = (cents: number) =>
-  new Intl.NumberFormat("es-PE", { style: "currency", currency: "USD" }).format(
+export const money = (cents: number, locale: string = "es") =>
+  new Intl.NumberFormat(locale, { style: "currency", currency: "USD" }).format(
     cents / 100,
   );
-export const statusLabel = {
-  pending: "Pendiente",
-  approved: "Aprobado",
-  paid: "Pagado",
-  rejected: "Rechazado",
-};
+export const statusLabel = localized((i18n: Translator) => ({
+  pending: i18n("Pendiente"),
+  approved: i18n("Aprobado"),
+  paid: i18n("Pagado"),
+  rejected: i18n("Rechazado"),
+}));
 export type Run = (
   action: () => Promise<unknown>,
   notice: string,

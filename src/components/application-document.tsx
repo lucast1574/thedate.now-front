@@ -1,3 +1,5 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale } from "next-intl/server";
 import type { ReactNode } from "react";
 import {
   Bodoni_Moda,
@@ -27,22 +29,25 @@ const weddingLogo = Bodoni_Moda({
   subsets: ["latin"],
   display: "swap",
 });
-export default function ApplicationDocument({
+export default async function ApplicationDocument({
   children,
   product,
 }: {
   children: ReactNode;
   product: Kind;
 }) {
+  const locale = await getLocale();
   return (
     <html
-      lang="es"
+      lang={locale}
       data-product={product}
       data-application={product === "wedding" ? "save-the-date" : "the-date"}
       className={`${serif.variable} ${sans.variable} ${party.variable} ${weddingLogo.variable}`}
     >
       <body>
-        <PublicationFeedback>{children}</PublicationFeedback>
+        <NextIntlClientProvider locale={locale} messages={{}}>
+          <PublicationFeedback>{children}</PublicationFeedback>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

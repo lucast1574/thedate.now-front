@@ -1,3 +1,4 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { ensureInvitationLink } from "./invitation-message";
 import { defaultInvitationMessage } from "./event-form";
 import { defaultCelebration } from "./celebration";
@@ -15,15 +16,18 @@ export function localDateTime(value: string) {
         .toISOString()
         .slice(0, 16);
 }
-export function blankEvent(kind: Kind): Event {
+export function blankEvent(
+  kind: Kind,
+  i18n: Translator = spanishTranslator,
+): Event {
   return {
     id: "",
-    celebration: defaultCelebration(kind === "wedding"),
+    celebration: defaultCelebration(kind === "wedding", i18n),
     kind,
     slug: "",
     title: "",
     description: "",
-    invitationMessage: defaultInvitationMessage,
+    invitationMessage: defaultInvitationMessage(i18n),
     startAt: "",
     timeZone: browserTimeZone(),
     organizer: "",
@@ -36,7 +40,7 @@ export function blankEvent(kind: Kind): Event {
     maybeHoldHours: 48,
     maybeEnabled: false,
     template: "classic",
-    templateId: resolveTemplateId(kind, "classic", "flyer"),
+    templateId: resolveTemplateId(kind, "classic", "flyer", undefined, i18n),
     designMode: "flyer",
     accentColor: kind === "wedding" ? "#9c6449" : "#7451ac",
     photoKeys: [],
@@ -58,7 +62,10 @@ export function normalizeEvent(event: Event): Event {
     virtualUrl: event.virtualUrl ?? "",
   };
 }
-export function eventPayload(event: Event) {
+export function eventPayload(
+  event: Event,
+  i18n: Translator = spanishTranslator,
+) {
   const virtual = event.isVirtual;
   return {
     kind: event.kind,
@@ -70,12 +77,12 @@ export function eventPayload(event: Event) {
         : event.title,
     description: event.description,
     invitationMessage: ensureInvitationLink(
-      event.invitationMessage ?? defaultInvitationMessage,
+      event.invitationMessage ?? defaultInvitationMessage(i18n),
     ).trim(),
     startAt: new Date(event.startAt).toISOString(),
     timeZone: event.timeZone || browserTimeZone(),
     organizer: event.organizer,
-    location: virtual ? "En línea" : event.location,
+    location: virtual ? i18n("En línea") : event.location,
     isVirtual: virtual,
     mapUrl: virtual ? "" : event.mapUrl,
     virtualUrl: virtual ? event.virtualUrl : "",
@@ -89,6 +96,7 @@ export function eventPayload(event: Event) {
       event.template,
       event.designMode || "sections",
       event.templateId,
+      i18n,
     ),
     designMode: event.designMode || "sections",
     accentColor: event.accentColor,

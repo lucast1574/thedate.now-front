@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useState } from "react";
 import Icon from "@/components/icon";
 import { ornaments, ornamentFamilies } from "@/lib/events/ornaments";
@@ -12,6 +13,8 @@ export default function OrnamentLibrary({
   disabled: boolean;
   onAdd: (item: FlyerElement) => void;
 }) {
+  const i18n = useTranslator();
+
   const [query, setQuery] = useState("");
   const [all, setAll] = useState(false);
   const family = canvas.art || "editorial";
@@ -20,37 +23,40 @@ export default function OrnamentLibrary({
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase();
-  const matches = ornaments.filter(
+  const matches = ornaments(i18n).filter(
     (item) =>
       (all || query || item.family === family) &&
-      normalize(`${item.name} ${ornamentFamilies[item.family]}`).includes(
+      normalize(`${item.name} ${ornamentFamilies(i18n)[item.family]}`).includes(
         normalize(query),
       ),
   );
   return (
-    <section className="ornament-library" aria-label="Colecciones de adornos">
+    <section
+      className="ornament-library"
+      aria-label={i18n("Colecciones de adornos")}
+    >
       <header>
-        <h3>Adornos de colección</h3>
+        <h3>{i18n("Adornos de colección")}</h3>
         <p>
-          {ornamentFamilies[family]}. Cada pieza se puede mover, girar y
-          recolorear.
+          {ornamentFamilies(i18n)[family]}
+          {i18n(". Cada pieza se puede mover, girar y recolorear.")}
         </p>
       </header>
       <label className="ornament-search">
         <Icon name="search" />
         <input
-          aria-label="Buscar adornos"
-          placeholder="Olivo, seda, olas…"
+          aria-label={i18n("Buscar adornos")}
+          placeholder={i18n("Olivo, seda, olas…")}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
       </label>
       <div className="ornament-tabs">
         <button type="button" aria-pressed={!all} onClick={() => setAll(false)}>
-          Para este diseño
+          {i18n("Para este diseño")}
         </button>
         <button type="button" aria-pressed={all} onClick={() => setAll(true)}>
-          Colecciones
+          {i18n("Colecciones")}
         </button>
       </div>
       <div className="ornament-grid">
@@ -59,27 +65,31 @@ export default function OrnamentLibrary({
             type="button"
             key={item.id}
             disabled={disabled}
-            aria-label={`Añadir ${item.name}`}
+            aria-label={i18n("Añadir {v0}", { v0: item.name })}
             onClick={() =>
               onAdd(
-                element("icon", {
-                  icon: `art:${item.id}`,
-                  width: 180,
-                  height: 180,
-                  x: (canvas.width - 180) / 2,
-                  y: (canvas.height - 180) / 2,
-                }),
+                element(
+                  "icon",
+                  {
+                    icon: `art:${item.id}`,
+                    width: 180,
+                    height: 180,
+                    x: (canvas.width - 180) / 2,
+                    y: (canvas.height - 180) / 2,
+                  },
+                  i18n,
+                ),
               )
             }
           >
             <Icon name={`art:${item.id}`} />
             <strong>{item.name}</strong>
-            <small>{ornamentFamilies[item.family]}</small>
+            <small>{ornamentFamilies(i18n)[item.family]}</small>
           </button>
         ))}
       </div>
       {!matches.length && (
-        <p>No encontramos ese adorno. Prueba con otra colección.</p>
+        <p>{i18n("No encontramos ese adorno. Prueba con otra colección.")}</p>
       )}
     </section>
   );

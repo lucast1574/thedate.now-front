@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import type { Celebration } from "@/lib/events/celebration";
 export default function CelebrationAudience({
@@ -7,33 +8,35 @@ export default function CelebrationAudience({
   value: Celebration;
   onChange: (patch: Partial<Celebration>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <fieldset className="event-audience">
-      <legend>¿A quién está dirigida la celebración?</legend>
+      <legend>{i18n("¿A quién está dirigida la celebración?")}</legend>
       <div
         className="audience-options"
         role="group"
-        aria-label="Edades de los invitados"
+        aria-label={i18n("Edades de los invitados")}
       >
         <button
           type="button"
           aria-pressed={!value.adultsOnly}
           onClick={() => onChange({ adultsOnly: false })}
         >
-          <Icon name="users" /> Todas las edades
+          <Icon name="users" /> {i18n("Todas las edades")}
         </button>
         <button
           type="button"
           aria-pressed={value.adultsOnly}
           onClick={() => onChange({ adultsOnly: true })}
         >
-          <Icon name="lucide:shield-check" /> Solo adultos
+          <Icon name="lucide:shield-check" /> {i18n("Solo adultos")}
         </button>
       </div>
       {value.adultsOnly && (
         <>
           <label>
-            Aviso para tus invitados
+            {i18n("Aviso para tus invitados")}{" "}
             <textarea
               maxLength={500}
               rows={3}
@@ -48,17 +51,18 @@ export default function CelebrationAudience({
               onChange={(e) => onChange({ whatsappNotice: e.target.checked })}
             />
             <span>
-              Incluir este aviso en WhatsApp
+              {i18n("Incluir este aviso en WhatsApp")}{" "}
               <small>
-                Se añadirá a los próximos envíos después de guardar.
+                {i18n("Se añadirá a los próximos envíos después de guardar.")}
               </small>
             </span>
           </label>
         </>
       )}
       <small>
-        El aviso se usará en las plantillas y, si lo eliges, en WhatsApp. No
-        reenvía mensajes anteriores.
+        {i18n(
+          "El aviso se usará en las plantillas y, si lo eliges, en WhatsApp. No reenvía mensajes anteriores.",
+        )}
       </small>
     </fieldset>
   );

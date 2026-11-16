@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import {
   attendees,
   fullName,
@@ -29,6 +30,8 @@ export default function GuestRosterRow({
   onUpdated?: () => Promise<void>;
   blocked?: boolean;
 }) {
+  const i18n = useTranslator();
+
   return (
     <tr>
       <td>
@@ -38,7 +41,7 @@ export default function GuestRosterRow({
         <strong>{fullName(g)}</strong>
         {g.family && <small>{g.family}</small>}
         <ul className="party-names">
-          {attendees([g]).map((p) => (
+          {attendees([g], i18n).map((p) => (
             <li key={p.id}>
               <PersonGlyph gender={p.gender} />
               <span>
@@ -51,30 +54,34 @@ export default function GuestRosterRow({
       </td>
       <td>
         <span className={`response-pill response-${g.response}`}>
-          {responseLabel(g, now)}
+          {responseLabel(g, now, i18n)}
         </span>
         {g.maybeReason && <small>{g.maybeReason}</small>}
         {g.maybeExpiresAt && (
           <small>
-            Reserva hasta {new Date(g.maybeExpiresAt).toLocaleString("es-PE")}
+            {i18n("Reserva hasta")}{" "}
+            {new Date(g.maybeExpiresAt).toLocaleString(i18n.locale)}
           </small>
         )}
       </td>
       <td>
-        {partySeats(g)} {partySeats(g) === 1 ? "persona" : "personas"}
-        <small>Máximo {g.seats}</small>
+        {partySeats(g)}{" "}
+        {partySeats(g) === 1 ? i18n("persona") : i18n("personas")}
+        <small>
+          {i18n("Máximo")} {g.seats}
+        </small>
       </td>
       <td>
         {g.response !== "going" ? (
           <small>
             {g.response === "not_going"
-              ? "No asistirá"
-              : "Se asignará al confirmar"}
+              ? i18n("No asistirá")
+              : i18n("Se asignará al confirmar")}
           </small>
         ) : (
           <small>
             {plan.tables.find((t) => t.id === plan.assignments[`${g.id}~0`])
-              ?.name || "Sin mesa"}
+              ?.name || i18n("Sin mesa")}
           </small>
         )}
       </td>
@@ -83,11 +90,13 @@ export default function GuestRosterRow({
           <>
             <strong>{g.gift.title}</strong>
             <small>
-              {g.gift.delivered ? "Recibido" : "Se comprometió a regalarlo"}
+              {g.gift.delivered
+                ? i18n("Recibido")
+                : i18n("Se comprometió a regalarlo")}
             </small>
           </>
         ) : (
-          <small>Sin elección</small>
+          <small>{i18n("Sin elección")}</small>
         )}
       </td>
       <td>
@@ -95,21 +104,21 @@ export default function GuestRosterRow({
         <br />
         {g.sentAt && (
           <a target="_blank" rel="noopener noreferrer" href={g.invitationUrl}>
-            Enlace personal ↗
+            {i18n("Enlace personal ↗")}
           </a>
         )}
         <small>
           {g.sentAt
-            ? "WhatsApp enviado"
+            ? i18n("WhatsApp enviado")
             : g.sendState === "sending"
-              ? "Enviando…"
+              ? i18n("Enviando…")
               : g.sendState === "unknown"
-                ? "Envío por verificar"
+                ? i18n("Envío por verificar")
                 : g.sendState === "failed"
-                  ? "No se pudo enviar"
+                  ? i18n("No se pudo enviar")
                   : enabled
-                    ? "Esperando su turno"
-                    : "Por enviar"}
+                    ? i18n("Esperando su turno")
+                    : i18n("Por enviar")}
         </small>
       </td>
       {eventId && (

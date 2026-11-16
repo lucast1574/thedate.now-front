@@ -1,7 +1,8 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useId } from "react";
 import Listbox from "@/components/listbox";
 import {
-  phoneCountries,
+  phoneCountries as sourceCountries,
   splitInternationalPhone,
 } from "@/lib/events/guest-phone";
 import type { CountryCode } from "libphonenumber-js";
@@ -21,13 +22,22 @@ export default function GuestPhoneField({
   onCountry: (country: CountryCode) => void;
   onChange: (value: string) => void;
 }) {
+  const i18n = useTranslator();
+
+  const names = new Intl.DisplayNames([i18n.locale], { type: "region" });
+  const phoneCountries = sourceCountries.map((item) => ({
+    ...item,
+    label: `${names.of(item.code) || item.code} (${item.prefix})`,
+  }));
   const id = useId();
   return (
     <div className="guest-phone-field">
       <label htmlFor={`${id}-number`}>WhatsApp</label>
       <div className="guest-phone-control">
         <Listbox
-          aria-label={`País y prefijo: ${phoneCountries.find((item) => item.code === country)?.label}`}
+          aria-label={i18n("País y prefijo: {v0}", {
+            v0: phoneCountries.find((item) => item.code === country)?.label,
+          })}
           value={country}
           disabled={disabled}
           menuMinWidth={320}
@@ -62,7 +72,7 @@ export default function GuestPhoneField({
           required
           type="tel"
           autoComplete="tel-national"
-          placeholder="Número local"
+          placeholder={i18n("Número local")}
           value={value}
           disabled={disabled}
           aria-invalid={!!error}

@@ -1,3 +1,5 @@
+import FlyerPhotoGrid from "./flyer-photo-grid";
+import { useTranslator } from "@/lib/i18n/react";
 import ColorPicker from "@/components/color-picker";
 import Listbox from "@/components/listbox";
 import CanvasLayers from "./canvas-layers";
@@ -5,7 +7,6 @@ import { guestNameElement } from "@/lib/events/guest-name";
 import { useState } from "react";
 import type { DesignEvent, DesignSection } from "@/lib/events/types";
 import type { FlyerCanvas, FlyerElement } from "@/lib/events/flyer";
-import Photo from "@/components/photo";
 import CanvasEditor from "./canvas-editor";
 import ElementInspector from "./element-inspector";
 import { canvasFormat, clamp, element, sectionCanvas } from "./canvas-model";
@@ -18,8 +19,10 @@ export default function FlyerWorkspace({
   section: DesignSection;
   onUpdate: (patch: Partial<DesignSection>) => void;
 }) {
+  const i18n = useTranslator();
+
   const [selectedId, setSelectedId] = useState("");
-  const canvas = sectionCanvas(section, draft);
+  const canvas = sectionCanvas(section, draft, i18n);
   const selected = canvas.elements.find((item) => item.id === selectedId);
   const photoURL = (key: string) =>
     `/api/photos/${draft.id}/${encodeURIComponent(key)}`;
@@ -43,14 +46,18 @@ export default function FlyerWorkspace({
   }
   function add(type: FlyerElement["type"], photoKey?: string) {
     if (canvas.elements.length >= 60) return;
-    const item = element(type, {
-      ...(photoKey ? { photoKey } : {}),
-      width: Math.min(type === "text" ? 560 : 160, canvas.width),
-      height: Math.min(type === "text" ? 120 : 160, canvas.height),
-      x: 0,
-      y: 0,
-      color: draft.accentColor,
-    });
+    const item = element(
+      type,
+      {
+        ...(photoKey ? { photoKey } : {}),
+        width: Math.min(type === "text" ? 560 : 160, canvas.width),
+        height: Math.min(type === "text" ? 120 : 160, canvas.height),
+        x: 0,
+        y: 0,
+        color: draft.accentColor,
+      },
+      i18n,
+    );
     change({ ...canvas, elements: [...canvas.elements, item] });
     setSelectedId(item.id);
   }
@@ -87,9 +94,11 @@ export default function FlyerWorkspace({
   return (
     <div className="flyer-workspace">
       <aside className="flyer-tools designer-controls">
-        <h3>Tu lienzo</h3>
+        <h3>{i18n("Tu lienzo")}</h3>
         <p className="editor-hint">
-          Arrastra para mover; usa las esquinas para cambiar el tamaño.
+          {i18n(
+            "Arrastra para mover; usa las esquinas para cambiar el tamaño.",
+          )}
         </p>
         <div className="editor-button-row">
           <button
@@ -97,14 +106,14 @@ export default function FlyerWorkspace({
             disabled={canvas.elements.length >= 60}
             onClick={() => add("text")}
           >
-            ＋ Texto
+            {i18n("＋ Texto")}
           </button>
           <button
             type="button"
             disabled={canvas.elements.length >= 60}
             onClick={() => add("icon")}
           >
-            ＋ Icono
+            {i18n("＋ Icono")}
           </button>
         </div>
         <button
@@ -112,22 +121,22 @@ export default function FlyerWorkspace({
           disabled={canvas.elements.length >= 60}
           onClick={addGuestName}
         >
-          ＋ Nombre del invitado
+          {i18n("＋ Nombre del invitado")}
         </button>
         <p className="editor-hint">
-          El texto {"{{nombre_invitado}}"} se sustituye automáticamente por el
-          nombre del destinatario.
+          {i18n("El texto")} {"{{nombre_invitado}}"}{" "}
+          {i18n("se sustituye automáticamente por el nombre del destinatario.")}
         </p>
         <div className="color-field">
-          <span>Fondo</span>
+          <span>{i18n("Fondo")}</span>
           <ColorPicker
-            label="Fondo"
+            label={i18n("Fondo")}
             value={canvas.background}
             onChange={(background) => change({ ...canvas, background })}
           />
         </div>
         <label>
-          Formato
+          {i18n("Formato")}{" "}
           <Listbox
             value={`${canvas.width}x${canvas.height}`}
             onValueChange={(value) => {
@@ -135,29 +144,17 @@ export default function FlyerWorkspace({
               change(canvasFormat(canvas, width, height));
             }}
           >
-            <option value="720x960">Vertical · 3:4</option>
-            <option value="720x720">Cuadrado · 1:1</option>
-            <option value="720x1200">Historia · 3:5</option>
+            <option value="720x960">{i18n("Vertical · 3:4")}</option>
+            <option value="720x720">{i18n("Cuadrado · 1:1")}</option>
+            <option value="720x1200">{i18n("Historia · 3:5")}</option>
           </Listbox>
         </label>
-        <div className="editor-photo-grid">
-          {draft.photoKeys.map((key, n) => (
-            <button
-              type="button"
-              key={key}
-              disabled={canvas.elements.length >= 60}
-              aria-label={`Añadir imagen ${n + 1} al lienzo`}
-              onClick={() => add("image", key)}
-            >
-              <Photo src={photoURL(key)} alt={`Imagen ${n + 1}`} />
-            </button>
-          ))}
-        </div>
-        {!draft.photoKeys.length && (
-          <p className="editor-hint">
-            Sube una imagen con el botón de la barra superior.
-          </p>
-        )}
+        <FlyerPhotoGrid
+          draft={draft}
+          canvas={canvas}
+          photoURL={photoURL}
+          add={add}
+        />
         {selected && (
           <ElementInspector
             item={selected}

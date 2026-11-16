@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Link from "next/link";
 import Brand from "@/components/brand";
 import AccountShell from "./account-shell";
@@ -13,6 +15,8 @@ export default function DeleteAccountPage({
   googleEnabled: boolean;
   status: string;
 }) {
+  const i18n = useTranslator();
+
   const product = wedding ? "Save the Date" : "The Date";
   const completed = status === "deleted" || status === "deleting";
   return (
@@ -21,32 +25,37 @@ export default function DeleteAccountPage({
         <Brand wedding={wedding} />
         <h1>
           {status === "deleted"
-            ? "Tu cuenta se ha eliminado."
+            ? i18n("Tu cuenta se ha eliminado.")
             : status === "deleting"
-              ? "Estamos eliminando tu cuenta."
-              : `Eliminar tu cuenta de ${product}`}
+              ? i18n("Estamos eliminando tu cuenta.")
+              : i18n("Eliminar tu cuenta de {v0}", { v0: product })}
         </h1>
         <p role={completed ? "status" : undefined}>
           {status === "deleted"
-            ? "Tu sesión se ha cerrado y los datos de tu cuenta en este producto se han eliminado."
+            ? i18n(
+                "Tu sesión se ha cerrado y los datos de tu cuenta en este producto se han eliminado.",
+              )
             : status === "deleting"
-              ? "Tu cuenta ya no tiene acceso. La eliminación continuará automáticamente hasta completarse; puedes cerrar esta página."
-              : "Inicia sesión con la cuenta que quieres eliminar y confirma el borrado. Puedes hacerlo desde esta web sin instalar la aplicación."}
+              ? i18n(
+                  "Tu cuenta ya no tiene acceso. La eliminación continuará automáticamente hasta completarse; puedes cerrar esta página.",
+                )
+              : i18n(
+                  "Inicia sesión con la cuenta que quieres eliminar y confirma el borrado. Puedes hacerlo desde esta web sin instalar la aplicación.",
+                )}
         </p>
         {!completed && (
           <p>
-            El borrado es permanente e incluye perfil, eventos propios,
-            invitados y archivos. También puedes acceder desde Mi perfil →
-            Eliminar cuenta en el panel.
+            {i18n(
+              "El borrado es permanente e incluye perfil, eventos propios, invitados y archivos. También puedes acceder desde Mi perfil → Eliminar cuenta en el panel.",
+            )}
           </p>
         )}
-        {completed && <Link href="/">Volver al inicio</Link>}
+        {completed && <Link href="/">{i18n("Volver al inicio")}</Link>}
         {!completed && (
           <p>
-            Tu acceso se revoca al confirmar. El borrado comienza de inmediato y
-            continúa automáticamente si un servicio no responde. Las copias de
-            seguridad siguen su ciclo de rotación y los registros del proveedor
-            de pagos, sus obligaciones de conservación. Consulta la{" "}
+            {i18n(
+              "Tu acceso se revoca al confirmar. El borrado comienza de inmediato y continúa automáticamente si un servicio no responde. Las copias de seguridad siguen su ciclo de rotación y los registros del proveedor de pagos, sus obligaciones de conservación. Consulta la",
+            )}{" "}
             <a
               href={
                 wedding
@@ -54,7 +63,7 @@ export default function DeleteAccountPage({
                   : "https://thedate.now/privacidad"
               }
             >
-              política de privacidad
+              {i18n("política de privacidad")}
             </a>
             .
           </p>
@@ -69,7 +78,9 @@ export default function DeleteAccountPage({
         >
           {(user) => (
             <div className="profile-page">
-              <p>Cuenta: {user.email}</p>
+              <p>
+                {i18n("Cuenta:")} {user.email}
+              </p>
               <AccountDeletion />
             </div>
           )}

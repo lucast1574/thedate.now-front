@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import type { Gift } from "@/lib/events/wishlist";
 import { giftStore } from "@/lib/events/gift-store";
@@ -22,6 +23,8 @@ export default function OwnerGiftCard({
   onRemove: () => void;
   onReservation: (action: "release" | "delivered" | "pending") => void;
 }) {
+  const i18n = useTranslator();
+
   const status = gift.delivered
     ? "received"
     : gift.guestId
@@ -46,10 +49,10 @@ export default function OwnerGiftCard({
             }
           />
           {gift.delivered
-            ? "Recibido"
+            ? i18n("Recibido")
             : gift.guestId
-              ? "Reservado"
-              : "Disponible"}
+              ? i18n("Reservado")
+              : i18n("Disponible")}
         </span>
       </div>
       <div className="gift-card-content">
@@ -65,8 +68,8 @@ export default function OwnerGiftCard({
           <div className="gift-assignment">
             <Icon name="users" />
             <span>
-              <small>Lo regala</small>
-              <strong>{name || "Invitado"}</strong>
+              <small>{i18n("Lo regala")}</small>
+              <strong>{name || i18n("Invitado")}</strong>
             </span>
           </div>
         )}

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { restoreDesign } from "./silent-recovery";
 import { useState, type SetStateAction } from "react";
 import type { DesignEvent } from "@/lib/events/types";
@@ -7,6 +8,8 @@ export function useDesignHistory(
   event: DesignEvent,
   initialDraft: DesignEvent = event,
 ) {
+  const i18n = useTranslator();
+
   const [state, setState] = useState({
     draft: restoreDesign(event, initialDraft),
     baseline: event,
@@ -23,7 +26,8 @@ export function useDesignHistory(
     setState((current) => {
       const next =
         typeof action === "function" ? action(current.draft) : action;
-      if (sameDesign(next, current.draft)) return { ...current, draft: next };
+      if (sameDesign(next, current.draft, i18n))
+        return { ...current, draft: next };
       return {
         ...current,
         draft: next,
@@ -67,7 +71,7 @@ export function useDesignHistory(
   return {
     draft: state.draft,
     setDraft,
-    dirty: !sameDesign(state.draft, state.baseline),
+    dirty: !sameDesign(state.draft, state.baseline, i18n),
     undo,
     redo,
     canUndo: state.past.length > 0,

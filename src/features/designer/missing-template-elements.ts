@@ -1,9 +1,11 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import type { DesignEvent } from "@/lib/events/types";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import { templateSequence } from "./template-sequence";
 export function addMissingTemplateElements(
   draft: DesignEvent,
   template: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
 ) {
   const sections = draft.sections || [];
   const existing = new Set(
@@ -25,7 +27,7 @@ export function addMissingTemplateElements(
     "calendar_link",
     "restrictions",
   ]);
-  const additions = templateSequence(template, draft).flatMap((page) => {
+  const additions = templateSequence(template, draft, i18n).flatMap((page) => {
     const elements = page.canvas!.elements.filter(
       (item) =>
         item.binding &&

@@ -1,8 +1,12 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { protectedGuestText } from "@/lib/events/guest-name";
 import { resolveTemplateId } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
 import { invitationTitle } from "@/lib/events/invitation-title";
-export function designPayload(draft: DesignEvent) {
+export function designPayload(
+  draft: DesignEvent,
+  i18n: Translator = spanishTranslator,
+) {
   return {
     backgroundImage: draft.backgroundImage ?? null,
     clearBackgroundImage: !draft.backgroundImage,
@@ -20,6 +24,7 @@ export function designPayload(draft: DesignEvent) {
       draft.template,
       draft.designMode || "sections",
       draft.templateId,
+      i18n,
     ),
     accentColor: draft.accentColor,
     designMode: draft.designMode || "sections",
@@ -57,6 +62,13 @@ export function designPayload(draft: DesignEvent) {
     })),
   };
 }
-export function sameDesign(a: DesignEvent, b: DesignEvent) {
-  return JSON.stringify(designPayload(a)) === JSON.stringify(designPayload(b));
+export function sameDesign(
+  a: DesignEvent,
+  b: DesignEvent,
+  i18n: Translator = spanishTranslator,
+) {
+  return (
+    JSON.stringify(designPayload(a, i18n)) ===
+    JSON.stringify(designPayload(b, i18n))
+  );
 }

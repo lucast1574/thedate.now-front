@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "./icon";
 import Listbox from "@/components/listbox";
 import type { Person } from "@/lib/events/seating";
@@ -5,13 +6,21 @@ export default function CompanionFields({
   people,
   max,
   onChange,
-  description = "El titular ya está incluido. Añade solo a quienes asistirán contigo.",
+  description:
+    sourceDescription = "El titular ya está incluido. Añade solo a quienes asistirán contigo.",
 }: {
   description?: string;
   people: Person[];
   max: number;
   onChange: (people: Person[]) => void;
 }) {
+  const i18n = useTranslator();
+  const description =
+    sourceDescription ??
+    i18n(
+      "El titular ya está incluido. Añade solo a quienes asistirán contigo.",
+    );
+
   function patch(index: number, fields: Partial<Person>) {
     onChange(
       people.map((person, n) =>
@@ -22,14 +31,16 @@ export default function CompanionFields({
   return (
     <section className="companion-fields">
       <h3>
-        Acompañantes · {people.length}/{max}
+        {i18n("Acompañantes ·")} {people.length}/{max}
       </h3>
       <p>{description}</p>
       {people.map((person, n) => (
         <fieldset key={n}>
-          <legend>Acompañante {n + 1}</legend>
+          <legend>
+            {i18n("Acompañante")} {n + 1}
+          </legend>
           <label>
-            Nombre
+            {i18n("Nombre")}{" "}
             <input
               required
               minLength={2}
@@ -39,7 +50,7 @@ export default function CompanionFields({
             />
           </label>
           <label>
-            Apellido
+            {i18n("Apellido")}{" "}
             <input
               maxLength={80}
               value={person.lastName}
@@ -47,23 +58,23 @@ export default function CompanionFields({
             />
           </label>
           <label>
-            Género (opcional)
+            {i18n("Género (opcional)")}{" "}
             <Listbox
               value={person.gender}
               onValueChange={(value) =>
                 patch(n, { gender: value as Person["gender"] })
               }
             >
-              <option value="unspecified">Sin especificar</option>
-              <option value="man">Hombre</option>
-              <option value="woman">Mujer</option>
+              <option value="unspecified">{i18n("Sin especificar")}</option>
+              <option value="man">{i18n("Hombre")}</option>
+              <option value="woman">{i18n("Mujer")}</option>
             </Listbox>
           </label>
           <button
             type="button"
             onClick={() => onChange(people.filter((_, index) => n !== index))}
           >
-            Quitar acompañante
+            {i18n("Quitar acompañante")}
           </button>
         </fieldset>
       ))}
@@ -77,7 +88,7 @@ export default function CompanionFields({
             ])
           }
         >
-          <Icon name="plus" /> Añadir acompañante
+          <Icon name="plus" /> {i18n("Añadir acompañante")}
         </button>
       )}
     </section>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { giftListEnabled } from "@/lib/events/event-options";
 import { flyerElementStyle } from "@/lib/events/flyer-element-style";
 import { fitDressCanvas } from "@/lib/events/dress-layout";
@@ -33,7 +34,9 @@ export function FlyerContent({
   item: FlyerElement;
   photoURL: (key: string) => string;
 }) {
-  item = elementValue(item, event);
+  const i18n = useTranslator();
+
+  item = elementValue(item, event, i18n);
   if (item.binding === "map") return <InvitationMap item={item} />;
   if (item.type === "image")
     return <InvitationPhoto item={item} photoURL={photoURL} />;
@@ -43,12 +46,12 @@ export function FlyerContent({
     return responseHref ? (
       <a className="flyer-rsvp-link" href={responseHref}>
         <Icon name="mail" />
-        {item.text || "Confirmar asistencia"}
+        {item.text || i18n("Confirmar asistencia")}
         <Icon name="arrow" />
       </a>
     ) : (
       <span className="flyer-rsvp-link">
-        {item.text || "Confirma tu asistencia en WhatsApp"}
+        {item.text || i18n("Confirma tu asistencia en WhatsApp")}
       </span>
     );
   if (item.binding === "calendar_link")
@@ -94,7 +97,7 @@ export default function FlyerSurface({
   responseURL,
   event,
   backgroundSlice,
-  label = "Sección de la invitación",
+  label: sourceLabel,
 }: {
   event?: Partial<PublicEvent>;
   canvas: FlyerCanvas;
@@ -106,13 +109,16 @@ export default function FlyerSurface({
   children?: ReactNode;
   label?: string;
 }) {
+  const i18n = useTranslator();
+  const label = sourceLabel ?? i18n("Sección de la invitación");
+
   const canvas = children
     ? authoredCanvas
     : fitDressCanvas({
         ...authoredCanvas,
         elements: authoredCanvas.elements
           .filter((e) => e.binding !== "gift_link" || giftListEnabled(event))
-          .map((e) => elementValue(e, event)),
+          .map((e) => elementValue(e, event, i18n)),
       });
   return (
     <div

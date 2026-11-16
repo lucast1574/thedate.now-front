@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { api } from "@/lib/api/client";
@@ -8,6 +10,8 @@ import { useEventRecency } from "./use-event-recency";
 import { eventReadOnly } from "@/lib/events/event-closure";
 
 export function useActiveInvitation(user: User, kind: Kind, eventId?: string) {
+  const i18n = useTranslator();
+
   const params = useParams();
   const query = useSearchParams();
   const explicit =
@@ -20,17 +24,17 @@ export function useActiveInvitation(user: User, kind: Kind, eventId?: string) {
   const [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    api<Event[]>("/api/backend/events")
+    api<Event[]>("/api/backend/events", undefined, undefined, i18n)
       .then((list) => {
         if (active) setEvents(galleryEvents(list, user, kind));
       })
       .catch(() => {
-        if (active) setError("No se pudieron cargar tus invitaciones.");
+        if (active) setError(i18n("No se pudieron cargar tus invitaciones."));
       });
     return () => {
       active = false;
     };
-  }, [user, kind]);
+  }, [user, kind, i18n]);
   useEffect(() => {
     const timer = window.setInterval(
       () => setEvents((current) => [...current]),

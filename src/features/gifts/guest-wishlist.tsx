@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import Link from "next/link";
 import { personalPath } from "@/lib/events/personal-links";
 import Icon from "@/components/icon";
@@ -14,6 +16,8 @@ export default function GuestWishlist({
   initial: GuestWishlistData;
   initialGiftId?: string;
 }) {
+  const i18n = useTranslator();
+
   const state = useGuestWishlist(token, initial);
   return (
     <main
@@ -21,7 +25,7 @@ export default function GuestWishlist({
     >
       <nav>
         <Link href={personalPath(token, initial.guestName)}>
-          <Icon name="undo" /> Volver a la invitación
+          <Icon name="undo" /> {i18n("Volver a la invitación")}
         </Link>
         <span>
           {initial.event.kind === "wedding" ? "Save the Date" : "The Date"}

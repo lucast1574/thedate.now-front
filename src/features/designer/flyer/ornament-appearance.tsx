@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { FlyerElement } from "@/lib/events/flyer";
 export default function OrnamentAppearance({
   item,
@@ -6,13 +7,15 @@ export default function OrnamentAppearance({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   if (!item.icon?.startsWith("art:")) return null;
   return (
     <label>
-      Intensidad del adorno{" "}
+      {i18n("Intensidad del adorno")}{" "}
       <output>{Math.round((item.opacity ?? 1) * 100)}%</output>
       <input
-        aria-label="Intensidad del adorno"
+        aria-label={i18n("Intensidad del adorno")}
         type="range"
         min="0.05"
         max="1"

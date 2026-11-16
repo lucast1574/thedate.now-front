@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useId, useRef } from "react";
 
 export default function InvitationMessageInput({
@@ -7,11 +8,13 @@ export default function InvitationMessageInput({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const input = useRef<HTMLTextAreaElement>(null);
   const id = useId();
   return (
     <div className="invitation-message-input">
-      <label htmlFor={id}>Mensaje de WhatsApp</label>
+      <label htmlFor={id}>{i18n("Mensaje de WhatsApp")}</label>
       <textarea
         ref={input}
         id={id}
@@ -23,8 +26,9 @@ export default function InvitationMessageInput({
       />
       <div className="invitation-message-tools">
         <small id={`${id}-hint`}>
-          El enlace a la invitación se incluirá automáticamente al inicio del
-          mensaje para que WhatsApp genere la vista previa.
+          {i18n(
+            "El enlace a la invitación se incluirá automáticamente al inicio del mensaje para que WhatsApp genere la vista previa.",
+          )}
         </small>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import type { Dispatch, SetStateAction } from "react";
 import type { Event } from "@/lib/events/types";
 export default function EventCapacity({
@@ -7,9 +8,11 @@ export default function EventCapacity({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const i18n = useTranslator();
+
   return (
     <fieldset className="event-capacity">
-      <legend>¿Cuántas personas pueden asistir?</legend>
+      <legend>{i18n("¿Cuántas personas pueden asistir?")}</legend>
       <div className="capacity-options">
         <label>
           <input
@@ -24,7 +27,7 @@ export default function EventCapacity({
               })
             }
           />
-          Una cantidad máxima
+          {i18n("Una cantidad máxima")}
         </label>
         <label>
           <input
@@ -33,12 +36,12 @@ export default function EventCapacity({
             checked={draft.capacityUnlimited}
             onChange={() => setDraft({ ...draft, capacityUnlimited: true })}
           />
-          Sin límite
+          {i18n("Sin límite")}
         </label>
       </div>
       {!draft.capacityUnlimited && (
         <label className="capacity-number">
-          Máximo de personas
+          {i18n("Máximo de personas")}{" "}
           <input
             required
             type="number"
@@ -51,7 +54,7 @@ export default function EventCapacity({
           />
         </label>
       )}
-      <small>Cuenta a cada invitado y a sus acompañantes (+1).</small>
+      <small>{i18n("Cuenta a cada invitado y a sus acompañantes (+1).")}</small>
     </fieldset>
   );
 }

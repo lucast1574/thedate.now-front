@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 
 export default function InvitationStartChoice({
@@ -7,24 +8,26 @@ export default function InvitationStartChoice({
   blank: boolean;
   onChange: (blank: boolean) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div
       className="invitation-start-choice"
       role="group"
-      aria-label="Cómo empezar tu invitación"
+      aria-label={i18n("Cómo empezar tu invitación")}
     >
       {[
         {
           blank: false,
           icon: "layout",
-          title: "Usar una plantilla",
-          detail: "Un diseño listo para hacerlo tuyo.",
+          title: i18n("Usar una plantilla"),
+          detail: i18n("Un diseño listo para hacerlo tuyo."),
         },
         {
           blank: true,
           icon: "lucide:file",
-          title: "Empezar desde cero",
-          detail: "Un lienzo vacío para tus ideas.",
+          title: i18n("Empezar desde cero"),
+          detail: i18n("Un lienzo vacío para tus ideas."),
         },
       ].map((choice) => (
         <button

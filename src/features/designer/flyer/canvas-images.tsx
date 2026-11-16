@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import Photo from "@/components/photo";
 import { imagePlacement } from "./canvas-geometry";
@@ -19,13 +20,16 @@ export default function CanvasImages({
   onAdd: (item: FlyerElement) => void;
   onUpload: (file: File) => Promise<unknown>;
 }) {
+  const i18n = useTranslator();
+
   return (
     <div className="canvas-images">
       <p className="canvas-panel-description">
-        Sube tus fotos y pulsa una para añadirla a la sección activa.
+        {i18n("Sube tus fotos y pulsa una para añadirla a la sección activa.")}
       </p>
       <label className="canvas-upload">
-        <Icon name="image" /> {busy ? "Subiendo imagen…" : "Subir una imagen"}
+        <Icon name="image" />{" "}
+        {busy ? i18n("Subiendo imagen…") : i18n("Subir una imagen")}
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -42,32 +46,37 @@ export default function CanvasImages({
           <button
             key={key}
             disabled={disabled}
-            aria-label={`Añadir imagen ${n + 1}`}
+            aria-label={i18n("Añadir imagen {v0}", { v0: n + 1 })}
             onClick={(e) => {
               const image = e.currentTarget.querySelector("img");
               onAdd(
-                element("image", {
-                  photoKey: key,
-                  ...imagePlacement(
-                    image?.naturalWidth || 300,
-                    image?.naturalHeight || 300,
-                    canvas,
-                  ),
-                }),
+                element(
+                  "image",
+                  {
+                    photoKey: key,
+                    ...imagePlacement(
+                      image?.naturalWidth || 300,
+                      image?.naturalHeight || 300,
+                      canvas,
+                    ),
+                  },
+                  i18n,
+                ),
               );
             }}
           >
             <Photo
               src={`/api/photos/${draft.id}/${encodeURIComponent(key)}`}
-              alt={`Imagen ${n + 1}`}
+              alt={i18n("Imagen {v0}", { v0: n + 1 })}
             />
           </button>
         ))}
       </div>
       {!draft.photoKeys.length && (
         <p className="canvas-panel-description">
-          Tus fotos aparecerán aquí. Las de una plantilla también se cambian
-          pulsándolas en el lienzo.
+          {i18n(
+            "Tus fotos aparecerán aquí. Las de una plantilla también se cambian pulsándolas en el lienzo.",
+          )}
         </p>
       )}
     </div>

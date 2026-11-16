@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useId, useRef } from "react";
 import Icon from "@/components/icon";
 import type { GuestGift } from "@/lib/events/wishlist";
@@ -20,6 +21,8 @@ export default function GiftConfirmation({
   onConfirm: () => void;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const dialog = useRef<HTMLDialogElement>(null),
     titleId = useId();
   useEffect(() => {
@@ -47,7 +50,7 @@ export default function GiftConfirmation({
       <div className="gift-confirmation-body">
         <button
           className="gift-icon-button"
-          aria-label="Cerrar confirmación"
+          aria-label={i18n("Cerrar confirmación")}
           disabled={busy}
           onClick={onClose}
         >
@@ -56,13 +59,19 @@ export default function GiftConfirmation({
         <GiftImage src={image} title={item.title} />
         <span className="gift-merchant">{giftStore(item.url)}</span>
         <h2 id={titleId}>
-          {release ? "¿Liberar tu elección?" : "¿Quieres regalarlo?"}
+          {release
+            ? i18n("¿Liberar tu elección?")
+            : i18n("¿Quieres regalarlo?")}
         </h2>
         <strong>{item.title}</strong>
         <p>
           {release
-            ? "Volverá a estar disponible y podrás elegir otro regalo. Si ya lo compraste, conserva tu reserva."
-            : "Quedará reservado a tu nombre para evitar regalos repetidos. Después podrás abrir la tienda para comprarlo."}
+            ? i18n(
+                "Volverá a estar disponible y podrás elegir otro regalo. Si ya lo compraste, conserva tu reserva.",
+              )
+            : i18n(
+                "Quedará reservado a tu nombre para evitar regalos repetidos. Después podrás abrir la tienda para comprarlo.",
+              )}
         </p>
         {error && (
           <p role="alert" className="gift-error">
@@ -71,13 +80,13 @@ export default function GiftConfirmation({
         )}
         <button className="gift-primary" disabled={busy} onClick={onConfirm}>
           {busy
-            ? "Actualizando…"
+            ? i18n("Actualizando…")
             : release
-              ? "Liberar y elegir otro"
-              : "Sí, reservar este regalo"}
+              ? i18n("Liberar y elegir otro")
+              : i18n("Sí, reservar este regalo")}
         </button>
         <button className="gift-secondary" disabled={busy} onClick={onClose}>
-          Seguir viendo
+          {i18n("Seguir viendo")}
         </button>
       </div>
     </dialog>

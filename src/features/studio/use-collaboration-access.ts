@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { api } from "@/lib/api/client";
 type Access = {
@@ -7,6 +8,8 @@ type Access = {
   emailConfigured: boolean;
 };
 export function useCollaborationAccess(eventId: string) {
+  const i18n = useTranslator();
+
   const [access, setAccess] = useState<Access | null>(null),
     [emails, setEmails] = useState(["", ""]),
     [busy, setBusy] = useState(false),
@@ -14,17 +17,25 @@ export function useCollaborationAccess(eventId: string) {
     [notice, setNotice] = useState("");
   const load = useCallback(
     () =>
-      api<Access>(`/api/backend/events/${eventId}/collaborators`).then(
-        (value) => {
-          setAccess(value);
-          return value;
-        },
-      ),
-    [eventId],
+      api<Access>(
+        `/api/backend/events/${eventId}/collaborators`,
+        undefined,
+        undefined,
+        i18n,
+      ).then((value) => {
+        setAccess(value);
+        return value;
+      }),
+    [eventId, i18n],
   );
   useEffect(() => {
     let active = true;
-    api<Access>(`/api/backend/events/${eventId}/collaborators`)
+    api<Access>(
+      `/api/backend/events/${eventId}/collaborators`,
+      undefined,
+      undefined,
+      i18n,
+    )
       .then((a) => {
         if (active) setAccess(a);
       })
@@ -34,7 +45,7 @@ export function useCollaborationAccess(eventId: string) {
     return () => {
       active = false;
     };
-  }, [eventId]);
+  }, [eventId, i18n]);
   const remaining = access
     ? Math.max(0, access.limit - access.members.length - access.pending.length)
     : 0;
@@ -50,7 +61,9 @@ export function useCollaborationAccess(eventId: string) {
       candidates.length > remaining ||
       new Set(candidates.map((e) => e.email)).size !== candidates.length
     ) {
-      setError("Escribe correos diferentes y respeta los accesos disponibles.");
+      setError(
+        i18n("Escribe correos diferentes y respeta los accesos disponibles."),
+      );
       return;
     }
     setBusy(true);
@@ -62,6 +75,7 @@ export function useCollaborationAccess(eventId: string) {
           `/api/backend/events/${eventId}/collaborators`,
           "POST",
           { email: candidate.email },
+          i18n,
         );
         setEmails((current) =>
           current.map((email, index) =>
@@ -72,14 +86,16 @@ export function useCollaborationAccess(eventId: string) {
         else {
           deliveryIssue = true;
           setNotice(
-            "Hay una entrega pendiente o fallida. Revisa su estado antes de reenviar.",
+            i18n(
+              "Hay una entrega pendiente o fallida. Revisa su estado antes de reenviar.",
+            ),
           );
           break;
         }
       }
       if (sent && !deliveryIssue)
         setNotice(
-          `${sent} ${sent === 1 ? "invitación enviada" : "invitaciones enviadas"}. Cada enlace dura siete días.`,
+          `${sent} ${sent === 1 ? i18n("invitación enviada") : i18n("invitaciones enviadas")}. Cada enlace dura siete días.`,
         );
     } catch (e) {
       setError((e as Error).message);
@@ -108,9 +124,14 @@ export function useCollaborationAccess(eventId: string) {
     setBusy(true);
     setError("");
     try {
-      await api(`/api/backend/events/${eventId}/collaborators/${id}`, "DELETE");
+      await api(
+        `/api/backend/events/${eventId}/collaborators/${id}`,
+        "DELETE",
+        undefined,
+        i18n,
+      );
       await load();
-      setNotice("Acceso retirado.");
+      setNotice(i18n("Acceso retirado."));
     } catch (e) {
       setError((e as Error).message);
     } finally {

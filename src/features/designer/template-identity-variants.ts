@@ -1,57 +1,60 @@
+import { type Translator, localized } from "@/lib/i18n/translator";
 import type { TemplateIdentity } from "./template-identity";
 import type { Layout } from "./template-layouts";
-export const identityVariants: Record<string, Partial<TemplateIdentity>> = {
-  "wedding-flyer-vine": {
-    story: "portrait",
-    lead: "La vida que crece con nosotros",
-    flow: "story",
-    align: "left",
-    inset: 95,
-    opening: "Una historia que crece, hoja a hoja, contigo.",
-  },
-  "wedding-flyer-paris": {
-    story: "letter",
-    lead: "Una historia para guardar",
-    flow: "story",
-    align: "center",
-    inset: 125,
-    seal: "heart",
-    opening: "Una carta, una ciudad y una historia que es nuestra.",
-  },
-  "wedding-flyer-ruby": {
-    story: "portrait",
-    lead: "Un sí que lo dice todo",
-    flow: "date",
-    inset: 110,
-    opening: "Hay promesas que merecen un lugar especial.",
-  },
-  "general-flyer-birthday": {
-    story: "portrait",
-    eventLead: "Que este deseo nos encuentre juntos",
-    flow: "story",
-    align: "center",
-    inset: 100,
-    seal: "star",
-    opening: "Pide un deseo: el próximo recuerdo empieza aquí.",
-  },
-  "general-flyer-launch": {
-    story: "panorama",
-    eventLead: "Algo nuevo está por comenzar",
-    flow: "date",
-    inset: 65,
-    seal: "sparkle",
-    opening: "El gran estreno merece una entrada especial.",
-  },
-  "general-flyer-dinner": {
-    story: "letter",
-    eventLead: "El mejor plan está en la mesa",
-    flow: "place",
-    align: "left",
-    inset: 110,
-    seal: "heart",
-    opening: "Pasa, tu sitio en la mesa ya está preparado.",
-  },
-};
+export const identityVariants = localized(
+  (i18n: Translator): Record<string, Partial<TemplateIdentity>> => ({
+    "wedding-flyer-vine": {
+      story: "portrait",
+      lead: i18n("La vida que crece con nosotros"),
+      flow: "story",
+      align: "left",
+      inset: 95,
+      opening: i18n("Una historia que crece, hoja a hoja, contigo."),
+    },
+    "wedding-flyer-paris": {
+      story: "letter",
+      lead: i18n("Una historia para guardar"),
+      flow: "story",
+      align: "center",
+      inset: 125,
+      seal: "heart",
+      opening: i18n("Una carta, una ciudad y una historia que es nuestra."),
+    },
+    "wedding-flyer-ruby": {
+      story: "portrait",
+      lead: i18n("Un sí que lo dice todo"),
+      flow: "date",
+      inset: 110,
+      opening: i18n("Hay promesas que merecen un lugar especial."),
+    },
+    "general-flyer-birthday": {
+      story: "portrait",
+      eventLead: i18n("Que este deseo nos encuentre juntos"),
+      flow: "story",
+      align: "center",
+      inset: 100,
+      seal: "star",
+      opening: i18n("Pide un deseo: el próximo recuerdo empieza aquí."),
+    },
+    "general-flyer-launch": {
+      story: "panorama",
+      eventLead: i18n("Algo nuevo está por comenzar"),
+      flow: "date",
+      inset: 65,
+      seal: "sparkle",
+      opening: i18n("El gran estreno merece una entrada especial."),
+    },
+    "general-flyer-dinner": {
+      story: "letter",
+      eventLead: i18n("El mejor plan está en la mesa"),
+      flow: "place",
+      align: "left",
+      inset: 110,
+      seal: "heart",
+      opening: i18n("Pasa, tu sitio en la mesa ya está preparado."),
+    },
+  }),
+);
 export const coverVariants: Record<string, Partial<Layout>> = {
   "wedding-flyer-cinematic": {
     kicker: [56, 58, 608, 50, 22],

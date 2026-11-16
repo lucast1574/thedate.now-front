@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import InvitationOpening from "./invitation-opening";
 import { resolvedOpening } from "@/lib/events/opening-presets";
 import InvitationMotion from "./invitation-motion";
@@ -28,6 +29,8 @@ export default function Invitation({
   audioURL?: (key: string) => string;
   preview?: boolean;
 }) {
+  const i18n = useTranslator();
+
   const photo =
     photoURL ??
     ((key: string) =>
@@ -75,7 +78,7 @@ export default function Invitation({
                   <Photo
                     key={key}
                     src={photo(key)}
-                    alt={`Recuerdo de ${event.title}`}
+                    alt={i18n("Recuerdo de {v0}", { v0: event.title })}
                   />
                 ))}
               </div>

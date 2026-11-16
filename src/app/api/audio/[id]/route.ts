@@ -1,3 +1,4 @@
+import { getTranslator } from "@/lib/i18n/server";
 import { backendFetch, forwardJSON, invalidOrigin } from "@/lib/api/server";
 import { sessionToken } from "@/lib/auth/session";
 import { validAudioEvent } from "@/lib/api/audio";
@@ -5,14 +6,17 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
+  const i18n = await getTranslator();
+
   const { id } = await params;
-  if (!validAudioEvent(id)) return new Response("Not found", { status: 404 });
+  if (!validAudioEvent(id))
+    return new Response(i18n("Not found"), { status: 404 });
   if (invalidOrigin(request))
-    return new Response("Invalid origin", { status: 403 });
+    return new Response(i18n("Invalid origin"), { status: 403 });
   const token = await sessionToken();
-  if (!token) return new Response("Sign in required", { status: 401 });
+  if (!token) return new Response(i18n("Sign in required"), { status: 401 });
   const reader = request.body?.getReader();
-  if (!reader) return new Response("Choose an MP3", { status: 400 });
+  if (!reader) return new Response(i18n("Choose an MP3"), { status: 400 });
   const chunks: Uint8Array<ArrayBuffer>[] = [];
   let size = 0;
   try {
@@ -23,7 +27,7 @@ export async function POST(
       if (size > 10 * 1024 * 1024) {
         await reader.cancel();
         return Response.json(
-          { error: "El MP3 debe pesar menos de 10 MB." },
+          { error: i18n("El MP3 debe pesar menos de 10 MB.") },
           { status: 413 },
         );
       }

@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useState, type ReactNode } from "react";
 import Icon from "@/components/icon";
 export default function GuestFileDropzone({
@@ -19,6 +20,8 @@ export default function GuestFileDropzone({
   onRead: (file?: File) => Promise<void>;
   onError: (message: string) => void;
 }) {
+  const i18n = useTranslator();
+
   const fileInput = useRef<HTMLInputElement>(null);
   const [dragging, setDragging] = useState(false);
   return (
@@ -38,7 +41,7 @@ export default function GuestFileDropzone({
         setDragging(false);
         if (locked) return;
         if (e.dataTransfer.files.length !== 1) {
-          onError("Selecciona un solo archivo Excel.");
+          onError(i18n("Selecciona un solo archivo Excel."));
           return;
         }
         void onRead(e.dataTransfer.files[0]);
@@ -47,20 +50,20 @@ export default function GuestFileDropzone({
       <Icon name={complete ? "check" : "table"} />
       <strong>
         {busy
-          ? "Revisando y añadiendo invitados…"
+          ? i18n("Revisando y añadiendo invitados…")
           : complete
-            ? "Listo, tu lista está al día"
+            ? i18n("Listo, tu lista está al día")
             : fileName ||
               (uploaded
-                ? "Arrastra otro Excel cuando quieras"
-                : "Arrastra aquí tu Excel")}
+                ? i18n("Arrastra otro Excel cuando quieras")
+                : i18n("Arrastra aquí tu Excel"))}
       </strong>
       {(!complete || !children) && (
         <span className={complete ? "guest-complete-hint" : undefined}>
           {complete && <Icon name="down" />}
           {complete
-            ? "Ya puedes ver a tus invitados en la lista de abajo."
-            : "También puedes buscarlo en tus archivos."}
+            ? i18n("Ya puedes ver a tus invitados en la lista de abajo.")
+            : i18n("También puedes buscarlo en tus archivos.")}
         </span>
       )}
       {children}
@@ -69,17 +72,17 @@ export default function GuestFileDropzone({
         disabled={locked}
         onClick={() => fileInput.current?.click()}
       >
-        {uploaded ? "Subir otro Excel" : "Elegir archivo"}
+        {uploaded ? i18n("Subir otro Excel") : i18n("Elegir archivo")}
       </button>
       <small>
         {complete
-          ? "Podrás subir otro Excel al terminar este aviso."
-          : "Excel (.xlsx) · Hasta 500 invitados por archivo"}
+          ? i18n("Podrás subir otro Excel al terminar este aviso.")
+          : i18n("Excel (.xlsx) · Hasta 500 invitados por archivo")}
       </small>
       <input
         ref={fileInput}
         className="guest-file-input"
-        aria-label="Seleccionar Excel de invitados"
+        aria-label={i18n("Seleccionar Excel de invitados")}
         type="file"
         accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         disabled={locked}

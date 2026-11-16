@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { ColorMemoryProvider } from "@/components/color-memory";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -11,6 +13,8 @@ import { recordTab } from "@/features/manager/records/event-record-details";
 import InvitationRecord from "./invitation-record";
 import InvitationDesigner from "./invitation-designer";
 export default function EditorPage({ id }: { id: string }) {
+  const i18n = useTranslator();
+
   const params = useSearchParams();
   const paymentReturn = params.get("payment") === "success";
   const [event, setEvent] = useState<Event | null>(null);
@@ -21,22 +25,27 @@ export default function EditorPage({ id }: { id: string }) {
   useEventRecency(userId, event?.kind, event?.id);
   const readOnly = useEventReadOnly(event);
   const reload = useCallback(async () => {
-    const list = await api<Event[]>("/api/backend/events");
+    const list = await api<Event[]>(
+      "/api/backend/events",
+      undefined,
+      undefined,
+      i18n,
+    );
     const current = list.find((item) => item.id === id);
-    if (!current) throw new Error("No tienes acceso a esta invitación.");
+    if (!current) throw new Error(i18n("No tienes acceso a esta invitación."));
     setEvent(current);
-  }, [id]);
+  }, [id, i18n]);
   useEffect(() => {
     let active = true;
     Promise.all([
-      api<Event[]>("/api/backend/events"),
-      api<User>("/api/session"),
+      api<Event[]>("/api/backend/events", undefined, undefined, i18n),
+      api<User>("/api/session", undefined, undefined, i18n),
     ])
       .then(([list, user]) => {
         if (!active) return;
         setUser(user);
         const current = list.find((item) => item.id === id);
-        if (!current) setError("No tienes acceso a esta invitación.");
+        if (!current) setError(i18n("No tienes acceso a esta invitación."));
         else setEvent(current);
       })
       .catch((err) => {
@@ -45,12 +54,12 @@ export default function EditorPage({ id }: { id: string }) {
     return () => {
       active = false;
     };
-  }, [id]);
+  }, [id, i18n]);
   useEffect(() => {
     if (!paymentReturn || !event || event.paymentStatus === "paid") return;
     let active = true;
     const timer = window.setInterval(() => {
-      void api<Event[]>("/api/backend/events")
+      void api<Event[]>("/api/backend/events", undefined, undefined, i18n)
         .then((list) => {
           const latest = list.find((item) => item.id === id);
           if (active && latest?.paymentStatus === "paid") setEvent(latest);
@@ -61,19 +70,19 @@ export default function EditorPage({ id }: { id: string }) {
       active = false;
       window.clearInterval(timer);
     };
-  }, [paymentReturn, event, id]);
+  }, [paymentReturn, event, id, i18n]);
   if (error)
     return (
       <main className="editor-loading">
-        <h1>No se pudo abrir el editor</h1>
+        <h1>{i18n("No se pudo abrir el editor")}</h1>
         <p role="alert">{error}</p>
-        <Link href="/">Volver al estudio e iniciar sesión</Link>
+        <Link href="/">{i18n("Volver al estudio e iniciar sesión")}</Link>
       </main>
     );
   if (!event)
     return (
       <main className="editor-loading" aria-busy="true">
-        Abriendo tu invitación…
+        {i18n("Abriendo tu invitación…")}
       </main>
     );
   if (!event.isDemo && event.paymentStatus !== "paid")
@@ -81,16 +90,20 @@ export default function EditorPage({ id }: { id: string }) {
       <main className="editor-loading">
         <h1>
           {paymentReturn
-            ? "Confirmando tu pago…"
-            : "Tu invitación está guardada"}
+            ? i18n("Confirmando tu pago…")
+            : i18n("Tu invitación está guardada")}
         </h1>
         <p role="status">
           {paymentReturn
-            ? "El editor se abrirá cuando recibamos la confirmación del pago."
-            : "Completa el pago para activar tu evento y continuar con tu diseño."}
+            ? i18n(
+                "El editor se abrirá cuando recibamos la confirmación del pago.",
+              )
+            : i18n(
+                "Completa el pago para activar tu evento y continuar con tu diseño.",
+              )}
         </p>
         <Link href={`/?event=${encodeURIComponent(event.id)}`}>
-          Volver a mi invitación
+          {i18n("Volver a mi invitación")}
         </Link>
       </main>
     );
@@ -108,8 +121,12 @@ export default function EditorPage({ id }: { id: string }) {
       {paymentReturn && (
         <p role="status" className="demo-continuity-note">
           {event.paymentStatus === "paid"
-            ? "Pago confirmado. Tu diseño está listo para seguir editando."
-            : "Confirmando tu pago. Tu diseño y tus fotos están guardados."}
+            ? i18n(
+                "Pago confirmado. Tu diseño está listo para seguir editando.",
+              )
+            : i18n(
+                "Confirmando tu pago. Tu diseño y tus fotos están guardados.",
+              )}
         </p>
       )}
       <InvitationDesigner

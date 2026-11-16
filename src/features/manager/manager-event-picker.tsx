@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Link from "next/link";
 import Icon from "@/components/icon";
 import InvitationThumbnail from "@/features/studio/invitation-thumbnail";
@@ -19,31 +20,35 @@ export default function ManagerEventPicker({
   tab: string;
   lastOpened?: string;
 }) {
+  const i18n = useTranslator();
+
   const label =
     tab === "tables"
-      ? "Organizar mesas"
+      ? i18n("Organizar mesas")
       : tab === "gifts"
-        ? "Ver lista de regalos"
-        : "Gestionar invitados";
+        ? i18n("Ver lista de regalos")
+        : i18n("Gestionar invitados");
   return (
     <div className="organization-selection">
       <header className="organization-selection-heading">
-        <h2>{wedding ? "Tus bodas" : "Tus eventos"}</h2>
+        <h2>{wedding ? i18n("Tus bodas") : i18n("Tus eventos")}</h2>
         <span>
           {events.length}{" "}
           {wedding
             ? events.length === 1
-              ? "boda"
-              : "bodas"
+              ? i18n("boda")
+              : i18n("bodas")
             : events.length === 1
-              ? "evento"
-              : "eventos"}{" "}
-          {events.length === 1 ? "disponible" : "disponibles"}
+              ? i18n("evento")
+              : i18n("eventos")}{" "}
+          {events.length === 1 ? i18n("disponible") : i18n("disponibles")}
         </span>
       </header>
       <section
         className="organization-event-cards"
-        aria-label={wedding ? "Seleccionar boda" : "Seleccionar evento"}
+        aria-label={
+          wedding ? i18n("Seleccionar boda") : i18n("Seleccionar evento")
+        }
       >
         {events.map((item) => (
           <Link
@@ -55,29 +60,29 @@ export default function ManagerEventPicker({
               {item.id === lastOpened && (
                 <span className="organization-recent">
                   <Icon name="clock" />
-                  Última abierta
+                  {i18n("Última abierta")}
                 </span>
               )}
               <InvitationThumbnail event={item} />
             </span>
             <span className="organization-event-info">
               <span className="organization-event-meta">
-                <small>{organizationEventDate(item)}</small>
+                <small>{organizationEventDate(item, i18n)}</small>
                 <small
                   className="organization-publication"
                   data-published={Boolean(item.publishedAt)}
                 >
-                  {item.publishedAt ? "Publicada" : "Borrador"}
+                  {item.publishedAt ? i18n("Publicada") : i18n("Borrador")}
                 </small>
               </span>
               <strong>{item.title}</strong>
               <span className="organization-event-action">
                 {eventReadOnly(item)
                   ? tab === "tables"
-                    ? "Ver mesas"
+                    ? i18n("Ver mesas")
                     : tab === "gifts"
-                      ? "Ver regalos"
-                      : "Ver invitados"
+                      ? i18n("Ver regalos")
+                      : i18n("Ver invitados")
                   : label}
                 <Icon name="arrow" />
               </span>
@@ -87,7 +92,9 @@ export default function ManagerEventPicker({
       </section>
       <p className="organization-selection-hint">
         <Icon name="clock" />
-        La última que abriste aparece primero. Después, las más recientes.
+        {i18n(
+          "La última que abriste aparece primero. Después, las más recientes.",
+        )}
       </p>
     </div>
   );

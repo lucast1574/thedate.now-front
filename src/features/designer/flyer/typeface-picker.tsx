@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import {
   invitationTypefaces,
@@ -11,13 +12,15 @@ export default function TypefacePicker({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <Listbox
-      aria-label="Fuente del texto"
+      aria-label={i18n("Fuente del texto")}
       value={item.typeface || item.font}
-      onValueChange={(value) => onChange(typefacePatch(value))}
+      onValueChange={(value) => onChange(typefacePatch(value, i18n))}
     >
-      {invitationTypefaces.map((face) => (
+      {invitationTypefaces(i18n).map((face) => (
         <option key={face.value} value={face.value}>
           {face.label}
         </option>

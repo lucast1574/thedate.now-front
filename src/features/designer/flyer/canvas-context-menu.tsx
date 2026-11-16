@@ -1,3 +1,5 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, localized } from "@/lib/i18n/translator";
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Icon from "@/components/icon";
@@ -8,16 +10,26 @@ export type MenuPosition = {
   id: string;
   general: boolean;
 };
-const commands: [CanvasCommand, string, string][] = [
-  ["duplicate", "Duplicar", "lucide:copy"],
-  ["forward", "Traer adelante", "lucide:arrow-up"],
-  ["front", "Traer al frente", "layout"],
-  ["backward", "Enviar atrás", "down"],
-  ["back", "Enviar al fondo", "lucide:layers"],
-  ["center-x", "Centrar horizontalmente", "lucide:align-center-horizontal"],
-  ["center-y", "Centrar verticalmente", "lucide:align-center-horizontal"],
-  ["delete", "Eliminar", "lucide:trash"],
-];
+const commands = localized(
+  (i18n: Translator): [CanvasCommand, string, string][] => [
+    ["duplicate", i18n("Duplicar"), "lucide:copy"],
+    ["forward", i18n("Traer adelante"), "lucide:arrow-up"],
+    ["front", i18n("Traer al frente"), "layout"],
+    ["backward", i18n("Enviar atrás"), "down"],
+    ["back", i18n("Enviar al fondo"), "lucide:layers"],
+    [
+      "center-x",
+      i18n("Centrar horizontalmente"),
+      "lucide:align-center-horizontal",
+    ],
+    [
+      "center-y",
+      i18n("Centrar verticalmente"),
+      "lucide:align-center-horizontal",
+    ],
+    ["delete", i18n("Eliminar"), "lucide:trash"],
+  ],
+);
 export default function CanvasContextMenu({
   position,
   onCommand,
@@ -27,6 +39,8 @@ export default function CanvasContextMenu({
   onCommand: (command: CanvasCommand) => void;
   onClose: (restore?: boolean) => void;
 }) {
+  const i18n = useTranslator();
+
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     ref.current?.querySelector("button")?.focus({ preventScroll: true });
@@ -49,7 +63,7 @@ export default function CanvasContextMenu({
       className={`canvas-context-menu ${position.general ? "is-general" : ""}`}
       role="menu"
       onClick={(e) => e.stopPropagation()}
-      aria-label="Opciones del elemento"
+      aria-label={i18n("Opciones del elemento")}
       style={{
         left: Math.max(8, Math.min(position.x, window.innerWidth - 248)),
         top: Math.max(8, Math.min(position.y, window.innerHeight - 360)),
@@ -76,7 +90,7 @@ export default function CanvasContextMenu({
         }
       }}
     >
-      {commands.map(([command, label, icon]) => (
+      {commands(i18n).map(([command, label, icon]) => (
         <button
           key={command}
           role="menuitem"
@@ -85,7 +99,7 @@ export default function CanvasContextMenu({
         >
           <Icon name={icon} />
           <span>{label}</span>
-          {command === "delete" && <small>Supr</small>}
+          {command === "delete" && <small>{i18n("Supr")}</small>}
         </button>
       ))}
     </div>,

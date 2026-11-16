@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import {
   useEffect,
   useRef,
@@ -15,6 +16,8 @@ export default function EventLocationFields({
   draft: Event;
   setDraft: Dispatch<SetStateAction<Event>>;
 }) {
+  const i18n = useTranslator();
+
   const [editingUrl, setEditingUrl] = useState<string | null>(null);
   const editing = !!draft.mapUrl.trim() && editingUrl === draft.mapUrl;
   const mapInput = useRef<HTMLInputElement>(null);
@@ -26,15 +29,17 @@ export default function EventLocationFields({
   useEffect(() => {
     mapInput.current?.setCustomValidity(
       !draft.isVirtual && draft.mapUrl.trim() && !draft.location.trim()
-        ? "Espera a que encontremos la ubicación. Si la búsqueda falla, puedes corregirla manualmente."
+        ? i18n(
+            "Espera a que encontremos la ubicación. Si la búsqueda falla, puedes corregirla manualmente.",
+          )
         : "",
     );
-  }, [draft.isVirtual, draft.mapUrl, draft.location]);
+  }, [draft.isVirtual, draft.mapUrl, draft.location, i18n]);
   return (
     <>
       {draft.kind !== "wedding" && (
         <fieldset className="event-mode">
-          <legend>¿Cómo se van a reunir?</legend>
+          <legend>{i18n("¿Cómo se van a reunir?")}</legend>
           <label>
             <input
               type="radio"
@@ -50,7 +55,7 @@ export default function EventLocationFields({
                 setMapStatus("");
               }}
             />{" "}
-            En un lugar
+            {i18n("En un lugar")}
           </label>
           <label>
             <input
@@ -67,26 +72,28 @@ export default function EventLocationFields({
                 setMapStatus("");
               }}
             />{" "}
-            Por internet
+            {i18n("Por internet")}
           </label>
         </fieldset>
       )}
       {draft.isVirtual && draft.kind !== "wedding" ? (
         <label>
-          Enlace para unirse
+          {i18n("Enlace para unirse")}{" "}
           <input
             required
             type="url"
             value={draft.virtualUrl}
             onChange={(e) => setDraft({ ...draft, virtualUrl: e.target.value })}
-            placeholder="https://meet.google.com/..."
+            placeholder={i18n("https://meet.google.com/...")}
           />
-          <small>Los invitados verán este enlace en su invitación.</small>
+          <small>
+            {i18n("Los invitados verán este enlace en su invitación.")}
+          </small>
         </label>
       ) : (
         <div className="event-map-location">
           <label>
-            Enlace de Google Maps
+            {i18n("Enlace de Google Maps")}{" "}
             <input
               required
               type="url"
@@ -104,11 +111,12 @@ export default function EventLocationFields({
                 });
                 setMapStatus("");
               }}
-              placeholder="https://maps.app.goo.gl/..."
+              placeholder={i18n("https://maps.app.goo.gl/...")}
             />
             <small>
-              Pega el enlace y buscaremos el nombre del lugar y su dirección
-              automáticamente.
+              {i18n(
+                "Pega el enlace y buscaremos el nombre del lugar y su dirección automáticamente.",
+              )}
             </small>
           </label>
           <EventResolvedLocation
@@ -123,7 +131,7 @@ export default function EventLocationFields({
           />
           {mapStatus && !resolvingMap && !draft.location && (
             <button className="map-retry" type="button" onClick={retry}>
-              Volver a buscar la ubicación
+              {i18n("Volver a buscar la ubicación")}
             </button>
           )}
         </div>
@@ -141,7 +149,7 @@ export default function EventLocationFields({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                © OpenStreetMap contributors
+                {i18n("© OpenStreetMap contributors")}
               </a>
             </>
           ) : (

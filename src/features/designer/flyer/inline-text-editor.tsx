@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useRef, useState } from "react";
 export default function InlineTextEditor({
   text,
@@ -8,6 +9,8 @@ export default function InlineTextEditor({
   onCommit: (text: string) => void;
   onClose: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [value, setValue] = useState(text);
   const finished = useRef(false);
   function finish(cancel = false) {
@@ -19,7 +22,7 @@ export default function InlineTextEditor({
   return (
     <textarea
       className="canvas-inline-text"
-      aria-label="Editar texto en el lienzo"
+      aria-label={i18n("Editar texto en el lienzo")}
       ref={(node) => {
         if (node && document.activeElement !== node) node.focus();
       }}

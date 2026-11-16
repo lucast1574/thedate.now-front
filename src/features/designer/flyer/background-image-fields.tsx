@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Listbox from "@/components/listbox";
 import type { ImageBackground } from "@/lib/events/background";
 export default function BackgroundImageFields({
@@ -7,39 +8,41 @@ export default function BackgroundImageFields({
   value: ImageBackground;
   onChange: (patch: Partial<ImageBackground>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <>
       <label>
-        Ajuste de imagen
+        {i18n("Ajuste de imagen")}{" "}
         <Listbox
           value={value.fit}
-          aria-label="Ajuste de imagen de fondo"
+          aria-label={i18n("Ajuste de imagen de fondo")}
           onValueChange={(fit) =>
             onChange({ fit: fit as ImageBackground["fit"] })
           }
         >
-          <option value="cover">Cubrir el fondo</option>
-          <option value="contain">Mostrar imagen completa</option>
+          <option value="cover">{i18n("Cubrir el fondo")}</option>
+          <option value="contain">{i18n("Mostrar imagen completa")}</option>
         </Listbox>
       </label>
       <label>
-        Posición
+        {i18n("Posición")}{" "}
         <Listbox
           value={value.position}
-          aria-label="Posición de imagen de fondo"
+          aria-label={i18n("Posición de imagen de fondo")}
           onValueChange={(position) =>
             onChange({ position: position as ImageBackground["position"] })
           }
         >
-          <option value="top">Arriba</option>
-          <option value="center">Centro</option>
-          <option value="bottom">Abajo</option>
+          <option value="top">{i18n("Arriba")}</option>
+          <option value="center">{i18n("Centro")}</option>
+          <option value="bottom">{i18n("Abajo")}</option>
         </Listbox>
       </label>
       <label>
-        Intensidad de imagen · {Math.round(value.opacity * 100)} %
+        {i18n("Intensidad de imagen ·")} {Math.round(value.opacity * 100)} %
         <input
-          aria-label="Intensidad de imagen de fondo"
+          aria-label={i18n("Intensidad de imagen de fondo")}
           type="range"
           min="0"
           max="1"

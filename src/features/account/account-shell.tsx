@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import ProductAlternative from "@/features/studio/product-alternative";
@@ -36,13 +38,15 @@ export default function AccountShell({
     | "gifts"
     | "collaboration";
 }) {
+  const i18n = useTranslator();
+
   const [user, setUser] = useState<User | null>(null),
     [loading, setLoading] = useState(true),
     [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   useEffect(() => {
     let active = true;
-    api<User>("/api/session")
+    api<User>("/api/session", undefined, undefined, i18n)
       .then((u) => {
         if (active) setUser(u);
       })
@@ -53,7 +57,7 @@ export default function AccountShell({
     return () => {
       active = false;
     };
-  }, []);
+  }, [i18n]);
   return (
     <main
       className={`office ${user ? "workspace" : ""} ${wedding ? "office-wedding" : "office-general"}`}
@@ -70,7 +74,7 @@ export default function AccountShell({
       )}
       <div className={user ? "workspace-content" : ""}>
         {loading ? (
-          <p className="account-loading">Cargando tu cuenta…</p>
+          <p className="account-loading">{i18n("Cargando tu cuenta…")}</p>
         ) : !user ? (
           <AuthPanel
             wedding={wedding}
@@ -90,6 +94,7 @@ export default function AccountShell({
                     action: mode,
                     role: "user",
                   },
+                  i18n,
                 );
                 setUser(result.user);
               } catch (e) {
@@ -101,13 +106,17 @@ export default function AccountShell({
           />
         ) : admin && user.role !== "admin" ? (
           <section className="account-content">
-            <h1>Acceso reservado.</h1>
-            <p>Este panel requiere una cuenta administradora verificada.</p>
-            <Link href="/">Volver a mis eventos</Link>
+            <h1>{i18n("Acceso reservado.")}</h1>
+            <p>
+              {i18n(
+                "Este panel requiere una cuenta administradora verificada.",
+              )}
+            </p>
+            <Link href="/">{i18n("Volver a mis eventos")}</Link>
           </section>
         ) : (
           children(user, setUser, async () => {
-            await api("/api/session", "DELETE");
+            await api("/api/session", "DELETE", undefined, i18n);
             setUser(null);
           })
         )}

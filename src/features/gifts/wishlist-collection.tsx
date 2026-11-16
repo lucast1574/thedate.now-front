@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import { useEffect, useRef, useState } from "react";
 import Icon from "@/components/icon";
 import {
@@ -29,6 +30,8 @@ export default function WishlistCollection({
   ) => void;
   onExample: () => void;
 }) {
+  const i18n = useTranslator();
+
   const [filter, setFilter] = useState<GiftFilter>("all"),
     [search, setSearch] = useState("");
   const activeFilter = useRef<HTMLButtonElement>(null),
@@ -42,24 +45,26 @@ export default function WishlistCollection({
     }
   }, [busy, filtered.length]);
   const filters: [GiftFilter, string][] = [
-    ["all", "Todos"],
-    ["available", "Disponibles"],
-    ["reserved", "Reservados"],
-    ["received", "Recibidos"],
+    ["all", i18n("Todos")],
+    ["available", i18n("Disponibles")],
+    ["reserved", i18n("Reservados")],
+    ["received", i18n("Recibidos")],
   ];
   return (
-    <section className="wishlist-collection" aria-label="Tus regalos">
+    <section className="wishlist-collection" aria-label={i18n("Tus regalos")}>
       <div className="wishlist-collection-heading">
         <div>
-          <h3>Tus regalos</h3>
-          <span>{items.length} de 100 ideas</span>
+          <h3>{i18n("Tus regalos")}</h3>
+          <span>
+            {items.length} {i18n("de 100 ideas")}
+          </span>
         </div>
         {items.length > 0 && (
           <label className="wishlist-search">
             <Icon name="search" />
             <input
-              aria-label="Buscar regalo o invitado"
-              placeholder="Buscar regalo o invitado"
+              aria-label={i18n("Buscar regalo o invitado")}
+              placeholder={i18n("Buscar regalo o invitado")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -69,7 +74,7 @@ export default function WishlistCollection({
       <div
         className="wishlist-filters"
         role="group"
-        aria-label="Filtrar regalos"
+        aria-label={i18n("Filtrar regalos")}
       >
         {filters.map(([value, label]) => (
           <button
@@ -94,33 +99,33 @@ export default function WishlistCollection({
             <span className="wishlist-start-icon">
               <Icon name="lucide:gift" />
             </span>
-            <span>UNA IDEA ES UN BUEN COMIENZO</span>
+            <span>{i18n("UNA IDEA ES UN BUEN COMIENZO")}</span>
           </div>
-          <h3>¿Qué les gustaría recibir?</h3>
+          <h3>{i18n("¿Qué les gustaría recibir?")}</h3>
           <p>
-            Guarda productos de sus tiendas favoritas. Sus invitados podrán
-            elegir uno y reservarlo, para que cada detalle llegue una sola vez.
+            {i18n(
+              "Guarda productos de sus tiendas favoritas. Sus invitados podrán elegir uno y reservarlo, para que cada detalle llegue una sola vez.",
+            )}
           </p>
           <ol className="wishlist-start-steps">
             <li>
               <Icon name="lucide:link" />
-              <strong>Pega un enlace</strong>
-              <span>Del producto que les gusta.</span>
+              <strong>{i18n("Pega un enlace")}</strong>
+              <span>{i18n("Del producto que les gusta.")}</span>
             </li>
             <li>
               <Icon name="lucide:list-checks" />
-              <strong>Prepara tu lista</strong>
-              <span>Revisa la imagen y los detalles.</span>
+              <strong>{i18n("Prepara tu lista")}</strong>
+              <span>{i18n("Revisa la imagen y los detalles.")}</span>
             </li>
             <li>
               <Icon name="lucide:gift" />
-              <strong>Compártela</strong>
-              <span>Cada invitado elige su regalo.</span>
+              <strong>{i18n("Compártela")}</strong>
+              <span>{i18n("Cada invitado elige su regalo.")}</span>
             </li>
           </ol>
           <button type="button" onClick={onExample}>
-            Ver una lista de ejemplo
-            <Icon name="arrow" />
+            {i18n("Ver una lista de ejemplo")} <Icon name="arrow" />
           </button>
         </div>
       ) : filtered.length ? (
@@ -147,8 +152,8 @@ export default function WishlistCollection({
       ) : (
         <div className="wishlist-no-results">
           <Icon name="search" />
-          <h3>No hay regalos con esta selección</h3>
-          <p>Prueba otro nombre o vuelve a ver la lista completa.</p>
+          <h3>{i18n("No hay regalos con esta selección")}</h3>
+          <p>{i18n("Prueba otro nombre o vuelve a ver la lista completa.")}</p>
           <button
             type="button"
             onClick={() => {
@@ -156,7 +161,7 @@ export default function WishlistCollection({
               setSearch("");
             }}
           >
-            Ver todos los regalos
+            {i18n("Ver todos los regalos")}
           </button>
         </div>
       )}

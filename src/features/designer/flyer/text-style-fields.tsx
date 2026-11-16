@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import Icon from "@/components/icon";
 import TypefacePicker from "./typeface-picker";
 import TextSpacingFields from "./text-spacing-fields";
@@ -10,15 +11,16 @@ export default function TextStyleFields({
   item: FlyerElement;
   onChange: (patch: Partial<FlyerElement>) => void;
 }) {
+  const i18n = useTranslator();
+
   return (
     <>
       <label>
-        Tipografía
-        <TypefacePicker item={item} onChange={onChange} />
+        {i18n("Tipografía")} <TypefacePicker item={item} onChange={onChange} />
       </label>
       <div className="inspector-type-size">
         <label>
-          Tamaño
+          {i18n("Tamaño")}{" "}
           <input
             type="number"
             min={8}
@@ -32,8 +34,8 @@ export default function TextStyleFields({
           />
         </label>
         <button
-          title="Negrita"
-          aria-label="Negrita"
+          title={i18n("Negrita")}
+          aria-label={i18n("Negrita")}
           aria-pressed={item.bold}
           onClick={() => onChange({ bold: !item.bold })}
         >

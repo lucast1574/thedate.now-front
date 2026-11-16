@@ -1,3 +1,4 @@
+import { useTranslator } from "@/lib/i18n/react";
 import PhotoPresentationFields from "./photo-presentation-fields";
 import OrnamentAppearance from "./ornament-appearance";
 import GiftLinkInspector from "./gift-link-inspector";
@@ -40,7 +41,9 @@ export default function ElementInspector({
   photoURL?: (key: string) => string;
   onLayer?: (direction: number) => void;
 }) {
-  const title = elementLabel(item);
+  const i18n = useTranslator();
+
+  const title = elementLabel(item, i18n);
   return (
     <section className="element-inspector">
       <header className="inspector-heading">
@@ -48,29 +51,29 @@ export default function ElementInspector({
           <h3>{title}</h3>
           <p>
             {item.binding === "guest_name"
-              ? "Personalizado para cada invitado"
+              ? i18n("Personalizado para cada invitado")
               : item.binding === "location"
-                ? "Un acceso al lugar de tu celebración"
+                ? i18n("Un acceso al lugar de tu celebración")
                 : item.type === "image"
-                  ? "Integra tu foto con el estilo de la invitación"
+                  ? i18n("Integra tu foto con el estilo de la invitación")
                   : item.type === "icon"
-                    ? "Un detalle para tu invitación"
-                    : "Dale voz a tu invitación"}
+                    ? i18n("Un detalle para tu invitación")
+                    : i18n("Dale voz a tu invitación")}
           </p>
         </div>
         <div className="inspector-quick-actions">
           {onDuplicate && (
             <button
-              title="Duplicar elemento"
-              aria-label="Duplicar elemento"
+              title={i18n("Duplicar elemento")}
+              aria-label={i18n("Duplicar elemento")}
               onClick={onDuplicate}
             >
               <Icon name="lucide:copy" />
             </button>
           )}
           <button
-            title="Eliminar elemento"
-            aria-label="Eliminar elemento"
+            title={i18n("Eliminar elemento")}
+            aria-label={i18n("Eliminar elemento")}
             onClick={onRemove}
           >
             <Icon name="lucide:trash" />
@@ -110,7 +113,7 @@ export default function ElementInspector({
       ) : (
         item.type === "text" && (
           <label>
-            Contenido · también con doble clic en el lienzo
+            {i18n("Contenido · también con doble clic en el lienzo")}{" "}
             <textarea
               rows={3}
               maxLength={2000}
@@ -126,14 +129,14 @@ export default function ElementInspector({
       {item.type === "image" ? (
         <>
           <label>
-            Reemplazar imagen
+            {i18n("Reemplazar imagen")}{" "}
             <Listbox
               value={item.photoKey}
               onValueChange={(photoKey) => onChange({ photoKey })}
             >
               {photos.map((key, n) => (
                 <option key={key} value={key}>
-                  Imagen {n + 1}
+                  {i18n("Imagen")} {n + 1}
                 </option>
               ))}
             </Listbox>
@@ -143,7 +146,7 @@ export default function ElementInspector({
         <>
           {item.type === "icon" && (
             <details className="symbol-replace">
-              <summary>Cambiar símbolo</summary>
+              <summary>{i18n("Cambiar símbolo")}</summary>
               <SymbolLibrary
                 kind={kind}
                 onPick={(icon) => onChange({ icon })}
@@ -157,12 +160,12 @@ export default function ElementInspector({
           >
             <summary>
               <Icon name="lucide:palette" />
-              <span>Estilo</span>
+              <span>{i18n("Estilo")}</span>
               <Icon name="chevron" />
             </summary>
             <div className="inspector-disclosure-body">
               <div className="color-field">
-                <span>Color</span>
+                <span>{i18n("Color")}</span>
                 <ColorPicker
                   value={item.color}
                   onChange={(color) => onChange({ color })}

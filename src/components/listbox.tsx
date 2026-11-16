@@ -1,4 +1,6 @@
 "use client";
+import { useTranslator } from "@/lib/i18n/react";
+
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import ListboxMenu from "./listbox-menu";
 import { focusListbox, useListboxDismiss } from "./use-listbox-dismiss";
@@ -9,7 +11,7 @@ import {
   optionChoices,
 } from "@/lib/ui/listbox";
 import Icon from "./icon";
-import type { ListboxProps } from "./listbox-types";
+import type { ListboxProps, ListboxPopup } from "./listbox-types";
 export default function Listbox({
   children,
   value = "",
@@ -22,18 +24,14 @@ export default function Listbox({
   menuMinWidth = 0,
   "aria-label": label,
 }: ListboxProps) {
+  const i18n = useTranslator();
+
   const uid = useId(),
     listId = `${uid}-options`;
   const button = useRef<HTMLButtonElement>(null),
     menu = useRef<HTMLDivElement>(null);
   const search = useRef({ text: "", at: 0 });
-  const [popup, setPopup] = useState<{
-    position: ReturnType<typeof listboxPosition>;
-    title: string;
-    general: boolean;
-    editor?: boolean;
-    container: Element;
-  } | null>(null);
+  const [popup, setPopup] = useState<ListboxPopup | null>(null);
   const [active, setActive] = useState(-1);
   const options = optionChoices(children);
   const selected = options.findIndex((option) => option.value === value);
@@ -159,7 +157,7 @@ export default function Listbox({
         <span>
           {options[selected]
             ? renderLabel?.(options[selected], true) || options[selected].label
-            : "Seleccionar…"}
+            : i18n("Seleccionar…")}
         </span>
         <Icon name="chevron" />
       </button>

@@ -1,38 +1,57 @@
+import { useTranslator } from "@/lib/i18n/react";
+import { type Translator, localized } from "@/lib/i18n/translator";
 import DeliveryArtwork from "./delivery-artwork";
 import DeliveryProgress from "./delivery-progress";
 import Icon from "@/components/icon";
 import { useInvitationDelivery } from "./use-invitation-delivery";
 
-const phases = {
-  draft: [
-    "Todo listo para invitar",
-    "Al enviar, primero prepararemos la web. Nadie recibirá un mensaje hasta que su invitación esté lista.",
-  ],
-  preparing: [
-    "Estamos preparando tu invitación",
-    "Estamos publicando y comprobando tu web. Todavía no estamos enviando mensajes.",
-  ],
-  sending: [
-    "Estamos enviando las invitaciones",
-    "Cada persona recibe su enlace por WhatsApp, siguiendo el orden de tu lista y el aforo disponible.",
-  ],
-  waiting: [
-    "Tu lista sigue avanzando",
-    "Los siguientes invitados esperan su turno por límite de aforo. Cuando alguien decline o amplíes la capacidad del evento, se enviarán automáticamente.",
-  ],
-  complete: [
-    "Invitaciones enviadas",
-    "Puedes seguir las respuestas aquí. Los nuevos invitados se añaden al final y se enviarán automáticamente cuando haya cupo.",
-  ],
-  attention: [
-    "Envíos completados con observaciones",
-    "Tus invitaciones disponibles ya fueron enviadas por WhatsApp. Algunos números necesitan revisión o no pudieron entregarse.",
-  ],
-  error: [
-    "No pudimos preparar la invitación",
-    "Tu lista está guardada. Vuelve a intentar preparar la web para continuar con los envíos.",
-  ],
-} as const;
+const phases = localized(
+  (i18n: Translator) =>
+    ({
+      draft: [
+        i18n("Todo listo para invitar"),
+        i18n(
+          "Al enviar, primero prepararemos la web. Nadie recibirá un mensaje hasta que su invitación esté lista.",
+        ),
+      ],
+      preparing: [
+        i18n("Estamos preparando tu invitación"),
+        i18n(
+          "Estamos publicando y comprobando tu web. Todavía no estamos enviando mensajes.",
+        ),
+      ],
+      sending: [
+        i18n("Estamos enviando las invitaciones"),
+        i18n(
+          "Cada persona recibe su enlace por WhatsApp, siguiendo el orden de tu lista y el aforo disponible.",
+        ),
+      ],
+      waiting: [
+        i18n("Tu lista sigue avanzando"),
+        i18n(
+          "Los siguientes invitados esperan su turno por límite de aforo. Cuando alguien decline o amplíes la capacidad del evento, se enviarán automáticamente.",
+        ),
+      ],
+      complete: [
+        i18n("Invitaciones enviadas"),
+        i18n(
+          "Puedes seguir las respuestas aquí. Los nuevos invitados se añaden al final y se enviarán automáticamente cuando haya cupo.",
+        ),
+      ],
+      attention: [
+        i18n("Envíos completados con observaciones"),
+        i18n(
+          "Tus invitaciones disponibles ya fueron enviadas por WhatsApp. Algunos números necesitan revisión o no pudieron entregarse.",
+        ),
+      ],
+      error: [
+        i18n("No pudimos preparar la invitación"),
+        i18n(
+          "Tu lista está guardada. Vuelve a intentar preparar la web para continuar con los envíos.",
+        ),
+      ],
+    }) as const,
+);
 export default function InvitationDelivery({
   eventId,
   onUpdate,
@@ -42,6 +61,8 @@ export default function InvitationDelivery({
   onUpdate: () => Promise<void>;
   guestCount?: number;
 }) {
+  const i18n = useTranslator();
+
   const { delivery, busy, error, start } = useInvitationDelivery(
     eventId,
     onUpdate,
@@ -51,7 +72,7 @@ export default function InvitationDelivery({
       ? "preparing"
       : delivery?.phase || "draft";
   const total = guestCount ?? delivery?.total ?? 0;
-  const [title, description] = phases[phase];
+  const [title, description] = phases(i18n)[phase];
   const working = busy || phase === "preparing" || phase === "sending";
   return (
     <section
@@ -66,8 +87,8 @@ export default function InvitationDelivery({
           <div>
             <p className="journey-eyebrow">
               {phase === "draft"
-                ? "EL SIGUIENTE PASO"
-                : "EL ENVÍO DE TU INVITACIÓN"}
+                ? i18n("EL SIGUIENTE PASO")
+                : i18n("EL ENVÍO DE TU INVITACIÓN")}
             </p>
             <h2 id="delivery-title">{title}</h2>
             <p role="status" aria-live="polite">
@@ -91,23 +112,25 @@ export default function InvitationDelivery({
         >
           <Icon name="mail" />
           {busy
-            ? "Preparando…"
+            ? i18n("Preparando…")
             : (delivery?.failed ?? 0) + (delivery?.uncertain ?? 0) > 0
-              ? "Reintentar envíos pendientes"
+              ? i18n("Reintentar envíos pendientes")
               : phase === "error"
-                ? "Volver a intentar"
-                : "Enviar invitaciones"}
+                ? i18n("Volver a intentar")
+                : i18n("Enviar invitaciones")}
         </button>
       )}
       {!total && (
         <p className="guest-hint">
-          Primero añade al menos un invitado a tu lista.
+          {i18n("Primero añade al menos un invitado a tu lista.")}
         </p>
       )}
       {error && <p role="alert">{error}</p>}
       <p className="delivery-reassurance">
         <Icon name="lock" />
-        Puedes salir de esta pantalla: la preparación y los envíos continúan.
+        {i18n(
+          "Puedes salir de esta pantalla: la preparación y los envíos continúan.",
+        )}
       </p>
     </section>
   );

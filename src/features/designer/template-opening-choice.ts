@@ -1,8 +1,9 @@
+import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import { invitationTemplates } from "@/lib/events/template-catalog";
 import type { InvitationTemplate } from "@/lib/events/template-catalog";
 import type { DesignEvent } from "@/lib/events/types";
 import { defaultOpening, type Opening } from "@/lib/events/celebration";
-import { templateOpening } from "./template-extras";
+import { templateOpening } from "./template-opening";
 function same(a: Opening, b: Opening) {
   return (
     (
@@ -27,13 +28,19 @@ function same(a: Opening, b: Opening) {
 export function templateOpeningChoice(
   draft: DesignEvent,
   next: InvitationTemplate,
+  i18n: Translator = spanishTranslator,
 ) {
   const current = draft.opening;
-  if (!current) return templateOpening(next);
+  if (!current) return templateOpening(next, i18n);
   if (!current.enabled) return current;
-  const old = invitationTemplates.find((t) => t.id === draft.templateId);
-  const generic = defaultOpening(draft.kind === "wedding");
-  const previous = old ? templateOpening(old) : generic;
+  const old = invitationTemplates(i18n).find((t) => t.id === draft.templateId);
+  const generic = defaultOpening(
+    draft.kind === "wedding",
+    undefined,
+    undefined,
+    i18n,
+  );
+  const previous = old ? templateOpening(old, i18n) : generic;
   const legacy = {
     ...previous,
     message: generic.message,
@@ -43,6 +50,6 @@ export function templateOpeningChoice(
   return same(current, generic) ||
     same(current, previous) ||
     same(current, legacy)
-    ? templateOpening(next)
+    ? templateOpening(next, i18n)
     : current;
 }
