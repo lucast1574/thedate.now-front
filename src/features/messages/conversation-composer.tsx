@@ -48,7 +48,7 @@ export default function ConversationComposer({
           aria-describedby={hintId}
           required
           maxLength={4000}
-          disabled={busy}
+          readOnly={busy}
         />
       </label>
       <small id={hintId} className="inbox-composer-hint">

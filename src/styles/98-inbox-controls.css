@@ -118,6 +118,47 @@
   font-size: 12px;
   line-height: 1.5;
 }
+.guest-roster-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px 16px;
+}
+.guest-roster-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+.guest-roster-name .guest-queue-position {
+  margin: 0;
+  flex-shrink: 0;
+}
+.guest-roster-name > strong {
+  overflow-wrap: anywhere;
+}
+.guest-roster-identity .guest-message-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  color: var(--ui-accent);
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+.guest-message-link .ui-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+.guest-message-link:hover,
+.guest-message-link:focus-visible {
+  outline: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
 @media (hover: none) and (pointer: coarse) {
   .inbox-composer-hint {
     display: none;

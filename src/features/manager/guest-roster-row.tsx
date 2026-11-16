@@ -10,6 +10,7 @@ import type { SeatingPlan } from "@/lib/events/seating";
 import PersonGlyph from "@/components/person-glyph";
 import GuestActions from "./guest-actions";
 import Link from "next/link";
+import Icon from "@/components/icon";
 export default function GuestRosterRow({
   g,
   index,
@@ -36,18 +37,23 @@ export default function GuestRosterRow({
   return (
     <tr>
       <td>
-        {showPosition && (
-          <span className="guest-queue-position">{index + 1}</span>
-        )}
-        <strong>{fullName(g)}</strong>
-        {eventId && (
-          <Link
-            className="guest-message-link"
-            href={`/manager/${eventId}?tab=messages&guest=${g.id}`}
-          >
-            {i18n("Ver mensajes")}
-          </Link>
-        )}
+        <div className="guest-roster-identity">
+          <div className="guest-roster-name">
+            {showPosition && (
+              <span className="guest-queue-position">{index + 1}</span>
+            )}
+            <strong>{fullName(g)}</strong>
+          </div>
+          {eventId && (
+            <Link
+              className="guest-message-link"
+              href={`/manager/${eventId}?tab=messages&guest=${g.id}`}
+            >
+              <Icon name="lucide:messages-square" />
+              {i18n("Ver mensajes")}
+            </Link>
+          )}
+        </div>
         {g.family && <small>{g.family}</small>}
         <ul className="party-names">
           {attendees([g], i18n).map((p) => (
