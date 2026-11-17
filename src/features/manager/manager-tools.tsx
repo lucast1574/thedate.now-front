@@ -1,7 +1,6 @@
 import { useTranslator } from "@/lib/i18n/react";
 import ManagerRecords from "./manager-records";
-import MessagesWorkspace from "@/features/messages/messages-workspace";
-import PaymentsWorkspace from "@/features/payments/payments-workspace";
+import MessageCenter from "@/features/messages/message-center";
 import InvitationDelivery from "./invitation-delivery";
 import GuestWorkspace from "./guest-workspace";
 import SeatingEditor from "./seating-editor";
@@ -21,7 +20,7 @@ export default function ManagerTools({
   const canSend = user?.role === "admin" || user?.id === event.ownerId;
   if (tab === "messages")
     return (
-      <MessagesWorkspace
+      <MessageCenter
         event={event}
         guests={guests}
         canPayments={Boolean(
@@ -29,12 +28,6 @@ export default function ManagerTools({
         )}
         onGuestUpdated={manager.refresh}
       />
-    );
-  if (tab === "payments")
-    return canSend && event.kind === "general" ? (
-      <PaymentsWorkspace event={event} guests={guests} />
-    ) : (
-      <p>{i18n("Solo el creador puede gestionar los pagos de este evento.")}</p>
     );
   if (manager.readOnly) return <ManagerRecords manager={manager} tab={tab} />;
   return (

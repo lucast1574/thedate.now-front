@@ -2449,5 +2449,22 @@
   "Actualizando mensajes…": "Updating messages…",
   "La actualización se reintentará automáticamente.": "Updates will retry automatically.",
   "Los mensajes se actualizan automáticamente.": "Messages update automatically.",
-  "Enter para enviar · Shift + Enter para añadir una línea": "Enter to send · Shift + Enter for a new line"
+  "Enter para enviar · Shift + Enter para añadir una línea": "Enter to send · Shift + Enter for a new line",
+  "Mensajes y pagos": "Messages and payments",
+  "Pagos": "Payments",
+  "Buscar conversación": "Search conversations",
+  "Buscar invitado o teléfono": "Search guest or phone",
+  "Estado de las conversaciones": "Conversation status",
+  "Todas las conversaciones": "All conversations",
+  "Pendientes de atender": "Needs attention",
+  "Atendidas": "Attended",
+  "No hay conversaciones con estos filtros.": "No conversations match these filters.",
+  "Buscar pagos por invitado": "Search payments by guest",
+  "Estado de los pagos": "Payment status",
+  "Todos los invitados": "All guests",
+  "Con saldo pendiente": "With outstanding balance",
+  "Pagos cubiertos": "Fully paid",
+  "No hay invitados con estos filtros.": "No guests match these filters.",
+  "Registra cada pago después de verificar el ingreso. Puedes vincularlo al comprobante de una conversación.": "Record each payment after verifying receipt. You can link it to evidence from a conversation.",
+  "Revisa conversaciones, comprobantes y pagos desde un solo lugar.": "Review conversations, receipts and payments in one place."
 }

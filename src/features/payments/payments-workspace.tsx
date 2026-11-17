@@ -8,15 +8,21 @@ import { admissionMoney, admissionTotal } from "@/lib/events/admission";
 import Alert from "@/components/alert";
 import { useGuestPayments } from "./use-guest-payments";
 import PaymentForm from "./payment-form";
+import PaymentGuests from "./payment-guests";
 export default function PaymentsWorkspace({
   event,
   guests,
+  active = true,
 }: {
   event: Event;
   guests: Guest[];
+  active?: boolean;
 }) {
   const i18n = useTranslator(),
-    ledger = useGuestPayments(event.id, Boolean(event.admission?.enabled));
+    ledger = useGuestPayments(
+      event.id,
+      Boolean(event.admission?.enabled && active),
+    );
   const [guest, setGuest] = useState<Guest | null>(null);
   const admission = event.admission;
   if (event.kind !== "general") return null;
@@ -58,10 +64,10 @@ export default function PaymentsWorkspace({
       </dl>
       <p>
         {i18n(
-          "Las fotos llegan a Mensajes. Aquí solo aparecen los pagos que registraste después de verificar el ingreso.",
+          "Registra cada pago después de verificar el ingreso. Puedes vincularlo al comprobante de una conversación.",
         )}
       </p>
-      {guest ? (
+      {guest && (
         <PaymentForm
           key={guest.id}
           event={event}
@@ -70,57 +76,17 @@ export default function PaymentsWorkspace({
           onSaved={ledger.refresh}
           onClose={() => setGuest(null)}
         />
-      ) : (
-        <div className="payment-guests">
-          {!guests.length && (
-            <p>{i18n("Añade invitados para empezar a registrar sus pagos.")}</p>
-          )}
-          {guests.map((g) => {
-            const registered = ledger.payments
-                .filter((p) => p.guestId === g.id)
-                .reduce((n, p) => n + p.amountCents, 0),
-              expected = admissionTotal(admission, partySeats(g)),
-              balance = expected - registered;
-            return (
-              <article key={g.id} className="payment-guest">
-                <div>
-                  <h2>{fullName(g)}</h2>
-                  <p>
-                    {i18n("{v0} personas", { v0: String(partySeats(g)) })} ·{" "}
-                    {i18n("Total")} {format(expected)}
-                  </p>
-                  <p>
-                    {i18n("Registrado")} {format(registered)} ·{" "}
-                    {balance < 0 ? i18n("Excedente") : i18n("Pendiente")}{" "}
-                    {format(Math.abs(balance))}
-                  </p>
-                  <small>
-                    {balance <= 0
-                      ? i18n("Cubierto")
-                      : registered
-                        ? i18n("Abono parcial")
-                        : i18n("Sin pagos registrados")}
-                  </small>
-                </div>
-                <div className="payment-guest-actions">
-                  <Link
-                    href={`/manager/${event.id}?tab=messages&guest=${g.id}`}
-                  >
-                    {i18n("Ver conversación")}
-                  </Link>
-                  <button
-                    type="button"
-                    disabled={ledger.loading || Boolean(ledger.error)}
-                    onClick={() => setGuest(g)}
-                  >
-                    {i18n("Registrar pago manual")}
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-        </div>
       )}
+      <div hidden={Boolean(guest)}>
+        <PaymentGuests
+          event={event}
+          guests={guests}
+          payments={ledger.payments}
+          loading={ledger.loading}
+          error={ledger.error}
+          onSelect={setGuest}
+        />
+      </div>
       {ledger.loading && <p role="status">{i18n("Cargando pagos…")}</p>}
       {ledger.payments.length > 0 && (
         <section className="payment-history">

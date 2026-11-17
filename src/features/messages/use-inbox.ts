@@ -3,7 +3,11 @@ import { useTranslator } from "@/lib/i18n/react";
 import { api } from "@/lib/api/client";
 import type { Conversation, InboxMessage, MessagePage } from "./types";
 
-export function useInbox(eventId: string, initialGuest?: string) {
+export function useInbox(
+  eventId: string,
+  initialGuest?: string,
+  visible = true,
+) {
   const i18n = useTranslator();
   const base = `/api/backend/events/${eventId}/conversations`;
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -24,6 +28,7 @@ export function useInbox(eventId: string, initialGuest?: string) {
     setConversations(list);
   }, [base, i18n]);
   useEffect(() => {
+    if (!visible) return;
     let active = true;
     const load = async () => {
       try {
@@ -52,9 +57,9 @@ export function useInbox(eventId: string, initialGuest?: string) {
       active = false;
       window.clearInterval(timer);
     };
-  }, [base, i18n]);
+  }, [base, i18n, visible]);
   useEffect(() => {
-    if (!guestId) return;
+    if (!guestId || !visible) return;
     let active = true;
     const load = async () => {
       try {
@@ -97,7 +102,7 @@ export function useInbox(eventId: string, initialGuest?: string) {
       active = false;
       window.clearInterval(timer);
     };
-  }, [base, guestId, i18n, refresh, revision]);
+  }, [base, guestId, i18n, refresh, revision, visible]);
   async function run(action: () => Promise<void>) {
     if (running.current) return;
     running.current = true;

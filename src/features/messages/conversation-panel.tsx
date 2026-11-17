@@ -18,17 +18,19 @@ export default function ConversationPanel({
   inbox,
   canPayments,
   onGuestUpdated,
+  active = true,
 }: {
   event: Event;
   guest: Guest;
   inbox: ReturnType<typeof useInbox>;
   canPayments: boolean;
   onGuestUpdated: () => Promise<void>;
+  active?: boolean;
 }) {
   const i18n = useTranslator(),
     [text, setText] = useState(""),
     [receipt, setReceipt] = useState<InboxMessage | null>(null);
-  const ledger = useGuestPayments(event.id, canPayments);
+  const ledger = useGuestPayments(event.id, canPayments && active);
   const now = useClock();
   const current = inbox.conversations.find((c) => c.guestId === guest.id);
   return (
@@ -40,7 +42,7 @@ export default function ConversationPanel({
           <ConversationSync
             eventId={event.id}
             guestId={guest.id}
-            sent={Boolean(guest.sentAt)}
+            sent={Boolean(guest.sentAt) && active}
             onSynced={inbox.reload}
           />
         </div>

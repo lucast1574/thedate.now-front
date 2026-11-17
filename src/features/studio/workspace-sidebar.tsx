@@ -111,7 +111,11 @@ export default function WorkspaceSidebar({
           <Link
             key={key}
             href={toolHref(key)}
-            aria-current={active === key ? "page" : undefined}
+            aria-current={
+              active === key || (key === "messages" && active === "payments")
+                ? "page"
+                : undefined
+            }
           >
             <Icon name={icon} />
             <span>
@@ -120,20 +124,6 @@ export default function WorkspaceSidebar({
             </span>
           </Link>
         ))}
-        {!wedding &&
-          selected?.admission?.enabled &&
-          (user.role === "admin" || selected.ownerId === user.id) && (
-            <Link
-              href={toolHref("payments")}
-              aria-current={active === "payments" ? "page" : undefined}
-            >
-              <Icon name="lucide:banknote" />
-              <span>
-                {i18n("Pagos de invitados")}
-                <small>{i18n("Abonos y saldo pendiente")}</small>
-              </span>
-            </Link>
-          )}
         {(user.role === "admin" ||
           user.role === (wedding ? "planner" : "organizer")) && (
           <Link

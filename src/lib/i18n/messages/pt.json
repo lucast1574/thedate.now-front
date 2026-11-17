@@ -2449,5 +2449,22 @@
   "Actualizando mensajes…": "Atualizando mensagens…",
   "La actualización se reintentará automáticamente.": "A atualização será tentada novamente automaticamente.",
   "Los mensajes se actualizan automáticamente.": "As mensagens são atualizadas automaticamente.",
-  "Enter para enviar · Shift + Enter para añadir una línea": "Enter para enviar · Shift + Enter para adicionar uma linha"
+  "Enter para enviar · Shift + Enter para añadir una línea": "Enter para enviar · Shift + Enter para adicionar uma linha",
+  "Mensajes y pagos": "Mensagens e pagamentos",
+  "Pagos": "Pagamentos",
+  "Buscar conversación": "Buscar conversa",
+  "Buscar invitado o teléfono": "Buscar convidado ou telefone",
+  "Estado de las conversaciones": "Estado das conversas",
+  "Todas las conversaciones": "Todas as conversas",
+  "Pendientes de atender": "Pendentes de atendimento",
+  "Atendidas": "Atendidas",
+  "No hay conversaciones con estos filtros.": "Nenhuma conversa corresponde a esses filtros.",
+  "Buscar pagos por invitado": "Buscar pagamentos por convidado",
+  "Estado de los pagos": "Estado dos pagamentos",
+  "Todos los invitados": "Todos os convidados",
+  "Con saldo pendiente": "Com saldo pendente",
+  "Pagos cubiertos": "Pagamentos completos",
+  "No hay invitados con estos filtros.": "Nenhum convidado corresponde a esses filtros.",
+  "Registra cada pago después de verificar el ingreso. Puedes vincularlo al comprobante de una conversación.": "Registre cada pagamento após verificar o recebimento. Você pode vinculá-lo ao comprovante de uma conversa.",
+  "Revisa conversaciones, comprobantes y pagos desde un solo lugar.": "Revise conversas, comprovantes e pagamentos em um só lugar."
 }

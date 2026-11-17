@@ -2449,5 +2449,22 @@
   "Actualizando mensajes…": "Actualizando mensajes…",
   "La actualización se reintentará automáticamente.": "La actualización se reintentará automáticamente.",
   "Los mensajes se actualizan automáticamente.": "Los mensajes se actualizan automáticamente.",
-  "Enter para enviar · Shift + Enter para añadir una línea": "Enter para enviar · Shift + Enter para añadir una línea"
+  "Enter para enviar · Shift + Enter para añadir una línea": "Enter para enviar · Shift + Enter para añadir una línea",
+  "Mensajes y pagos": "Mensajes y pagos",
+  "Pagos": "Pagos",
+  "Buscar conversación": "Buscar conversación",
+  "Buscar invitado o teléfono": "Buscar invitado o teléfono",
+  "Estado de las conversaciones": "Estado de las conversaciones",
+  "Todas las conversaciones": "Todas las conversaciones",
+  "Pendientes de atender": "Pendientes de atender",
+  "Atendidas": "Atendidas",
+  "No hay conversaciones con estos filtros.": "No hay conversaciones con estos filtros.",
+  "Buscar pagos por invitado": "Buscar pagos por invitado",
+  "Estado de los pagos": "Estado de los pagos",
+  "Todos los invitados": "Todos los invitados",
+  "Con saldo pendiente": "Con saldo pendiente",
+  "Pagos cubiertos": "Pagos cubiertos",
+  "No hay invitados con estos filtros.": "No hay invitados con estos filtros.",
+  "Registra cada pago después de verificar el ingreso. Puedes vincularlo al comprobante de una conversación.": "Registra cada pago después de verificar el ingreso. Puedes vincularlo al comprobante de una conversación.",
+  "Revisa conversaciones, comprobantes y pagos desde un solo lugar.": "Revisa conversaciones, comprobantes y pagos desde un solo lugar."
 }

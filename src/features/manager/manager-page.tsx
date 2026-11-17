@@ -26,7 +26,7 @@ function ManagerWorkspace({ id }: { id: string }) {
         : requested === "gifts"
           ? "gifts"
           : requested === "messages" || requested === "payments"
-            ? requested
+            ? "messages"
             : "guests";
   const section = {
     guests: {
@@ -53,12 +53,6 @@ function ManagerWorkspace({ id }: { id: string }) {
         "Lee y responde lo que envían tus invitados por WhatsApp.",
       ),
     },
-    payments: {
-      title: i18n("Pagos de tus invitados"),
-      description: i18n(
-        "Registra los abonos y consulta cuánto falta por recibir.",
-      ),
-    },
   }[tab];
   const { event, guests, user, error, dirty, stale } = manager;
   if (!event)
@@ -80,7 +74,7 @@ function ManagerWorkspace({ id }: { id: string }) {
         </Link>
       </main>
     );
-  if (manager.readOnly && user && tab !== "messages" && tab !== "payments")
+  if (manager.readOnly && user && tab !== "messages")
     return (
       <InvitationRecord
         key={`${event.id}-${tab}`}
@@ -114,7 +108,16 @@ function ManagerWorkspace({ id }: { id: string }) {
         <header className="manager-header">
           <div>
             <h1>{section.title}</h1>
-            <p>{section.description}</p>
+            <p>
+              {tab === "messages" &&
+              event.kind === "general" &&
+              event.admission?.enabled &&
+              (user?.role === "admin" || user?.id === event.ownerId)
+                ? i18n(
+                    "Revisa conversaciones, comprobantes y pagos desde un solo lugar.",
+                  )
+                : section.description}
+            </p>
           </div>
         </header>
         {!event.isDemo && user && (
@@ -126,7 +129,7 @@ function ManagerWorkspace({ id }: { id: string }) {
         <Alert variant="success">{manager.notice}</Alert>
         {!allowed ? (
           <>
-            {tab === "messages" || tab === "payments" ? (
+            {tab === "messages" ? (
               <p>{i18n("Activa tu evento para usar estas herramientas.")}</p>
             ) : tab === "gifts" ? (
               <WishlistPanel key={event.id} event={event} />

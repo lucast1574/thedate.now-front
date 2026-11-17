@@ -31,5 +31,7 @@ export function organizationEventDate(
 }
 
 export function organizationEventHref(event: Event, tool: string) {
+  if (tool === "payments")
+    return `/manager/${encodeURIComponent(event.id)}?tab=messages&view=payments`;
   return `/${eventReadOnly(event) && tool !== "messages" && tool !== "payments" ? "editor" : "manager"}/${encodeURIComponent(event.id)}?tab=${tool}`;
 }
