@@ -3,7 +3,7 @@ import { useTranslator } from "@/lib/i18n/react";
 import { useClock } from "@/components/use-clock";
 import type { Event, Guest } from "@/lib/events/types";
 import { fullName, responseLabel } from "@/lib/events/attendees";
-import GuestActions from "@/features/manager/guest-actions";
+import ConversationAttendance from "./conversation-attendance";
 import PaymentForm from "@/features/payments/payment-form";
 import { useGuestPayments } from "@/features/payments/use-guest-payments";
 import MessageMedia from "./message-media";
@@ -135,14 +135,12 @@ export default function ConversationPanel({
               </article>
             ))}
           </div>
-          <details className="inbox-response-actions">
-            <summary>{i18n("Actualizar asistencia manualmente")}</summary>
-            <GuestActions
-              guest={guest}
-              eventId={event.id}
-              onUpdated={onGuestUpdated}
-            />
-          </details>
+          <ConversationAttendance
+            event={event}
+            guest={guest}
+            now={now}
+            onUpdated={onGuestUpdated}
+          />
           <ConversationComposer
             recipient={fullName(guest)}
             busy={inbox.busy}

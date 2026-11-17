@@ -1,0 +1,84 @@
+.manual-guest > .manager-fields {
+  gap: 16px;
+}
+.manual-guest .manual-guest-hint {
+  margin: 16px 0 24px;
+  line-height: 1.7;
+  max-width: 64ch;
+}
+.manual-companion {
+  display: grid;
+  gap: 20px;
+  margin: 0 0 24px;
+  padding: 20px;
+  border: 1px solid var(--ui-border);
+  border-radius: 12px;
+  background: var(--ui-surface);
+}
+.manual-companion > header,
+.manual-companion > header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.manual-companion > header {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.manual-companion h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.manual-companion > header > span {
+  font-size: 11px;
+  color: var(--ui-muted);
+}
+.manual-companion > header .ui-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ui-accent);
+}
+.manual-companion > p {
+  margin: 0;
+  color: var(--ui-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.manual-companion-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+}
+.manual-companion-fields label:last-child {
+  grid-column: 1 / -1;
+}
+.manager-page .manual-companion-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  padding: 6px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ui-muted);
+  font-size: 12px;
+}
+.manual-companion-clear .ui-icon {
+  width: 14px;
+  height: 14px;
+}
+.manual-guest .office-button {
+  margin-top: 0;
+}
+@media (max-width: 520px) {
+  .manual-companion {
+    padding: 16px;
+  }
+  .manual-companion-fields {
+    grid-template-columns: 1fr;
+  }
+}

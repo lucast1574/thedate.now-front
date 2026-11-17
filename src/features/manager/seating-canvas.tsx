@@ -48,7 +48,10 @@ export default function SeatingCanvas({
   function move(e: PointerEvent<HTMLButtonElement>) {
     const current = drag.current,
       rect = board.current?.getBoundingClientRect();
-    if (!current || !rect) return;
+    if (!current || !rect || (e.buttons & 1) === 0) {
+      drag.current = null;
+      return;
+    }
     const dx = ((e.clientX - current.startX) * plan.width) / rect.width,
       dy = ((e.clientY - current.startY) * plan.height) / rect.height;
     if (Math.abs(dx) + Math.abs(dy) < 2) return;

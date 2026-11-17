@@ -5,6 +5,7 @@ import Icon from "@/components/icon";
 import { api } from "@/lib/api/client";
 import { fullName } from "@/lib/events/attendees";
 import type { Guest } from "@/lib/events/types";
+import { updateGuestResponse } from "./update-guest-response";
 
 export default function GuestActions({
   guest,
@@ -35,12 +36,15 @@ export default function GuestActions({
     setError("");
     let committed = false;
     try {
-      await api(
-        `/api/backend/events/${eventId}/guests/${guest.id}`,
-        remove ? "DELETE" : "PATCH",
-        remove ? undefined : { response: choice, reason },
-        i18n,
-      );
+      if (!remove)
+        await updateGuestResponse(eventId, guest.id, choice, reason, i18n);
+      else
+        await api(
+          `/api/backend/events/${eventId}/guests/${guest.id}`,
+          remove ? "DELETE" : "PATCH",
+          remove ? undefined : { response: choice, reason },
+          i18n,
+        );
       committed = true;
       setMode("idle");
       await onUpdated?.();

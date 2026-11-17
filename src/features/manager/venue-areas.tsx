@@ -37,7 +37,10 @@ export default function VenueAreas({
   function move(e: PointerEvent<HTMLButtonElement>) {
     const current = drag.current,
       rect = layer.current?.getBoundingClientRect();
-    if (!current || !rect) return;
+    if (!current || !rect || (e.buttons & 1) === 0) {
+      drag.current = null;
+      return;
+    }
     const next = moveVenueArea(
       current.area,
       current.area.x + ((e.clientX - current.startX) * width) / rect.width,

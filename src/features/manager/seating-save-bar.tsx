@@ -65,7 +65,7 @@ export default function SeatingSaveBar({
           <span>{i18n("¿Descartar los cambios sin guardar?")}</span>
           <button
             type="button"
-            disabled={busy}
+            disabled={busy || saving}
             ref={cancel}
             onClick={() => setConfirmReload(false)}
           >
@@ -73,7 +73,7 @@ export default function SeatingSaveBar({
           </button>
           <button
             type="button"
-            disabled={busy}
+            disabled={busy || saving}
             onClick={() => {
               setConfirmReload(false);
               onReload();
@@ -87,7 +87,7 @@ export default function SeatingSaveBar({
           {stale && (
             <button
               type="button"
-              disabled={busy}
+              disabled={busy || saving}
               ref={trigger}
               onClick={() => (dirty ? setConfirmReload(true) : onReload())}
             >

@@ -3,7 +3,7 @@ import { useTranslator } from "@/lib/i18n/react";
 
 import Listbox from "@/components/listbox";
 import ActionButton from "@/components/action-button";
-import CompanionFields from "@/components/companion-fields";
+import GuestCompanionFields from "./guest-companion-fields";
 import { useState, type FormEvent } from "react";
 import type { GuestFields, Kind } from "@/lib/events/types";
 import { guestCategoriesFor } from "@/lib/events/guest-categories";
@@ -132,27 +132,23 @@ export default function GuestForm({
           </Listbox>
         </label>
       </div>
-      <p className="guest-hint">
-        {i18n("Esta invitación permite hasta")} {guest.seats}{" "}
-        {guest.seats === 1
-          ? i18n("persona: solo el titular.")
-          : i18n("personas, contando al titular.")}{" "}
-        {i18n(
-          "El invitado registrará a sus acompañantes al confirmar. El grupo solo sirve para organizar las mesas.",
-        )}
+      <p className="guest-hint manual-guest-hint">
+        {guest.seats > 1
+          ? i18n(
+              "Esta invitación permite al titular y un acompañante. Registrar su nombre ahora no confirma la asistencia.",
+            )
+          : i18n(
+              "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.",
+            )}
       </p>
       {guest.seats > 1 && (
-        <details>
-          <summary>{i18n("Registrar sus nombres ahora (opcional)")}</summary>
-          <CompanionFields
-            people={guest.companions || []}
-            max={guest.seats - 1}
-            description={i18n(
-              "Añade los nombres si ya los conoces. La asistencia se confirma por separado.",
-            )}
-            onChange={(companions) => setGuest({ ...guest, companions })}
-          />
-        </details>
+        <GuestCompanionFields
+          value={guest.companions?.[0]}
+          disabled={busy}
+          onChange={(person) =>
+            setGuest({ ...guest, companions: person ? [person] : [] })
+          }
+        />
       )}
       <ActionButton className="office-button" disabled={busy}>
         {i18n("Añadir invitado")}

@@ -10,6 +10,7 @@ import type { Event, Guest, GuestFields, User } from "@/lib/events/types";
 import { emptyPlan, type SeatingPlan } from "@/lib/events/seating";
 import { useSeatingAutosave } from "./use-seating-autosave";
 import { useLiveResponses } from "./use-live-responses";
+import { reconcileSeatingSave } from "@/lib/events/seating-save";
 export function useManager(id: string) {
   const i18n = useTranslator();
 
@@ -24,7 +25,9 @@ export function useManager(id: string) {
   const [dirty, setDirty] = useState(false),
     [stale, setStale] = useState(false);
   const dirtyRef = useRef(false),
-    versionRef = useRef(0);
+    versionRef = useRef(0),
+    planRef = useRef(plan),
+    savingPlan = useRef(false);
   const readOnly = useEventReadOnly(event);
   useEventRecency(user?.id, event?.kind, event?.id);
   const refresh = useCallback(
@@ -48,12 +51,14 @@ export function useManager(id: string) {
       if (latest) setEvent(latest);
       setGuests(list);
       if (!dirtyRef.current || discard) {
+        planRef.current = remote;
         setPlan(remote);
         versionRef.current = remote.version;
         setDirty(false);
         dirtyRef.current = false;
         setStale(false);
-      } else if (remote.version !== versionRef.current) setStale(true);
+      } else if (!savingPlan.current && remote.version !== versionRef.current)
+        setStale(true);
     },
     [id, i18n],
   );
@@ -96,12 +101,17 @@ export function useManager(id: string) {
   }, [dirty]);
   function update(next: SeatingPlan) {
     if (eventReadOnly(event)) return;
+    planRef.current = next;
     setPlan(next);
     setDirty(true);
     dirtyRef.current = true;
   }
-  async function run(task: () => Promise<unknown>, message: string) {
-    setBusy(true);
+  async function run(
+    task: () => Promise<unknown>,
+    message: string,
+    interactive = true,
+  ) {
+    if (interactive) setBusy(true);
     setError("");
     setNotice("");
     try {
@@ -112,25 +122,37 @@ export function useManager(id: string) {
       setError((e as Error).message);
       return false;
     } finally {
-      setBusy(false);
+      if (interactive) setBusy(false);
     }
   }
   const save = () =>
-    run(async () => {
-      if (eventReadOnly(event)) return;
-      const saved = await api<SeatingPlan>(
-        `/api/backend/events/${id}/seating`,
-        "PATCH",
-        plan,
-        i18n,
-      );
-      setPlan(saved);
-      versionRef.current = saved.version;
-      setDirty(false);
-      dirtyRef.current = false;
-      setStale(false);
-      await refresh();
-    }, "");
+    run(
+      async () => {
+        if (eventReadOnly(event)) return;
+        const submitted = planRef.current;
+        savingPlan.current = true;
+        try {
+          const saved = await api<SeatingPlan>(
+            `/api/backend/events/${id}/seating`,
+            "PATCH",
+            submitted,
+            i18n,
+          );
+          const next = reconcileSeatingSave(planRef.current, submitted, saved);
+          planRef.current = next.plan;
+          setPlan(next.plan);
+          versionRef.current = saved.version;
+          setDirty(next.dirty);
+          dirtyRef.current = next.dirty;
+          setStale(false);
+        } finally {
+          savingPlan.current = false;
+        }
+        await refresh();
+      },
+      "",
+      false,
+    );
   const add = (fields: GuestFields) =>
     run(async () => {
       if (eventReadOnly(event)) return;

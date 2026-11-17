@@ -32,6 +32,6 @@ export function useSeatingAutosave(
         });
     }, 800);
     return () => clearTimeout(timer);
-  }, [plan, dirty, busy, stale, failed]);
+  }, [plan, dirty, busy, stale, failed, saving]);
   return { saving, failed, retry: () => setFailedPlan(null) };
 }

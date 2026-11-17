@@ -127,3 +127,31 @@ test("an in-flight save cannot be duplicated by another render", async () => {
   h.render({ dirty: false });
   assert.equal(h.timers.size, 0);
 });
+
+test("newer edits queued during a save are persisted after that request finishes", async () => {
+  let finish,
+    calls = 0;
+  const h = harness(() => {
+    calls++;
+    return calls === 1
+      ? new Promise((resolve) => {
+          finish = resolve;
+        })
+      : Promise.resolve(true);
+  });
+  h.render();
+  await h.fire();
+  h.render({
+    plan: { version: 1, tables: [{ id: "newer-edit" }], assignments: {} },
+  });
+  assert.equal(h.timers.size, 0);
+  finish(true);
+  for (let i = 0; i < 10; i++) await Promise.resolve();
+  h.render();
+  assert.equal(h.timers.size, 1);
+  await h.fire();
+  assert.equal(calls, 2);
+  h.render({ dirty: false });
+  assert.equal(h.timers.size, 0);
+  h.cleanup();
+});
