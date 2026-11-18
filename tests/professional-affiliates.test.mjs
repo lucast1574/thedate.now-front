@@ -22,6 +22,8 @@ test("affiliate navigation belongs only to the matching professional role", () =
           }),
         },
         "next/link": { default: "a" },
+        "@/features/messages/use-browser-push": { useBrowserPush: () => {} },
+        "@/features/messages/use-unread-inbox": { useUnreadInbox: () => false },
       },
     },
   );

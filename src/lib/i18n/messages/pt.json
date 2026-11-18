@@ -2488,5 +2488,14 @@
   "Nombre del acompañante": "Nome do acompanhante",
   "Borrar datos del acompañante": "Limpar dados do acompanhante",
   "Esta invitación permite al titular y un acompañante. Registrar su nombre ahora no confirma la asistencia.": "Este convite permite o titular e um acompanhante. Registrar o nome agora não confirma a presença.",
-  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "Este convite é apenas para o titular. O grupo é usado para organizar as mesas."
+  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "Este convite é apenas para o titular. O grupo é usado para organizar as mesas.",
+  "Mensajes sin leer": "Mensagens não lidas",
+  "Notificaciones del navegador": "Notificações do navegador",
+  "Recibe un aviso cuando un invitado te escriba.": "Receba um aviso quando um convidado enviar uma mensagem.",
+  "Activadas en este navegador.": "Ativadas neste navegador.",
+  "Activar notificaciones": "Ativar notificações",
+  "Activando notificaciones…": "Ativando notificações…",
+  "Permite las notificaciones en los ajustes de este sitio.": "Permita notificações nas configurações deste site.",
+  "No pudimos activar las notificaciones. Intenta de nuevo.": "Não foi possível ativar as notificações. Tente novamente.",
+  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "Não foi possível desconectar as notificações. Tente novamente."
 }

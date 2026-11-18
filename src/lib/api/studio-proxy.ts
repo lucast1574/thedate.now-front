@@ -1,6 +1,8 @@
 import { type Translator, spanishTranslator } from "@/lib/i18n/translator";
 import "server-only";
-import { sessionToken, clearSession } from "@/lib/auth/session";
+import { cookies } from "next/headers";
+import { sessionToken, clearSession, sessionOptions } from "@/lib/auth/session";
+import { browserInstallationCookie } from "@/lib/auth/browser-installation";
 import { backendFetch, forwardJSON, invalidOrigin } from "./server";
 import { readRequestText, RequestBodyTooLarge } from "./request-body";
 const allowedPath =
@@ -15,7 +17,15 @@ export async function proxyStudio(
   const joined = path.join("/");
   const inboxPath =
     /^events\/[a-z0-9-]+\/(?:conversations(?:\/[a-z0-9-]+(?:\/history)?)?|guest-payments)$/;
-  if (!allowedPath.test(joined) && !inboxPath.test(joined))
+  const deviceRegistration = joined === "devices" && method === "POST";
+  const deviceRemoval =
+    method === "DELETE" && /^devices\/[a-f0-9-]{36}$/.test(joined);
+  if (
+    !allowedPath.test(joined) &&
+    !inboxPath.test(joined) &&
+    !deviceRegistration &&
+    !deviceRemoval
+  )
     return Response.json({ error: i18n("Not found") }, { status: 404 });
   if (method !== "GET" && invalidOrigin(request))
     return Response.json({ error: i18n("Invalid origin") }, { status: 403 });
@@ -46,14 +56,19 @@ export async function proxyStudio(
   const query =
     inboxPath.test(joined) && method === "GET" && params.has("before")
       ? `?${new URLSearchParams({ before: params.get("before") || "" })}`
-      : joined.includes("support/tickets")
-        ? new URL(request.url).search
-        : joined === "admin/users" && params.has("email")
-          ? `?${new URLSearchParams({ email: params.get("email") || "" })}`
-          : joined === "events" &&
-              (scope === "organization" || scope === "sharing")
-            ? `?scope=${scope}`
-            : "";
+      : method === "GET" &&
+          joined.endsWith("/conversations") &&
+          inboxPath.test(joined) &&
+          params.get("summary") === "unread"
+        ? "?summary=unread"
+        : joined.includes("support/tickets")
+          ? new URL(request.url).search
+          : joined === "admin/users" && params.has("email")
+            ? `?${new URLSearchParams({ email: params.get("email") || "" })}`
+            : joined === "events" &&
+                (scope === "organization" || scope === "sharing")
+              ? `?scope=${scope}`
+              : "";
   const result = await backendFetch(joined + query, {
     method,
     headers: {
@@ -63,6 +78,18 @@ export async function proxyStudio(
     body,
   });
   const response = forwardJSON(result);
+  if (deviceRegistration && result?.ok && body) {
+    const data = JSON.parse(body) as {
+      installationId: string;
+      platform: string;
+    };
+    if (data.platform === "web") {
+      (await cookies()).set(browserInstallationCookie, data.installationId, {
+        ...sessionOptions,
+        maxAge: 30 * 86400,
+      });
+    }
+  }
   if (
     result?.status === 401 ||
     (joined === "profile" && method === "DELETE" && result?.ok)

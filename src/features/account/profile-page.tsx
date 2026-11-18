@@ -15,7 +15,12 @@ export default function ProfilePage({
       active="profile"
     >
       {(user, update, signOut) => (
-        <ProfileForm user={user} onSaved={update} onSignOut={signOut} />
+        <ProfileForm
+          user={user}
+          wedding={wedding}
+          onSaved={update}
+          onSignOut={signOut}
+        />
       )}
     </AccountShell>
   );

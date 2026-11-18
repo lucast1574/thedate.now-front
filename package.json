@@ -20,6 +20,8 @@
     "typecheck:apps": "npm run typecheck --workspaces"
   },
   "dependencies": {
+    "@firebase/app": "0.16.7",
+    "@firebase/messaging": "0.13.3",
     "exceljs": "^4.4.0",
     "libphonenumber-js": "^1.13.15",
     "maplibre-gl": "^6.16.0",

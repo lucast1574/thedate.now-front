@@ -2488,5 +2488,14 @@
   "Nombre del acompañante": "Companion first name",
   "Borrar datos del acompañante": "Clear companion details",
   "Esta invitación permite al titular y un acompañante. Registrar su nombre ahora no confirma la asistencia.": "This invitation allows the guest and one companion. Entering their name does not confirm attendance.",
-  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "This invitation is for the guest only. The group is used to organize seating."
+  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "This invitation is for the guest only. The group is used to organize seating.",
+  "Mensajes sin leer": "Unread messages",
+  "Notificaciones del navegador": "Browser notifications",
+  "Recibe un aviso cuando un invitado te escriba.": "Get a notification when a guest sends you a message.",
+  "Activadas en este navegador.": "Enabled in this browser.",
+  "Activar notificaciones": "Enable notifications",
+  "Activando notificaciones…": "Enabling notifications…",
+  "Permite las notificaciones en los ajustes de este sitio.": "Allow notifications in your browser settings for this site.",
+  "No pudimos activar las notificaciones. Intenta de nuevo.": "Could not enable notifications. Try again.",
+  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "Could not disconnect notifications. Try again."
 }

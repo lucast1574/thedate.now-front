@@ -2488,5 +2488,14 @@
   "Nombre del acompañante": "Nombre del acompañante",
   "Borrar datos del acompañante": "Borrar datos del acompañante",
   "Esta invitación permite al titular y un acompañante. Registrar su nombre ahora no confirma la asistencia.": "Esta invitación permite al titular y un acompañante. Registrar su nombre ahora no confirma la asistencia.",
-  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas."
+  "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.": "Esta invitación es solo para el titular. El grupo se utiliza para organizar las mesas.",
+  "Mensajes sin leer": "Mensajes sin leer",
+  "Notificaciones del navegador": "Notificaciones del navegador",
+  "Recibe un aviso cuando un invitado te escriba.": "Recibe un aviso cuando un invitado te escriba.",
+  "Activadas en este navegador.": "Activadas en este navegador.",
+  "Activar notificaciones": "Activar notificaciones",
+  "Activando notificaciones…": "Activando notificaciones…",
+  "Permite las notificaciones en los ajustes de este sitio.": "Permite las notificaciones en los ajustes de este sitio.",
+  "No pudimos activar las notificaciones. Intenta de nuevo.": "No pudimos activar las notificaciones. Intenta de nuevo.",
+  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "No pudimos desconectar las notificaciones. Intenta de nuevo."
 }

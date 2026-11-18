@@ -6,12 +6,15 @@ import { api } from "@/lib/api/client";
 import type { User } from "@/lib/events/types";
 import { profilePhoto } from "./profile-photo";
 import AccountDeletion from "./account-deletion";
+import BrowserNotifications from "./browser-notifications";
 export default function ProfileForm({
   user,
+  wedding,
   onSaved,
   onSignOut,
 }: {
   user: User;
+  wedding: boolean;
   onSaved: (user: User) => void;
   onSignOut: () => Promise<void>;
 }) {
@@ -122,6 +125,7 @@ export default function ProfileForm({
             </button>
           </form>
         </div>
+        <BrowserNotifications userId={user.id} wedding={wedding} />
         <div className="profile-session">
           <button
             type="button"

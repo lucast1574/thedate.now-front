@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslator } from "@/lib/i18n/react";
 import { api } from "@/lib/api/client";
+import { refreshInboxStatus } from "./inbox-updates";
 import type { Conversation, InboxMessage, MessagePage } from "./types";
 
 export function useInbox(
@@ -88,6 +89,7 @@ export function useInbox(
             { through: latest.id },
             i18n,
           );
+          refreshInboxStatus();
           if (active) await refresh();
         }
       } catch (e) {
@@ -126,6 +128,7 @@ export function useInbox(
         .find((m) => m.direction === "in")?.id;
       if (!through) return;
       await api(`${base}/${guestId}`, "PATCH", { through, attended }, i18n);
+      refreshInboxStatus();
       await refresh();
     });
   const send = (text: string) =>

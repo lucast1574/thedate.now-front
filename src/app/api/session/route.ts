@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { safeReferral } from "@/lib/auth/continuation";
 import { backendFetch, forwardJSON, invalidOrigin } from "@/lib/api/server";
 import { sessionToken, setSession, clearSession } from "@/lib/auth/session";
+import { browserInstallationCookie } from "@/lib/auth/browser-installation";
 
 export async function POST(request: Request) {
   if (invalidOrigin(request))
@@ -29,7 +30,27 @@ export async function POST(request: Request) {
   return Response.json({ user: data.user });
 }
 
-export async function DELETE() {
+export async function DELETE(request: Request) {
+  if (invalidOrigin(request))
+    return Response.json({ error: "Invalid origin" }, { status: 403 });
+  const jar = await cookies();
+  const id = jar.get(browserInstallationCookie)?.value;
+  const token = await sessionToken();
+  if (token && id && /^[a-f0-9-]{36}$/.test(id)) {
+    const result = await backendFetch(`devices/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!result?.ok && result?.status !== 401)
+      return Response.json(
+        {
+          error: "No pudimos desconectar las notificaciones. Intenta de nuevo.",
+        },
+        { status: 503 },
+      );
+  }
+  jar.delete(browserInstallationCookie);
   await clearSession();
   return Response.json({ status: "signed_out" });
 }

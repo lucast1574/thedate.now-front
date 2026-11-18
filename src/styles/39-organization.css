@@ -35,6 +35,13 @@
 .workspace-sidebar nav a[aria-current="page"] small {
   color: var(--workspace-accent);
 }
+.workspace-sidebar nav .workspace-unread-dot {
+  flex: 0 0 9px;
+  height: 9px;
+  margin-inline-start: auto;
+  border-radius: 50%;
+  background: var(--workspace-accent);
+}
 .workspace-sidebar-bottom {
   padding-top: 20px;
 }
@@ -279,6 +286,17 @@
   .workspace-sidebar nav .ui-icon {
     width: 21px;
     height: 21px;
+  }
+  .workspace-sidebar nav a:has(.workspace-unread-dot) {
+    position: relative;
+  }
+  .workspace-sidebar nav .workspace-unread-dot {
+    position: absolute;
+    inset-inline-start: 26px;
+    inset-block-start: calc(50% - 12px);
+    width: 8px;
+    height: 8px;
+    margin: 0;
   }
   .organization-heading h1 {
     font-size: 29px;

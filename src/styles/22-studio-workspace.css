@@ -217,6 +217,21 @@
 .profile-panel .office-button {
   justify-self: start;
 }
+.profile-browser-notifications {
+  display: grid;
+  gap: 12px;
+}
+.profile-browser-notifications h2,
+.profile-browser-notifications p {
+  margin: 0;
+}
+.profile-browser-notifications h2 {
+  font-size: 15px;
+}
+.profile-browser-notifications p {
+  color: var(--ui-muted);
+  font-size: 13px;
+}
 @media (max-width: 900px) {
   .workspace {
     grid-template-columns: 190px minmax(0, 1fr);

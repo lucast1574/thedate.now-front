@@ -11,6 +11,8 @@ import Brand from "@/components/brand";
 import Icon from "@/components/icon";
 import UserAvatar from "@/components/user-avatar";
 import type { User } from "@/lib/events/types";
+import { useUnreadInbox } from "@/features/messages/use-unread-inbox";
+import { useBrowserPush } from "@/features/messages/use-browser-push";
 export default function WorkspaceSidebar({
   eventId,
   guard,
@@ -43,6 +45,13 @@ export default function WorkspaceSidebar({
     wedding ? "wedding" : "general",
     eventId,
   );
+  useBrowserPush(user.id, wedding);
+  const unread = useUnreadInbox(
+    selected && !selected.isDemo && selected.paymentStatus === "paid"
+      ? selected.id
+      : undefined,
+  );
+  const unreadLabel = unread ? i18n("Mensajes sin leer") : undefined;
   const toolHref = (tool: string) =>
     selected && !selected.isDemo && selected.paymentStatus === "paid"
       ? organizationEventHref(selected, tool)
@@ -111,6 +120,7 @@ export default function WorkspaceSidebar({
           <Link
             key={key}
             href={toolHref(key)}
+            aria-label={key === "messages" ? unreadLabel : undefined}
             aria-current={
               active === key || (key === "messages" && active === "payments")
                 ? "page"
@@ -122,6 +132,9 @@ export default function WorkspaceSidebar({
               {title}
               <small>{hint}</small>
             </span>
+            {key === "messages" && unread && (
+              <span aria-hidden className="workspace-unread-dot" />
+            )}
           </Link>
         ))}
         {(user.role === "admin" ||
