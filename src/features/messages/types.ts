@@ -1,4 +1,6 @@
 export type InboxMessage = {
+  automation?: "companions" | "gifts" | "gifts_ready" | "payment";
+  receiptReview?: "possible" | "review";
   paymentRecorded?: boolean;
   id: string;
   eventId: string;
@@ -6,7 +8,7 @@ export type InboxMessage = {
   direction: "in" | "out";
   text: string;
   createdAt: string;
-  delivery: "received" | "sending" | "sent" | "uncertain";
+  delivery: "received" | "sending" | "sent" | "uncertain" | "failed";
   media?: { mime: string; filename: string; available: boolean };
 };
 export type Conversation = {

@@ -2497,5 +2497,11 @@
   "Activando notificaciones…": "Enabling notifications…",
   "Permite las notificaciones en los ajustes de este sitio.": "Allow notifications in your browser settings for this site.",
   "No pudimos activar las notificaciones. Intenta de nuevo.": "Could not enable notifications. Try again.",
-  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "Could not disconnect notifications. Try again."
+  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "Could not disconnect notifications. Try again.",
+  "Registrar acompañantes ahora": "Register companions now",
+  "Si dejas la lista vacía, se registrará que asistirá sin acompañantes.": "Leave the list empty to record that the guest will attend alone.",
+  "Automático": "Automated",
+  "No enviado": "Not sent",
+  "Posible comprobante": "Possible payment receipt",
+  "Adjunto por revisar": "Attachment to review"
 }

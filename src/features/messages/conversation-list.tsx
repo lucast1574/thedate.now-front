@@ -30,7 +30,9 @@ export default function ConversationList({
       `${fullName(guest)} ${guest.phone}`
         .toLocaleLowerCase(i18n.locale)
         .includes(query.trim().toLocaleLowerCase(i18n.locale)) &&
-      (filter === "all" || (filter === "pending" ? c.pending : !c.pending))
+      (filter === "all" ||
+        (c.last.direction === "in" &&
+          (filter === "pending" ? c.pending : !c.pending)))
     );
   });
   return (
@@ -98,11 +100,13 @@ export default function ConversationList({
                   i18n.locale,
                 )}
               </small>
-              <small
-                className={`conversation-status ${conversation.pending ? "is-pending" : "is-attended"}`}
-              >
-                {conversation.pending ? i18n("Pendiente") : i18n("Atendido")}
-              </small>
+              {conversation.last.direction === "in" && (
+                <small
+                  className={`conversation-status ${conversation.pending ? "is-pending" : "is-attended"}`}
+                >
+                  {conversation.pending ? i18n("Pendiente") : i18n("Atendido")}
+                </small>
+              )}
             </span>
           </button>
         );

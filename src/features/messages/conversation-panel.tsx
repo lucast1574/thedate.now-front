@@ -60,7 +60,7 @@ export default function ConversationPanel({
             className={
               current?.pending ? "office-button inbox-attend" : undefined
             }
-            disabled={inbox.busy || !current}
+            disabled={inbox.busy || current?.last.direction !== "in"}
             onClick={() => void inbox.attend(Boolean(current?.pending))}
           >
             {current?.pending && <Icon name="lucide:check-check" />}
@@ -105,12 +105,17 @@ export default function ConversationPanel({
                 {message.text && <p>{message.text}</p>}
                 <MessageMedia message={message} />
                 <small>
-                  {new Date(message.createdAt).toLocaleString(i18n.locale)} ·{" "}
+                  {message.automation && <>{i18n("Automático")} · </>}
+                  {new Date(message.createdAt).toLocaleString(
+                    i18n.locale,
+                  )} ·{" "}
                   {message.direction === "in"
                     ? "WhatsApp"
                     : message.delivery === "sent"
                       ? i18n("Enviado")
-                      : i18n("Envío por verificar")}
+                      : message.delivery === "failed"
+                        ? i18n("No enviado")
+                        : i18n("Envío por verificar")}
                 </small>
                 {message.direction === "in" && message.media && canPayments && (
                   <div className="inbox-message-actions">
@@ -118,17 +123,26 @@ export default function ConversationPanel({
                     ledger.payments.some((p) => p.messageId === message.id) ? (
                       <span>{i18n("Pago registrado con esta imagen")}</span>
                     ) : (
-                      <button
-                        type="button"
-                        disabled={
-                          ledger.loading ||
-                          Boolean(ledger.error) ||
-                          !message.media.available
-                        }
-                        onClick={() => setReceipt(message)}
-                      >
-                        {i18n("Registrar pago con este adjunto")}
-                      </button>
+                      <>
+                        {message.receiptReview && (
+                          <span>
+                            {message.receiptReview === "possible"
+                              ? i18n("Posible comprobante")
+                              : i18n("Adjunto por revisar")}
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          disabled={
+                            ledger.loading ||
+                            Boolean(ledger.error) ||
+                            !message.media.available
+                          }
+                          onClick={() => setReceipt(message)}
+                        >
+                          {i18n("Registrar pago con este adjunto")}
+                        </button>
+                      </>
                     )}
                   </div>
                 )}

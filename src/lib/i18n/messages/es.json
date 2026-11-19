@@ -2497,5 +2497,11 @@
   "Activando notificaciones…": "Activando notificaciones…",
   "Permite las notificaciones en los ajustes de este sitio.": "Permite las notificaciones en los ajustes de este sitio.",
   "No pudimos activar las notificaciones. Intenta de nuevo.": "No pudimos activar las notificaciones. Intenta de nuevo.",
-  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "No pudimos desconectar las notificaciones. Intenta de nuevo."
+  "No pudimos desconectar las notificaciones. Intenta de nuevo.": "No pudimos desconectar las notificaciones. Intenta de nuevo.",
+  "Registrar acompañantes ahora": "Registrar acompañantes ahora",
+  "Si dejas la lista vacía, se registrará que asistirá sin acompañantes.": "Si dejas la lista vacía, se registrará que asistirá sin acompañantes.",
+  "Automático": "Automático",
+  "No enviado": "No enviado",
+  "Posible comprobante": "Posible comprobante",
+  "Adjunto por revisar": "Adjunto por revisar"
 }

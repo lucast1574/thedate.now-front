@@ -126,6 +126,28 @@
   min-height: 90px;
   resize: vertical;
 }
+.guest-response-companions {
+  min-inline-size: 0;
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.office .guest-response-companions > label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+.guest-response-companions > label:focus-within {
+  text-decoration: underline;
+}
+.guest-response-companions > label > input {
+  inline-size: 18px;
+  block-size: 18px;
+}
 .guest-response-discard {
   display: grid;
   gap: 16px;
